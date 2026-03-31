@@ -1,0 +1,314 @@
+/**
+ * @file fixes.css
+ * @description CSS 自适应修复 - 解决滚动、溢出、页面跳动问题
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-03-19
+ * @updated 2026-03-19
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags css,fixes,responsive,overflow,scroll
+ */
+
+/* =====================================================
+   YYC3 Family AI - CSS 自适应修复
+   修复滚动、溢出、页面跳动问题
+   ===================================================== */
+
+/* ── 根容器 - 禁止整体滚动 ── */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 禁止整体滚动 */
+}
+
+/* ── IDE 主容器 ── */
+.ide-root {
+  height: 100vh;
+  height: 100dvh; /* 动态视口高度，适配移动端 */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── 通用面板容器 ── */
+.panel-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  min-width: 0; /* 关键：允许 flex 子项缩小 */
+  min-height: 0;
+}
+
+.panel-header {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0; /* 关键：允许缩小 */
+  scrollbar-gutter: stable; /* 防止滚动条出现时布局偏移 */
+}
+
+.panel-footer {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+}
+
+/* ── 文本截断工具类 ── */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.truncate-multi {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── 防止内容溢出 ── */
+.no-overflow {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-scroll {
+  overflow: scroll;
+}
+
+/* ── 代码容器 ── */
+.code-block {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  scrollbar-gutter: stable;
+}
+
+/* ── 文件树项目 ── */
+.file-tree-item {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ── 滚动条美化 ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ide-bg-deep, #060d1a);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ide-border, #1e293b);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ide-border-dim, #334155);
+}
+
+/* Firefox 滚动条 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ide-border) var(--ide-bg-deep);
+}
+
+/* ── 骨架屏加载 ── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--ide-bg) 0%,
+    var(--ide-bg-dark) 50%,
+    var(--ide-bg) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ── 响应式布局 ── */
+@media (max-width: 768px) {
+  .ide-layout {
+    flex-direction: column;
+  }
+  
+  .side-panel {
+    width: 100%;
+    height: 50vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .ide-layout {
+    flex-direction: column;
+  }
+  
+  .panel {
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+/* ── 性能优化 ── */
+.no-reflow {
+  contain: layout paint;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+/* ── 辅助工具类 ── */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.flex-1 {
+  flex: 1 1 0;
+}
+
+.min-h-0 {
+  min-height: 0;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
+
+/* ── 特定组件修复 ── */
+
+/* ViewSwitcher - 确保子控件水平排列 */
+.view-switcher > div:has(> .panel-quick-access, > .panel-minimap) {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+/* ThemeSwitcher - 确保紧凑模式下按钮水平排列 */
+.theme-switcher-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+/* LeftPanel - AI 对话面板 */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.left-panel-messages {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  scrollbar-gutter: stable;
+}
+
+.left-panel-input {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--ide-border);
+}
+
+/* CenterPanel - 文件管理面板 */
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.center-panel-file-tree {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  min-height: 0;
+}
+
+/* RightPanel - 代码编辑面板 */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.right-panel-tabs {
+  flex: 0 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.right-panel-editor {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Terminal - 终端面板 */
+.terminal {
+  overflow: hidden;
+}
+
+.terminal-content {
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 100%;
+}
+
+/* Modal / Dialog - 防止内容溢出 */
+.modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Dropdown / Menu - 最大高度 */
+.dropdown-content {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Table - 响应式表格 */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 防止页面跳动 - 固定元素高度 */
+.chat-messages {
+  min-height: 200px;
+}
+
+/* Loading 状态占位 */
+.loading-placeholder {
+  min-height: 100px;
+}

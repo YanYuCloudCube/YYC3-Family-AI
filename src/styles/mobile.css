@@ -1,0 +1,292 @@
+/**
+ * @file mobile.css
+ * @description 移动端响应式布局优化 - 断点定义、触摸优化、虚拟键盘适配
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-03-19
+ * @updated 2026-03-19
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags mobile,responsive,touch,keyboard
+ */
+
+/* =====================================================
+   移动端响应式布局优化
+   ===================================================== */
+
+/* ── 断点定义 ── */
+/*
+  使用 Tailwind CSS v4 的响应式断点:
+  - sm: 640px  (小平板/大手机横屏)
+  - md: 768px  (平板)
+  - lg: 1024px (小屏笔记本)
+  - xl: 1280px (桌面)
+  - 2xl: 1536px (大屏桌面)
+*/
+
+/* ── 移动端基础优化 ── */
+
+/* 禁止移动端双击缩放 */
+* {
+  touch-action: manipulation;
+}
+
+/* 禁止 iOS 长按选中 */
+@media (max-width: 768px) {
+  body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  /* 输入框允许选中 */
+  input, textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+/* ── 侧边栏响应式 ── */
+
+/* 移动端 (< 640px) - 隐藏侧边栏，使用汉堡菜单 */
+@media (max-width: 640px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  /* 侧边栏内容垂直排列 */
+  .sidebar-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* 底部图标上下排列 */
+  .sidebar-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+/* 平板端 (640px - 1024px) - 图标模式侧边栏 */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .sidebar {
+    width: 60px;
+  }
+  
+  .sidebar-content {
+    align-items: center;
+  }
+  
+  /* 隐藏文字标签 */
+  .sidebar-label {
+    display: none;
+  }
+}
+
+/* 桌面端 (> 1024px) - 完整侧边栏 */
+@media (min-width: 1025px) {
+  .sidebar {
+    width: 260px;
+  }
+  
+  .sidebar-content {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+  
+  .sidebar-footer {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+}
+
+/* ── 导航栏响应式 ── */
+
+@media (max-width: 768px) {
+  /* 顶部导航栏 */
+  .top-nav {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  /* 导航项垂直排列 */
+  .nav-items {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  /* 导航按钮全宽 */
+  .nav-button {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* ── 触摸优化 ── */
+
+/* 触摸反馈 */
+@media (hover: none) {
+  .touch-feedback:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  
+  /* 按钮最小点击区域 */
+  button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* 滑动列表优化 */
+.scrollable {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 防止滚动穿透 */
+body.modal-open {
+  position: fixed;
+  overflow: hidden;
+}
+
+/* ── 虚拟键盘适配 ── */
+
+/* 输入框聚焦时自动滚动到可视区域 */
+@media (max-width: 768px) {
+  input:focus, textarea:focus {
+    scroll-margin-bottom: 20vh;
+  }
+  
+  /* 键盘弹出时的布局调整 */
+  body.keyboard-open {
+    padding-bottom: env(keyboard-inset-height, 0px);
+  }
+  
+  /* 底部固定元素避开键盘 */
+  .fixed-bottom {
+    bottom: env(keyboard-inset-height, 0px);
+  }
+}
+
+/* ── 安全区域适配 (iPhone 刘海屏) ── */
+
+/* 顶部安全区域 */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* 底部安全区域 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 左侧安全区域 */
+.safe-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* 右侧安全区域 */
+.safe-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* ── 性能优化 ── */
+
+/* 使用 transform 替代 top/left 动画 */
+.animate-smooth {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 减少重排 */
+.no-reflow {
+  contain: layout paint;
+}
+
+/* 图片懒加载占位 */
+.lazy-image {
+  background: linear-gradient(
+    90deg,
+    var(--ide-bg) 0%,
+    var(--ide-bg-dark) 50%,
+    var(--ide-bg) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── 移动端特定样式 ── */
+
+@media (max-width: 768px) {
+  /* 隐藏桌面端提示 */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* 显示移动端优化内容 */
+  .mobile-only {
+    display: block !important;
+  }
+  
+  /* 字体大小调整 */
+  html {
+    font-size: 14px;
+  }
+  
+  /* 减少圆角 */
+  .rounded-lg {
+    border-radius: 0.5rem;
+  }
+  
+  /* 减少阴影 */
+  .shadow-xl {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ── 横屏适配 ── */
+
+@media (orientation: landscape) and (max-width: 768px) {
+  /* 横屏时的特殊布局 */
+  .landscape-layout {
+    flex-direction: row;
+  }
+  
+  /* 隐藏非必要元素 */
+  .hide-in-landscape {
+    display: none;
+  }
+}
+
+/* ── 深色模式适配 ── */
+
+@media (prefers-color-scheme: dark) {
+  /* 自动适配系统深色模式 */
+  :root {
+    color-scheme: dark light;
+  }
+}
+
+/* ── 减少动画 ── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

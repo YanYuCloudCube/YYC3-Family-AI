@@ -1,0 +1,352 @@
+/* ============================================
+   YYC3 Theme System - CSS Custom Properties
+   ============================================ */
+
+/* === Navy Theme (Default) === */
+:root {
+  --ide-bg-deep: #060d1a;
+  --ide-bg: #0b1729;
+  --ide-bg-elevated: #0f2240;
+  --ide-bg-surface: #0c1a2e;
+  --ide-bg-inset: #0a1628;
+  --ide-bg-dark: #080f1e;
+  --ide-border-rgb: 30, 58, 95;
+  --ide-border: rgba(30, 58, 95, 0.6);
+  --ide-border-dim: rgba(30, 58, 95, 0.4);
+  --ide-border-mid: rgba(30, 58, 95, 0.5);
+  --ide-border-faint: rgba(30, 58, 95, 0.3);
+  --ide-border-subtle: rgba(30, 58, 95, 0.2);
+  --ide-accent: #38bdf8;
+  --ide-accent-solid: #0ea5e9;
+  --ide-accent-bg: rgba(14, 165, 233, 0.3);
+  --ide-accent-glow: none;
+  --ide-gradient: linear-gradient(to right, #7c3aed, #4f46e5);
+  --ide-gradient-from: #7c3aed;
+  --ide-gradient-to: #4f46e5;
+  --ide-neon-glow: none;
+  --ide-border-glow: none;
+  --ide-scanline: none;
+  --ide-font-display: inherit;
+  --ide-font-ui: inherit;
+  --ide-text-bright: #e2e8f0;
+  --ide-text-primary: #cbd5e1;
+  --ide-text-secondary: #94a3b8;
+  --ide-text-muted: #64748b;
+  --ide-text-dim: #475569;
+  --ide-text-faint: #334155;
+}
+
+/* === Cyberpunk Theme === */
+.cyberpunk {
+  --ide-bg-deep: #030305;
+  --ide-bg: #0a0a12;
+  --ide-bg-elevated: #14142a;
+  --ide-bg-surface: #0e0e1a;
+  --ide-bg-inset: #08080f;
+  --ide-bg-dark: #060609;
+  --ide-border-rgb: 0, 240, 255;
+  --ide-border: rgba(0, 240, 255, 0.35);
+  --ide-border-dim: rgba(0, 240, 255, 0.2);
+  --ide-border-mid: rgba(0, 240, 255, 0.25);
+  --ide-border-faint: rgba(0, 240, 255, 0.12);
+  --ide-border-subtle: rgba(0, 240, 255, 0.08);
+  --ide-accent: #00f0ff;
+  --ide-accent-solid: #00f0ff;
+  --ide-accent-bg: rgba(0, 240, 255, 0.15);
+  --ide-accent-glow: 0 0 8px rgba(0, 240, 255, 0.4);
+  --ide-gradient: linear-gradient(to right, #ff00ff, #00f0ff);
+  --ide-gradient-from: #ff00ff;
+  --ide-gradient-to: #00f0ff;
+  --ide-neon-glow: 0 0 5px rgba(0, 240, 255, 0.3), 0 0 10px rgba(0, 240, 255, 0.1);
+  --ide-border-glow: 0 0 6px rgba(0, 240, 255, 0.2);
+  --ide-scanline: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 240, 255, 0.015) 2px,
+    rgba(0, 240, 255, 0.015) 4px
+  );
+  --ide-font-display: 'Orbitron', 'Rajdhani', monospace;
+  --ide-font-ui: 'Rajdhani', 'Exo 2', sans-serif;
+  --ide-text-bright: #00f0ff;
+  --ide-text-primary: rgba(0, 240, 255, 0.9);
+  --ide-text-secondary: rgba(0, 240, 255, 0.65);
+  --ide-text-muted: rgba(0, 240, 255, 0.45);
+  --ide-text-dim: rgba(0, 240, 255, 0.3);
+  --ide-text-faint: rgba(0, 240, 255, 0.15);
+
+  /* Override base theme variables for HomePage */
+  --background: #0a0a12;
+  --foreground: #e0e8f0;
+  --card: #14142a;
+  --card-foreground: #e0e8f0;
+  --border: rgba(0, 240, 255, 0.2);
+  --muted: #1a1a30;
+  --muted-foreground: rgba(0, 240, 255, 0.5);
+  --accent: rgba(0, 240, 255, 0.1);
+  --accent-foreground: #00f0ff;
+  --primary: #00f0ff;
+  --primary-foreground: #0a0a12;
+  --input-background: #0e0e1a;
+}
+
+/* ============================================
+   Cyberpunk Global Visual Effects
+   ============================================ */
+
+/* Scanline overlay for IDE */
+.cyberpunk .ide-root::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--ide-scanline);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Circuit grid background for HomePage */
+.cyberpunk .cyber-grid {
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ============================================
+   Cyberpunk Text Color Overrides (IDE context)
+   ============================================ */
+
+/* Override slate text colors within .cyberpunk .ide-root */
+.cyberpunk .ide-root .text-slate-200 { color: #00f0ff !important; }
+.cyberpunk .ide-root .text-slate-300 { color: rgba(0, 240, 255, 0.85) !important; }
+.cyberpunk .ide-root .text-slate-400 { color: rgba(0, 240, 255, 0.65) !important; }
+.cyberpunk .ide-root .text-slate-500 { color: rgba(0, 240, 255, 0.5) !important; }
+.cyberpunk .ide-root .text-slate-600 { color: rgba(0, 240, 255, 0.35) !important; }
+.cyberpunk .ide-root .text-slate-700 { color: rgba(0, 240, 255, 0.2) !important; }
+
+/* Override sky accent colors to cyan in cyberpunk */
+.cyberpunk .ide-root .text-sky-300 { color: #00f0ff !important; }
+.cyberpunk .ide-root .text-sky-400 { color: #00f0ff !important; }
+.cyberpunk .ide-root .text-sky-500 { color: rgba(0, 240, 255, 0.9) !important; }
+
+/* Override violet/indigo to magenta */
+.cyberpunk .ide-root .text-violet-400 { color: #ff00ff !important; }
+.cyberpunk .ide-root .text-indigo-400 { color: #ff00ff !important; }
+
+/* Override emerald to neon green */
+.cyberpunk .ide-root .text-emerald-400 { color: #00ff88 !important; }
+.cyberpunk .ide-root .text-emerald-500 { color: #00ff88 !important; }
+
+/* Override amber to neon yellow */
+.cyberpunk .ide-root .text-amber-400 { color: #ffff00 !important; }
+.cyberpunk .ide-root .text-amber-500 { color: #ffff00 !important; }
+
+/* Override orange to neon orange */
+.cyberpunk .ide-root .text-orange-400 { color: #ff8800 !important; }
+
+/* Override red to neon red */
+.cyberpunk .ide-root .text-red-400 { color: #ff0044 !important; }
+.cyberpunk .ide-root .text-red-500 { color: #ff0044 !important; }
+
+/* Override cyan */
+.cyberpunk .ide-root .text-cyan-400 { color: #00ffcc !important; }
+
+/* Override pink/rose to hot pink */
+.cyberpunk .ide-root .text-pink-400 { color: #ff66ff !important; }
+.cyberpunk .ide-root .text-rose-400 { color: #ff3388 !important; }
+
+/* Override purple */
+.cyberpunk .ide-root .text-purple-400 { color: #cc44ff !important; }
+
+/* ============================================
+   Cyberpunk Background Overrides (IDE context)
+   ============================================ */
+
+/* Override sky background accents */
+.cyberpunk .ide-root .bg-sky-600 { background-color: rgba(0, 240, 255, 0.6) !important; }
+.cyberpunk .ide-root .bg-sky-500 { background-color: rgba(0, 240, 255, 0.5) !important; }
+.cyberpunk .ide-root .hover\:bg-sky-500:hover { background-color: rgba(0, 240, 255, 0.6) !important; }
+.cyberpunk .ide-root .hover\:bg-sky-600:hover { background-color: rgba(0, 240, 255, 0.7) !important; }
+
+/* Override sky border */
+.cyberpunk .ide-root .border-sky-500 { border-color: #00f0ff !important; }
+.cyberpunk .ide-root .border-b-sky-500 { border-bottom-color: #00f0ff !important; }
+
+/* Gradient overrides */
+.cyberpunk .ide-root .from-sky-700 { --tw-gradient-from: #ff00ff; }
+.cyberpunk .ide-root .to-blue-700 { --tw-gradient-to: #8800ff; }
+.cyberpunk .ide-root .from-violet-600 { --tw-gradient-from: #ff00ff; }
+.cyberpunk .ide-root .to-indigo-600 { --tw-gradient-to: #00f0ff; }
+
+/* ============================================
+   Cyberpunk Neon Glow Effects
+   ============================================ */
+
+/* Neon border glow on panel headers */
+.cyberpunk .ide-root [class*="border-b"][class*="border-\\[var\\(--ide-border"] {
+  box-shadow: var(--ide-border-glow);
+}
+
+/* Neon glow on focused inputs */
+.cyberpunk .ide-root input:focus,
+.cyberpunk .ide-root textarea:focus,
+.cyberpunk .ide-root select:focus {
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.3), inset 0 0 4px rgba(0, 240, 255, 0.1) !important;
+  border-color: rgba(0, 240, 255, 0.5) !important;
+}
+
+/* Neon glow on buttons hover */
+.cyberpunk .ide-root button:hover {
+  text-shadow: 0 0 4px rgba(0, 240, 255, 0.3);
+}
+
+/* Neon scrollbar */
+.cyberpunk .ide-root ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.cyberpunk .ide-root ::-webkit-scrollbar-track {
+  background: #0a0a12;
+}
+.cyberpunk .ide-root ::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.2);
+  border-radius: 3px;
+}
+.cyberpunk .ide-root ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.4);
+}
+
+/* ============================================
+   Cyberpunk Special Animations
+   ============================================ */
+
+@keyframes cyber-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes cyber-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0, 240, 255, 0.3), 0 0 10px rgba(0, 240, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.2);
+  }
+}
+
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.6; }
+}
+
+@keyframes glitch-shift {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-1px); }
+  40% { transform: translateX(1px); }
+  60% { transform: translateX(-0.5px); }
+  80% { transform: translateX(0.5px); }
+}
+
+@keyframes data-flow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+
+/* Cyberpunk title neon effect */
+.cyber-neon-title {
+  color: #00f0ff;
+  text-shadow:
+    0 0 5px #00f0ff,
+    0 0 10px #00f0ff,
+    0 0 20px #00f0ff;
+  animation: cyber-pulse 3s ease-in-out infinite;
+}
+
+/* Glitch text effect */
+.cyber-glitch {
+  position: relative;
+}
+.cyber-glitch::before,
+.cyber-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.cyber-glitch::before {
+  color: #ff00ff;
+  animation: glitch-shift 3s infinite linear alternate-reverse;
+  clip-path: inset(0 0 70% 0);
+  opacity: 0.5;
+}
+.cyber-glitch::after {
+  color: #00f0ff;
+  animation: glitch-shift 2s infinite linear alternate-reverse;
+  clip-path: inset(70% 0 0 0);
+  opacity: 0.5;
+}
+
+/* Neon border animation for cards */
+.cyber-card-glow {
+  animation: cyber-glow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Cyberpunk HomePage Overrides
+   ============================================ */
+
+.cyberpunk .home-chat-box {
+  border: 1px solid rgba(0, 240, 255, 0.3) !important;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.1), inset 0 0 15px rgba(0, 240, 255, 0.03);
+  background: rgba(10, 10, 18, 0.9) !important;
+}
+
+.cyberpunk .home-chat-box:hover {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.05);
+}
+
+.cyberpunk .home-project-card {
+  border: 1px solid rgba(0, 240, 255, 0.2) !important;
+  background: rgba(20, 20, 42, 0.8) !important;
+  transition: all 0.3s ease;
+}
+
+.cyberpunk .home-project-card:hover {
+  border-color: rgba(0, 240, 255, 0.5) !important;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+}
+
+/* ============================================
+   Cyberpunk Typography
+   ============================================ */
+
+.cyberpunk .ide-root {
+  font-family: var(--ide-font-ui);
+}
+
+.cyberpunk .cyber-display-font {
+  font-family: var(--ide-font-display);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   Modal Animation
+   ============================================ */
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

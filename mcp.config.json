@@ -1,0 +1,88 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Volumes/Development/yyc3-77/YYC3-Family-AI"
+      ],
+      "description": "本地文件系统访问",
+      "tools": [
+        "read_file",
+        "write_file",
+        "list_directory",
+        "create_directory",
+        "delete_file",
+        "rename_file",
+        "search_files"
+      ]
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-git",
+        "/Volumes/Development/yyc3-77/YYC3-Family-AI"
+      ],
+      "description": "Git 版本控制操作",
+      "tools": [
+        "git_status",
+        "git_diff",
+        "git_commit",
+        "git_push",
+        "git_pull",
+        "git_log",
+        "git_branch"
+      ]
+    },
+    "database": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-database",
+        "postgresql://localhost:5432/yyc3"
+      ],
+      "description": "数据库查询和管理",
+      "tools": [
+        "query",
+        "list_tables",
+        "describe_table",
+        "insert",
+        "update",
+        "delete"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "description": "长期记忆存储",
+      "tools": [
+        "create_memory",
+        "search_memories",
+        "delete_memory",
+        "update_memory"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "description": "顺序思考辅助",
+      "tools": [
+        "sequential_thinking"
+      ]
+    }
+  },
+  "mcpSettings": {
+    "autoConnect": true,
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "logLevel": "info"
+  }
+}
