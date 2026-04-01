@@ -1,3 +1,16 @@
+/**
+ * @file PerformanceOptimizer.test.ts
+ * @description 性能优化器测试 - 测试性能分析、瓶颈识别和优化建议
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // PerformanceOptimizer 单元测试
 // 覆盖: 全部 18 条性能优化规则 + analyzeFilePerformance +
@@ -160,7 +173,7 @@ describe("memo-expensive-computation", () => {
 describe("memo-missing-callback", () => {
   it("检测未 useCallback 但传给子组件的 handler", () => {
     const code = `function Parent() {
-  const handleClick = (e) => { console.log(e) }
+  const handleClick = (e) => { console.warn(e) }
   return <Child onClick={handleClick} />
 }`;
     const s = getSuggestions("Parent.tsx", code, "memo-missing-callback");
@@ -170,7 +183,7 @@ describe("memo-missing-callback", () => {
 
   it("已用 useCallback 不报", () => {
     const code = `function Parent() {
-  const handleClick = useCallback((e) => { console.log(e) }, [])
+  const handleClick = useCallback((e) => { console.warn(e) }, [])
   return <Child onClick={handleClick} />
 }`;
     const s = getSuggestions("Parent.tsx", code, "memo-missing-callback");
@@ -286,7 +299,7 @@ describe("memory-no-cleanup", () => {
   it("检测 setInterval 无清理", () => {
     const code = `function Comp() {
   useEffect(() => {
-    setInterval(() => console.log('tick'), 1000)
+    setInterval(() => console.warn('tick'), 1000)
   }, [])
   return <div />
 }`;

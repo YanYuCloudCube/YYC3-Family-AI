@@ -111,17 +111,17 @@ export class SnapshotViewController {
       ...config,
     };
 
-    this.syncScroll = this.config.comparisonConfig!.syncScroll!;
-    this.syncZoom = this.config.comparisonConfig!.syncZoom!;
+    this.syncScroll = (this.config.comparisonConfig as any)?.syncScroll!;
+    this.syncZoom = (this.config.comparisonConfig as any)?.syncZoom!;
 
     this.views = new Map();
 
     // 初始化缩放控制器
     this.zoomController = new ZoomController({
       initialZoom: 100,
-      minZoom: this.config.zoomConfig!.minZoom,
-      maxZoom: this.config.zoomConfig!.maxZoom,
-      zoomStep: this.config.zoomConfig!.zoomStep,
+      minZoom: (this.config.zoomConfig as any)?.minZoom,
+      maxZoom: (this.config.zoomConfig as any)?.maxZoom,
+      zoomStep: (this.config.zoomConfig as any)?.zoomStep,
       onZoomChange: (zoom) => {
         this.handleZoomChange(zoom);
       },
@@ -157,7 +157,7 @@ export class SnapshotViewController {
   /**
    * 移除视图
    */
-  removeView(viewId: string): void {
+  removeView(viewId: string): boolean {
     const removed = this.views.delete(viewId);
 
     if (removed && this.config.onViewChange) {
@@ -171,6 +171,7 @@ export class SnapshotViewController {
         height: 0,
       });
     }
+    return removed;
   }
 
   /**
@@ -328,10 +329,8 @@ export class SnapshotViewController {
       return;
     }
 
-    // 更新缩放控制器
-    this.zoomController.setZoom(sourceView.position.zoom);
+    this.zoomController.setZoom(sourceView.position.zoom / 100);
 
-    // 同步到其他视图
     this.views.forEach((view, viewId) => {
       if (viewId !== sourceViewId && view.visible) {
         view.position.zoom = sourceView.position.zoom;
@@ -351,7 +350,6 @@ export class SnapshotViewController {
       return;
     }
 
-    // 同步到所有可见视图
     this.views.forEach((view, viewId) => {
       if (view.visible) {
         view.position.zoom = zoom;

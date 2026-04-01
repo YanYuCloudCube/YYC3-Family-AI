@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/useAIFixStore.test.ts
  * @description AIFixStore 单元测试 — 覆盖 requestFix/consumeRequest/clearRequest
@@ -35,13 +36,13 @@ describe("useAIFixStore", () => {
       useAIFixStore.getState().requestFix("修复类型错误", "src/App.tsx");
       const req = useAIFixStore.getState().pendingRequest;
       expect(req).not.toBeNull();
-      expect(req!.prompt).toBe("修复类型错误");
-      expect(req!.filepath).toBe("src/App.tsx");
+      expect((req as any).prompt).toBe("修复类型错误");
+      expect((req as any).filepath).toBe("src/App.tsx");
     });
 
     it("生成唯一 ID", async () => {
       useAIFixStore.getState().requestFix("fix1", "a.ts");
-      const id1 = useAIFixStore.getState().pendingRequest!.id;
+      const id1 = (useAIFixStore.getState().pendingRequest as any).id;
 
       useAIFixStore.setState({ pendingRequest: null });
 
@@ -49,7 +50,7 @@ describe("useAIFixStore", () => {
       await new Promise(resolve => setTimeout(resolve, 10));
 
       useAIFixStore.getState().requestFix("fix2", "b.ts");
-      const id2 = useAIFixStore.getState().pendingRequest!.id;
+      const id2 = (useAIFixStore.getState().pendingRequest as any).id;
 
       expect(id1).not.toBe(id2);
       expect(id1).toMatch(/^fix-\d+$/);
@@ -60,7 +61,7 @@ describe("useAIFixStore", () => {
       const before = Date.now();
       useAIFixStore.getState().requestFix("fix", "test.ts");
       const after = Date.now();
-      const ts = useAIFixStore.getState().pendingRequest!.timestamp;
+      const ts = (useAIFixStore.getState().pendingRequest as any).timestamp;
       expect(ts).toBeGreaterThanOrEqual(before);
       expect(ts).toBeLessThanOrEqual(after);
     });
@@ -68,10 +69,10 @@ describe("useAIFixStore", () => {
     it("新请求覆盖旧请求", () => {
       useAIFixStore.getState().requestFix("first fix", "a.ts");
       useAIFixStore.getState().requestFix("second fix", "b.ts");
-      expect(useAIFixStore.getState().pendingRequest!.prompt).toBe(
+      expect((useAIFixStore.getState().pendingRequest as any).prompt).toBe(
         "second fix",
       );
-      expect(useAIFixStore.getState().pendingRequest!.filepath).toBe("b.ts");
+      expect((useAIFixStore.getState().pendingRequest as any).filepath).toBe("b.ts");
     });
   });
 
@@ -82,7 +83,7 @@ describe("useAIFixStore", () => {
       useAIFixStore.getState().requestFix("修复 bug", "src/component.tsx");
       const consumed = useAIFixStore.getState().consumeRequest();
       expect(consumed).not.toBeNull();
-      expect(consumed!.prompt).toBe("修复 bug");
+      expect((consumed as any).prompt).toBe("修复 bug");
       expect(useAIFixStore.getState().pendingRequest).toBeNull();
     });
 
@@ -103,7 +104,7 @@ describe("useAIFixStore", () => {
       useAIFixStore.getState().requestFix("fix1", "a.ts");
       useAIFixStore.getState().consumeRequest();
       useAIFixStore.getState().requestFix("fix2", "b.ts");
-      expect(useAIFixStore.getState().pendingRequest!.prompt).toBe("fix2");
+      expect((useAIFixStore.getState().pendingRequest as any).prompt).toBe("fix2");
     });
   });
 

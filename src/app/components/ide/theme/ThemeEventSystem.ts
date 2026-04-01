@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file ThemeEventSystem.ts
  * @description 主题事件系统，支持主题变化监听、颜色变化监听
@@ -66,16 +67,16 @@ interface EventListener {
  */
 export class ThemeEventSystem {
   private static instance: ThemeEventSystem;
-  
+
   // 事件监听器
   private listeners: Map<string, EventListener> = new Map();
-  
+
   // 按类型索引的监听器
   private listenersByType: Map<ThemeEventType, Set<string>> = new Map();
-  
+
   // 监听器ID计数器
   private listenerIdCounter = 0;
-  
+
   // 历史事件（用于调试）
   private eventHistory: Array<{ type: ThemeEventType; event: unknown; timestamp: number }> = [];
   private maxHistorySize = 100;
@@ -109,17 +110,17 @@ export class ThemeEventSystem {
    */
   public on(type: ThemeEventType, callback: EventCallback): () => void {
     const id = this.generateListenerId();
-    
+
     const listener: EventListener = {
       id,
       type,
       callback,
       once: false
     };
-    
+
     this.listeners.set(id, listener);
     this.listenersByType.get(type)?.add(id);
-    
+
     // 返回取消监听函数
     return () => this.off(id);
   }
@@ -129,17 +130,17 @@ export class ThemeEventSystem {
    */
   public once(type: ThemeEventType, callback: EventCallback): () => void {
     const id = this.generateListenerId();
-    
+
     const listener: EventListener = {
       id,
       type,
       callback,
       once: true
     };
-    
+
     this.listeners.set(id, listener);
     this.listenersByType.get(type)?.add(id);
-    
+
     // 返回取消监听函数
     return () => this.off(id);
   }
@@ -150,10 +151,10 @@ export class ThemeEventSystem {
   public off(listenerId: string): boolean {
     const listener = this.listeners.get(listenerId);
     if (!listener) return false;
-    
+
     this.listeners.delete(listenerId);
     this.listenersByType.get(listener.type)?.delete(listenerId);
-    
+
     return true;
   }
 
@@ -164,18 +165,18 @@ export class ThemeEventSystem {
     if (type) {
       const ids = this.listenersByType.get(type);
       if (!ids) return 0;
-      
+
       const count = ids.size;
       ids.forEach(id => this.listeners.delete(id));
       ids.clear();
-      
+
       return count;
     } else {
       // 移除所有监听器
       const count = this.listeners.size;
       this.listeners.clear();
       this.listenersByType.forEach(set => set.clear());
-      
+
       return count;
     }
   }
@@ -186,14 +187,14 @@ export class ThemeEventSystem {
   public emit(type: ThemeEventType, event: unknown): void {
     // 记录历史
     this.recordEvent(type, event);
-    
+
     // 获取该类型的所有监听器ID
     const listenerIds = this.listenersByType.get(type);
     if (!listenerIds) return;
-    
+
     // 收集需要移除的监听器ID（一次性监听器）
     const toRemove: string[] = [];
-    
+
     // 触发所有监听器
     listenerIds.forEach(id => {
       const listener = this.listeners.get(id);
@@ -203,13 +204,13 @@ export class ThemeEventSystem {
         } catch (error) {
           console.error(`[ThemeEventSystem] 监听器执行错误 (${id}):`, error);
         }
-        
+
         if (listener.once) {
           toRemove.push(id);
         }
       }
     });
-    
+
     // 移除一次性监听器
     toRemove.forEach(id => this.off(id));
   }
@@ -265,7 +266,7 @@ export class ThemeEventSystem {
       event,
       timestamp: Date.now()
     });
-    
+
     // 限制历史大小
     if (this.eventHistory.length > this.maxHistorySize) {
       this.eventHistory.shift();

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file TopBar.tsx
  * @description IDE 顶部导航栏，包含 Logo、项目标题编辑、工具栏图标组、

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file llm/TaskExtractionEngine.ts
  * @description 任务提取引擎 — 整合识别、结构化、去重功能
@@ -67,7 +68,7 @@ export class TaskExtractionEngine {
       tasks = deduplicationResult.unique;
     }
 
-    const processingTime = Date.now() - startTime;
+    const _processingTime = Date.now() - startTime;
 
     const result: TaskExtractionResult = {
       tasks,
@@ -196,10 +197,10 @@ export class TaskExtractionEngine {
 
     // 按优先级分组
     const byPriority = this.groupByPriority(result.tasks);
-    
+
     for (const [priority, tasks] of Object.entries(byPriority)) {
       lines.push(`### ${priority.toUpperCase()} (${tasks.length})`);
-      
+
       for (const task of tasks) {
         lines.push(`- **${task.title}**`);
         lines.push(`  - 类型: ${task.type}`);

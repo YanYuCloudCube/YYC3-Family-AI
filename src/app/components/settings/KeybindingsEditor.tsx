@@ -20,7 +20,7 @@ import {
   normalizeKeyEvent,
   type KeybindingDef,
 } from "../ide/SettingsBridge";
-import { SettingGroup, ItemCard } from "./SettingsShared";
+import { SettingGroup } from "./SettingsShared";
 
 export function KeybindingsEditor() {
   const t = useThemeTokens();

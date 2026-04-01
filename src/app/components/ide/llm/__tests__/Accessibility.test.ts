@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file llm/__tests__/Accessibility.test.ts
  * @description 可访问性增强测试套件

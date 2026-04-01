@@ -13,7 +13,7 @@
  * @tags preview,sandpack,react,sandbox,live-preview
  */
 
-import { useMemo, useState, useCallback, useRef, useEffect } from "react";
+import { useMemo, useState } from "react";
 import {
   SandpackProvider,
   SandpackPreview as SandpackPreviewPane,

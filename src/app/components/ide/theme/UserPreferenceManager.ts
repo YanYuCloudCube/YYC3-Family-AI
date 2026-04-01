@@ -28,16 +28,16 @@ export type ThemeSyncMode = 'manual' | 'auto';
 export interface UserThemePreference {
   // 当前选择的主题
   selectedTheme: ThemeType | null;
-  
+
   // 同步模式：manual（手动）或 auto（跟随系统）
   syncMode: ThemeSyncMode;
-  
+
   // 手动覆盖的主题（当syncMode为auto时，用户可以手动覆盖）
   manualOverride: ThemeType | null;
-  
+
   // 上次更新的时间戳
   lastUpdated: number;
-  
+
   // 用户是否首次访问
   isFirstVisit: boolean;
 }
@@ -57,10 +57,10 @@ const DEFAULT_PREFERENCE: UserThemePreference = {
  */
 export class UserPreferenceManager {
   private static instance: UserPreferenceManager;
-  
+
   // 当前偏好
   private preference: UserThemePreference;
-  
+
   // 是否支持localStorage
   private storageAvailable: boolean = false;
 
@@ -87,7 +87,7 @@ export class UserPreferenceManager {
       if (typeof localStorage === 'undefined') {
         return false;
       }
-      
+
       const testKey = '__storage_test__';
       localStorage.setItem(testKey, testKey);
       localStorage.removeItem(testKey);
@@ -104,12 +104,12 @@ export class UserPreferenceManager {
     if (!this.storageAvailable) {
       return { ...DEFAULT_PREFERENCE };
     }
-    
+
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        
+
         // 验证数据格式
         if (this.validatePreference(parsed)) {
           return {
@@ -122,7 +122,7 @@ export class UserPreferenceManager {
     } catch (error) {
       console.error('[UserPreferenceManager] Failed to load preference:', error);
     }
-    
+
     return { ...DEFAULT_PREFERENCE };
   }
 
@@ -133,29 +133,29 @@ export class UserPreferenceManager {
     if (!data || typeof data !== 'object') {
       return false;
     }
-    
+
     const pref = data as Partial<UserThemePreference>;
-    
+
     // 如果没有任何有效字段，返回false
     if (!pref.syncMode && !pref.selectedTheme && !pref.manualOverride && pref.isFirstVisit === undefined) {
       return false;
     }
-    
+
     // 验证syncMode
     if (pref.syncMode && !['manual', 'auto'].includes(pref.syncMode)) {
       return false;
     }
-    
+
     // 验证selectedTheme
     if (pref.selectedTheme && !['navy', 'cyberpunk', 'light'].includes(pref.selectedTheme)) {
       return false;
     }
-    
+
     // 验证manualOverride
     if (pref.manualOverride && !['navy', 'cyberpunk', 'light'].includes(pref.manualOverride)) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -166,7 +166,7 @@ export class UserPreferenceManager {
     if (!this.storageAvailable) {
       return;
     }
-    
+
     try {
       this.preference.lastUpdated = Date.now();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.preference));
@@ -203,12 +203,12 @@ export class UserPreferenceManager {
    */
   public setSyncMode(mode: ThemeSyncMode): void {
     this.preference.syncMode = mode;
-    
+
     // 如果切换到自动模式，清除手动覆盖
     if (mode === 'auto') {
       this.preference.manualOverride = null;
     }
-    
+
     this.savePreference();
   }
 
@@ -282,12 +282,12 @@ export class UserPreferenceManager {
     if (this.preference.syncMode === 'manual') {
       return this.preference.selectedTheme || 'navy';
     }
-    
+
     // 如果是自动模式，但有手动覆盖，使用覆盖的主题
     if (this.preference.manualOverride) {
       return this.preference.manualOverride;
     }
-    
+
     // 自动模式：根据系统主题选择
     // dark -> navy (深海军蓝)
     // light -> light (浅色主题)

@@ -213,7 +213,7 @@ export class CompressionStrategyDesigner {
     while ((match = this.patterns.import.exec(content)) !== null) {
       const startLine = this.getLineNumber(content, match.index);
       const endLine = this.getLineNumber(content, match.index + match[0].length);
-      
+
       segments.push({
         type: CodeSegmentType.IMPORT,
         content: match[0],
@@ -233,7 +233,7 @@ export class CompressionStrategyDesigner {
     while ((match = this.patterns.export.exec(content)) !== null) {
       const startLine = this.getLineNumber(content, match.index);
       const endLine = this.getLineNumber(content, match.index + match[0].length);
-      
+
       segments.push({
         type: CodeSegmentType.EXPORT,
         content: match[0],
@@ -252,13 +252,13 @@ export class CompressionStrategyDesigner {
     let match;
     while ((match = this.patterns.function.exec(content)) !== null) {
       const startLine = this.getLineNumber(content, match.index);
-      
+
       // 简单的函数体识别（需要更精确的解析器）
       const block = this.extractBlock(content, match.index);
       const endLine = this.getLineNumber(content, match.index + block.length);
-      
+
       const type = match[0].startsWith('class') ? CodeSegmentType.CLASS : CodeSegmentType.FUNCTION;
-      
+
       segments.push({
         type,
         content: block,
@@ -279,7 +279,7 @@ export class CompressionStrategyDesigner {
     while ((match = this.patterns.interface.exec(content)) !== null) {
       const startLine = this.getLineNumber(content, match.index);
       const endLine = this.getLineNumber(content, match.index + match[0].length);
-      
+
       segments.push({
         type: CodeSegmentType.INTERFACE,
         content: match[0],
@@ -293,7 +293,7 @@ export class CompressionStrategyDesigner {
     while ((match = this.patterns.type.exec(content)) !== null) {
       const startLine = this.getLineNumber(content, match.index);
       const endLine = this.getLineNumber(content, match.index + match[0].length);
-      
+
       segments.push({
         type: CodeSegmentType.TYPE,
         content: match[0],
@@ -313,7 +313,7 @@ export class CompressionStrategyDesigner {
     while ((match = this.patterns.comment.exec(content)) !== null) {
       const startLine = this.getLineNumber(content, match.index);
       const endLine = this.getLineNumber(content, match.index + match[0].length);
-      
+
       segments.push({
         type: CodeSegmentType.COMMENT,
         content: match[0],
@@ -334,7 +334,7 @@ export class CompressionStrategyDesigner {
       const startLine = this.getLineNumber(content, match.index);
       const block = this.extractBlock(content, match.index);
       const endLine = this.getLineNumber(content, match.index + block.length);
-      
+
       segments.push({
         type: CodeSegmentType.TEST,
         content: block,
@@ -355,7 +355,7 @@ export class CompressionStrategyDesigner {
       const startLine = this.getLineNumber(content, match.index);
       const line = lines[startLine - 1] || '';
       const endLine = startLine;
-      
+
       segments.push({
         type: CodeSegmentType.CONFIG,
         content: line,
@@ -373,10 +373,10 @@ export class CompressionStrategyDesigner {
   private fillGaps(content: string, lines: string[], segments: CodeSegment[]): void {
     // 按行号排序
     segments.sort((a, b) => a.startLine - b.startLine);
-    
+
     let lastEndLine = 0;
     const newSegments: CodeSegment[] = [];
-    
+
     for (const segment of segments) {
       // 添加空白区域
       if (segment.startLine > lastEndLine + 1) {
@@ -392,11 +392,11 @@ export class CompressionStrategyDesigner {
           });
         }
       }
-      
+
       newSegments.push(segment);
       lastEndLine = segment.endLine;
     }
-    
+
     // 添加末尾空白
     if (lastEndLine < lines.length) {
       const gapContent = lines.slice(lastEndLine).join('\n');
@@ -411,7 +411,7 @@ export class CompressionStrategyDesigner {
         });
       }
     }
-    
+
     segments.length = 0;
     segments.push(...newSegments);
   }
@@ -431,10 +431,10 @@ export class CompressionStrategyDesigner {
     let inString = false;
     let stringChar = '';
     let i = startIndex;
-    
+
     while (i < content.length) {
       const char = content[i];
-      
+
       // 处理字符串
       if ((char === '"' || char === "'" || char === '`') && content[i - 1] !== '\\') {
         if (!inString) {
@@ -444,7 +444,7 @@ export class CompressionStrategyDesigner {
           inString = false;
         }
       }
-      
+
       // 计算括号
       if (!inString) {
         if (char === '{') braceCount++;
@@ -455,10 +455,10 @@ export class CompressionStrategyDesigner {
           }
         }
       }
-      
+
       i++;
     }
-    
+
     // 未找到匹配的括号，返回一行
     const endLine = content.indexOf('\n', startIndex);
     return content.substring(startIndex, endLine !== -1 ? endLine : content.length);

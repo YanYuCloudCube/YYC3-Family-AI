@@ -1,4 +1,17 @@
 /**
+ * @file popover.tsx
+ * @description popover 组件 — React UI 组件
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags component,react,ui,ui
+ */
+
+/**
  * file: ui/popover.tsx
  * description: 弹出框组件 - 基于 Radix UI Popover，支持触发器、内容、对齐、偏移
  * author: YanYuCloudCube Team <admin@0379.email>

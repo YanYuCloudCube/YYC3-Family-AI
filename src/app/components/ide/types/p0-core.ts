@@ -17,7 +17,7 @@
 
 /**
  * 预览模式类型
- * 
+ *
  * - realtime: 实时模式 - 代码变更立即触发预览更新
  * - manual: 手动模式 - 用户手动触发预览更新
  * - delayed: 延迟模式 - 代码变更后延迟一定时间再触发预览更新
@@ -183,7 +183,7 @@ export interface CodeValidatorConfig {
 
 /**
  * 用户意图类型
- * 
+ *
  * - generate: 生成新代码/组件
  * - modify: 修改现有代码
  * - fix: 修复错误/bug
@@ -255,7 +255,7 @@ export interface BuildMessagesConfig {
 
 /**
  * 项目上下文（从 ContextCollector 导入，此处为类型参考）
- * 
+ *
  * 注意：完整定义在 ai/ContextCollector.ts 中
  */
 export interface ProjectContext {
@@ -278,36 +278,3 @@ export interface ProjectContext {
     stagedFiles: number;
   };
 }
-
-// ================================================================
-// 导出所有类型
-// ================================================================
-
-export type {
-  // PreviewModeController
-  PreviewMode,
-  PreviewModeConfig,
-  PreviewModeControllerConfig,
-  
-  // SnapshotManager
-  SnapshotFile,
-  SnapshotMetadata,
-  Snapshot,
-  SnapshotDiff,
-  SnapshotManagerConfig,
-  
-  // CodeValidator
-  ValidationResult,
-  ParsedCodeBlock,
-  CodeValidatorConfig,
-  
-  // SystemPromptBuilder
-  UserIntent,
-  SystemPromptConfig,
-  LLMMessage,
-  ConversationMessage,
-  BuildMessagesConfig,
-  
-  // ProjectContext
-  ProjectContext,
-};

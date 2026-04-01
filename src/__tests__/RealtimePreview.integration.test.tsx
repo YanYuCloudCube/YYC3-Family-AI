@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file RealtimePreview.integration.test.tsx
  * @description 实时预览集成测试 - 覆盖预览引擎、设备模拟、控制台捕获、历史快照

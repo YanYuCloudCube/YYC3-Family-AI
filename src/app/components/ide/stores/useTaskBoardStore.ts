@@ -378,19 +378,19 @@ export const useTaskBoardStore = create<TaskBoardState & TaskBoardActions>()(
         );
 
         if (filters.status?.length) {
-          filtered = filtered.filter((t) => filters.status!.includes(t.status));
+          filtered = filtered.filter((t) => (filters.status as any).includes(t.status));
         }
         if (filters.priority?.length) {
           filtered = filtered.filter((t) =>
-            filters.priority!.includes(t.priority),
+            (filters.priority as any).includes(t.priority),
           );
         }
         if (filters.type?.length) {
-          filtered = filtered.filter((t) => filters.type!.includes(t.type));
+          filtered = filtered.filter((t) => (filters.type as any).includes(t.type));
         }
         if (filters.tags?.length) {
           filtered = filtered.filter((t) =>
-            t.tags?.some((tag) => filters.tags!.includes(tag)),
+            t.tags?.some((tag) => (filters.tags as any).includes(tag)),
           );
         }
         if (filters.searchQuery) {

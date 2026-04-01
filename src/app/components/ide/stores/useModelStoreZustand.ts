@@ -15,7 +15,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
-import type { ProviderId, ProviderConfig, ProviderModel } from "../LLMService";
+import type { ProviderId, ProviderModel } from "../LLMService";
 
 // ===== Types =====
 export type ModelType =
@@ -255,7 +255,7 @@ export const useModelStoreZustand = create<
           const existing = JSON.parse(localStorage.getItem(PK) || "[]");
           existing.push(data);
           localStorage.setItem(PK, JSON.stringify(existing.slice(-200)));
-        } catch {}
+        } catch { /* empty */ }
       },
     })),
     {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file Wave3Components.test.ts
  * @description Wave 3 组件与 Store 单元测试——

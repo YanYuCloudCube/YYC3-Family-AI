@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file SystemPromptBuilder.test.ts
  * @description SystemPromptBuilder 单元测试

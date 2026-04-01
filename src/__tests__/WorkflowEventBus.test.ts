@@ -1,3 +1,16 @@
+/**
+ * @file WorkflowEventBus.test.ts
+ * @description 工作流事件总线测试 - 测试面板间通信和事件订阅
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // WorkflowEventBus 单元测试
 // 覆盖: 事件类型映射、EVENT_STAGE_MAP 完整性、事件总线基本行为

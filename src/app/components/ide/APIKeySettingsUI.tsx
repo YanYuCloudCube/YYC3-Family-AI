@@ -131,7 +131,7 @@ function writeOC(h: string, m: OllamaDetectedModel[]) {
       OC_PRE + h.replace(/[^a-zA-Z0-9]/g, "_"),
       JSON.stringify({ models: m, host: h, timestamp: Date.now() }),
     );
-  } catch {}
+  } catch { /* empty */ }
 }
 function fmtAge(t: number) {
   const s = Math.floor((Date.now() - t) / 1000);
@@ -170,7 +170,7 @@ function svPerf(r: PR) {
     const d = ldPerf();
     d.push(r);
     localStorage.setItem(PK, JSON.stringify(d.slice(-200)));
-  } catch {}
+  } catch { /* empty */ }
 }
 function ldUsage(): Record<string, UR> {
   try {
@@ -195,8 +195,8 @@ export default function APIKeySettings() {
     getProviderApiKey,
     setProviderApiKey,
   } = useModelRegistry();
-  
-  console.log('[APIKeySettingsUI] Component render, showSettings:', showSettings);
+
+  console.warn('[APIKeySettingsUI] Component render, showSettings:', showSettings);
   const [tab, setTab] = useState<"models" | "ollama" | "perf" | "usage">(
     "models",
   );
@@ -414,9 +414,14 @@ export default function APIKeySettings() {
         }
       }
     };
-    list.length === 0
-      ? mRef.current && (setOlScan(false), setOlConn(conn))
-      : nx();
+    if (list.length === 0) {
+      if (mRef.current) {
+        setOlScan(false);
+        setOlConn(conn);
+      }
+    } else {
+      nx();
+    }
   };
   const doScan = (force = false) => {
     abRef.current = true;
@@ -542,9 +547,11 @@ export default function APIKeySettings() {
               }}
               handleSaveEdit={() => {
                 if (editId && editForm) {
-                  editId.startsWith("custom::")
-                    ? updateCustomModel(editId, editForm)
-                    : updateModel(editId, editForm);
+                  if (editId.startsWith("custom::")) {
+                    updateCustomModel(editId, editForm);
+                  } else {
+                    updateModel(editId, editForm);
+                  }
                   if (
                     editForm.apiKey !== undefined &&
                     !editId.startsWith("custom::") &&

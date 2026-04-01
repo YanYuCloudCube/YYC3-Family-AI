@@ -300,7 +300,7 @@ export class PerformanceReporter {
       lines.push(``);
       lines.push(`| 指标 | 值 | 级别 |`);
       lines.push(`|------|----|----|`);
-      
+
       for (const metric of metrics) {
         lines.push(`| ${metric.name} | ${metric.value.toFixed(2)}${metric.unit} | ${this.getLevelName(metric.level)} |`);
       }

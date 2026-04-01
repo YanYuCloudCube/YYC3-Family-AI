@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file PanelManager.test.tsx
  * @description Panel Manager 核心功能测试 - 覆盖布局管理、面板拆分合并、拖拽、持久化
@@ -60,9 +61,9 @@ describe("Panel Manager - 基础布局", () => {
       wrapper: createWrapper(),
     });
 
-    expect(result.current!.layout).toBeDefined();
-    expect(result.current!.layout.type).toBe("split");
-    expect(result.current!.layout.children).toHaveLength(3);
+    expect((result.current as any).layout).toBeDefined();
+    expect((result.current as any).layout.type).toBe("split");
+    expect((result.current as any).layout.children).toHaveLength(3);
   });
 
   it("从 localStorage 加载保存的布局", () => {
@@ -77,8 +78,8 @@ describe("Panel Manager - 基础布局", () => {
       wrapper: createWrapper(),
     });
 
-    expect(result.current!.layout.id).toBe("custom");
-    expect(result.current!.layout.panelId).toBe("ai");
+    expect((result.current as any).layout.id).toBe("custom");
+    expect((result.current as any).layout.panelId).toBe("ai");
   });
 
   it("加载无效布局时使用默认布局", () => {
@@ -88,8 +89,8 @@ describe("Panel Manager - 基础布局", () => {
       wrapper: createWrapper(),
     });
 
-    expect(result.current!.layout).toBeDefined();
-    expect(result.current!.layout.type).toBe("split");
+    expect((result.current as any).layout).toBeDefined();
+    expect((result.current as any).layout.type).toBe("split");
   });
 });
 
@@ -103,19 +104,19 @@ describe("Panel Manager - 面板拆分", () => {
       wrapper: createWrapper(),
     });
 
-    const initialChildren = result.current!.layout.children?.length;
+    const initialChildren = (result.current as any).layout.children?.length;
 
     act(() => {
-      result.current!.splitPanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).splitPanel(
+        (result.current as any).layout.children![0].id,
         "horizontal",
         "preview"
       );
     });
 
-    expect(result.current!.layout.children![0].type).toBe("split");
-    expect(result.current!.layout.children![0].direction).toBe("horizontal");
-    expect(result.current!.layout.children![0].children).toHaveLength(2);
+    expect((result.current as any).layout.children![0].type).toBe("split");
+    expect((result.current as any).layout.children![0].direction).toBe("horizontal");
+    expect((result.current as any).layout.children![0].children).toHaveLength(2);
   });
 
   it("垂直拆分面板", () => {
@@ -124,14 +125,14 @@ describe("Panel Manager - 面板拆分", () => {
     });
 
     act(() => {
-      result.current!.splitPanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).splitPanel(
+        (result.current as any).layout.children![0].id,
         "vertical",
         "code"
       );
     });
 
-    expect(result.current!.layout.children![0].direction).toBe("vertical");
+    expect((result.current as any).layout.children![0].direction).toBe("vertical");
   });
 
   it("拆分不存在的面板", () => {
@@ -139,10 +140,10 @@ describe("Panel Manager - 面板拆分", () => {
       wrapper: createWrapper(),
     });
 
-    const initialLayout = result.current!.layout;
+    const initialLayout = (result.current as any).layout;
 
     act(() => {
-      result.current!.splitPanel(
+      (result.current as any).splitPanel(
         "non-existent-id",
         "horizontal",
         "preview"
@@ -150,7 +151,7 @@ describe("Panel Manager - 面板拆分", () => {
     });
 
     // 布局应该不变
-    expect(result.current!.layout).toEqual(initialLayout);
+    expect((result.current as any).layout).toEqual(initialLayout);
   });
 });
 
@@ -166,25 +167,25 @@ describe("Panel Manager - 面板合并", () => {
 
     // 先拆分
     act(() => {
-      result.current!.splitPanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).splitPanel(
+        (result.current as any).layout.children![0].id,
         "horizontal",
         "preview"
       );
     });
 
-    const targetNodeId = result.current!.layout.children![1].id;
+    const targetNodeId = (result.current as any).layout.children![1].id;
 
     // 合并
     act(() => {
-      result.current!.mergePanel(
+      (result.current as any).mergePanel(
         targetNodeId,
         "ai",
         "left"
       );
     });
 
-    expect(result.current!.layout.children).toBeDefined();
+    expect((result.current as any).layout.children).toBeDefined();
   });
 
   it("合并面板到右侧", () => {
@@ -193,14 +194,14 @@ describe("Panel Manager - 面板合并", () => {
     });
 
     act(() => {
-      result.current!.mergePanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).mergePanel(
+        (result.current as any).layout.children![0].id,
         "preview",
         "right"
       );
     });
 
-    expect(result.current!.layout).toBeDefined();
+    expect((result.current as any).layout).toBeDefined();
   });
 
   it("合并面板到顶部", () => {
@@ -209,14 +210,14 @@ describe("Panel Manager - 面板合并", () => {
     });
 
     act(() => {
-      result.current!.mergePanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).mergePanel(
+        (result.current as any).layout.children![0].id,
         "preview",
         "top"
       );
     });
 
-    expect(result.current!.layout).toBeDefined();
+    expect((result.current as any).layout).toBeDefined();
   });
 
   it("合并面板到底部", () => {
@@ -225,14 +226,14 @@ describe("Panel Manager - 面板合并", () => {
     });
 
     act(() => {
-      result.current!.mergePanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).mergePanel(
+        (result.current as any).layout.children![0].id,
         "preview",
         "bottom"
       );
     });
 
-    expect(result.current!.layout).toBeDefined();
+    expect((result.current as any).layout).toBeDefined();
   });
 });
 
@@ -246,14 +247,14 @@ describe("Panel Manager - 面板移除", () => {
       wrapper: createWrapper(),
     });
 
-    const initialCount = result.current!.layout.children?.length || 0;
-    const nodeIdToRemove = result.current!.layout.children![0].id;
+    const initialCount = (result.current as any).layout.children?.length || 0;
+    const nodeIdToRemove = (result.current as any).layout.children![0].id;
 
     act(() => {
-      result.current!.removePanel(nodeIdToRemove);
+      (result.current as any).removePanel(nodeIdToRemove);
     });
 
-    expect(result.current!.layout.children!.length).toBeLessThan(initialCount);
+    expect(((result.current as any).layout.children as any).length).toBeLessThan(initialCount);
   });
 
   it("移除最后一个面板时重置布局", () => {
@@ -262,14 +263,14 @@ describe("Panel Manager - 面板移除", () => {
     });
 
     // 移除所有面板
-    result.current!.layout.children?.forEach((child) => {
+    (result.current as any).layout.children?.forEach((child) => {
       act(() => {
-        result.current!.removePanel(child.id);
+        (result.current as any).removePanel(child.id);
       });
     });
 
     // 应该重置为默认布局
-    expect(result.current!.layout).toBeDefined();
+    expect((result.current as any).layout).toBeDefined();
   });
 });
 
@@ -285,22 +286,22 @@ describe("Panel Manager - 布局重置", () => {
 
     // 先修改布局
     act(() => {
-      result.current!.splitPanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).splitPanel(
+        (result.current as any).layout.children![0].id,
         "horizontal",
         "preview"
       );
     });
 
-    const modifiedLayout = result.current!.layout;
+    const modifiedLayout = (result.current as any).layout;
 
     // 重置
     act(() => {
-      result.current!.resetLayout();
+      (result.current as any).resetLayout();
     });
 
-    expect(result.current!.layout).not.toEqual(modifiedLayout);
-    expect(result.current!.layout.children).toHaveLength(3);
+    expect((result.current as any).layout).not.toEqual(modifiedLayout);
+    expect((result.current as any).layout.children).toHaveLength(3);
   });
 
   it("重置时清除 localStorage", () => {
@@ -309,7 +310,7 @@ describe("Panel Manager - 布局重置", () => {
     });
 
     act(() => {
-      result.current!.resetLayout();
+      (result.current as any).resetLayout();
     });
 
     expect(localStorageMock.removeItem).toHaveBeenCalledWith("yyc3_panel_layout");
@@ -338,11 +339,11 @@ describe("Panel Manager - 布局重置", () => {
     });
 
     act(() => {
-      result.current!.resetLayout();
+      (result.current as any).resetLayout();
     });
 
-    expect(result.current!.layout.id).toBe("custom");
-    expect(result.current!.layout.direction).toBe("vertical");
+    expect((result.current as any).layout.id).toBe("custom");
+    expect((result.current as any).layout.direction).toBe("vertical");
   });
 });
 
@@ -357,11 +358,11 @@ describe("Panel Manager - 面板打开", () => {
     });
 
     act(() => {
-      result.current!.openPanel("git");
+      (result.current as any).openPanel("git");
     });
 
     // 面板应该被添加到布局中
-    const hasGitPanel = JSON.stringify(result.current!.layout).includes("git");
+    const hasGitPanel = JSON.stringify((result.current as any).layout).includes("git");
     expect(hasGitPanel).toBe(true);
   });
 
@@ -370,14 +371,14 @@ describe("Panel Manager - 面板打开", () => {
       wrapper: createWrapper(),
     });
 
-    const initialLayout = result.current!.layout;
+    const initialLayout = (result.current as any).layout;
 
     act(() => {
-      result.current!.openPanel("ai"); // ai 面板已经存在
+      (result.current as any).openPanel("ai"); // ai 面板已经存在
     });
 
     // 布局应该不变
-    expect(result.current!.layout).toEqual(initialLayout);
+    expect((result.current as any).layout).toEqual(initialLayout);
   });
 
   it("打开所有支持的面板类型", () => {
@@ -411,11 +412,11 @@ describe("Panel Manager - 面板打开", () => {
 
     panelIds.forEach((panelId) => {
       act(() => {
-        result.current!.openPanel(panelId);
+        (result.current as any).openPanel(panelId);
       });
     });
 
-    const layoutJson = JSON.stringify(result.current!.layout);
+    const layoutJson = JSON.stringify((result.current as any).layout);
     panelIds.forEach((panelId) => {
       expect(layoutJson).toContain(panelId);
     });
@@ -446,7 +447,7 @@ describe("布局预设", () => {
     Object.values(LAYOUT_PRESETS).forEach((preset) => {
       expect(preset.type).toBeDefined();
       expect(preset.children).toBeDefined();
-      expect(preset.children!.length).toBeGreaterThan(0);
+      expect((preset.children as any).length).toBeGreaterThan(0);
     });
   });
 });
@@ -462,8 +463,8 @@ describe("布局持久化", () => {
     });
 
     act(() => {
-      result.current!.splitPanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).splitPanel(
+        (result.current as any).layout.children![0].id,
         "horizontal",
         "preview"
       );
@@ -478,7 +479,7 @@ describe("布局持久化", () => {
     });
 
     act(() => {
-      result.current!.openPanel("git");
+      (result.current as any).openPanel("git");
     });
 
     const savedData = localStorageMock.setItem.mock.calls[0][1];
@@ -523,11 +524,11 @@ describe("边界情况", () => {
 
     act(() => {
       // @ts-ignore - 测试无效 ID
-      result.current!.openPanel("invalid-panel-id");
+      (result.current as any).openPanel("invalid-panel-id");
     });
 
     // 不应该崩溃
-    expect(result.current!.layout).toBeDefined();
+    expect((result.current as any).layout).toBeDefined();
   });
 
   it("处理快速连续操作", () => {
@@ -536,21 +537,21 @@ describe("边界情况", () => {
     });
 
     act(() => {
-      result.current!.splitPanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).splitPanel(
+        (result.current as any).layout.children![0].id,
         "horizontal",
         "preview"
       );
-      result.current!.splitPanel(
-        result.current!.layout.children![0].id,
+      (result.current as any).splitPanel(
+        (result.current as any).layout.children![0].id,
         "vertical",
         "code"
       );
-      result.current!.removePanel(result.current!.layout.children![0].id);
+      (result.current as any).removePanel((result.current as any).layout.children![0].id);
     });
 
     // 不应该崩溃
-    expect(result.current!.layout).toBeDefined();
+    expect((result.current as any).layout).toBeDefined();
   });
 });
 
@@ -564,13 +565,13 @@ describe("usePanelManager Hook", () => {
       wrapper: createWrapper(),
     });
 
-    expect(result.current!.layout).toBeDefined();
-    expect(result.current!.setLayout).toBeDefined();
-    expect(result.current!.splitPanel).toBeDefined();
-    expect(result.current!.mergePanel).toBeDefined();
-    expect(result.current!.removePanel).toBeDefined();
-    expect(result.current!.resetLayout).toBeDefined();
-    expect(result.current!.openPanel).toBeDefined();
+    expect((result.current as any).layout).toBeDefined();
+    expect((result.current as any).setLayout).toBeDefined();
+    expect((result.current as any).splitPanel).toBeDefined();
+    expect((result.current as any).mergePanel).toBeDefined();
+    expect((result.current as any).removePanel).toBeDefined();
+    expect((result.current as any).resetLayout).toBeDefined();
+    expect((result.current as any).openPanel).toBeDefined();
   });
 
   it("在 Provider 外部返回 null", () => {

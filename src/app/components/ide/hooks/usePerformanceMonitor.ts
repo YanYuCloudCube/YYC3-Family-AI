@@ -83,7 +83,7 @@ export function usePerformanceMonitor({
       const fcpEntry = entries.find((e) => e.name === "first-contentful-paint")
       if (fcpEntry) {
         reportRef.current.fcp = Math.round(fcpEntry.startTime)
-        
+
         if (fcpEntry.startTime > thresholds.fcpPoor && onError) {
           onError(`FCP 过慢：${Math.round(fcpEntry.startTime)}ms`)
         }
@@ -97,7 +97,7 @@ export function usePerformanceMonitor({
       const lcpEntry = entries[entries.length - 1]
       if (lcpEntry) {
         reportRef.current.lcp = Math.round(lcpEntry.startTime)
-        
+
         if (lcpEntry.startTime > thresholds.lcpPoor && onError) {
           onError(`LCP 过慢：${Math.round(lcpEntry.startTime)}ms`)
         }
@@ -115,7 +115,7 @@ export function usePerformanceMonitor({
         }
       })
       reportRef.current.cls = Math.round(clsValue * 1000) / 1000
-      
+
       if (clsValue > 0.25 && onError) {
         onError(`CLS 过高：${clsValue.toFixed(3)}`)
       }
@@ -128,7 +128,7 @@ export function usePerformanceMonitor({
       const fidEntry = entries.find((e) => e.entryType === "first-input")
       if (fidEntry) {
         reportRef.current.fid = Math.round(fidEntry.processingStart - fidEntry.startTime)
-        
+
         if (fidEntry.processingStart - fidEntry.startTime > 100 && onError) {
           onError(`FID 过长：${Math.round(fidEntry.processingStart - fidEntry.startTime)}ms`)
         }

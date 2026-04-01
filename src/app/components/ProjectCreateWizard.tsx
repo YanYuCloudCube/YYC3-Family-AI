@@ -221,7 +221,7 @@ export default function ProjectCreateWizard({ open, onClose }: WizardProps) {
         "yyc3_projects",
         JSON.stringify(projects.slice(0, 50)),
       );
-    } catch {}
+    } catch { /* empty */ }
 
     onClose();
     navigate(`/ide/${projectId}`, {
@@ -233,7 +233,7 @@ export default function ProjectCreateWizard({ open, onClose }: WizardProps) {
     });
   }, [projectInfo, selectedTemplate, navigate, onClose]);
 
-  const handleReset = useCallback(() => {
+  const _handleReset = useCallback(() => {
     setStep("template");
     setSelectedTemplate(null);
     setProjectInfo({ name: "", description: "", templateId: "" });

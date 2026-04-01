@@ -238,7 +238,7 @@ export class TaskStructurer {
       ...Object.values(PRIORITY_KEYWORDS).flat(),
       ...Object.values(TASK_TYPE_KEYWORDS).flat(),
     ];
-    
+
     for (const keyword of allKeywords) {
       const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
       cleaned = cleaned.replace(regex, '');

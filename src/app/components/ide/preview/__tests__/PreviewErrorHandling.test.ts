@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file PreviewErrorHandling.test.ts
  * @description 预览错误处理增强系统测试套件
@@ -64,9 +65,12 @@ describe('PreviewErrorCapturer', () => {
       capturer.start();
       
       // 触发Promise rejection
+      const rejectedPromise = Promise.reject(new Error('Promise rejection'));
+      rejectedPromise.catch(() => { /* prevent unhandled rejection */ });
+
       const event = new PromiseRejectionEvent('unhandledrejection', {
         reason: new Error('Promise rejection'),
-        promise: Promise.reject(),
+        promise: rejectedPromise,
       });
       
       window.onunhandledrejection!(event);

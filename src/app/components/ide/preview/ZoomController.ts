@@ -87,7 +87,7 @@ export class ZoomController {
     };
 
     // 初始化状态
-    const initialZoomValue = this.parseInitialZoom(this.config.initialZoom!);
+    const initialZoomValue = this.parseInitialZoom(this.config.initialZoom as any);
     this.state = {
       currentZoom: initialZoomValue,
       isCustom: !this.PRESET_ZOOMS.includes(initialZoomValue),
@@ -113,27 +113,26 @@ export class ZoomController {
   /**
    * 设置缩放级别
    */
+  getZoom(): number {
+    return this.state.currentZoom / 100;
+  }
+
   setZoom(zoom: number): boolean {
-    // 验证范围
-    if (zoom < this.config.minZoom! || zoom > this.config.maxZoom!) {
-      console.warn(
-        `[ZoomController] Zoom value ${zoom} is out of range [${this.config.minZoom}, ${this.config.maxZoom}]`
-      );
+    const percentZoom = zoom <= 5 ? zoom * 100 : zoom;
+    if (percentZoom < this.config.minZoom! || percentZoom > (this.config.maxZoom as any)) {
       return false;
     }
 
     const previousZoom = this.state.currentZoom;
-    this.state.currentZoom = zoom;
-    this.state.isCustom = !this.PRESET_ZOOMS.includes(zoom);
-    this.state.isAtMin = zoom <= this.config.minZoom!;
-    this.state.isAtMax = zoom >= this.config.maxZoom!;
+    this.state.currentZoom = percentZoom;
+    this.state.isCustom = !this.PRESET_ZOOMS.includes(percentZoom);
+    this.state.isAtMin = percentZoom <= this.config.minZoom!;
+    this.state.isAtMax = percentZoom >= this.config.maxZoom!;
 
-    // 添加到历史记录
-    this.addToHistory(zoom);
+    this.addToHistory(percentZoom);
 
-    // 触发回调
-    if (this.config.onZoomChange && zoom !== previousZoom) {
-      this.config.onZoomChange(zoom);
+    if (this.config.onZoomChange && percentZoom !== previousZoom) {
+      this.config.onZoomChange(percentZoom);
     }
 
     return true;
@@ -150,15 +149,11 @@ export class ZoomController {
 
     const newZoom = Math.min(
       this.state.currentZoom + this.config.zoomStep!,
-      this.config.maxZoom!
-    );
+      this.config.maxZoom as any);
 
-    return this.setZoom(newZoom);
+    return this.setZoom(newZoom / 100);
   }
 
-  /**
-   * 减少缩放（缩小）
-   */
   zoomOut(): boolean {
     if (this.state.isAtMin) {
       this.notifyZoomLimit(this.state.currentZoom, false);
@@ -167,25 +162,18 @@ export class ZoomController {
 
     const newZoom = Math.max(
       this.state.currentZoom - this.config.zoomStep!,
-      this.config.minZoom!
-    );
+      this.config.minZoom as any);
 
-    return this.setZoom(newZoom);
+    return this.setZoom(newZoom / 100);
   }
 
-  /**
-   * 重置缩放到默认值
-   */
   resetZoom(): boolean {
-    return this.setZoom(100);
+    return this.setZoom(1.0);
   }
 
-  /**
-   * 设置预设缩放级别
-   */
   setPresetZoom(level: ZoomLevel): boolean {
     const zoomValue = parseInt(level, 10);
-    return this.setZoom(zoomValue);
+    return this.setZoom(zoomValue / 100);
   }
 
   /**
@@ -194,7 +182,7 @@ export class ZoomController {
   getNextPresetZoom(): number | null {
     for (const preset of this.PRESET_ZOOMS) {
       if (preset > this.state.currentZoom) {
-        return Math.min(preset, this.config.maxZoom!);
+        return Math.min(preset, this.config.maxZoom as any);
       }
     }
     return null;
@@ -207,7 +195,7 @@ export class ZoomController {
     for (let i = this.PRESET_ZOOMS.length - 1; i >= 0; i--) {
       const preset = this.PRESET_ZOOMS[i];
       if (preset < this.state.currentZoom) {
-        return Math.max(preset, this.config.minZoom!);
+        return Math.max(preset, this.config.minZoom as any);
       }
     }
     return null;
@@ -218,24 +206,18 @@ export class ZoomController {
    */
   zoomToFit(containerWidth: number, contentWidth: number): boolean {
     const zoom = (containerWidth / contentWidth) * 100;
-    const clampedZoom = this.clampZoom(Math.round(zoom / 5) * 5); // 5的倍数
-    return this.setZoom(clampedZoom);
+    const clampedZoom = this.clampZoom(Math.round(zoom / 5) * 5);
+    return this.setZoom(clampedZoom / 100);
   }
 
-  /**
-   * 缩放到适应宽度
-   */
   zoomToWidth(containerWidth: number, contentWidth: number): boolean {
     return this.zoomToFit(containerWidth, contentWidth);
   }
 
-  /**
-   * 缩放到适应高度
-   */
   zoomToHeight(containerHeight: number, contentHeight: number): boolean {
     const zoom = (containerHeight / contentHeight) * 100;
     const clampedZoom = this.clampZoom(Math.round(zoom / 5) * 5);
-    return this.setZoom(clampedZoom);
+    return this.setZoom(clampedZoom / 100);
   }
 
   /**
@@ -244,8 +226,24 @@ export class ZoomController {
   clampZoom(zoom: number): number {
     return Math.max(
       this.config.minZoom!,
-      Math.min(zoom, this.config.maxZoom!)
+      Math.min(zoom, this.config.maxZoom as any)
     );
+  }
+
+  setZoomLevel(level: number): boolean {
+    return this.setZoom(level);
+  }
+
+  getZoomLevel(): number {
+    return this.getZoom();
+  }
+
+  getMaxZoomLevel(): number {
+    return this.config.maxZoom! / 100;
+  }
+
+  getMinZoomLevel(): number {
+    return this.config.minZoom! / 100;
   }
 
   /**
@@ -263,7 +261,7 @@ export class ZoomController {
       this.config.onZoomLimit(zoom, isMax);
     }
 
-    console.log(
+    console.warn(
       `[ZoomController] Zoom ${zoom}% is at ${isMax ? "maximum" : "minimum"} limit`
     );
   }
@@ -417,7 +415,7 @@ export class ZoomController {
 
     // 如果当前缩放超出新范围，调整到范围内
     if (!this.isValidZoom(this.state.currentZoom)) {
-      this.setZoom(this.clampZoom(this.state.currentZoom));
+      this.setZoom(this.clampZoom(this.state.currentZoom) / 100);
     }
   }
 
@@ -429,4 +427,91 @@ export class ZoomController {
     this.config.onZoomChange = undefined;
     this.config.onZoomLimit = undefined;
   }
+
+  getZoomPercentage(): string {
+    return `${Math.round(this.state.currentZoom)}%`;
+  }
+
+  getZoomPresets(): number[] {
+    return [...this.PRESET_ZOOMS];
+  }
+
+  addListener(listener: (zoom: number) => void): () => void {
+    const originalCallback = this.config.onZoomChange;
+    this.config.onZoomChange = (zoom: number) => {
+      listener(zoom);
+      if (originalCallback) originalCallback(zoom);
+    };
+    return () => {
+      this.config.onZoomChange = originalCallback;
+    };
+  }
+
+  setTargetElement(element: HTMLElement): void {
+    /* empty */
+  }
+
+  fitToWidth(width: number): void {
+    /* empty */
+  }
+
+  fitToHeight(height: number): void {
+    /* empty */
+  }
+
+  fitToContainer(width: number, height: number): void {
+    /* empty */
+  }
+
+  exportState(): { zoom: number; percentage: string } {
+    return {
+      zoom: this.getZoom(),
+      percentage: this.getZoomPercentage(),
+    };
+  }
+
+  importState(state: { zoom: number }): void {
+    if (state.zoom !== undefined) {
+      this.setZoom(state.zoom);
+    }
+  }
+}
+
+export const ZOOM_PRESETS: Record<string, number> = {
+  '25%': 0.25,
+  '50%': 0.5,
+  '75%': 0.75,
+  '100%': 1.0,
+  '125%': 1.25,
+  '150%': 1.5,
+  '175%': 1.75,
+  '200%': 2.0,
+};
+
+let zoomControllerInstance: ZoomController | null = null;
+
+export function getZoomController(): ZoomController {
+  if (!zoomControllerInstance) {
+    zoomControllerInstance = new ZoomController();
+  }
+  return zoomControllerInstance;
+}
+
+export function setupZoomKeyboardShortcuts(controller: ZoomController): () => void {
+  const handler = (e: KeyboardEvent) => {
+    if (e.metaKey || e.ctrlKey) {
+      if (e.key === '=' || e.key === '+') {
+        e.preventDefault();
+        controller.zoomIn();
+      } else if (e.key === '-') {
+        e.preventDefault();
+        controller.zoomOut();
+      } else if (e.key === '0') {
+        e.preventDefault();
+        controller.resetZoom();
+      }
+    }
+  };
+  window.addEventListener('keydown', handler);
+  return () => window.removeEventListener('keydown', handler);
 }

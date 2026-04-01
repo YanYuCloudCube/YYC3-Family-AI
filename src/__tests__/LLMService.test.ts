@@ -1,3 +1,16 @@
+/**
+ * @file LLMService.test.ts
+ * @description LLM 服务测试 - 测试 LLM API 调用、流式响应和错误处理
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // LLMService 单元测试
 // 覆盖: API Key 管理、Ollama 探测、连通性测试、聊天完成、代码提取、意图分析
@@ -383,16 +396,16 @@ describe("extractCodeBlock", () => {
     const text = "Here is the code:\n```typescript\nconst x = 1\n```\nDone.";
     const result = extractCodeBlock(text);
     expect(result).not.toBeNull();
-    expect(result!.lang).toBe("typescript");
-    expect(result!.code).toBe("const x = 1");
+    expect((result as any).lang).toBe("typescript");
+    expect((result as any).code).toBe("const x = 1");
   });
 
   it("无语言标记 — 默认 tsx", () => {
     const text = "```\nconst y = 2\n```";
     const result = extractCodeBlock(text);
     expect(result).not.toBeNull();
-    expect(result!.lang).toBe("tsx");
-    expect(result!.code).toBe("const y = 2");
+    expect((result as any).lang).toBe("tsx");
+    expect((result as any).code).toBe("const y = 2");
   });
 
   it("无代码块 — 返回 null", () => {
@@ -403,16 +416,16 @@ describe("extractCodeBlock", () => {
   it("多行代码块 — 正确提取", () => {
     const text = "```jsx\nfunction App() {\n  return <div>Hello</div>\n}\n```";
     const result = extractCodeBlock(text);
-    expect(result!.lang).toBe("jsx");
-    expect(result!.code).toContain("function App()");
-    expect(result!.code).toContain("return <div>Hello</div>");
+    expect((result as any).lang).toBe("jsx");
+    expect((result as any).code).toContain("function App()");
+    expect((result as any).code).toContain("return <div>Hello</div>");
   });
 
   it("多个代码块 — 提取第一个", () => {
     const text =
       '```python\nprint("hello")\n```\n\n```javascript\nconsole.log("world")\n```';
     const result = extractCodeBlock(text);
-    expect(result!.lang).toBe("python");
-    expect(result!.code).toContain("print");
+    expect((result as any).lang).toBe("python");
+    expect((result as any).code).toContain("print");
   });
 });

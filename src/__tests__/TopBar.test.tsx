@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/TopBar.test.tsx
  * @description P0 组件测试 — TopBar 顶部导航栏核心交互：

@@ -1,3 +1,16 @@
+/**
+ * @file useThemeTokens.test.tsx
+ * @description 主题令牌 Hook 测试 - 测试主题令牌获取和 CSS 变量生成
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
 // ================================================================
 // useThemeTokens 单元测试
 // 覆盖: Navy/Cyber token 输出、page/btn/text/status/gradients/chat/drawer/
@@ -6,9 +19,9 @@
 // ================================================================
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
-import { ThemeProvider } from "../app/components/ide/ThemeStore";
+import { useThemeStore } from "../app/components/ide/stores/useThemeStore";
 import { useThemeTokens } from "../app/components/ide/hooks/useThemeTokens";
 
 function TokenConsumer() {
@@ -47,31 +60,14 @@ function TokenConsumer() {
   );
 }
 
-function ToggleWrapper() {
-  const [cyber, setCyber] = React.useState(false);
-  return (
-    <div>
-      <button data-testid="switch" onClick={() => setCyber(!cyber)}>
-        switch
-      </button>
-      {/* We can't dynamically change ThemeProvider's internal state from here,
-          so we test both themes by rendering with pre-set localStorage */}
-    </div>
-  );
-}
-
 describe("useThemeTokens — Navy 主题", () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem("yyc3-theme", "navy");
+    useThemeStore.setState({ currentTheme: "navy", isCyber: false });
   });
 
   it("返回 Navy 主题的 token 值", () => {
-    render(
-      <ThemeProvider>
-        <TokenConsumer />
-      </ThemeProvider>,
-    );
+    render(<TokenConsumer />);
 
     // Legacy flat tokens
     expect(screen.getByTestId("textPrimary").textContent).toBe("text-white/90");
@@ -106,15 +102,11 @@ describe("useThemeTokens — Navy 主题", () => {
 describe("useThemeTokens — Cyberpunk 主题", () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem("yyc3-theme", "cyberpunk");
+    useThemeStore.setState({ currentTheme: "cyberpunk", isCyber: true });
   });
 
   it("返回 Cyberpunk 主题的 token 值", () => {
-    render(
-      <ThemeProvider>
-        <TokenConsumer />
-      </ThemeProvider>,
-    );
+    render(<TokenConsumer />);
 
     // Legacy flat tokens
     expect(screen.getByTestId("textPrimary").textContent).toBe("text-cyan-100");
@@ -156,13 +148,13 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
     expect(tokens).not.toBeNull();
-    const page = tokens!.page;
+    const page = (tokens as any).page;
     const requiredKeys = [
       "pageBg",
       "barBg",
@@ -197,12 +189,12 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    const btn = tokens!.btn;
+    const btn = (tokens as any).btn;
     const requiredKeys = [
       "accent",
       "accentHover",
@@ -225,12 +217,12 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    const chat = tokens!.chat;
+    const chat = (tokens as any).chat;
     const requiredKeys = [
       "userBubble",
       "assistantBubble",
@@ -258,12 +250,12 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    const drawer = tokens!.drawer;
+    const drawer = (tokens as any).drawer;
     const requiredKeys = [
       "bg",
       "border",
@@ -292,12 +284,12 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    const interactive = tokens!.interactive;
+    const interactive = (tokens as any).interactive;
     const requiredKeys = [
       "ghostBtn",
       "ghostBtnHover",
@@ -331,13 +323,13 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    expect(tokens!.text.dim).toBeTruthy();
-    expect(tokens!.text.ghost).toBeTruthy();
+    expect((tokens as any).text.dim).toBeTruthy();
+    expect((tokens as any).text.ghost).toBeTruthy();
   });
 
   it("home 子对象包含所有必要字段 (26 个)", () => {
@@ -347,13 +339,13 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
     expect(tokens).not.toBeNull();
-    const home = tokens!.home;
+    const home = (tokens as any).home;
     const requiredKeys = [
       "chatBoxBg",
       "actionsBorder",
@@ -401,13 +393,13 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
     expect(tokens).not.toBeNull();
-    const toast = tokens!.intentToast;
+    const toast = (tokens as any).intentToast;
     const requiredKeys = [
       "containerBg",
       "designerIconBg",
@@ -442,13 +434,13 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
     expect(tokens).not.toBeNull();
-    const sd = tokens!.shareDialog;
+    const sd = (tokens as any).shareDialog;
     const requiredKeys = [
       "dialogBg",
       "headerBorder",
@@ -492,12 +484,12 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    const text = tokens!.text;
+    const text = (tokens as any).text;
     const requiredKeys = [
       "primary",
       "secondary",
@@ -524,12 +516,12 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    const status = tokens!.status;
+    const status = (tokens as any).status;
     const requiredKeys = [
       "success",
       "successBg",
@@ -554,12 +546,12 @@ describe("useThemeTokens — 结构完整性", () => {
       return null;
     }
     render(
-      <ThemeProvider>
+      <div>
         <Capture />
-      </ThemeProvider>,
+      </div>,
     );
 
-    const gradients = tokens!.gradients;
+    const gradients = (tokens as any).gradients;
     const requiredKeys = [
       "title",
       "button",
@@ -600,11 +592,14 @@ function captureTokens(
     return null;
   }
   localStorage.clear();
-  localStorage.setItem("yyc3-theme", theme);
+  useThemeStore.setState({ 
+    currentTheme: theme, 
+    isCyber: theme === "cyberpunk" 
+  });
   const { unmount } = render(
-    <ThemeProvider>
+    <div>
       <Capture />
-    </ThemeProvider>,
+    </div>,
   );
   unmount();
   return tokens!;
@@ -617,7 +612,7 @@ function captureTokens(
 describe("useThemeTokens — Cyberpunk 结构完整性", () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem("yyc3-theme", "cyberpunk");
+    useThemeStore.setState({ currentTheme: "cyberpunk", isCyber: true });
   });
 
   it("Cyber home 子对象包含全部 26 个字段且非空", () => {
@@ -709,14 +704,14 @@ describe("useThemeTokens — Navy/Cyber 键集合一致性", () => {
 describe("useThemeTokens — home tokens Navy 值验证", () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem("yyc3-theme", "navy");
+    useThemeStore.setState({ currentTheme: "navy", isCyber: false });
   });
 
   it("Navy 主题 home tokens 返回正确值", () => {
     render(
-      <ThemeProvider>
+      <div>
         <TokenConsumer />
-      </ThemeProvider>,
+      </div>,
     );
 
     // chatBoxBg 应包含 var(--card) (Navy)
@@ -735,9 +730,9 @@ describe("useThemeTokens — home tokens Navy 值验证", () => {
 
   it("Navy 主题 intentToast tokens 返回正确值", () => {
     render(
-      <ThemeProvider>
+      <div>
         <TokenConsumer />
-      </ThemeProvider>,
+      </div>,
     );
 
     // containerBg 应包含 var(--card)
@@ -752,9 +747,9 @@ describe("useThemeTokens — home tokens Navy 值验证", () => {
 
   it("Navy 主题 shareDialog tokens 返回正确值", () => {
     render(
-      <ThemeProvider>
+      <div>
         <TokenConsumer />
-      </ThemeProvider>,
+      </div>,
     );
 
     // dialogBg 应包含 var(--card)
@@ -775,14 +770,14 @@ describe("useThemeTokens — home tokens Navy 值验证", () => {
 describe("useThemeTokens — home tokens Cyberpunk 值验证", () => {
   beforeEach(() => {
     localStorage.clear();
-    localStorage.setItem("yyc3-theme", "cyberpunk");
+    useThemeStore.setState({ currentTheme: "cyberpunk", isCyber: true });
   });
 
   it("Cyberpunk 主题 home tokens 返回正确值", () => {
     render(
-      <ThemeProvider>
+      <div>
         <TokenConsumer />
-      </ThemeProvider>,
+      </div>,
     );
 
     // chatBoxBg 应包含 0a0a12 (Cyber)
@@ -804,9 +799,9 @@ describe("useThemeTokens — home tokens Cyberpunk 值验证", () => {
 
   it("Cyberpunk 主题 intentToast tokens 返回正确值", () => {
     render(
-      <ThemeProvider>
+      <div>
         <TokenConsumer />
-      </ThemeProvider>,
+      </div>,
     );
 
     // containerBg 应包含 #14142a
@@ -821,9 +816,9 @@ describe("useThemeTokens — home tokens Cyberpunk 值验证", () => {
 
   it("Cyberpunk 主题 shareDialog tokens 返回正确值", () => {
     render(
-      <ThemeProvider>
+      <div>
         <TokenConsumer />
-      </ThemeProvider>,
+      </div>,
     );
 
     // dialogBg 应包含 #0a0a12
@@ -860,38 +855,38 @@ describe("useThemeTokens — home/intentToast Cyber 与 Navy 互斥性", () => {
 
     // Navy
     localStorage.clear();
-    localStorage.setItem("yyc3-theme", "navy");
+    useThemeStore.setState({ currentTheme: "navy", isCyber: false });
     const { unmount: u1 } = render(
-      <ThemeProvider>
+      <div>
         <Capture
           onCapture={(t) => {
             navyTokens = t;
           }}
         />
-      </ThemeProvider>,
+      </div>,
     );
     u1();
 
     // Cyber
     localStorage.clear();
-    localStorage.setItem("yyc3-theme", "cyberpunk");
+    useThemeStore.setState({ currentTheme: "cyberpunk", isCyber: true });
     const { unmount: u2 } = render(
-      <ThemeProvider>
+      <div>
         <Capture
           onCapture={(t) => {
             cyberTokens = t;
           }}
         />
-      </ThemeProvider>,
+      </div>,
     );
     u2();
 
     // Navy 应为空串, Cyber 应为 "cyber-glitch"
-    expect(navyTokens!.home.cyberGlitchClass).toBe("");
-    expect(cyberTokens!.home.cyberGlitchClass).toBe("cyber-glitch");
+    expect((navyTokens as any).home.cyberGlitchClass).toBe("");
+    expect((cyberTokens as any).home.cyberGlitchClass).toBe("cyber-glitch");
 
     // Navy renameDialogBg 应为空, Cyber 应包含 #14142a
-    expect(navyTokens!.home.renameDialogBg).toBe("");
-    expect(cyberTokens!.home.renameDialogBg).toContain("#14142a");
+    expect((navyTokens as any).home.renameDialogBg).toBe("");
+    expect((cyberTokens as any).home.renameDialogBg).toContain("#14142a");
   });
 });

@@ -587,7 +587,7 @@ export async function validateAPIKey(
 
   // 构建测试请求
   const baseUrl = provider.baseUrl;
-  
+
   // 特殊处理不同 Provider 的 endpoint
   // 使用代理 URL 避免跨域问题
   let endpoint = `${baseUrl}/chat/completions`;
@@ -602,11 +602,11 @@ export async function validateAPIKey(
   } else if (providerId === "openai") {
     endpoint = `/api/openai/chat/completions`;
   }
-  
+
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
-  
+
   if (provider.authType === "bearer") {
     headers["Authorization"] = `Bearer ${apiKey}`;
   }
@@ -615,7 +615,7 @@ export async function validateAPIKey(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   const start = Date.now();
 
-  console.log(`[API Key Validation] Testing ${providerId}:`, {
+  console.warn(`[API Key Validation] Testing ${providerId}:`, {
     endpoint,
     hasApiKey: !!apiKey,
     apiKeyLength: apiKey.length,
@@ -641,7 +641,7 @@ export async function validateAPIKey(
       stream: false,
     });
 
-    console.log(`[API Key Validation] Request body:`, body);
+    console.warn(`[API Key Validation] Request body:`, body);
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -652,7 +652,7 @@ export async function validateAPIKey(
     clearTimeout(timer);
     const latencyMs = Date.now() - start;
 
-    console.log(`[API Key Validation] Response:`, {
+    console.warn(`[API Key Validation] Response:`, {
       status: res.status,
       ok: res.ok,
       latencyMs,
@@ -665,22 +665,22 @@ export async function validateAPIKey(
       return { valid: false, error: "请求频率超限", latencyMs };
     if (res.status === 400)
       return { valid: false, error: "请求参数错误", latencyMs };
-    
+
     // 尝试读取错误响应
     let errorDetail = "";
     try {
       const errText = await res.text();
       errorDetail = errText.substring(0, 200);
-      console.log(`[API Key Validation] Error response:`, errorDetail);
+      console.warn(`[API Key Validation] Error response:`, errorDetail);
     } catch {
       /* ignore */
     }
-    
+
     return { valid: false, error: `HTTP ${res.status}${errorDetail ? `: ${errorDetail}` : ""}`, latencyMs };
   } catch (err: unknown) {
     clearTimeout(timer);
     if (err instanceof Error && err.name === "AbortError") {
-      console.log(`[API Key Validation] Timeout for ${providerId}`);
+      console.warn(`[API Key Validation] Timeout for ${providerId}`);
       return { valid: false, error: "连接超时" };
     }
     console.error(`[API Key Validation] Error for ${providerId}:`, err);

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/useQuickActionBridge.test.ts
  * @description QuickActionBridge Store 单元测试 — 覆盖 dispatch/consume/clear 生命周期、
@@ -83,7 +84,7 @@ describe("useQuickActionBridge", () => {
       const { dispatchToChat } = useQuickActionBridge.getState();
       dispatchToChat(action1);
       dispatchToChat(action2);
-      expect(useQuickActionBridge.getState().pendingAction!.id).toBe("qa-2");
+      expect((useQuickActionBridge.getState().pendingAction as any).id).toBe("qa-2");
     });
 
     it("actionLog 最新在前（倒序）", () => {

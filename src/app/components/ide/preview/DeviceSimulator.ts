@@ -101,7 +101,7 @@ export class DeviceSimulator {
 
     // 初始化状态
     const defaultDevice = getDeviceById(this.config.defaultDeviceId) || DEVICE_PRESETS[0];
-    
+
     this.state = {
       device: defaultDevice,
       width: defaultDevice.width,
@@ -146,7 +146,7 @@ export class DeviceSimulator {
    */
   public applyDevice(deviceId: string): ValidationResult {
     const device = this.getDevice(deviceId);
-    
+
     if (!device) {
       return {
         valid: false,
@@ -322,7 +322,7 @@ export class DeviceSimulator {
    */
   public setDPR(dpr: number): ValidationResult {
     const validation = DeviceValidator.validateDPR(dpr);
-    
+
     if (!validation.valid) {
       return validation;
     }
@@ -345,7 +345,7 @@ export class DeviceSimulator {
    */
   public setScale(scale: number): ValidationResult {
     const validation = DeviceValidator.validateScale(scale);
-    
+
     if (!validation.valid) {
       return validation;
     }
@@ -365,7 +365,7 @@ export class DeviceSimulator {
    */
   public setUserAgent(userAgent: string): ValidationResult {
     const validation = DeviceValidator.validateUserAgent(userAgent);
-    
+
     if (!validation.valid) {
       return validation;
     }
@@ -397,7 +397,7 @@ export class DeviceSimulator {
    */
   public reset(): void {
     const defaultDevice = getDeviceById(this.config.defaultDeviceId) || DEVICE_PRESETS[0];
-    
+
     this.state = {
       device: defaultDevice,
       width: defaultDevice.width,
@@ -453,7 +453,7 @@ export class DeviceSimulator {
   private applyToEnvironment(): void {
     // 应用尺寸到iframe或预览容器
     this.applySizeToEnvironment();
-    
+
     // 应用DPR
     if (this.config.applyDPR) {
       this.applyDPRToEnvironment();
@@ -534,7 +534,7 @@ export class DeviceSimulator {
         rotationLocked: this.state.rotationLocked,
         scale: this.state.scale
       };
-      
+
       localStorage.setItem(this.config.storageKey, JSON.stringify(stateData));
     } catch (error) {
       console.warn('保存设备状态失败:', error);
@@ -550,7 +550,7 @@ export class DeviceSimulator {
       if (!saved) return;
 
       const stateData = JSON.parse(saved);
-      
+
       // 恢复设备
       if (stateData.deviceId) {
         const device = this.getDevice(stateData.deviceId);

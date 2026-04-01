@@ -753,7 +753,7 @@ function MCPConfigPanel() {
     let envObj: Record<string, string> = {};
     try {
       if (newServer.env) envObj = JSON.parse(newServer.env);
-    } catch {}
+    } catch { /* empty */ }
     const server: MCPServerConfig = {
       id: `mcp-${  Date.now()}`,
       name: newServer.name,
@@ -1085,7 +1085,7 @@ function SmartDiagnosticsPanel({
   const avgLatency = (() => {
     const latencies = Object.values(diagnostics)
       .filter((d) => d.latency != null)
-      .map((d) => d.latency!);
+      .map((d) => d.latency as any);
     return latencies.length > 0
       ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length)
       : 0;
@@ -1723,16 +1723,16 @@ export function ModelSettings() {
     showModelSettingsV2,
     setShowModelSettingsV2,
     models: aiModels,
-    addModel: addAIModelRaw,
-    removeModel: removeAIModel,
+    addModel: _addAIModelRaw,
+    removeModel: _removeAIModel,
     updateModel: updateAIModel,
     setActiveModelId: activateAIModel,
     activeModelId,
     addCustomModel,
   } = useModelRegistry();
   const t = useThemeTokens();
-  
-  console.log('[ModelSettings] Component render, showModelSettingsV2:', showModelSettingsV2);
+
+  console.warn('[ModelSettings] Component render, showModelSettingsV2:', showModelSettingsV2);
 
   // Wrapper: ModelSettings.md uses addAIModel({ name, provider, endpoint, apiKey, isActive })
   // but ModelRegistry addModel expects a full AIModel object.
@@ -2725,7 +2725,7 @@ export function ModelSettings() {
                       代理已启用
                     </span>
                   );
-              } catch {}
+              } catch { /* empty */ }
               return null;
             })()}
           </div>

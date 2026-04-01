@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file UIComponents.smoke.test.tsx
  * @description UI组件冒烟测试 - 最基本的渲染测试

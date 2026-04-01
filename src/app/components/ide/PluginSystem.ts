@@ -40,7 +40,7 @@
 //   - events: 监听/发射事件
 // ================================================================
 
-import type { PluginManifest, PluginStatus, PluginInstance } from "./types";
+import type { PluginManifest, PluginInstance } from "./types";
 
 // ── Plugin Event System ──
 
@@ -218,7 +218,7 @@ export class PluginManager {
       this.plugins.set(pluginId, plugin);
 
       this.eventBus.emit("plugin:activated", pluginId);
-      console.log(`[PluginSystem] Plugin "${pluginId}" activated`);
+      console.warn(`[PluginSystem] Plugin "${pluginId}" activated`);
       return true;
     } catch (e) {
       plugin.status = "error";
@@ -242,7 +242,7 @@ export class PluginManager {
       this.plugins.set(pluginId, plugin);
 
       this.eventBus.emit("plugin:deactivated", pluginId);
-      console.log(`[PluginSystem] Plugin "${pluginId}" deactivated`);
+      console.warn(`[PluginSystem] Plugin "${pluginId}" deactivated`);
       return true;
     } catch (e) {
       console.error(`[PluginSystem] Failed to deactivate "${pluginId}":`, e);
@@ -306,7 +306,8 @@ export class PluginManager {
   // ── Private Helpers ──
 
   private createPluginAPI(pluginId: string): PluginAPI {
-    const self = this;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const pluginSystem = this;
 
     // Ensure plugin storage exists
     if (!this.pluginStorage.has(pluginId)) {
@@ -324,18 +325,18 @@ export class PluginManager {
       },
       ui: {
         registerPanel: (id, options) => {
-          self.panels.set(`${pluginId}:${id}`, options);
+          pluginSystem.panels.set(`${pluginId}:${id}`, options);
         },
         registerMenuItem: (menu, item) => {
           const key = `${pluginId}:${menu}`;
-          if (!self.menuItems.has(key)) self.menuItems.set(key, []);
-          self.menuItems.get(key)!.push(item);
+          if (!pluginSystem.menuItems.has(key)) pluginSystem.menuItems.set(key, []);
+          pluginSystem.menuItems.get(key)!.push(item);
         },
         registerStatusBarItem: (options) => {
-          self.statusBarItems.push(options);
+          pluginSystem.statusBarItems.push(options);
         },
         showNotification: (message, type = "info") => {
-          self.eventBus.emit("notification", { message, type, pluginId });
+          pluginSystem.eventBus.emit("notification", { message, type, pluginId });
         },
       },
       ai: {
@@ -344,7 +345,7 @@ export class PluginManager {
           return `[PluginAI] Prompt received: "${prompt.slice(0, 50)}..." (model: ${options?.model || "default"})`;
         },
         registerProvider: (id, config) => {
-          self.eventBus.emit("ai:provider-registered", {
+          pluginSystem.eventBus.emit("ai:provider-registered", {
             pluginId,
             providerId: id,
             config,
@@ -354,26 +355,26 @@ export class PluginManager {
       commands: {
         registerCommand: (id, handler, options) => {
           const fullId = `${pluginId}.${id}`;
-          self.commands.set(fullId, handler);
+          pluginSystem.commands.set(fullId, handler);
           if (options?.title) {
-            self.eventBus.emit("command:registered", {
+            pluginSystem.eventBus.emit("command:registered", {
               id: fullId,
               ...options,
             });
           }
         },
         executeCommand: (id) => {
-          self.executeCommand(id);
+          pluginSystem.executeCommand(id);
         },
       },
       events: {
-        on: (event, handler) => self.eventBus.on(event, handler),
-        emit: (event, ...args) => self.eventBus.emit(event, ...args),
+        on: (event, handler) => pluginSystem.eventBus.on(event, handler),
+        emit: (event, ...args) => pluginSystem.eventBus.emit(event, ...args),
       },
       storage: {
-        get: (key) => self.pluginStorage.get(pluginId)?.get(key),
-        set: (key, value) => self.pluginStorage.get(pluginId)?.set(key, value),
-        remove: (key) => self.pluginStorage.get(pluginId)?.delete(key),
+        get: (key) => pluginSystem.pluginStorage.get(pluginId)?.get(key),
+        set: (key, value) => pluginSystem.pluginStorage.get(pluginId)?.set(key, value),
+        remove: (key) => pluginSystem.pluginStorage.get(pluginId)?.delete(key),
       },
     };
   }

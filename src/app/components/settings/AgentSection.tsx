@@ -27,7 +27,7 @@ import {
   useSettingsStore,
   type AgentConfig,
 } from "../ide/stores/useSettingsStore";
-import { ItemCard, EmptyState, Toggle } from "./SettingsShared";
+import { ItemCard, EmptyState } from "./SettingsShared";
 import { useI18n } from "../ide/i18n";
 
 export function AgentSection() {

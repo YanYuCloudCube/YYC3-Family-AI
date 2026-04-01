@@ -88,7 +88,7 @@ export function loadProxyConfig(): ProxyConfig {
     if (stored) {
       return { ...DEFAULT_PROXY_CONFIG, ...JSON.parse(stored) };
     }
-  } catch {}
+  } catch { /* empty */ }
   return { ...DEFAULT_PROXY_CONFIG };
 }
 
@@ -96,7 +96,7 @@ export function saveProxyConfig(config: Partial<ProxyConfig>): ProxyConfig {
   const merged = { ...loadProxyConfig(), ...config };
   try {
     localStorage.setItem(PROXY_STORAGE_KEY, JSON.stringify(merged));
-  } catch {}
+  } catch { /* empty */ }
   return merged;
 }
 

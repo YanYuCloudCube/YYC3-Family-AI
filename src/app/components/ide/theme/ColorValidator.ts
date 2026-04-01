@@ -18,10 +18,11 @@
  * 颜色格式类型
  */
 export type ColorFormat =
-  | "hex" // #RRGGBB, #RGB, #RRGGBBAA, #RGBA
-  | "rgb" // rgb(r, g, b), rgba(r, g, b, a)
-  | "hsl" // hsl(h, s, l), hsla(h, s, l, a)
-  | "named"; // color names
+  | "hex"
+  | "rgb"
+  | "hsl"
+  | "oklch"
+  | "named";
 
 /**
  * 颜色验证结果
@@ -48,15 +49,14 @@ export interface ValidationResult {
  * 颜色对比度结果
  */
 export interface ContrastResult {
-  /** 对比度比值 (1-21) */
   ratio: number;
-  /** WCAG AA等级 */
   wcagAA: boolean;
-  /** WCAG AAA等级 */
   wcagAAA: boolean;
-  /** 建议 */
   suggestion: string;
+  level?: string;
 }
+
+export type ColorValidationResult = ValidationResult & { level?: string };
 
 /**
  * 颜色验证器配置
@@ -75,8 +75,22 @@ export interface ColorValidatorConfig {
  *
  * 提供颜色格式验证、标准化、对比度计算等功能
  */
+
 export class ColorValidator {
+  private static instance: ColorValidator | null = null;
   private config: ColorValidatorConfig;
+  private customDefaults: Record<string, string> = {};
+
+  public static getInstance(): ColorValidator {
+    if (!ColorValidator.instance) {
+      ColorValidator.instance = new ColorValidator();
+    }
+    return ColorValidator.instance;
+  }
+
+  public destroy(): void {
+    ColorValidator.instance = null;
+  }
 
   // 颜色名称映射表（常用颜色）
   private static readonly COLOR_NAMES: Record<string, string> = {
@@ -116,7 +130,7 @@ export class ColorValidator {
 
     // 尝试识别格式
     if (normalizedInput.startsWith("#")) {
-      return this.validateHex(normalizedInput);
+      return this._validateHexInternal(normalizedInput);
     } else if (
       normalizedInput.startsWith("rgb") ||
       normalizedInput.startsWith("rgba")
@@ -127,6 +141,10 @@ export class ColorValidator {
       normalizedInput.startsWith("hsla")
     ) {
       return this.validateHsl(normalizedInput);
+    } else if (
+      normalizedInput.startsWith("oklch")
+    ) {
+      return this.validateOklch(normalizedInput);
     } else {
       return this.validateNamedColor(normalizedInput);
     }
@@ -145,7 +163,7 @@ export class ColorValidator {
   /**
    * 验证十六进制颜色
    */
-  private validateHex(hex: string): ValidationResult {
+  private _validateHexInternal(hex: string): ValidationResult {
     // 检查格式
     const hexRegex = /^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
     if (!hexRegex.test(hex)) {
@@ -189,7 +207,7 @@ export class ColorValidator {
   private validateRgb(rgb: string): ValidationResult {
     // 检查格式
     const rgbRegex =
-      /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(\s*,\s*(0?\.\d+|1|0))?\s*\)$/;
+      /^rgba?\(\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})(\s*,\s*(-?\d+\.?\d*))?\s*\)$/;
     const match = rgb.match(rgbRegex);
 
     if (!match) {
@@ -317,11 +335,74 @@ export class ColorValidator {
   /**
    * 验证命名颜色
    */
+  private validateOklch(oklch: string): ValidationResult {
+    const oklchRegex = /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*(?:\/\s*([\d.]+))?\s*\)$/;
+    const match = oklch.match(oklchRegex);
+
+    if (!match) {
+      return {
+        valid: false,
+        error: `Invalid OKLch color format: ${oklch}`,
+      };
+    }
+
+    const l = parseFloat(match[1]);
+    const c = parseFloat(match[2]);
+    const h = parseFloat(match[3]);
+    const a = match[4] ? parseFloat(match[4]) : 1;
+
+    if (l < 0 || l > 1 || c < 0 || h < 0 || h > 360 || a < 0 || a > 1) {
+      return {
+        valid: false,
+        error: `Invalid OKLch values: ${oklch}`,
+      };
+    }
+
+    const rgba = this.oklchToRgba(l, c, h, a);
+
+    return {
+      valid: true,
+      format: "oklch" as ColorFormat,
+      normalized: oklch,
+      rgba,
+    };
+  }
+
+  private oklchToRgba(l: number, c: number, h: number, a: number): { r: number; g: number; b: number; a: number } {
+    const hRad = (h * Math.PI) / 180;
+
+    const lab_a = c * Math.cos(hRad);
+    const lab_b = c * Math.sin(hRad);
+
+    const l_ = l + 0.3963377774 * lab_a + 0.2158037573 * lab_b;
+    const m_ = l - 0.1055613458 * lab_a - 0.0638541728 * lab_b;
+    const s_ = l - 0.0894841775 * lab_a - 1.2914855480 * lab_b;
+
+    const l3 = l_ * l_ * l_;
+    const m3 = m_ * m_ * m_;
+    const s3 = s_ * s_ * s_;
+
+    const r = +4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3;
+    const g = -1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3;
+    const b = -0.0041960863 * l3 - 0.7034186147 * m3 + 1.7076147010 * s3;
+
+    return {
+      r: Math.round(this.linearSrgbToSrgb(Math.max(0, Math.min(1, r))) * 255),
+      g: Math.round(this.linearSrgbToSrgb(Math.max(0, Math.min(1, g))) * 255),
+      b: Math.round(this.linearSrgbToSrgb(Math.max(0, Math.min(1, b))) * 255),
+      a,
+    };
+  }
+
+  private linearSrgbToSrgb(c: number): number {
+    return c <= 0.0031308 ? 12.92 * c : 1.055 * (c ** (1 / 2.4)) - 0.055;
+  }
+
   private validateNamedColor(name: string): ValidationResult {
     const lowerName = name.toLowerCase();
 
     // 检查是否为有效颜色名称
-    if (!ColorValidator.COLOR_NAMES.hasOwnProperty(lowerName)) {
+    if (!Object.prototype.hasOwnProperty.call(ColorValidator.COLOR_NAMES, lowerName)) {
       return {
         valid: false,
         error: `Unknown color name: ${name}`,
@@ -500,9 +581,9 @@ export class ColorValidator {
    * RGBA转十六进制
    */
   private rgbaToHex(rgba: { r: number; g: number; b: number; a: number }): string {
-    const r = Math.round(rgba.r).toString(16).padStart(2, "0");
-    const g = Math.round(rgba.g).toString(16).padStart(2, "0");
-    const b = Math.round(rgba.b).toString(16).padStart(2, "0");
+    const r = Math.round(rgba.r).toString(16).padStart(2, "0").toUpperCase();
+    const g = Math.round(rgba.g).toString(16).padStart(2, "0").toUpperCase();
+    const b = Math.round(rgba.b).toString(16).padStart(2, "0").toUpperCase();
 
     if (rgba.a === 1) {
       return `#${r}${g}${b}`;
@@ -570,8 +651,18 @@ export class ColorValidator {
   /**
    * 获取默认颜色
    */
-  getDefaultColor(): string {
+  getDefaultColor(key?: string): string {
+    if (key && this.customDefaults[key]) {
+      return this.customDefaults[key];
+    }
     return this.config.defaultColor || "#000000";
+  }
+
+  /**
+   * 设置默认颜色
+   */
+  setDefaultColor(key: string, color: string): void {
+    this.customDefaults[key] = color;
   }
 
   /**
@@ -581,4 +672,127 @@ export class ColorValidator {
     const result = this.validateColor(color);
     return result.valid ? result.normalized || color : this.getDefaultColor();
   }
+
+  validateWithDefault(color: string | null, key: string): string {
+    if (!color) return this.getDefaultColor(key);
+    const result = this.validateColor(color);
+    return result.valid ? result.normalized || color : this.getDefaultColor(key);
+  }
+
+  validate(color: string | null): ValidationResult {
+    if (color === null || color === undefined) {
+      return { valid: false, error: "颜色值不能为空" };
+    }
+    return this.validateColor(color);
+  }
+
+  calculateContrastRatio(foreground: string, background: string): number {
+    const result = this.calculateContrast(foreground, background);
+    return Math.round(result.ratio);
+  }
+
+  validateContrast(foreground: string, background: string): ContrastResult & { level: string; valid: boolean; contrastRatio: number; error?: string } {
+    const result = this.calculateContrast(foreground, background);
+    let level = "fail";
+    if (result.wcagAAA) level = "AAA";
+    else if (result.wcagAA) level = "AA";
+    const valid = result.wcagAA;
+    return { ...result, level, valid, contrastRatio: result.ratio, error: valid ? undefined : 'contrast ratio too low' };
+  }
+
+  hexToRGB(hex: string): { r: number; g: number; b: number } {
+    const rgba = this.parseHexToRgba(hex);
+    if (!rgba) return { r: 0, g: 0, b: 0 };
+    return { r: rgba.r, g: rgba.g, b: rgba.b };
+  }
+
+  rgbToHex(rgb: { r: number; g: number; b: number }): string {
+    return this.rgbaToHex({ ...rgb, a: 1 });
+  }
+
+  rgbToHSL(rgb: { r: number; g: number; b: number }): { h: number; s: number; l: number } {
+    const r = rgb.r / 255;
+    const g = rgb.g / 255;
+    const b = rgb.b / 255;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const l = (max + min) / 2;
+    let h = 0;
+    let s = 0;
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = ((g - b) / d + (g < b ? 6 : 0)) * 60; break;
+        case g: h = ((b - r) / d + 2) * 60; break;
+        case b: h = ((r - g) / d + 4) * 60; break;
+      }
+    }
+    return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+  }
+
+  hslToRGB(hsl: { h: number; s: number; l: number }): { r: number; g: number; b: number } {
+    const rgba = this.hslToRgba(hsl.h, hsl.s, hsl.l, 1);
+    return { r: rgba.r, g: rgba.g, b: rgba.b };
+  }
+
+  validateHex(color: string): { valid: boolean; error?: string } {
+    const hexRegex = /^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+    if (!hexRegex.test(color)) {
+      return { valid: false, error: `Invalid hex color format: ${color}` };
+    }
+    return { valid: true };
+  }
+
+  validateRGB(color: string): { valid: boolean; error?: string } {
+    const rgbMatch = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    if (!rgbMatch) {
+      return { valid: false, error: 'Invalid RGB value format' };
+    }
+    const r = parseInt(rgbMatch[1], 10);
+    const g = parseInt(rgbMatch[2], 10);
+    const b = parseInt(rgbMatch[3], 10);
+    if (r > 255 || g > 255 || b > 255) {
+      return { valid: false, error: 'RGB value out of range (0-255)' };
+    }
+    return { valid: true };
+  }
+
+  validateHSL(color: string): { valid: boolean; error?: string } {
+    const hslMatch = color.match(/^hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)$/);
+    if (!hslMatch) {
+      return { valid: false, error: 'Invalid HSL format' };
+    }
+    const h = parseInt(hslMatch[1], 10);
+    if (h > 360) {
+      return { valid: false, error: 'HSL hue value out of range (0-360)' };
+    }
+    return { valid: true };
+  }
+
+  validateContrastWithResult(foreground: string, background: string): { valid: boolean; contrastRatio?: number; error?: string } {
+    const result = this.calculateContrast(foreground, background);
+    if (result.ratio >= 7) {
+      return { valid: true, contrastRatio: result.ratio };
+    }
+    if (result.ratio >= 4.5) {
+      return { valid: true, contrastRatio: result.ratio };
+    }
+    return { valid: false, contrastRatio: result.ratio, error: 'contrast ratio too low' };
+  }
+}
+
+export function validateColor(color: string): ValidationResult {
+  const validator = ColorValidator.getInstance();
+  return validator.validateColor(color);
+}
+
+export function calculateContrast(foreground: string, background: string): number {
+  const validator = ColorValidator.getInstance();
+  return validator.calculateContrastRatio(foreground, background);
+}
+
+export function validateContrast(foreground: string, background: string): ContrastResult & { level: string } {
+  const validator = ColorValidator.getInstance();
+  return validator.validateContrast(foreground, background);
 }

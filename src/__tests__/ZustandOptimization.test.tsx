@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/ZustandOptimization.test.tsx
  * @description Zustand Store 订阅优化性能测试
@@ -333,7 +334,7 @@ describe("性能基准测试", () => {
     const improvement =
       ((traditionalRerenders - optimizedRerenders) / traditionalRerenders) *
       100;
-    console.log(
+    console.warn(
       `重渲染减少: ${improvement.toFixed(1)}% (传统: ${traditionalRerenders}, 优化: ${optimizedRerenders})`,
     );
     expect(improvement).toBeGreaterThanOrEqual(30);

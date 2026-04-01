@@ -64,7 +64,6 @@ import { useQuickActionsStore } from "./ide/stores/useQuickActionsStore";
 import TaskBoardPanel from "./ide/TaskBoardPanel";
 import MultiInstancePanel from "./ide/MultiInstancePanel";
 import { useMultiInstanceSync } from "./ide/hooks/useMultiInstanceSync";
-import { useWorkspaceFileSync } from "./ide/hooks/useWorkspaceFileSync";
 
 // ── Multi-Instance Sync Bridge (must be inside FileStoreProvider) ──
 function MultiInstanceSyncBridge() {

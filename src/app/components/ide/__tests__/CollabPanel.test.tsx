@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/CollabPanel.test.tsx
  * @description 实时协作面板组件测试 - 简化版，测试核心功能

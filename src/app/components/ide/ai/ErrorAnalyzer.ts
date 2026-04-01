@@ -381,7 +381,7 @@ const RULES: AnalysisRule[] = [
     category: "react",
     severity: "hint",
     fileExtensions: [".tsx", ".jsx"],
-    check: (_fp, content, _lines) => {
+    check: (_fp, content, lines) => {
       const results: ReturnType<AnalysisRule["check"]> = [];
       // Detect <React.Fragment> or <> with single child
       const fragPattern =
@@ -469,7 +469,7 @@ const RULES: AnalysisRule[] = [
     category: "performance",
     severity: "warning",
     fileExtensions: [".tsx", ".jsx"],
-    check: (_fp, content, _lines) => {
+    check: (_fp, content, lines) => {
       const results: ReturnType<AnalysisRule["check"]> = [];
       // Detect large array literals inside return/JSX
       const returnIdx = content.indexOf("return (");
@@ -791,10 +791,10 @@ const RULES: AnalysisRule[] = [
     category: "best-practice",
     severity: "warning",
     fileExtensions: [".ts", ".tsx", ".js", ".jsx"],
-    check: (_fp, content, _lines) => {
+    check: (_fp, content, lines) => {
       const results: ReturnType<AnalysisRule["check"]> = [];
       const matches = [
-        ...content.matchAll(/catch\s*(?:\([^)]*\))?\s*\{\s*\}/g),
+        ...content.matchAll(/catch\s*(?:\([^)]*\))?\s*\{\s*(?:\/\*[\s\S]*?\*\/\s*)?\}/g),
       ];
       for (const m of matches) {
         const lineNum = content.slice(0, m.index ?? 0).split("\n").length;

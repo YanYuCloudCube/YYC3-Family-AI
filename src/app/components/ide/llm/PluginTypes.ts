@@ -78,31 +78,31 @@ export interface PluginManifest {
   homepage?: string;
   license?: string;
   repository?: string;
-  
+
   // 入口和配置
   main?: string;
   entry?: string;
   icon?: string;
   category?: PluginCategory;
   tags?: string[];
-  
+
   // 权限和依赖
   permissions?: PluginPermission[];
   dependencies?: PluginDependency[];
   optionalDependencies?: PluginDependency[];
   peerDependencies?: PluginDependency[];
-  
+
   // 激活配置
   activationEvents?: PluginActivationEvent[];
   contributes?: PluginContribution;
-  
+
   // 兼容性
   engines?: {
     node?: string;
     vscode?: string;
     yyc3?: string;
   };
-  
+
   // 生命周期钩子
   activate?: (context: PluginContext) => Promise<void> | void;
   deactivate?: () => Promise<void> | void;
@@ -133,35 +133,35 @@ export enum PluginPermission {
   FILE_READ = 'file.read',
   FILE_WRITE = 'file.write',
   FILE_DELETE = 'file.delete',
-  
+
   // 编辑器权限
   EDITOR_READ = 'editor.read',
   EDITOR_WRITE = 'editor.write',
-  
+
   // UI权限
   UI_PANEL = 'ui.panel',
   UI_MENU = 'ui.menu',
   UI_STATUS_BAR = 'ui.statusBar',
   UI_NOTIFICATION = 'ui.notification',
   UI_THEME = 'ui.theme',
-  
+
   // AI权限
   AI_CHAT = 'ai.chat',
   AI_PROVIDER = 'ai.provider',
-  
+
   // 网络权限
   NETWORK_REQUEST = 'network.request',
   NETWORK_WEBSOCKET = 'network.websocket',
-  
+
   // 系统权限
   SYSTEM_COMMAND = 'system.command',
   SYSTEM_CLIPBOARD = 'system.clipboard',
   SYSTEM_STORAGE = 'system.storage',
-  
+
   // 数据权限
   DATA_READ = 'data.read',
   DATA_WRITE = 'data.write',
-  
+
   // 插件权限
   PLUGIN_MANAGE = 'plugin.manage',
 }
@@ -372,10 +372,10 @@ export interface PluginContext {
   manifest: PluginManifest;
   /** 插件状态 */
   state: PluginState;
-  
+
   // 订阅管理
   subscriptions: Disposable[];
-  
+
   // API访问
   editor: PluginEditorAPI;
   ui: PluginUIAPI;
@@ -385,10 +385,10 @@ export interface PluginContext {
   storage: PluginStorageAPI;
   network: PluginNetworkAPI;
   workspace: PluginWorkspaceAPI;
-  
+
   // 工具函数
   logger: PluginLoggerAPI;
-  
+
   // 扩展点注册
   registerExtensionPoint: (point: ExtensionPoint) => void;
   getExtensionPoint: <T = unknown>(id: string) => ExtensionPoint<T> | undefined;
@@ -417,13 +417,13 @@ export interface PluginEditorAPI {
   deleteFile(path: string): Promise<void>;
   renameFile(oldPath: string, newPath: string): Promise<void>;
   saveFile(path?: string): Promise<void>;
-  
+
   // 光标和选择
   getCursorPosition(): { line: number; column: number } | null;
   setCursorPosition(line: number, column: number): void;
   getSelection(): { start: number; end: number } | null;
   setSelection(start: number, end: number): void;
-  
+
   // 编辑器配置
   getConfiguration(): Record<string, unknown>;
   updateConfiguration(config: Record<string, unknown>): void;
@@ -435,29 +435,29 @@ export interface PluginEditorAPI {
 export interface PluginUIAPI {
   registerPanel(id: string, options: PanelOptions): void;
   unregisterPanel(id: string): void;
-  
+
   registerMenuItem(menu: string, item: MenuItemOptions): void;
   unregisterMenuItem(menu: string, command: string): void;
-  
+
   registerStatusBarItem(options: StatusBarItemOptions): void;
   unregisterStatusBarItem(id: string): void;
-  
+
   showNotification(
     message: string,
     type?: 'info' | 'success' | 'warning' | 'error',
     options?: NotificationOptions,
   ): void;
-  
+
   showPanel(options: ShowPanelOptions): void;
   hidePanel(id: string): void;
-  
+
   showModal(options: ModalOptions): Promise<boolean>;
-  
+
   showQuickPick<T extends QuickPickItem>(
     items: T[],
     options?: QuickPickOptions,
   ): Promise<T | undefined>;
-  
+
   showInputBox(options: InputBoxOptions): Promise<string | undefined>;
 }
 
@@ -577,23 +577,23 @@ export interface PluginAIAPI {
     prompt: string,
     options?: AIChatOptions,
   ): Promise<string>;
-  
+
   complete(
     prompt: string,
     options?: AICompleteOptions,
   ): Promise<string>;
-  
+
   embed(text: string): Promise<number[]>;
-  
+
   registerProvider(
     id: string,
     config: AIProviderConfig,
   ): void;
-  
+
   unregisterProvider(id: string): void;
-  
+
   getProviders(): AIProviderInfo[];
-  
+
   setDefaultProvider(id: string): void;
 }
 
@@ -649,14 +649,14 @@ export interface PluginCommandAPI {
     handler: (...args: unknown[]) => unknown,
     options?: CommandOptions,
   ): Disposable;
-  
+
   executeCommand<T = unknown>(
     id: string,
     ...args: unknown[]
   ): Promise<T>;
-  
+
   getCommands(filterInternal?: boolean): string[];
-  
+
   registerTextEditorCommand(
     id: string,
     callback: (editor: unknown, edit: unknown) => unknown,
@@ -681,7 +681,7 @@ export interface PluginEventAPI {
   on(event: string, handler: EventHandler): Disposable;
   once(event: string, handler: EventHandler): Disposable;
   emit(event: string, ...args: unknown[]): void;
-  
+
   // 内置事件
   onFileOpen: (handler: (path: string) => void) => Disposable;
   onFileClose: (handler: (path: string) => void) => Disposable;
@@ -706,11 +706,11 @@ export interface PluginStorageAPI {
   set(key: string, value: unknown): void;
   remove(key: string): void;
   clear(): void;
-  
+
   // 全局存储
   getGlobal<T = unknown>(key: string): T | undefined;
   setGlobal(key: string, value: unknown): void;
-  
+
   // 工作区存储
   getWorkspace<T = unknown>(key: string): T | undefined;
   setWorkspace(key: string, value: unknown): void;
@@ -750,7 +750,7 @@ export interface PluginWorkspaceAPI {
   onDidChangeConfiguration: (
     handler: (event: ConfigurationChangeEvent) => void,
   ) => Disposable;
-  
+
   createFileSystemWatcher(
     globPattern: string,
     ignoreCreateEvents?: boolean,
@@ -804,7 +804,7 @@ export interface PluginLoggerAPI {
   error(...args: unknown[]): void;
   debug(...args: unknown[]): void;
   trace(...args: unknown[]): void;
-  
+
   // 日志级别
   setLevel(level: LogLevel): void;
   getLevel(): LogLevel;
@@ -892,22 +892,22 @@ export enum PluginErrorCode {
   INVALID_MANIFEST = 'INVALID_MANIFEST',
   MISSING_ENTRY = 'MISSING_ENTRY',
   SYNTAX_ERROR = 'SYNTAX_ERROR',
-  
+
   // 激活错误
   ACTIVATION_FAILED = 'ACTIVATION_FAILED',
   DEPENDENCY_MISSING = 'DEPENDENCY_MISSING',
   VERSION_MISMATCH = 'VERSION_MISMATCH',
   PERMISSION_DENIED = 'PERMISSION_DENIED',
-  
+
   // 运行时错误
   RUNTIME_ERROR = 'RUNTIME_ERROR',
   API_MISUSE = 'API_MISUSE',
   RESOURCE_EXHAUSTED = 'RESOURCE_EXHAUSTED',
-  
+
   // 卸载错误
   DEACTIVATION_FAILED = 'DEACTIVATION_FAILED',
   UNLOAD_FAILED = 'UNLOAD_FAILED',
-  
+
   // 签名错误
   SIGNATURE_INVALID = 'SIGNATURE_INVALID',
   SIGNATURE_MISSING = 'SIGNATURE_MISSING',

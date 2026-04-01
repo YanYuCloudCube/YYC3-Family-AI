@@ -121,7 +121,7 @@ export class ScrollSyncEngine {
     }
 
     const position = this.getScrollPosition(this.editorElement);
-    
+
     // 检查是否超过阈值
     if (!this.isPositionChanged(position, this.lastEditorPosition)) {
       return;
@@ -146,7 +146,7 @@ export class ScrollSyncEngine {
     }
 
     const position = this.getScrollPosition(this.previewElement);
-    
+
     // 检查是否超过阈值
     if (!this.isPositionChanged(position, this.lastPreviewPosition)) {
       return;
@@ -166,7 +166,7 @@ export class ScrollSyncEngine {
    */
   private getScrollPosition(element: HTMLElement): ScrollPosition {
     const { scrollLeft, scrollTop, scrollWidth, scrollHeight, clientWidth, clientHeight } = element;
-    
+
     const maxScrollX = scrollWidth - clientWidth;
     const maxScrollY = scrollHeight - clientHeight;
 
@@ -215,7 +215,7 @@ export class ScrollSyncEngine {
       // 按比例同步
       const targetX = position.ratioX * (scrollWidth - clientWidth);
       const targetY = position.ratioY * (scrollHeight - clientHeight);
-      
+
       this.scrollTo(preview, targetX, targetY);
     } else {
       // 直接同步
@@ -223,7 +223,7 @@ export class ScrollSyncEngine {
     }
 
     this.lastSyncTime = Date.now();
-    
+
     // 延迟重置同步标志
     setTimeout(() => {
       this.isSyncing = false;
@@ -244,7 +244,7 @@ export class ScrollSyncEngine {
       // 按比例同步
       const targetX = position.ratioX * (scrollWidth - clientWidth);
       const targetY = position.ratioY * (scrollHeight - clientHeight);
-      
+
       this.scrollTo(editor, targetX, targetY);
     } else {
       // 直接同步
@@ -252,7 +252,7 @@ export class ScrollSyncEngine {
     }
 
     this.lastSyncTime = Date.now();
-    
+
     // 延迟重置同步标志
     setTimeout(() => {
       this.isSyncing = false;
@@ -382,7 +382,7 @@ export class ScrollSyncEngine {
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
     }
-    
+
     this.setEditorElement(null);
     this.setPreviewElement(null);
     this.listeners.clear();

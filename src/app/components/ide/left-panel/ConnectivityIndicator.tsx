@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file left-panel/ConnectivityIndicator.tsx
  * @description 模型连通性指示器子组件 — 实时 Ping 测试、延迟显示、

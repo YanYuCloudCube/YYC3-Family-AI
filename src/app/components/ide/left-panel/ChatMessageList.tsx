@@ -115,7 +115,7 @@ export default function ChatMessageList({
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() =>
-                        handleCopyCode(msg.codeBlock!.code, msg.id)
+                        handleCopyCode((msg.codeBlock as any).code, msg.id)
                       }
                       className="w-5 h-5 rounded flex items-center justify-center hover:bg-white/10 transition-colors"
                       title="复制"
@@ -128,7 +128,7 @@ export default function ChatMessageList({
                     </button>
                     <button
                       onClick={() =>
-                        onInsertCode(msg.codeBlock!.code, msg.codeBlock!.lang)
+                        onInsertCode((msg.codeBlock as any).code, (msg.codeBlock as any).lang)
                       }
                       className="w-5 h-5 rounded flex items-center justify-center hover:bg-white/10 transition-colors"
                       title="插入新文件"
@@ -136,7 +136,7 @@ export default function ChatMessageList({
                       <Code2 className="w-2.5 h-2.5 text-slate-600" />
                     </button>
                     <button
-                      onClick={() => onApplyCode(msg.codeBlock!.code)}
+                      onClick={() => onApplyCode((msg.codeBlock as any).code)}
                       className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-sky-600/30 hover:bg-sky-600/50 transition-colors"
                       title="应用到当前文件"
                     >

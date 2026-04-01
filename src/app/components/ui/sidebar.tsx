@@ -1,3 +1,16 @@
+/**
+ * @file sidebar.tsx
+ * @description sidebar 组件 — React UI 组件
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags component,react,ui,ui
+ */
+
 "use client";
 
 import * as React from "react";
@@ -399,6 +412,7 @@ function SidebarGroupLabel({
   ...props
 }: React.ComponentProps<"div"> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "div";
+  const { ref, ...rest } = props as React.ComponentProps<"div"> & { ref?: React.Ref<HTMLDivElement> };
 
   return (
     <Comp
@@ -409,7 +423,8 @@ function SidebarGroupLabel({
         "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
         className,
       )}
-      {...props}
+      ref={ref as any}
+      {...rest}
     />
   );
 }
@@ -420,6 +435,7 @@ function SidebarGroupAction({
   ...props
 }: React.ComponentProps<"button"> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "button";
+  const { ref, ...rest } = props as React.ComponentProps<"button"> & { ref?: React.Ref<HTMLButtonElement> };
 
   return (
     <Comp
@@ -432,7 +448,8 @@ function SidebarGroupAction({
         "group-data-[collapsible=icon]:hidden",
         className,
       )}
-      {...props}
+      ref={ref as any}
+      {...rest}
     />
   );
 }
@@ -510,6 +527,7 @@ function SidebarMenuButton({
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : "button";
   const { isMobile, state } = useSidebar();
+  const { ref, ...rest } = props as React.ComponentProps<"button"> & { ref?: React.Ref<HTMLButtonElement> };
 
   const button = (
     <Comp
@@ -518,7 +536,8 @@ function SidebarMenuButton({
       data-size={size}
       data-active={isActive}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
-      {...props}
+      ref={ref as any}
+      {...rest}
     />
   );
 
@@ -555,6 +574,7 @@ function SidebarMenuAction({
   showOnHover?: boolean;
 }) {
   const Comp = asChild ? Slot : "button";
+  const { ref, ...rest } = props as React.ComponentProps<"button"> & { ref?: React.Ref<HTMLButtonElement> };
 
   return (
     <Comp
@@ -572,7 +592,8 @@ function SidebarMenuAction({
           "peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0",
         className,
       )}
-      {...props}
+      ref={ref as any}
+      {...rest}
     />
   );
 }
@@ -678,6 +699,7 @@ function SidebarMenuSubButton({
   isActive?: boolean;
 }) {
   const Comp = asChild ? Slot : "a";
+  const { ref, ...rest } = props as React.ComponentProps<"a"> & { ref?: React.Ref<HTMLAnchorElement> };
 
   return (
     <Comp
@@ -693,7 +715,8 @@ function SidebarMenuSubButton({
         "group-data-[collapsible=icon]:hidden",
         className,
       )}
-      {...props}
+      ref={ref as any}
+      {...rest}
     />
   );
 }

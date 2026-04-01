@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file DeviceSimulator.test.ts
  * @description 设备模拟引擎完整测试套件

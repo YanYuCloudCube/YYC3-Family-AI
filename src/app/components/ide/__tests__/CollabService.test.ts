@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/CollabService.test.ts
  * @description 实时协作服务测试 - 覆盖 Yjs CRDT 文档同步、感知光标、冲突解决

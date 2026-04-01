@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file IconAssets.test.tsx
  * @description 图标资产功能测试 - 覆盖图标渲染、分类、可访问性等核心功能

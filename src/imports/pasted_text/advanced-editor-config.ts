@@ -721,7 +721,7 @@ export const CollaborativeEditor: React.FC<CollaborativeEditorProps> = ({
 
     // 监听连接状态
     wsProvider.on('status', (event: any) => {
-      console.log('Connection status:', event.status);
+      console.warn('Connection status:', event.status);
     });
 
     // 监听用户连接
@@ -1497,7 +1497,7 @@ const App: React.FC = () => {
   const [editorType, setEditorType] = useState<'richtext' | 'code' | 'markdown' | 'collaborative'>('richtext');
 
   const handleSave = () => {
-    console.log('Saving content:', content);
+    console.warn('Saving content:', content);
     // 保存逻辑
   };
 

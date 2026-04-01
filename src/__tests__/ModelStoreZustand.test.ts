@@ -1,3 +1,16 @@
+/**
+ * @file ModelStoreZustand.test.ts
+ * @description 模型状态管理测试 - 测试模型注册、连接状态和心跳监控
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // ModelStore Zustand 单元测试
 // 覆盖: 活跃模型选择、自定义模型管理、连通性状态、心跳配置、
@@ -280,7 +293,7 @@ describe("ModelStore — 性能数据同步", () => {
 
     const raw = localStorage.getItem("yyc3_model_perf_data");
     expect(raw).toBeTruthy();
-    const data = JSON.parse(raw!);
+    const data = JSON.parse(raw as any);
     expect(data).toHaveLength(1);
     expect(data[0].modelId).toBe("gpt-4o");
   });
@@ -299,7 +312,7 @@ describe("ModelStore — 性能数据同步", () => {
     }
 
     const raw = localStorage.getItem("yyc3_model_perf_data");
-    const data = JSON.parse(raw!);
+    const data = JSON.parse(raw as any);
     expect(data.length).toBeLessThanOrEqual(200);
   });
 });

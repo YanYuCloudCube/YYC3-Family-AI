@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file IndexedDBAdapter.test.ts
  * @description IndexedDB 适配器测试 - 覆盖文件 CRUD、项目操作、快照管理等核心功能

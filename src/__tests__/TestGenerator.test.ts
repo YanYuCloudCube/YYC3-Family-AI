@@ -1,3 +1,16 @@
+/**
+ * @file TestGenerator.test.ts
+ * @description 测试生成器 - 自动化测试用例生成工具
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // TestGenerator 单元测试
 // 覆盖: extractSymbols + generateTestSuite +
@@ -34,7 +47,7 @@ describe("extractSymbols", () => {
     const syms = extractSymbols(code);
     const fn = syms.find((s) => s.name === "multiply");
     expect(fn).toBeDefined();
-    expect(fn!.exported).toBe(true);
+    expect((fn as any).exported).toBe(true);
   });
 
   it("提取异步函数", () => {
@@ -66,7 +79,7 @@ describe("extractSymbols", () => {
     const syms = extractSymbols(code);
     const c = syms.find((s) => s.name === "MAX_SIZE");
     expect(c).toBeDefined();
-    expect(c!.type).toBe("constant");
+    expect((c as any).type).toBe("constant");
   });
 
   it("提取导出类", () => {
@@ -74,7 +87,7 @@ describe("extractSymbols", () => {
     const syms = extractSymbols(code);
     const cls = syms.find((s) => s.name === "EventBus");
     expect(cls).toBeDefined();
-    expect(cls!.type).toBe("class");
+    expect((cls as any).type).toBe("class");
   });
 
   it("不提取非导出的私有函数", () => {

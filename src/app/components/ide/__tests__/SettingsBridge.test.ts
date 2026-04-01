@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/SettingsBridge.test.ts
  * @description SettingsBridge 单元测试 — 覆盖快捷键映射、规则注入、MCP 注入、

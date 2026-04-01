@@ -561,7 +561,7 @@ export default function LeftPanel({ nodeId }: { nodeId: string }) {
   }, [pendingQuickAction, isStreaming, consumeQuickAction]);
 
   // ── Connectivity global state ──
-  const globalConn = activeModelId
+  const _globalConn = activeModelId
     ? connectivityResults[activeModelId]
     : undefined;
 

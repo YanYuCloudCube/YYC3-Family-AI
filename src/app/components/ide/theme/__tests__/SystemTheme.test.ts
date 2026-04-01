@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file SystemTheme.test.ts
  * @description 任务1.3系统主题监听完整测试

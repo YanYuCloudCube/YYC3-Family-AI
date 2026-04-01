@@ -20,7 +20,7 @@ export function generateId(prefix: string = ''): string {
   const timestamp = Date.now().toString(36);
   const random = Math.random().toString(36).substring(2, 9);
   const counter = (generateId as any)._counter = ((generateId as any)._counter || 0) + 1;
-  
+
   return prefix ? `${prefix}_${timestamp}_${random}_${counter}` : `${timestamp}_${random}_${counter}`;
 }
 

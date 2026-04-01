@@ -268,7 +268,7 @@ export class ARIAManager {
    */
   private getARIAAttributeName(key: string): string | null {
     const ariaPrefix = 'aria-';
-    
+
     // 处理特殊情况
     const specialCases: Record<string, string> = {
       role: 'role',

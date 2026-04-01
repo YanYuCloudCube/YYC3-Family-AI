@@ -49,8 +49,8 @@ export class BoundaryTestSuite {
    * 运行完整边界测试
    */
   async runAllTests(): Promise<BoundaryTestResult> {
-    console.log('[BoundaryTest] Starting boundary test suite...');
-    console.log('[BoundaryTest] Config:', this.config);
+    console.warn('[BoundaryTest] Starting boundary test suite...');
+    console.warn('[BoundaryTest] Config:', this.config);
 
     const errors: string[] = [];
     const warnings: string[] = [];
@@ -83,8 +83,8 @@ export class BoundaryTestSuite {
         conflictResult,
       );
 
-      console.log('\n[BoundaryTest] Boundary test completed');
-      console.log(`[BoundaryTest] Result: ${passed ? 'PASSED' : 'FAILED'}`);
+      console.warn('\n[BoundaryTest] Boundary test completed');
+      console.warn(`[BoundaryTest] Result: ${passed ? 'PASSED' : 'FAILED'}`);
 
       return {
         testName: 'Boundary Test Suite',
@@ -116,32 +116,32 @@ export class BoundaryTestSuite {
    * 测试空文件
    */
   private async testEmptyFile(): Promise<EmptyFileTestResult> {
-    console.log('  [EmptyFileTest] Testing empty file handling...');
+    console.warn('  [EmptyFileTest] Testing empty file handling...');
 
     const startTime = Date.now();
 
     try {
       // 创建空文件
       const emptyContent = '';
-      console.log('  [EmptyFileTest] Creating empty file...');
+      console.warn('  [EmptyFileTest] Creating empty file...');
       const created = this.handleFileContent(emptyContent);
 
       // 读取空文件
-      console.log('  [EmptyFileTest] Reading empty file...');
+      console.warn('  [EmptyFileTest] Reading empty file...');
       const read = this.handleFileContent(emptyContent);
 
       // 保存空文件
-      console.log('  [EmptyFileTest] Saving empty file...');
+      console.warn('  [EmptyFileTest] Saving empty file...');
       const saved = this.handleFileContent(emptyContent);
 
       // 删除空文件
-      console.log('  [EmptyFileTest] Deleting empty file...');
+      console.warn('  [EmptyFileTest] Deleting empty file...');
       const deleted = true;
 
       const processingTime = Date.now() - startTime;
 
-      console.log(`  [EmptyFileTest] Processing time: ${processingTime}ms`);
-      console.log(`  [EmptyFileTest] Result: ${created && read && saved && deleted ? 'PASSED' : 'FAILED'}`);
+      console.warn(`  [EmptyFileTest] Processing time: ${processingTime}ms`);
+      console.warn(`  [EmptyFileTest] Result: ${created && read && saved && deleted ? 'PASSED' : 'FAILED'}`);
 
       return {
         created,
@@ -166,7 +166,7 @@ export class BoundaryTestSuite {
    * 测试超大文件
    */
   private async testLargeFile(): Promise<LargeFileTestResult> {
-    console.log(
+    console.warn(
       `  [LargeFileTest] Testing large file (${this.config.largeFileSize} bytes)...`,
     );
 
@@ -174,25 +174,25 @@ export class BoundaryTestSuite {
 
     try {
       // 生成超大文件内容
-      console.log('  [LargeFileTest] Generating large file content...');
+      console.warn('  [LargeFileTest] Generating large file content...');
       const largeContent = this.generateLargeContent(this.config.largeFileSize);
 
       // 加载文件
       const loadStart = Date.now();
-      console.log('  [LargeFileTest] Loading large file...');
-      const loaded = this.handleFileContent(largeContent);
+      console.warn('  [LargeFileTest] Loading large file...');
+      const _loaded = this.handleFileContent(largeContent);
       const loadTime = Date.now() - loadStart;
 
       // 解析文件
       const parseStart = Date.now();
-      console.log('  [LargeFileTest] Parsing large file...');
-      const parsed = this.parseContent(largeContent);
+      console.warn('  [LargeFileTest] Parsing large file...');
+      const _parsed = this.parseContent(largeContent);
       const parseTime = Date.now() - parseStart;
 
       // 渲染文件（模拟）
       const renderStart = Date.now();
-      console.log('  [LargeFileTest] Rendering large file...');
-      const rendered = this.renderContent(largeContent);
+      console.warn('  [LargeFileTest] Rendering large file...');
+      const _rendered = this.renderContent(largeContent);
       const renderTime = Date.now() - renderStart;
 
       const memoryUsage = this.getCurrentMemoryUsage();
@@ -207,10 +207,10 @@ export class BoundaryTestSuite {
         crashed: false,
       };
 
-      console.log(`  [LargeFileTest] Load time: ${loadTime}ms`);
-      console.log(`  [LargeFileTest] Parse time: ${parseTime}ms`);
-      console.log(`  [LargeFileTest] Render time: ${renderTime}ms`);
-      console.log(`  [LargeFileTest] Memory usage: ${memoryUsage.toFixed(2)}MB`);
+      console.warn(`  [LargeFileTest] Load time: ${loadTime}ms`);
+      console.warn(`  [LargeFileTest] Parse time: ${parseTime}ms`);
+      console.warn(`  [LargeFileTest] Render time: ${renderTime}ms`);
+      console.warn(`  [LargeFileTest] Memory usage: ${memoryUsage.toFixed(2)}MB`);
 
       return result;
     } catch (error) {
@@ -231,7 +231,7 @@ export class BoundaryTestSuite {
    * 测试特殊字符
    */
   private async testSpecialChars(): Promise<SpecialCharsTestResult> {
-    console.log('  [SpecialCharsTest] Testing special characters...');
+    console.warn('  [SpecialCharsTest] Testing special characters...');
 
     const startTime = Date.now();
 
@@ -257,10 +257,10 @@ export class BoundaryTestSuite {
     );
     const processingTime = Date.now() - startTime;
 
-    console.log(`  [SpecialCharsTest] Total chars: ${totalChars}`);
-    console.log(`  [SpecialCharsTest] Successful: ${successfulChars}`);
-    console.log(`  [SpecialCharsTest] Failed: ${failedChars}`);
-    console.log(`  [SpecialCharsTest] Processing time: ${processingTime}ms`);
+    console.warn(`  [SpecialCharsTest] Total chars: ${totalChars}`);
+    console.warn(`  [SpecialCharsTest] Successful: ${successfulChars}`);
+    console.warn(`  [SpecialCharsTest] Failed: ${failedChars}`);
+    console.warn(`  [SpecialCharsTest] Processing time: ${processingTime}ms`);
 
     return {
       charSets,
@@ -279,7 +279,7 @@ export class BoundaryTestSuite {
     range: string,
     count: number,
   ): CharSetTestResult {
-    console.log(`    [CharSet] Testing ${name} (${range})...`);
+    console.warn(`    [CharSet] Testing ${name} (${range})...`);
 
     const chars: string[] = [];
     const failedChars: string[] = [];
@@ -316,7 +316,7 @@ export class BoundaryTestSuite {
    * 测试并发冲突
    */
   private async testConcurrencyConflicts(): Promise<ConflictTestResult> {
-    console.log(
+    console.warn(
       `  [ConflictTest] Testing ${this.config.conflictCount} conflict scenarios...`,
     );
 
@@ -380,17 +380,17 @@ export class BoundaryTestSuite {
 
     const resolutionTimes = scenarios
       .filter((s) => s.resolutionTime !== undefined)
-      .map((s) => s.resolutionTime!);
+      .map((s) => s.resolutionTime as any);
 
     const averageResolutionTime =
       resolutionTimes.length > 0
         ? resolutionTimes.reduce((a, b) => a + b, 0) / resolutionTimes.length
         : 0;
 
-    console.log(`  [ConflictTest] Total conflicts: ${totalConflicts}`);
-    console.log(`  [ConflictTest] Resolved: ${resolvedConflicts}`);
-    console.log(`  [ConflictTest] Unresolved: ${unresolvedConflicts}`);
-    console.log(
+    console.warn(`  [ConflictTest] Total conflicts: ${totalConflicts}`);
+    console.warn(`  [ConflictTest] Resolved: ${resolvedConflicts}`);
+    console.warn(`  [ConflictTest] Unresolved: ${unresolvedConflicts}`);
+    console.warn(
       `  [ConflictTest] Average resolution time: ${averageResolutionTime.toFixed(2)}ms`,
     );
 
@@ -410,7 +410,7 @@ export class BoundaryTestSuite {
     name: string,
     type: ConflictType,
   ): Promise<ConflictScenario> {
-    const start = Date.now();
+    const _start = Date.now();
 
     try {
       // 模拟并发操作
@@ -553,16 +553,18 @@ export class BoundaryTestSuite {
         return String.fromCharCode(128 + (index % 128));
       case 'Unicode BMP':
         return String.fromCharCode(index % 65536);
-      case 'Emoji':
+      case 'Emoji': {
         const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂'];
         return emojis[index % emojis.length];
+      }
       case 'Chinese':
         return String.fromCharCode(0x4e00 + (index % 0x9fa5 - 0x4e00));
       case 'Arabic':
         return String.fromCharCode(0x0621 + (index % 26));
-      case 'RTL':
+      case 'RTL': {
         const rtlChars = ['\u200F', '\u202B', '\u202E'];
         return rtlChars[index % rtlChars.length];
+      }
       case 'Control':
         return String.fromCharCode(index % 32);
       default:

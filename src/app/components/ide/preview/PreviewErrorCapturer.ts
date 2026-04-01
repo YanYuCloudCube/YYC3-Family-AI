@@ -95,7 +95,7 @@ export class PreviewErrorCapturer {
   private errors: ErrorEntry[] = [];
   private config: ErrorCapturerConfig;
   private listeners: Set<(error: ErrorEntry) => void> = new Set();
-  private originalConsole: Record<string, Function> = {};
+  private originalConsole: Record<string, (...args: unknown[]) => void> = {};
   private originalOnError: OnErrorEventHandler | null = null;
   private originalOnUnhandledRejection: ((event: PromiseRejectionEvent) => void) | null = null;
 
@@ -134,7 +134,7 @@ export class PreviewErrorCapturer {
    */
   private captureRuntimeErrors(): void {
     this.originalOnError = window.onerror;
-    
+
     window.onerror = (message, filename, lineno, colno, error) => {
       const entry = this.createErrorEntry({
         type: this.classifyRuntimeError(error),
@@ -165,11 +165,11 @@ export class PreviewErrorCapturer {
    */
   private capturePromiseRejections(): void {
     this.originalOnUnhandledRejection = window.onunhandledrejection;
-    
+
     window.onunhandledrejection = (event: PromiseRejectionEvent) => {
       const error = event.reason;
       const stack = error instanceof Error ? error.stack : undefined;
-      
+
       const entry = this.createErrorEntry({
         type: ErrorType.PROMISE,
         level: ErrorLevel.ERROR,
@@ -198,14 +198,14 @@ export class PreviewErrorCapturer {
   private captureResourceErrors(): void {
     window.addEventListener('error', (event: Event) => {
       const target = event.target;
-      
-      if (target && (target instanceof HTMLImageElement || 
-                     target instanceof HTMLScriptElement || 
+
+      if (target && (target instanceof HTMLImageElement ||
+                     target instanceof HTMLScriptElement ||
                      target instanceof HTMLLinkElement)) {
         const src = target instanceof HTMLImageElement ? target.src :
                     target instanceof HTMLScriptElement ? target.src :
                     target instanceof HTMLLinkElement ? target.href : '';
-        
+
         const entry = this.createErrorEntry({
           type: ErrorType.RESOURCE,
           level: ErrorLevel.ERROR,
@@ -229,18 +229,18 @@ export class PreviewErrorCapturer {
    */
   private captureConsoleErrors(): void {
     const methods = ['error', 'warn', 'info', 'debug'] as const;
-    
+
     methods.forEach(method => {
       this.originalConsole[method] = console[method];
-      
+
       console[method] = (...args: any[]) => {
         const level = this.mapConsoleMethodToLevel(method);
-        
+
         const entry = this.createErrorEntry({
           type: ErrorType.CONSOLE,
           level,
           source: ErrorSource.USER_CODE,
-          message: args.map(arg => 
+          message: args.map(arg =>
             typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
           ).join(' '),
           data: {
@@ -300,7 +300,7 @@ export class PreviewErrorCapturer {
    */
   private addError(error: ErrorEntry): void {
     this.errors.push(error);
-    
+
     // 限制错误数量
     if (this.errors.length > this.config.maxEntries) {
       this.errors.shift();
@@ -314,7 +314,7 @@ export class PreviewErrorCapturer {
    * 判断是否应该忽略错误
    */
   private shouldIgnore(error: ErrorEntry): boolean {
-    return this.config.ignorePatterns.some(pattern => 
+    return this.config.ignorePatterns.some(pattern =>
       pattern.test(error.message)
     );
   }
@@ -328,7 +328,7 @@ export class PreviewErrorCapturer {
     if (error instanceof SyntaxError) return ErrorType.SYNTAX;
     if (error instanceof TypeError) return ErrorType.TYPE;
     if (error instanceof ReferenceError) return ErrorType.REFERENCE;
-    
+
     return ErrorType.RUNTIME;
   }
 
@@ -337,16 +337,16 @@ export class PreviewErrorCapturer {
    */
   private determineErrorSource(filename: string | undefined): ErrorSource {
     if (!filename) return ErrorSource.UNKNOWN;
-    
+
     // 用户代码
-    if (filename.includes('src/') || 
+    if (filename.includes('src/') ||
         filename.includes('app/') ||
         filename.startsWith('file://')) {
       return ErrorSource.USER_CODE;
     }
 
     // 外部库
-    if (filename.includes('node_modules') || 
+    if (filename.includes('node_modules') ||
         filename.includes('https://') ||
         filename.includes('http://')) {
       return ErrorSource.EXTERNAL;

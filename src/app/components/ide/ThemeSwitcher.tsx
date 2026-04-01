@@ -11,7 +11,7 @@
  * @tags theme,switcher,ui,button,tokens
  */
 
-import { useTheme } from "./ThemeStore";
+import { useThemeStore } from "./stores/useThemeStore";
 import { useThemeTokens } from "./hooks/useThemeTokens";
 import { Zap, Anchor, Palette } from "lucide-react";
 
@@ -21,7 +21,7 @@ interface ThemeSwitcherProps {
 }
 
 export default function ThemeSwitcher({ compact = false, layout = 'horizontal' }: ThemeSwitcherProps) {
-  const { theme, toggleTheme, isCyber, setShowThemeCustomizer } = useTheme();
+  const { currentTheme, toggleTheme, isCyber, setShowThemeCustomizer } = useThemeStore();
   const t = useThemeTokens();
   const ts = t.themeSwitcher;
 

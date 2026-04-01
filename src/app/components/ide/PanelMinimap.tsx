@@ -80,7 +80,7 @@ function MinimapNode({ node, onPanelClick }: MinimapNodeProps) {
 
     return (
       <div
-        onClick={() => onPanelClick?.(node.panelId!)}
+        onClick={() => onPanelClick?.(node.panelId as any)}
         className="rounded-[2px] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity overflow-hidden"
         style={{
           flex: `${node.size || 1} 1 0%`,

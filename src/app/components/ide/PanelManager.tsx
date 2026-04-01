@@ -195,7 +195,7 @@ function removeNodeFromTree(root: LayoutNode, id: string): LayoutNode {
     parent.panelId = remaining.panelId;
     parent.direction = remaining.direction;
     parent.children = remaining.children;
-    parent.size = parent.size;
+    parent.size = remaining.size;
   }
 
   return clone;
@@ -708,7 +708,7 @@ const LAYOUT_STORAGE_KEY = SK_PANEL_LAYOUT;
 function persistLayout(layout: LayoutNode): void {
   try {
     localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(layout));
-  } catch {}
+  } catch { /* empty */ }
 }
 
 /** Load persisted layout from localStorage */
@@ -716,7 +716,7 @@ function loadPersistedLayout(): LayoutNode | null {
   try {
     const raw = localStorage.getItem(LAYOUT_STORAGE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch { /* empty */ }
   return null;
 }
 
@@ -844,7 +844,7 @@ export function PanelManagerProvider({
     // Clear persisted layout so fresh start uses the initial preset
     try {
       localStorage.removeItem(LAYOUT_STORAGE_KEY);
-    } catch {}
+    } catch { /* empty */ }
   }, [initialLayout]);
 
   const openPanel = useCallback((panelId: PanelId) => {

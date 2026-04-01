@@ -223,7 +223,7 @@ const PERF_RULES: PerfRule[] = [
     category: "state",
     impact: "medium",
     fileExtensions: [".tsx", ".jsx"],
-    check: (_fp, content, _lines) => {
+    check: (_fp, content, lines) => {
       const results: ReturnType<PerfRule["check"]> = [];
       const stateMatches = [...content.matchAll(/\buseState\s*[<(]/g)];
       if (stateMatches.length > 6) {
@@ -282,7 +282,7 @@ const PERF_RULES: PerfRule[] = [
     category: "state",
     impact: "high",
     fileExtensions: [".tsx", ".jsx"],
-    check: (_fp, content, _lines) => {
+    check: (_fp, content, lines) => {
       const results: ReturnType<PerfRule["check"]> = [];
       // Detect <SomeContext.Provider value={{ ... }}> — inline object
       const providerPattern = /\.Provider\s+value=\{\{/g;
@@ -537,7 +537,7 @@ const PERF_RULES: PerfRule[] = [
     category: "memory",
     impact: "high",
     fileExtensions: [".tsx", ".jsx"],
-    check: (_fp, content, _lines) => {
+    check: (_fp, content, lines) => {
       const results: ReturnType<PerfRule["check"]> = [];
       // Detect useEffect with addEventListener/setInterval/setTimeout but no return cleanup
       const effectBlocks = [

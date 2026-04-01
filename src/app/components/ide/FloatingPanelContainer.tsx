@@ -12,7 +12,7 @@
  * @tags floating,panels,windows,drag,resize,wave3
  */
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import {
   X,
   Minus,

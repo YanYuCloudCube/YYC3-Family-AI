@@ -1,4 +1,17 @@
 /**
+ * @file clipboard.ts
+ * @description clipboard — utils 模块
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags module,typescript,utils
+ */
+
+/**
  * file: utils/clipboard.ts
  * description: 剪贴板工具函数，兼容 Clipboard API 被禁用的沙箱环境，
  *              使用 execCommand('copy') 作为回退方案

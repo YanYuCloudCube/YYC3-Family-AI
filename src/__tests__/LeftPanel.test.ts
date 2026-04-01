@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file LeftPanel.test.ts
  * @description LeftPanel 组件逻辑单元测试——

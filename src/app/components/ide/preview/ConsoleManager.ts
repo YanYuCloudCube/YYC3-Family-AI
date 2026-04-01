@@ -89,7 +89,7 @@ export class ConsoleManager {
    */
   addLog(type: LogType, ...args: any[]): LogEntry {
     const entry = this.createLogEntry(type, args);
-    
+
     // 合并重复日志
     const lastLog = this.logs[this.logs.length - 1];
     if (lastLog && lastLog.message === entry.message && lastLog.type === type) {
@@ -100,7 +100,7 @@ export class ConsoleManager {
     this.logs.push(entry);
     this.trimLogs();
     this.notifyListeners(entry);
-    
+
     return entry;
   }
 
@@ -110,7 +110,7 @@ export class ConsoleManager {
   private createLogEntry(type: LogType, args: any[]): LogEntry {
     const message = this.formatMessage(args);
     const level = this.mapTypeToLevel(type);
-    
+
     const entry: LogEntry = {
       id: generateId(),
       type,
@@ -130,7 +130,7 @@ export class ConsoleManager {
         this.timers.set(args[0], Date.now());
         entry.timerLabel = args[0];
         break;
-      case LogType.TIME_END:
+      case LogType.TIME_END: {
         const startTime = this.timers.get(args[0]);
         if (startTime) {
           const duration = Date.now() - startTime;
@@ -139,6 +139,7 @@ export class ConsoleManager {
           this.timers.delete(args[0]);
         }
         break;
+      }
       case LogType.GROUP:
         this.groupStack.push(args[0]);
         entry.collapsed = false;
@@ -290,7 +291,7 @@ export class ConsoleManager {
       const color = this.getLogColor(log.level);
       const timestamp = new Date(log.timestamp).toLocaleTimeString();
       const count = log.count ? ` <span class="count">(${log.count})</span>` : '';
-      
+
       return `
         <div class="log-entry ${log.level}">
           <span class="timestamp">${timestamp}</span>

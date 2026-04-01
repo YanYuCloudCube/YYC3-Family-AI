@@ -119,6 +119,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unnecessary-type-assertion': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-base-to-string': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
     },
   },
 

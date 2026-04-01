@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file ReactWindow.test.tsx
  * @description 测试react-window的基本功能

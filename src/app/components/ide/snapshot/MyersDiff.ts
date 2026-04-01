@@ -182,7 +182,7 @@ export class MyersDiff {
     let y = newLines.length;
 
     for (let D = trace.length - 1; D > 0; D--) {
-      const v = trace[D];
+      const _v = trace[D];
       const k = x - y;
       const prevV = trace[D - 1];
 

@@ -62,7 +62,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = localStorage.getItem(SK_THEME);
       if (stored === "cyberpunk" || stored === "navy") return stored;
-    } catch {}
+    } catch { /* empty */ }
     return "navy";
   });
 
@@ -72,7 +72,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setThemeState(t);
     try {
       localStorage.setItem(SK_THEME, t);
-    } catch {}
+    } catch { /* empty */ }
   }, []);
 
   const toggleTheme = useCallback(() => {

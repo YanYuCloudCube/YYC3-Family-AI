@@ -1,3 +1,16 @@
+/**
+ * @file breadcrumb.tsx
+ * @description breadcrumb 组件 — React UI 组件
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags component,react,ui,ui
+ */
+
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
@@ -39,12 +52,14 @@ function BreadcrumbLink({
   asChild?: boolean;
 }) {
   const Comp = asChild ? Slot : "a";
+  const { ref, ...rest } = props as React.ComponentProps<"a"> & { ref?: React.Ref<HTMLAnchorElement> };
 
   return (
     <Comp
       data-slot="breadcrumb-link"
       className={cn("hover:text-foreground transition-colors", className)}
-      {...props}
+      ref={ref as any}
+      {...rest}
     />
   );
 }

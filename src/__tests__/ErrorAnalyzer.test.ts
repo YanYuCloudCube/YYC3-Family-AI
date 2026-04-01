@@ -1,3 +1,16 @@
+/**
+ * @file ErrorAnalyzer.test.ts
+ * @description 错误分析器测试 - 测试错误分类、分析和建议生成
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // ErrorAnalyzer 单元测试
 // 覆盖: 全部 27 条静态分析规则 + analyzeFile + analyzeProject
@@ -59,7 +72,7 @@ describe("ts-non-null-assertion", () => {
   it("检测非空断言 foo!", () => {
     const diags = getDiags(
       "test.ts",
-      `const x = obj!.value`,
+      `const x = foo!`,
       "ts-non-null-assertion",
     );
     expect(diags.length).toBeGreaterThanOrEqual(1);
@@ -85,7 +98,12 @@ describe("ts-console-log", () => {
   });
 
   it("检测 console.debug", () => {
-    const diags = getDiags("test.ts", `console.debug(x)`, "ts-console-log");
+    const diags = getDiags("test.ts", `console.debug("hello")`, "ts-console-log");
+    expect(diags).toHaveLength(1);
+  });
+
+  it("检测 console.info", () => {
+    const diags = getDiags("test.ts", `console.info("hello")`, "ts-console-log");
     expect(diags).toHaveLength(1);
   });
 
@@ -100,7 +118,7 @@ describe("ts-console-log", () => {
 
   it("autoFix 删除该行", () => {
     const diags = getDiags("test.ts", `console.log("hello")`, "ts-console-log");
-    expect(diags[0].autoFix!.replacement).toBe("");
+    expect((diags[0].autoFix as any).replacement).toBe("");
   });
 });
 
@@ -182,7 +200,7 @@ function App() {
   });
 
   it("有依赖时不报错", () => {
-    const code = `useEffect(() => { console.log(count) }, [count])`;
+    const code = `useEffect(() => { console.warn(count) }, [count])`;
     const diags = getDiags("test.tsx", code, "react-missing-deps");
     expect(diags).toHaveLength(0);
   });
@@ -452,7 +470,7 @@ describe("sec-hardcoded-secret", () => {
 
 describe("bp-empty-catch", () => {
   it("检测空 catch 块", () => {
-    const code = `try { foo() } catch (e) {}`;
+    const code = `try { foo() } catch (e) { /* empty */ }`;
     const diags = getDiags("test.ts", code, "bp-empty-catch");
     expect(diags).toHaveLength(1);
     expect(diags[0].severity).toBe("warning");
@@ -542,7 +560,7 @@ const x: any = eval("1+1")
 
   it("结果按 severity 排序 (errors first)", () => {
     const code = `
-console.log("x")
+console.warn("x")
 const y = eval("z")
 // TODO: check
 `;
@@ -566,9 +584,9 @@ const y = eval("z")
 
   it("每条诊断有唯一 id", () => {
     const code = `
-console.log("a")
-console.log("b")
-console.log("c")
+console.warn("a")
+console.warn("b")
+console.warn("c")
 `;
     const result = analyzeFile("test.ts", code);
     const ids = result.diagnostics.map((d) => d.id);

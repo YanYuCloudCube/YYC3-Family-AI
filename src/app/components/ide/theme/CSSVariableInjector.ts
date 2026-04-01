@@ -49,10 +49,10 @@ export interface PerformanceMetrics {
  */
 export class CSSVariableInjector {
   private static instance: CSSVariableInjector;
-  
+
   // 当前变量状态
   private currentVariables: Map<string, string> = new Map();
-  
+
   // 性能监控
   private metrics: PerformanceMetrics = {
     totalUpdates: 0,
@@ -61,12 +61,12 @@ export class CSSVariableInjector {
     averageDuration: 0,
     lastUpdateDuration: 0
   };
-  
+
   // 批量更新队列（用于减少重绘）
   private pendingUpdate: boolean = false;
   private pendingVariables: Map<string, string> = new Map();
   private updateScheduled: boolean = false;
-  
+
   // 变化监听器
   private changeListeners: Set<(changes: CSSVariableChange[]) => void> = new Set();
 
@@ -97,7 +97,7 @@ export class CSSVariableInjector {
     // 检测变化
     for (const [key, value] of Object.entries(variables)) {
       const oldValue = this.currentVariables.get(key);
-      
+
       if (oldValue !== value) {
         changes.push({ key, oldValue, newValue: value });
         applied++;
@@ -109,7 +109,7 @@ export class CSSVariableInjector {
     // 只有有变化才更新DOM
     if (changes.length > 0) {
       this.applyChangesToDOM(changes);
-      
+
       // 更新内部状态
       for (const change of changes) {
         this.currentVariables.set(change.key, change.newValue);
@@ -144,7 +144,7 @@ export class CSSVariableInjector {
     // 如果还没有调度更新，则调度
     if (!this.updateScheduled) {
       this.updateScheduled = true;
-      
+
       // 使用requestAnimationFrame或setTimeout
       if (typeof requestAnimationFrame !== 'undefined') {
         requestAnimationFrame(() => this.flushScheduledUpdate());
@@ -201,13 +201,13 @@ export class CSSVariableInjector {
    */
   public clearAll(): void {
     const root = document.documentElement;
-    
+
     for (const key of this.currentVariables.keys()) {
       root.style.removeProperty(key);
     }
-    
+
     this.currentVariables.clear();
-    
+
     // 重置性能指标
     this.metrics = {
       totalUpdates: 0,
@@ -237,7 +237,7 @@ export class CSSVariableInjector {
    */
   public addChangeListener(callback: (changes: CSSVariableChange[]) => void): () => void {
     this.changeListeners.add(callback);
-    
+
     // 返回取消监听函数
     return () => {
       this.changeListeners.delete(callback);
@@ -249,12 +249,12 @@ export class CSSVariableInjector {
    */
   public applyTheme(theme: ThemeType, customVariables?: Record<string, string>): void {
     const themeVariables = this.getThemeVariables(theme);
-    
+
     // 合并自定义变量
-    const finalVariables = customVariables 
+    const finalVariables = customVariables
       ? { ...themeVariables, ...customVariables }
       : themeVariables;
-    
+
     this.batchUpdate(finalVariables);
   }
 
@@ -290,7 +290,7 @@ export class CSSVariableInjector {
    */
   private applyChangesToDOM(changes: CSSVariableChange[]): void {
     const root = document.documentElement;
-    
+
     for (const change of changes) {
       root.style.setProperty(change.key, change.newValue);
     }
@@ -316,11 +316,11 @@ export class CSSVariableInjector {
     this.metrics.totalUpdates++;
     this.metrics.totalVariables = this.currentVariables.size;
     this.metrics.lastUpdateDuration = duration;
-    
+
     // 计算平均值
     const totalDuration = this.metrics.averageDuration * (this.metrics.totalUpdates - 1) + duration;
     this.metrics.averageDuration = totalDuration / this.metrics.totalUpdates;
-    
+
     const totalBatchSize = this.metrics.averageBatchSize * (this.metrics.totalUpdates - 1) + changeCount;
     this.metrics.averageBatchSize = totalBatchSize / this.metrics.totalUpdates;
   }

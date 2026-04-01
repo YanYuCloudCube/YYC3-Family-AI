@@ -1,3 +1,16 @@
+/**
+ * @file CommandRegistry.test.ts
+ * @description 命令注册表测试 - 测试命令注册、执行和快捷键绑定
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // CommandRegistry 单元测试
 // 覆盖: 命令注册/查找、命令执行、命令行解析、Tab 补全、

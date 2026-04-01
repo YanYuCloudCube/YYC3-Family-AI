@@ -38,7 +38,7 @@ class PerformanceBenchmark {
    * 开始测试
    */
   async start(): Promise<PerformanceMetrics> {
-    console.log("[Benchmark] Starting performance test...");
+    console.warn("[Benchmark] Starting performance test...");
 
     // 收集 Web Vitals
     const metrics = await this.collectWebVitals();
@@ -126,7 +126,8 @@ class PerformanceBenchmark {
     // 强制重排
     const element = document.createElement("div");
     document.body.appendChild(element);
-    element.offsetHeight; // 强制重排
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    element.offsetHeight;
     document.body.removeChild(element);
 
     const duration = performance.now() - start;
@@ -138,7 +139,7 @@ class PerformanceBenchmark {
       metrics: { duration },
     });
 
-    console.log(`[Benchmark] Render performance: ${duration.toFixed(2)}ms`);
+    console.warn(`[Benchmark] Render performance: ${duration.toFixed(2)}ms`);
   }
 
   /**
@@ -161,7 +162,7 @@ class PerformanceBenchmark {
         },
       });
 
-      console.log(`[Benchmark] Memory usage: ${Math.round(usage * 100)}%`);
+      console.warn(`[Benchmark] Memory usage: ${Math.round(usage * 100)}%`);
     }
   }
 
@@ -183,7 +184,7 @@ class PerformanceBenchmark {
       metrics: { duration },
     });
 
-    console.log(`[Benchmark] Event response: ${duration.toFixed(2)}ms`);
+    console.warn(`[Benchmark] Event response: ${duration.toFixed(2)}ms`);
   }
 
   /**

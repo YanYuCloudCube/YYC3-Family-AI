@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file ErrorReportingService.test.ts
  * @description 错误上报服务测试 - 覆盖错误捕获、面包屑、用户上下文等核心功能

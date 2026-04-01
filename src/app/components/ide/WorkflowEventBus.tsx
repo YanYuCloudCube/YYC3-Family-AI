@@ -121,7 +121,7 @@ export function WorkflowEventBusProvider({
     handlersRef.current.forEach((handler) => {
       try {
         handler(full);
-      } catch {}
+      } catch { /* empty */ }
     });
   }, []);
 

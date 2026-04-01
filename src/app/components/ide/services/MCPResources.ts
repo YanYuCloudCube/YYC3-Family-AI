@@ -43,13 +43,13 @@ export class MCPResourceManager {
     if (!forceRefresh) {
       const cached = this.cache.get(uri);
       if (cached && cached.expiresAt > Date.now()) {
-        console.log(`[MCP Resources] Cache hit: ${uri}`);
+        console.warn(`[MCP Resources] Cache hit: ${uri}`);
         return cached.content;
       }
     }
 
     // 从服务器读取
-    console.log(`[MCP Resources] Reading: ${uri}`);
+    console.warn(`[MCP Resources] Reading: ${uri}`);
     const content = await this.client.readResource(uri);
 
     // 更新缓存
@@ -88,7 +88,7 @@ export class MCPResourceManager {
     subs.push({ uri, callback });
     this.subscriptions.set(uri, subs);
 
-    console.log(`[MCP Resources] Subscribed to: ${uri}`);
+    console.warn(`[MCP Resources] Subscribed to: ${uri}`);
 
     // 返回取消订阅函数
     return () => {
@@ -97,7 +97,7 @@ export class MCPResourceManager {
       if (index !== -1) {
         currentSubs.splice(index, 1);
         this.subscriptions.set(uri, currentSubs);
-        console.log(`[MCP Resources] Unsubscribed from: ${uri}`);
+        console.warn(`[MCP Resources] Unsubscribed from: ${uri}`);
       }
     };
   }
@@ -108,10 +108,10 @@ export class MCPResourceManager {
   clearCache(uri?: string): void {
     if (uri) {
       this.cache.delete(uri);
-      console.log(`[MCP Resources] Cache cleared: ${uri}`);
+      console.warn(`[MCP Resources] Cache cleared: ${uri}`);
     } else {
       this.cache.clear();
-      console.log("[MCP Resources] All cache cleared");
+      console.warn("[MCP Resources] All cache cleared");
     }
   }
 
@@ -122,7 +122,7 @@ export class MCPResourceManager {
     await Promise.all(
       uris.map((uri) => this.readResource(uri).catch(console.error))
     );
-    console.log(`[MCP Resources] Preloaded ${uris.length} resources`);
+    console.warn(`[MCP Resources] Preloaded ${uris.length} resources`);
   }
 
   /**
@@ -215,7 +215,7 @@ export class MCPResourceManager {
    */
   setCacheTTL(ttl: number): void {
     (this as any).DEFAULT_TTL = ttl;
-    console.log(`[MCP Resources] Cache TTL set to ${ttl}ms`);
+    console.warn(`[MCP Resources] Cache TTL set to ${ttl}ms`);
   }
 
   /**

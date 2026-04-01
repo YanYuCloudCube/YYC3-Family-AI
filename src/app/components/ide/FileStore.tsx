@@ -249,7 +249,7 @@ export function FileStoreProvider({ children }: { children: React.ReactNode }) {
         if (persisted && Object.keys(persisted).length > 0) {
           // Merge: persisted files take priority, fall back to defaults
           setFileContents((prev) => ({ ...prev, ...persisted }));
-          console.log(
+          console.warn(
             `[IndexedDB] Loaded ${Object.keys(persisted).length} persisted files`,
           );
         }

@@ -1,3 +1,16 @@
+/**
+ * @file provider-defs.ts
+ * @description provider-defs — pasted_text 模块
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags module,typescript,pasted_text
+ */
+
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   X, Plus, Trash2, Edit3, Check, ChevronDown, ChevronRight,
@@ -255,7 +268,7 @@ function loadJSON<T>(key: string, fallback: T): T {
   } catch { return fallback; }
 }
 function saveJSON(key: string, value: any) {
-  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* empty */ }
 }
 
 /* ================================================================
@@ -652,7 +665,7 @@ function MCPConfigPanel() {
   const handleAdd = () => {
     if (!newServer.name || !newServer.command) return;
     let envObj: Record<string, string> = {};
-    try { if (newServer.env) envObj = JSON.parse(newServer.env); } catch {}
+    try { if (newServer.env) envObj = JSON.parse(newServer.env); } catch { /* empty */ }
     const server: MCPServerConfig = {
       id: 'mcp-' + Date.now(),
       name: newServer.name,
@@ -890,7 +903,7 @@ function SmartDiagnosticsPanel({
   const onlineModels = Object.values(diagnostics).filter(d => d.status === 'success').length;
   const errorModels = Object.values(diagnostics).filter(d => d.status === 'error').length;
   const avgLatency = (() => {
-    const latencies = Object.values(diagnostics).filter(d => d.latency != null).map(d => d.latency!);
+    const latencies = Object.values(diagnostics).filter(d => d.latency != null).map(d => d.latency as any)2;
     return latencies.length > 0 ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length) : 0;
   })();
 

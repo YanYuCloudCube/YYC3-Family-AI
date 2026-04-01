@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file llm/TaskRecognizer.ts
  * @description 任务识别算法 — 支持多种格式的任务提取
@@ -48,7 +49,7 @@ export class TaskRecognizer {
           const title = match[1].trim();
           const priority = this.detectPriority(title);
           const type = this.detectType(title);
-          
+
           return {
             title,
             priority,
@@ -71,7 +72,7 @@ export class TaskRecognizer {
           const title = match[2].trim();
           const priority = this.detectPriority(title);
           const type = this.detectType(title);
-          
+
           return {
             title,
             priority,
@@ -94,7 +95,7 @@ export class TaskRecognizer {
           const title = match[1].trim();
           const priority = this.detectPriority(title);
           const type = this.detectType(title);
-          
+
           return {
             title,
             priority,
@@ -116,7 +117,7 @@ export class TaskRecognizer {
           const title = match[1].trim();
           const priority = this.detectPriority(title);
           const type = this.detectType(title);
-          
+
           return {
             title,
             priority,
@@ -139,7 +140,7 @@ export class TaskRecognizer {
           const title = match[2].trim();
           const priority = this.parsePriorityMark(priorityMark);
           const type = this.detectType(title);
-          
+
           return {
             title,
             priority,
@@ -175,11 +176,11 @@ export class TaskRecognizer {
       // 尝试匹配各种模式
       for (const pattern of this.patterns) {
         const matches = [...line.matchAll(new RegExp(pattern.pattern.source, pattern.pattern.flags))];
-        
+
         for (const match of matches) {
           try {
             const partialTask = pattern.extractor(match, context);
-            
+
             if (this.isValidTask(partialTask)) {
               const task: ExtractedTask = {
                 id: generateId(),
@@ -217,7 +218,7 @@ export class TaskRecognizer {
    */
   private detectPriority(text: string): TaskPriority {
     const lowerText = text.toLowerCase();
-    
+
     // 检查优先级关键词
     for (const [priority, keywords] of Object.entries(PRIORITY_KEYWORDS)) {
       if (keywords.some(keyword => lowerText.includes(keyword.toLowerCase()))) {
@@ -234,7 +235,7 @@ export class TaskRecognizer {
    */
   private detectType(text: string): TaskType {
     const lowerText = text.toLowerCase();
-    
+
     // 检查类型关键词
     for (const [type, keywords] of Object.entries(TASK_TYPE_KEYWORDS)) {
       if (keywords.some(keyword => lowerText.includes(keyword.toLowerCase()))) {
@@ -250,7 +251,7 @@ export class TaskRecognizer {
    */
   private parsePriorityMark(mark: string): TaskPriority {
     const lowerMark = mark.toLowerCase();
-    
+
     if (lowerMark === 'p0' || lowerMark === '紧急') {
       return TaskPriority.CRITICAL;
     } else if (lowerMark === 'p1' || lowerMark === '高') {
@@ -269,13 +270,13 @@ export class TaskRecognizer {
    */
   private autoTag(task: ExtractedTask): string[] {
     const tags: string[] = [...task.tags];
-    
+
     // 添加格式标签
     tags.push(`format:${task.format.toLowerCase()}`);
-    
+
     // 添加类型标签
     tags.push(`type:${task.type}`);
-    
+
     // 添加优先级标签
     tags.push(`priority:${task.priority}`);
 

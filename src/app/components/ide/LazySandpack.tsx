@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file LazySandpack.tsx
  * @description Sandpack 预览懒加载包装器，减少首屏 bundle 大小

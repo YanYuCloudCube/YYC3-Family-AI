@@ -61,7 +61,7 @@ function saveSessionList(scope: "ide" | "chat", sessions: ChatSession[]): void {
       .sort((a, b) => b.updatedAt - a.updatedAt)
       .slice(0, MAX_SESSIONS);
     localStorage.setItem(getSessionListKey(scope), JSON.stringify(trimmed));
-  } catch {}
+  } catch { /* empty */ }
 }
 
 // ── 单个会话消息读写 ──
@@ -120,7 +120,7 @@ export function saveMessages(
       });
       saveSessionList(scope, sessions);
     }
-  } catch {}
+  } catch { /* empty */ }
 }
 
 export function deleteSession(scope: "ide" | "chat", sessionId: string): void {
@@ -128,7 +128,7 @@ export function deleteSession(scope: "ide" | "chat", sessionId: string): void {
     localStorage.removeItem(getSessionKey(scope, sessionId));
     const sessions = listSessions(scope).filter((s) => s.id !== sessionId);
     saveSessionList(scope, sessions);
-  } catch {}
+  } catch { /* empty */ }
 }
 
 export function clearAllSessions(scope: "ide" | "chat"): void {
@@ -138,7 +138,7 @@ export function clearAllSessions(scope: "ide" | "chat"): void {
       localStorage.removeItem(getSessionKey(scope, s.id));
     }
     localStorage.removeItem(getSessionListKey(scope));
-  } catch {}
+  } catch { /* empty */ }
 }
 
 // ── 默认会话 ID 生成 ──

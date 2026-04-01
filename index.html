@@ -67,9 +67,52 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.yyc3.com" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     
     <!-- DNS prefetch for third-party services -->
     <link rel="dns-prefetch" href="https://api.yyc3.com" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    
+    <!-- CDN 加速配置 - 通过环境变量控制 -->
+    <script>
+      window.CDN_CONFIG = {
+        enabled: false,
+        baseUrl: 'https://cdn.jsdelivr.net/npm',
+        packages: {
+          'react': '18.3.1',
+          'react-dom': '18.3.1',
+          'zustand': '5.0.2',
+        }
+      };
+    </script>
+    
+    <!-- CDN 脚本加载器 -->
+    <script>
+      (function() {
+        const config = window.CDN_CONFIG;
+        if (!config.enabled) return;
+        
+        const loadScript = (name, version) => {
+          return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = `${config.baseUrl}/${name}@${version}/umd/${name}.development.js`;
+            script.crossOrigin = 'anonymous';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+        };
+        
+        // 并行加载所有 CDN 包
+        const promises = Object.entries(config.packages).map(([name, version]) => 
+          loadScript(name, version)
+        );
+        
+        Promise.all(promises).catch(err => {
+          console.error('[CDN] Failed to load packages:', err);
+        });
+      })();
+    </script>
   </head>
   <body>
     <div id="root">

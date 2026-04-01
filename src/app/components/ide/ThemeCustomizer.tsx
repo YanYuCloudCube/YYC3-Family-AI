@@ -435,7 +435,7 @@ export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
                   onFontChange={(category, level, value) => {
                     if (!editingTheme) return;
                     const updated = { ...editingTheme };
-                    updated.fonts[category] = { ...updated.fonts[category], [level]: value };
+                    updated.fonts[category] = { ...updated.fonts[category] as any, [level]: value };
                     setEditingTheme(updated);
                   }}
                   onStartEdit={() => {
@@ -450,7 +450,7 @@ export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
                   onLayoutChange={(section, key, value) => {
                     if (!editingTheme) return;
                     const updated = { ...editingTheme };
-                    updated.layout[section] = { ...updated.layout[section], [key]: value };
+                    updated.layout[section] = { ...updated.layout[section] as any, [key]: value };
                     setEditingTheme(updated);
                   }}
                   onStartEdit={() => {
@@ -468,7 +468,7 @@ export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
                     if (section === 'footer') {
                       updated.branding.footer = value;
                     } else {
-                      updated.branding[section] = { ...updated.branding[section], [key]: value };
+                      updated.branding[section as keyof typeof updated.branding] = { ...updated.branding[section as keyof typeof updated.branding] as any, [key]: value };
                     }
                     setEditingTheme(updated);
                   }}
@@ -629,7 +629,7 @@ function ThemeCard({
       {/* Info */}
       <div className="p-2.5 bg-[#0d1117]">
         <div className="flex items-center gap-1.5">
-          {theme.type === "dark" ? (
+          {theme.isDark ? (
             <Moon className="w-3 h-3 text-indigo-400/60" />
           ) : (
             <Sun className="w-3 h-3 text-amber-400/60" />
@@ -640,7 +640,7 @@ function ThemeCard({
           {isActive && <Check className="w-3 h-3 text-indigo-400 ml-auto" />}
         </div>
         <p className="text-[0.58rem] text-white/30 mt-0.5">
-          {theme.type === "dark" ? "深色" : "浅色"}{" "}
+          {theme.isDark ? "深色" : "浅色"}{" "}
           {theme.isCustom ? "· 自定义" : "· 预设"}
         </p>
       </div>
@@ -1159,7 +1159,7 @@ function BrandTab({ theme, isEditing, onBrandChange, onStartEdit }: { theme: The
   const handleLogoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
     reader.onload = (ev) => {
       const dataUrl = ev.target?.result as string;
@@ -1224,7 +1224,7 @@ function BrandTab({ theme, isEditing, onBrandChange, onStartEdit }: { theme: The
             />
             <EditableTextRow
               label="透明度"
-              value={theme.branding.logo.opacity}
+              value={String(theme.branding.logo.opacity)}
               onChange={(v) => onBrandChange('logo', 'opacity', v)}
               isEditing={isEditing}
             />
@@ -1418,7 +1418,8 @@ function ManageTab({
       version: "2.0.0",
       id: "example_theme",
       name: "示例主题 - 深蓝紫",
-      type: "dark",
+      type: "navy",
+      isDark: true,
       created: new Date().toISOString(),
       modified: new Date().toISOString(),
       colors: {
@@ -1443,32 +1444,61 @@ function ManageTab({
         ring: "oklch(0.65 0.25 264)",
       },
       chartColors: {
-        primary: "oklch(0.65 0.25 264)",
-        secondary: "oklch(0.55 0.20 200)",
-        accent: "oklch(0.70 0.22 300)",
-        muted: "oklch(0.25 0.02 264)",
-        grid: "oklch(0.25 0.02 264)",
+        chart1: "oklch(0.65 0.25 264)",
+        chart2: "oklch(0.55 0.20 200)",
+        chart3: "oklch(0.70 0.22 300)",
+        chart4: "oklch(0.25 0.02 264)",
+        chart5: "oklch(0.25 0.02 264)",
+        chart6: "oklch(0.25 0.02 264)",
       },
       sidebarColors: {
-        bg: "oklch(0.13 0.02 264)",
-        border: "oklch(0.25 0.02 264)",
-        active: "oklch(0.65 0.25 264)",
-        text: "oklch(0.95 0.01 264)",
-        muted: "oklch(0.60 0.01 264)",
+        sidebar: "oklch(0.13 0.02 264)",
+        sidebarBorder: "oklch(0.25 0.02 264)",
+        sidebarPrimary: "oklch(0.65 0.25 264)",
+        sidebarPrimaryForeground: "oklch(0.98 0.01 264)",
+        sidebarForeground: "oklch(0.95 0.01 264)",
+        sidebarAccent: "oklch(0.60 0.01 264)",
+        sidebarAccentForeground: "oklch(0.20 0.02 264)",
       },
       fonts: {
-        sans: { primary: "Inter, system-ui, sans-serif" },
-        serif: { primary: "Georgia, serif" },
-        mono: { primary: "JetBrains Mono, monospace" },
+        sans: { primary: "Inter, system-ui, sans-serif", secondary: "Georgia, serif", tertiary: "JetBrains Mono, monospace" },
+        serif: { primary: "Georgia, serif", secondary: "JetBrains Mono, monospace" },
+        mono: { primary: "JetBrains Mono, monospace", secondary: "Inter, system-ui, sans-serif" },
       },
       layout: {
-        radius: "0.5rem",
-        shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+        radius: {
+          xs: "4px",
+          sm: "8px",
+          md: "12px",
+          lg: "16px",
+          xl: "20px",
+          full: "24px",
+        },
+        shadow: {
+          xs: "0 1px 2px rgba(0, 0, 0, 0.05)",
+          sm: "0 2px 4px rgba(0, 0, 0, 0.08)",
+          md: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+          lg: "0 10px 15px -3px rgba(0, 0, 0, 0.15)",
+          xl: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        },
+        spacing: {},
       },
       branding: {
-        logo: "YYC³",
-        slogan: "AI 编程助手",
-        primaryColor: "oklch(0.65 0.25 264)",
+        logo: {
+          dataUrl: null,
+          size: "2.5rem",
+          radius: "8px",
+          opacity: 100,
+        },
+        slogan: { primary: "AI 编程助手", secondary: "YanYuCloudCube" },
+        title: { appName: "YYC³", template: "{pageName} - {appName}" },
+        footer: "YanYuCloudCube · 万象归元于云枢 | 深栈智启新纪元",
+        background: {
+          type: "color",
+          value: "#0d1117",
+          opacity: 100,
+          blur: "0px",
+        },
       },
       isPreset: false,
       isCustom: true,
@@ -1580,7 +1610,7 @@ function ManageTab({
                   {t.name}
                 </span>
                 <span className="text-[0.58rem] text-white/20 flex-shrink-0">
-                  {t.type === "dark" ? "深色" : "浅色"}
+                  {t.isDark ? "深色" : "浅色"}
                 </span>
               </div>
               <span className="text-[0.55rem] text-white/15 flex-shrink-0">

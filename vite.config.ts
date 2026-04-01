@@ -1,21 +1,43 @@
 /**
  * file: vite.config.ts
  * description: Vite 构建配置，包含 React 插件、Tailwind CSS 插件、路径别名、
- *              开发服务器配置（端口 3126 固定）、代码分割优化、压缩配置
+ *              开发服务器配置（端口 3126 固定）、代码分割优化、压缩配置、CDN 加速
  * author: YanYuCloudCube Team <admin@0379.email>
- * version: v1.0.0
+ * version: v1.1.0
  * created: 2026-03-19
- * updated: 2026-03-19
+ * updated: 2026-04-01
  * status: stable
  * license: MIT
  * copyright: Copyright (c) 2026 YanYuCloudCube Team
- * tags: config,vite,build,optimization,code-splitting
+ * tags: config,vite,build,optimization,code-splitting,cdn
  */
 
 import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+
+// CDN 配置 - 通过环境变量控制是否启用
+const USE_CDN = process.env.USE_CDN === 'true'
+
+// CDN 基础 URL
+const CDN_BASE = process.env.CDN_BASE_URL || 'https://cdn.jsdelivr.net/npm'
+
+// 需要通过 CDN 加载的包
+const CDN_PACKAGES = {
+  'react': '18.3.1',
+  'react-dom': '18.3.1',
+  'zustand': '5.0.2',
+}
+
+// 生成 external 配置
+const external = USE_CDN ? Object.keys(CDN_PACKAGES) : []
+
+// 生成 CDN 链接映射
+const cdnLinks = USE_CDN ? Object.entries(CDN_PACKAGES).map(([name, version]) => ({
+  name,
+  url: `${CDN_BASE}/${name}@${version}/umd/${name}.development.js`,
+})) : []
 
 export default defineConfig({
   plugins: [
@@ -26,7 +48,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      // Alias @ to the src directory
+      // Alias @ to src directory
       '@': path.resolve(__dirname, './src'),
     },
   },
@@ -100,9 +122,17 @@ export default defineConfig({
     ],
   },
   build: {
-    // 代码分割优化 - 减小构建产物大小
+    // CDN external 配置
     rollupOptions: {
+      external: USE_CDN ? external : [],
       output: {
+        // CDN 全局变量映射
+        globals: USE_CDN ? {
+          'react': 'React',
+          'react-dom': 'ReactDOM',
+          'zustand': 'zustand',
+        } : {},
+        // 代码分割优化 - 减小构建产物大小
         manualChunks: {
           // React 生态
           'react-vendor': ['react', 'react-dom', 'react-router'],

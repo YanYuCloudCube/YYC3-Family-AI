@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file PreviewModeController.integration.test.ts
  * @description PreviewModeController 集成测试 - 测试编辑器到预览的完整流程

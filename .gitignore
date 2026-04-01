@@ -53,3 +53,12 @@ lerna-debug.log*
 # Lock files (keep package-lock.json)
 yarn.lock
 pnpm-lock.yaml
+
+# Archive directories
+docs-archive/
+*.old
+
+# Temporary scripts
+_*.cjs
+_*.js
+*.temp

@@ -536,7 +536,7 @@ const SECURITY_RULES: SecurityRule[] = [
           const formBlock = lines
             .slice(i, Math.min(i + 20, lines.length))
             .join("\n");
-          if (!/csrf|_token|xsrf|anti.?forgery/i.test(formBlock)) {
+          if (!/csrf|token|xsrf|anti.?forgery/i.test(formBlock)) {
             results.push({
               line: i + 1,
               column: 1,

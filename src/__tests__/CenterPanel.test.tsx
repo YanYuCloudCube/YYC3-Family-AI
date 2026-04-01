@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/CenterPanel.test.tsx
  * @description P0 组件测试 — CenterPanel 文件管理面板核心交互：

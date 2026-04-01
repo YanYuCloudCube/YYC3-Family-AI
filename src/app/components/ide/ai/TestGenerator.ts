@@ -92,7 +92,7 @@ export function extractSymbols(content: string): ExtractedSymbol[] {
 
   // ── 提取导出的函数 ──
   const funcPatterns = [
-    // export function name(params): RetType { ... }
+    // export function name(_params): RetType { ... }
     // Use a more flexible pattern to match complex return types
     /^(export\s+(?:default\s+)?)?(?:async\s+)?function\s+(\w+)\s*(<[^>]*>)?\s*\(([^)]*)\)[^{]*\{/,
     // export const name = (params): RetType => ...

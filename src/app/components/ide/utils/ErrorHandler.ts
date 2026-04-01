@@ -19,32 +19,32 @@ export enum ErrorType {
   PREVIEW_UPDATE_FAILED = "PREVIEW_UPDATE_FAILED",
   PREVIEW_MODE_INVALID = "PREVIEW_MODE_INVALID",
   PREVIEW_TIMEOUT = "PREVIEW_TIMEOUT",
-  
+
   // 快照相关错误
   SNAPSHOT_CREATE_FAILED = "SNAPSHOT_CREATE_FAILED",
   SNAPSHOT_RESTORE_FAILED = "SNAPSHOT_RESTORE_FAILED",
   SNAPSHOT_NOT_FOUND = "SNAPSHOT_NOT_FOUND",
   SNAPSHOT_STORAGE_FULL = "SNAPSHOT_STORAGE_FULL",
-  
+
   // 验证相关错误
   VALIDATION_FAILED = "VALIDATION_FAILED",
   VALIDATION_TIMEOUT = "VALIDATION_TIMEOUT",
   CODE_PARSE_ERROR = "CODE_PARSE_ERROR",
-  
+
   // AI相关错误
   AI_REQUEST_FAILED = "AI_REQUEST_FAILED",
   AI_RESPONSE_INVALID = "AI_RESPONSE_INVALID",
   AI_TIMEOUT = "AI_TIMEOUT",
-  
+
   // 存储相关错误
   STORAGE_QUOTA_EXCEEDED = "STORAGE_QUOTA_EXCEEDED",
   STORAGE_READ_FAILED = "STORAGE_READ_FAILED",
   STORAGE_WRITE_FAILED = "STORAGE_WRITE_FAILED",
-  
+
   // 网络相关错误
   NETWORK_ERROR = "NETWORK_ERROR",
   NETWORK_TIMEOUT = "NETWORK_TIMEOUT",
-  
+
   // 通用错误
   UNKNOWN_ERROR = "UNKNOWN_ERROR",
   INVALID_PARAMETER = "INVALID_PARAMETER",
@@ -180,9 +180,9 @@ export class ErrorHandler {
         return await fn();
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
-        
+
         if (attempt < maxAttempts) {
-          console.log(`[ErrorHandler] Retry attempt ${attempt}/${maxAttempts}`);
+          console.warn(`[ErrorHandler] Retry attempt ${attempt}/${maxAttempts}`);
           await this.delay(this.config.retryDelayMs * attempt);
         }
       }
@@ -360,27 +360,27 @@ export class ErrorHandler {
       [ErrorType.PREVIEW_UPDATE_FAILED]: "预览更新失败，请刷新页面重试",
       [ErrorType.PREVIEW_MODE_INVALID]: "预览模式无效，已恢复默认模式",
       [ErrorType.PREVIEW_TIMEOUT]: "预览更新超时，请检查网络连接",
-      
+
       [ErrorType.SNAPSHOT_CREATE_FAILED]: "创建快照失败，请稍后重试",
       [ErrorType.SNAPSHOT_RESTORE_FAILED]: "恢复快照失败，快照可能已损坏",
       [ErrorType.SNAPSHOT_NOT_FOUND]: "快照不存在，可能已被删除",
       [ErrorType.SNAPSHOT_STORAGE_FULL]: "存储空间已满，请删除旧快照",
-      
+
       [ErrorType.VALIDATION_FAILED]: "代码验证失败，请检查代码格式",
       [ErrorType.VALIDATION_TIMEOUT]: "代码验证超时，文件可能过大",
       [ErrorType.CODE_PARSE_ERROR]: "代码解析错误，请检查语法",
-      
+
       [ErrorType.AI_REQUEST_FAILED]: "AI 请求失败，请稍后重试",
       [ErrorType.AI_RESPONSE_INVALID]: "AI 响应格式错误，请重试",
       [ErrorType.AI_TIMEOUT]: "AI 响应超时，请稍后重试",
-      
+
       [ErrorType.STORAGE_QUOTA_EXCEEDED]: "存储空间不足，请清理数据",
       [ErrorType.STORAGE_READ_FAILED]: "读取数据失败，请刷新页面",
       [ErrorType.STORAGE_WRITE_FAILED]: "保存数据失败，请检查存储空间",
-      
+
       [ErrorType.NETWORK_ERROR]: "网络连接失败，请检查网络",
       [ErrorType.NETWORK_TIMEOUT]: "网络请求超时，请稍后重试",
-      
+
       [ErrorType.UNKNOWN_ERROR]: "发生未知错误，请刷新页面重试",
       [ErrorType.INVALID_PARAMETER]: "参数错误，请检查输入",
       [ErrorType.OPERATION_CANCELLED]: "操作已取消",

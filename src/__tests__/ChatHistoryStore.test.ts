@@ -1,3 +1,16 @@
+/**
+ * @file ChatHistoryStore.test.ts
+ * @description 聊天历史存储测试 - 测试聊天记录持久化和历史查询
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // ChatHistoryStore 单元测试
 // 覆盖: 会话管理、消息持久化、跨 scope 导入、边界条件
@@ -186,9 +199,9 @@ describe("ChatHistoryStore — 跨 Scope 导入", () => {
     const result = importFromScope("ide", "chat", "ide-s1");
 
     expect(result).not.toBeNull();
-    expect(result!.messageCount).toBe(2);
+    expect((result as any).messageCount).toBe(2);
 
-    const imported = loadMessages("chat", result!.newSessionId);
+    const imported = loadMessages("chat", (result as any).newSessionId);
     expect(imported).toHaveLength(2);
     expect(imported[0].content).toBe("IDE 里的对话");
   });

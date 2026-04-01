@@ -14,7 +14,7 @@
  * @tags P2,chat,session,sync,bidirectional
  */
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { useSessionStore } from "../stores/useSessionStore";
 import { useWorkspaceStore } from "../stores/useWorkspaceStore";
 import {

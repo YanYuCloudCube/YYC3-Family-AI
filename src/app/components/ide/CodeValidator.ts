@@ -42,7 +42,7 @@ export interface ParsedCodeBlock {
 
 /**
  * 代码验证器类
- * 
+ *
  * 负责：
  * - 语法验证
  * - 安全性检查
@@ -52,13 +52,13 @@ export interface ParsedCodeBlock {
 export class CodeValidator {
   /** 最大文件字符数 */
   private readonly MAX_FILE_LENGTH = 10000;
-  
+
   /** 最大行数 */
   private readonly MAX_LINE_COUNT = 500;
 
   /**
    * 验证代码块
-   * 
+   *
    * @param block 代码块
    * @returns 验证结果
    */
@@ -108,24 +108,24 @@ export class CodeValidator {
 
   /**
    * 批量验证代码块
-   * 
+   *
    * @param blocks 代码块数组
    * @returns 验证结果映射
    */
   validateAll(blocks: ParsedCodeBlock[]): Map<string, ValidationResult> {
     const results = new Map<string, ValidationResult>();
-    
+
     for (const block of blocks) {
       const result = this.validate(block);
       results.set(block.filepath, result);
     }
-    
+
     return results;
   }
 
   /**
    * 长度检查
-   * 
+   *
    * @param content 代码内容
    * @returns 检查结果
    */
@@ -151,7 +151,7 @@ export class CodeValidator {
 
   /**
    * 语法验证（基础检查）
-   * 
+   *
    * @param content 代码内容
    * @param language 语言类型
    * @returns 检查结果
@@ -187,7 +187,7 @@ export class CodeValidator {
 
   /**
    * 安全性检查
-   * 
+   *
    * @param content 代码内容
    * @returns 检查结果
    */
@@ -228,7 +228,7 @@ export class CodeValidator {
 
   /**
    * 最佳实践检查
-   * 
+   *
    * @param content 代码内容
    * @param language 语言类型
    * @returns 检查结果
@@ -274,7 +274,7 @@ export class CodeValidator {
 
   /**
    * 括号匹配检查
-   * 
+   *
    * @param content 代码内容
    * @returns 检查结果
    */
@@ -307,7 +307,7 @@ export class CodeValidator {
 
   /**
    * 检查未闭合的字符串
-   * 
+   *
    * @param content 代码内容
    * @returns 是否存在未闭合的字符串
    */
@@ -332,7 +332,7 @@ export class CodeValidator {
 
   /**
    * 计算代码指标
-   * 
+   *
    * @param content 代码内容
    * @returns 代码指标
    */
@@ -355,7 +355,7 @@ export class CodeValidator {
       complexityScore += matches ? matches.length : 0;
     }
 
-    const complexity = complexityScore < 5 ? "low" : 
+    const complexity = complexityScore < 5 ? "low" :
                        complexityScore < 15 ? "medium" : "high";
 
     return { lines, characters, complexity };
@@ -363,7 +363,7 @@ export class CodeValidator {
 
   /**
    * 构建验证结果
-   * 
+   *
    * @param valid 是否通过验证
    * @param warnings 警告信息
    * @param errors 错误信息
@@ -392,11 +392,15 @@ export class CodeValidator {
       }
     };
   }
+
+  validateCodeBlock(filepath: string, content: string, language: string): ValidationResult {
+    return this.validate({ filepath, content, language, isNewFile: true });
+  }
 }
 
 /**
  * 便捷函数：验证代码块
- * 
+ *
  * @param block 代码块
  * @returns 验证结果
  */
@@ -407,7 +411,7 @@ export function validateCodeBlock(block: ParsedCodeBlock): ValidationResult {
 
 /**
  * 便捷函数：批量验证代码块
- * 
+ *
  * @param blocks 代码块数组
  * @returns 验证结果映射
  */

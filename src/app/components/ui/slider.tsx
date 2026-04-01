@@ -1,4 +1,17 @@
 /**
+ * @file slider.tsx
+ * @description slider 组件 — React UI 组件
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags component,react,ui,ui
+ */
+
+/**
  * file: ui/slider.tsx
  * description: 滑块组件 - 基于 Radix UI Slider，支持单值/双值、范围、步长
  * author: YanYuCloudCube Team <admin@0379.email>

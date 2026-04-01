@@ -52,7 +52,7 @@ interface IconCategory {
   assets: IconAsset[];
 }
 
-function encUrl(base: string, folder: string, file: string) {
+function _encUrl(base: string, folder: string, file: string) {
   return `${base}/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
 }
 

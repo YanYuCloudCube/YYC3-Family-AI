@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file Wave3UI.test.ts
  * @description Wave 3 UI 逻辑单元测试——

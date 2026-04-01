@@ -136,12 +136,12 @@ export const usePanelPinStore = create<PanelPinState>()(
               },
             };
             localStorage.setItem(name, JSON.stringify(serializable));
-          } catch {}
+          } catch { /* empty */ }
         },
         removeItem: (name) => {
           try {
             localStorage.removeItem(name);
-          } catch {}
+          } catch { /* empty */ }
         },
       },
     },

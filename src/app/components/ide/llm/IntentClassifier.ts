@@ -244,11 +244,11 @@ export class IntentClassifier {
     // 遍历所有模式
     for (const pattern of this.patterns) {
       const score = this.calculatePatternScore(input, pattern);
-      
+
       if (score > 0) {
         const features = this.extractFeatures(input, pattern);
         const confidence = this.calculateConfidence(score, pattern);
-        
+
         candidates.push({
           type: pattern.type,
           confidence,
@@ -371,10 +371,10 @@ export class IntentClassifier {
    * 生成判断理由
    */
   private generateReason(pattern: IntentPattern, score: number): string {
-    const matchedPatterns = pattern.patterns.filter(regex => 
+    const matchedPatterns = pattern.patterns.filter(regex =>
       regex.toString().includes(pattern.type)
     ).length;
-    
+
     return `匹配到${pattern.keywords.length}个关键词和${matchedPatterns}个模式，得分${score.toFixed(2)}`;
   }
 

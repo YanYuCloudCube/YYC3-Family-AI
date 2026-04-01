@@ -1,3 +1,16 @@
+/**
+ * @file ProxyService.test.ts
+ * @description 代理服务测试 - 测试代理请求、超时和重试逻辑
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // ProxyService 单元测试
 // 覆盖: 配置读写、代理请求转发、健康检查

@@ -39,7 +39,7 @@ export interface ParsedCodeBlock {
 
 /**
  * 代码验证器（性能优化版）
- * 
+ *
  * 性能优化点：
  * 1. 正则表达式缓存 - 避免重复编译
  * 2. 并行验证 - 多个文件同时验证
@@ -50,16 +50,16 @@ export interface ParsedCodeBlock {
 export class CodeValidatorOptimized {
   /** 最大文件字符数 */
   private readonly MAX_FILE_LENGTH = 10000;
-  
+
   /** 最大行数 */
   private readonly MAX_LINE_COUNT = 500;
-  
+
   /** 正则表达式缓存 */
   private regexCache: Map<string, RegExp> = new Map();
-  
+
   /** 验证结果缓存 */
   private resultCache: Map<string, ValidationResult> = new Map();
-  
+
   /** 性能统计 */
   private performanceStats = {
     totalValidations: 0,
@@ -72,14 +72,14 @@ export class CodeValidatorOptimized {
    */
   validate(block: ParsedCodeBlock): ValidationResult {
     const startTime = Date.now();
-    
+
     // 检查缓存
     const cacheKey = this.generateCacheKey(block);
     if (this.resultCache.has(cacheKey)) {
       this.performanceStats.cacheHits++;
       return this.resultCache.get(cacheKey)!;
     }
-    
+
     const warnings: string[] = [];
     const errors: string[] = [];
     const suggestions: string[] = [];
@@ -104,7 +104,7 @@ export class CodeValidatorOptimized {
     suggestions.push(...practiceResult.suggestions);
 
     const metrics = this.calculateMetrics(block.content);
-    
+
     const result = this.buildResult(
       errors.length === 0,
       warnings,
@@ -113,12 +113,12 @@ export class CodeValidatorOptimized {
       block.content,
       metrics
     );
-    
+
     // 缓存结果
     this.resultCache.set(cacheKey, result);
-    
+
     this.updatePerformanceStats(startTime);
-    
+
     return result;
   }
 
@@ -127,26 +127,26 @@ export class CodeValidatorOptimized {
    */
   validateAll(blocks: ParsedCodeBlock[]): Map<string, ValidationResult> {
     const results = new Map<string, ValidationResult>();
-    
+
     // 并行验证所有块
     const promises = blocks.map(async (block) => {
       const result = this.validate(block);
       return { filepath: block.filepath, result };
     });
-    
+
     // 等待所有验证完成
     Promise.all(promises).then(pairs => {
       pairs.forEach(({ filepath, result }) => {
         results.set(filepath, result);
       });
     });
-    
+
     // 同步返回结果（简化版本）
     for (const block of blocks) {
       const result = this.validate(block);
       results.set(block.filepath, result);
     }
-    
+
     return results;
   }
 
@@ -161,14 +161,14 @@ export class CodeValidatorOptimized {
     if (!oldBlock || oldBlock.content === newBlock.content) {
       return this.validate(newBlock);
     }
-    
+
     // 增量验证：只验证变更部分
     const diff = this.calculateDiff(oldBlock.content, newBlock.content);
-    
+
     const warnings: string[] = [];
     const errors: string[] = [];
     const suggestions: string[] = [];
-    
+
     // 只检查变更部分
     diff.forEach(change => {
       if (change.type === "add" || change.type === "modify") {
@@ -176,16 +176,16 @@ export class CodeValidatorOptimized {
           ...newBlock,
           content: change.content,
         };
-        
+
         const changeResult = this.validate(changeBlock);
         warnings.push(...changeResult.warnings);
         errors.push(...changeResult.errors);
         suggestions.push(...changeResult.suggestions);
       }
     });
-    
+
     const metrics = this.calculateMetrics(newBlock.content);
-    
+
     return this.buildResult(
       errors.length === 0,
       warnings,
@@ -202,7 +202,7 @@ export class CodeValidatorOptimized {
   clearCache(): void {
     this.regexCache.clear();
     this.resultCache.clear();
-    console.log("[CodeValidator] Cache cleared");
+    console.warn("[CodeValidator] Cache cleared");
   }
 
   /**
@@ -260,7 +260,7 @@ export class CodeValidatorOptimized {
 
     // 使用缓存的正则表达式
     const patterns = this.getSyntaxPatterns(language);
-    
+
     for (const { pattern, message, isError } of patterns) {
       const regex = this.getCachedRegex(pattern);
       if (regex.test(content)) {
@@ -333,14 +333,14 @@ export class CodeValidatorOptimized {
    */
   private getCachedRegex(pattern: RegExp): RegExp {
     const key = pattern.source;
-    
+
     if (this.regexCache.has(key)) {
       return this.regexCache.get(key)!;
     }
-    
+
     const regex = new RegExp(pattern.source, pattern.flags);
     this.regexCache.set(key, regex);
-    
+
     return regex;
   }
 
@@ -381,11 +381,11 @@ export class CodeValidatorOptimized {
   private calculateMetrics(content: string): ValidationResult["metrics"] {
     const lines = this.countLines(content);
     const characters = content.length;
-    
+
     // 简化的复杂度计算
     let complexity: "low" | "medium" | "high" = "low";
     const indentCount = (content.match(/\n\s{2,}/g) || []).length;
-    
+
     if (indentCount > 50) {
       complexity = "high";
     } else if (indentCount > 20) {
@@ -401,17 +401,17 @@ export class CodeValidatorOptimized {
   private calculateDiff(oldContent: string, newContent: string): Array<{ type: string; content: string }> {
     // 简化的差异计算
     const diff: Array<{ type: string; content: string }> = [];
-    
+
     const oldLines = oldContent.split("\n");
     const newLines = newContent.split("\n");
-    
+
     // 检测新增行
     for (const line of newLines) {
       if (!oldLines.includes(line)) {
         diff.push({ type: "add", content: line });
       }
     }
-    
+
     return diff;
   }
 

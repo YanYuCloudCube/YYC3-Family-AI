@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file IconComponents.integration.test.tsx
  * @description 图标组件集成测试 - 覆盖所有使用图标的组件

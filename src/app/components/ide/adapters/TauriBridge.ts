@@ -268,7 +268,7 @@ export async function setWindowTitle(title: string): Promise<void> {
       const tauri = (window as any).__TAURI__;
       await tauri.window.appWindow.setTitle(title);
       return;
-    } catch {}
+    } catch { /* empty */ }
   }
   document.title = title;
 }
@@ -279,7 +279,7 @@ export async function minimizeWindow(): Promise<void> {
     try {
       const tauri = (window as any).__TAURI__;
       await tauri.window.appWindow.minimize();
-    } catch {}
+    } catch { /* empty */ }
   }
 }
 
@@ -289,7 +289,7 @@ export async function toggleMaximize(): Promise<void> {
     try {
       const tauri = (window as any).__TAURI__;
       await tauri.window.appWindow.toggleMaximize();
-    } catch {}
+    } catch { /* empty */ }
   }
 }
 

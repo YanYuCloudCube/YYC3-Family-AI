@@ -275,3 +275,30 @@ export function buildChatMessages(
 
   return messages;
 }
+
+export class SystemPromptBuilder {
+  detectIntent = detectIntent;
+  buildSystemPrompt = (
+    intentOrString: UserIntent | string,
+    context?: ProjectContext | null,
+    optionsOrMaxTokens?: { maxContextTokens?: number; customInstructions?: string } | number,
+  ): string => {
+    let intent: UserIntent;
+    let options: { maxContextTokens?: number; customInstructions?: string } | undefined;
+    if (typeof intentOrString === "string" && !Object.values({ generate: "generate", modify: "modify", debug: "debug", explain: "explain", refactor: "refactor", general: "general" } as Record<string, string>).includes(intentOrString)) {
+      intent = detectIntent(intentOrString);
+    } else {
+      intent = intentOrString as UserIntent;
+    }
+    if (typeof optionsOrMaxTokens === "number") {
+      options = { maxContextTokens: optionsOrMaxTokens };
+    } else {
+      options = optionsOrMaxTokens;
+    }
+    return buildSystemPrompt(intent, context || null, options);
+  };
+  buildChatMessages = buildChatMessages;
+  estimateTokens = (text: string): number => {
+    return Math.ceil(text.length / 4);
+  };
+}

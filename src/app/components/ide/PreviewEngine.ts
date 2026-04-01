@@ -529,7 +529,7 @@ function buildJsPreview(code: string, gridOverlay: string): string {
       }
 
       if (!output.children.length) {
-        output.innerHTML = '<div style="color:#64748b;font-style:italic;">No console output. Use console.log() to display results.</div>';
+        output.innerHTML = '<div style="color:#64748b;font-style:italic;">No console output. Use console.warn() to display results.</div>';
       }
     })();
   </script>

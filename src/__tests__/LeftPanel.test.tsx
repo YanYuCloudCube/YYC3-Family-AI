@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file __tests__/LeftPanel.test.tsx
  * @description P0 组件测试 — LeftPanel AI 对话面板核心交互：

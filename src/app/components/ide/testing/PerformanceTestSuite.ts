@@ -55,24 +55,24 @@ export class PerformanceTestSuite {
     const errors: string[] = [];
     const warnings: string[] = [];
 
-    console.log('[PerformanceTest] Starting performance test suite...');
-    console.log('[PerformanceTest] Config:', this.config);
+    console.warn('[PerformanceTest] Starting performance test suite...');
+    console.warn('[PerformanceTest] Config:', this.config);
 
     try {
       // 1. 快照管理性能测试
-      console.log('\n[PerformanceTest] Running snapshot management test...');
+      console.warn('\n[PerformanceTest] Running snapshot management test...');
       const snapshotResult = await this.testSnapshotPerformance();
 
       // 2. 控制台日志性能测试
-      console.log('\n[PerformanceTest] Running console log test...');
+      console.warn('\n[PerformanceTest] Running console log test...');
       const consoleResult = await this.testConsolePerformance();
 
       // 3. 并发操作性能测试
-      console.log('\n[PerformanceTest] Running concurrent operations test...');
+      console.warn('\n[PerformanceTest] Running concurrent operations test...');
       const concurrencyResult = await this.testConcurrentOperations();
 
       // 4. 长时间运行测试（缩短版本，实际运行24小时）
-      console.log('\n[PerformanceTest] Running long-running test (simulated)...');
+      console.warn('\n[PerformanceTest] Running long-running test (simulated)...');
       const longRunningResult = await this.testLongRunning();
 
       const endTime = Date.now();
@@ -85,8 +85,8 @@ export class PerformanceTestSuite {
         longRunningResult,
       );
 
-      console.log('\n[PerformanceTest] Performance test completed');
-      console.log(`[PerformanceTest] Result: ${passed ? 'PASSED' : 'FAILED'}`);
+      console.warn('\n[PerformanceTest] Performance test completed');
+      console.warn(`[PerformanceTest] Result: ${passed ? 'PASSED' : 'FAILED'}`);
 
       return {
         testName: 'Performance Test Suite',
@@ -126,7 +126,7 @@ export class PerformanceTestSuite {
     }> = [];
 
     // 创建快照
-    console.log(
+    console.warn(
       `  [SnapshotTest] Creating ${this.config.snapshotCount} snapshots...`,
     );
     const creationStart = Date.now();
@@ -147,7 +147,7 @@ export class PerformanceTestSuite {
     const creationTime = Date.now() - creationStart;
 
     // 读取快照
-    console.log(`  [SnapshotTest] Reading ${snapshots.length} snapshots...`);
+    console.warn(`  [SnapshotTest] Reading ${snapshots.length} snapshots...`);
     const readStart = Date.now();
     for (const snapshot of snapshots) {
       const _ = snapshot.data; // 读取数据
@@ -156,13 +156,13 @@ export class PerformanceTestSuite {
     const readTime = Date.now() - readStart;
 
     // 列出快照
-    console.log(`  [SnapshotTest] Listing snapshots...`);
+    console.warn(`  [SnapshotTest] Listing snapshots...`);
     const listStart = Date.now();
     const _snapshotList = snapshots.map((s) => s.id);
     const listTime = Date.now() - listStart;
 
     // 删除快照
-    console.log(`  [SnapshotTest] Deleting ${snapshots.length} snapshots...`);
+    console.warn(`  [SnapshotTest] Deleting ${snapshots.length} snapshots...`);
     const deleteStart = Date.now();
     snapshots.length = 0; // 清空数组
     const deleteTime = Date.now() - deleteStart;
@@ -178,10 +178,10 @@ export class PerformanceTestSuite {
       snapshotCount: this.config.snapshotCount,
     };
 
-    console.log(`  [SnapshotTest] Creation time: ${creationTime}ms`);
-    console.log(`  [SnapshotTest] Read time: ${readTime}ms`);
-    console.log(`  [SnapshotTest] List time: ${listTime}ms`);
-    console.log(`  [SnapshotTest] Delete time: ${deleteTime}ms`);
+    console.warn(`  [SnapshotTest] Creation time: ${creationTime}ms`);
+    console.warn(`  [SnapshotTest] Read time: ${readTime}ms`);
+    console.warn(`  [SnapshotTest] List time: ${listTime}ms`);
+    console.warn(`  [SnapshotTest] Delete time: ${deleteTime}ms`);
 
     return result;
   }
@@ -198,7 +198,7 @@ export class PerformanceTestSuite {
     }> = [];
 
     // 写入日志
-    console.log(
+    console.warn(
       `  [ConsoleTest] Writing ${this.config.consoleLogCount} logs...`,
     );
     const writeStart = Date.now();
@@ -220,7 +220,7 @@ export class PerformanceTestSuite {
     const writeTime = Date.now() - writeStart;
 
     // 读取日志
-    console.log(`  [ConsoleTest] Reading ${logs.length} logs...`);
+    console.warn(`  [ConsoleTest] Reading ${logs.length} logs...`);
     const readStart = Date.now();
     for (const log of logs) {
       const _ = log.message;
@@ -229,13 +229,13 @@ export class PerformanceTestSuite {
     const readTime = Date.now() - readStart;
 
     // 过滤日志
-    console.log(`  [ConsoleTest] Filtering logs...`);
+    console.warn(`  [ConsoleTest] Filtering logs...`);
     const filterStart = Date.now();
-    const errorLogs = logs.filter((l) => l.level === 'error');
+    const _errorLogs = logs.filter((l) => l.level === 'error');
     const filterTime = Date.now() - filterStart;
 
     // 清除日志
-    console.log(`  [ConsoleTest] Clearing ${logs.length} logs...`);
+    console.warn(`  [ConsoleTest] Clearing ${logs.length} logs...`);
     const clearStart = Date.now();
     logs.length = 0;
     const clearTime = Date.now() - clearStart;
@@ -251,10 +251,10 @@ export class PerformanceTestSuite {
       storageSize,
     };
 
-    console.log(`  [ConsoleTest] Write time: ${writeTime}ms`);
-    console.log(`  [ConsoleTest] Read time: ${readTime}ms`);
-    console.log(`  [ConsoleTest] Filter time: ${filterTime}ms`);
-    console.log(`  [ConsoleTest] Clear time: ${clearTime}ms`);
+    console.warn(`  [ConsoleTest] Write time: ${writeTime}ms`);
+    console.warn(`  [ConsoleTest] Read time: ${readTime}ms`);
+    console.warn(`  [ConsoleTest] Filter time: ${filterTime}ms`);
+    console.warn(`  [ConsoleTest] Clear time: ${clearTime}ms`);
 
     return result;
   }
@@ -263,14 +263,14 @@ export class PerformanceTestSuite {
    * 测试并发操作
    */
   async testConcurrentOperations(): Promise<ConcurrencyPerformanceResult> {
-    console.log(
+    console.warn(
       `  [ConcurrencyTest] Running ${this.config.concurrentOperations} concurrent operations...`,
     );
 
     const operations: Promise<void>[] = [];
     const responseTimes: number[] = [];
     let conflictCount = 0;
-    let retryCount = 0;
+    const retryCount = 0;
     let successCount = 0;
 
     const start = Date.now();
@@ -311,14 +311,14 @@ export class PerformanceTestSuite {
       successRate,
     };
 
-    console.log(
+    console.warn(
       `  [ConcurrencyTest] Average response time: ${averageResponseTime.toFixed(2)}ms`,
     );
-    console.log(`  [ConcurrencyTest] Max response time: ${maxResponseTime}ms`);
-    console.log(
+    console.warn(`  [ConcurrencyTest] Max response time: ${maxResponseTime}ms`);
+    console.warn(
       `  [ConcurrencyTest] Throughput: ${throughput.toFixed(2)} ops/sec`,
     );
-    console.log(`  [ConcurrencyTest] Success rate: ${successRate.toFixed(2)}%`);
+    console.warn(`  [ConcurrencyTest] Success rate: ${successRate.toFixed(2)}%`);
 
     return result;
   }
@@ -333,7 +333,7 @@ export class PerformanceTestSuite {
     errorCount: number;
   }> {
     // 模拟长时间运行测试（实际应运行24小时，这里缩短为测试版本）
-    console.log('  [LongRunningTest] Starting long-running test (simulated 1min)...');
+    console.warn('  [LongRunningTest] Starting long-running test (simulated 1min)...');
 
     const testDuration = 60 * 1000; // 1分钟测试版本
     const startTime = Date.now();
@@ -380,12 +380,12 @@ export class PerformanceTestSuite {
       performanceTrend,
     );
 
-    console.log(`  [LongRunningTest] Duration: ${duration}ms`);
-    console.log(`  [LongRunningTest] Memory leaks: ${memoryLeaks}`);
-    console.log(
+    console.warn(`  [LongRunningTest] Duration: ${duration}ms`);
+    console.warn(`  [LongRunningTest] Memory leaks: ${memoryLeaks}`);
+    console.warn(
       `  [LongRunningTest] Performance degradation: ${performanceDegradation}`,
     );
-    console.log(`  [LongRunningTest] Errors: ${errorCount}`);
+    console.warn(`  [LongRunningTest] Errors: ${errorCount}`);
 
     return {
       duration,

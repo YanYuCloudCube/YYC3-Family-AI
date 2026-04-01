@@ -97,7 +97,7 @@ function flattenTree(
     // 递归处理子节点（仅在展开时）
     if (isExpanded && hasChildren && node.children) {
       const childNodes = flattenTree(node.children, expandedFolders, depth + 1, searchQuery);
-      
+
       // 搜索时，如果子节点匹配则显示父节点
       if (searchQuery && childNodes.length > 0) {
         result.push(...childNodes);

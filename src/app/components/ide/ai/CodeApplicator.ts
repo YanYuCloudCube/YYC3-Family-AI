@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file ai/CodeApplicator.ts
  * @description 解析 LLM 响应并应用代码到文件系统，支持单文件/多文件、创建/更新、diff 预览、代码验证

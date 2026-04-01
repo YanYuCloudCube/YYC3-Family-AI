@@ -1,4 +1,17 @@
 /**
+ * @file UserFeedbackManager.ts
+ * @description UserFeedbackManager — feedback 模块
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags module,typescript,feedback
+ */
+
+/**
  * 用户反馈收集系统 - 核心管理器
  *
  * 提供完整的用户反馈收集、分析和管理功能
@@ -126,7 +139,7 @@ export class UserFeedbackManager {
         .filter(Boolean);
 
       if (question.type === 'rating' || question.type === 'nps') {
-        const values = answers.map((a) => a!.value as number);
+        const values = answers.map((a) => (a as any).value as number);
         const avg = values.reduce((sum, v) => sum + v, 0) / values.length;
         const distribution: Record<number, number> = {};
         values.forEach((v) => {
@@ -141,12 +154,12 @@ export class UserFeedbackManager {
       } else if (question.type === 'single_choice' || question.type === 'multiple_choice') {
         const distribution: Record<string, number> = {};
         answers.forEach((a) => {
-          if (Array.isArray(a!.value)) {
-            (a!.value as string[]).forEach((v) => {
+          if (Array.isArray((a as any).value)) {
+            ((a as any).value as string[]).forEach((v) => {
               distribution[v] = (distribution[v] || 0) + 1;
             });
           } else {
-            const value = a!.value as string;
+            const value = (a as any).value as string;
             distribution[value] = (distribution[value] || 0) + 1;
           }
         });
@@ -156,7 +169,7 @@ export class UserFeedbackManager {
           totalResponses: answers.length,
         });
       } else if (question.type === 'text') {
-        const texts = answers.map((a) => a!.value as string);
+        const texts = answers.map((a) => (a as any).value as string);
         questionStats.set(question.id, {
           totalResponses: texts.length,
           responses: texts.slice(0, 10), // 只保留前10个回答
@@ -263,10 +276,10 @@ export class UserFeedbackManager {
         results = results.filter((f) => f.module === filters.module);
       }
       if (filters.startDate) {
-        results = results.filter((f) => f.createdAt >= filters.startDate!);
+        results = results.filter((f) => f.createdAt >= (filters.startDate as any));
       }
       if (filters.endDate) {
-        results = results.filter((f) => f.createdAt <= filters.endDate!);
+        results = results.filter((f) => f.createdAt <= (filters.endDate as any));
       }
     }
 
@@ -412,14 +425,14 @@ export class UserFeedbackManager {
       resolvedItems.length > 0
         ? resolvedItems.reduce((sum, f) => {
             const resolutionTime =
-              f.resolution!.resolvedAt.getTime() - f.createdAt.getTime();
+              (f.resolution as any).resolvedAt.getTime() - f.createdAt.getTime();
             return sum + resolutionTime / (1000 * 60 * 60); // 转换为小时
           }, 0) / resolvedItems.length
         : 0;
 
     const satisfactionScores = feedbacks
       .filter((f) => f.satisfactionScore !== undefined)
-      .map((f) => f.satisfactionScore!);
+      .map((f) => f.satisfactionScore as any);
     const avgSatisfaction =
       satisfactionScores.length > 0
         ? satisfactionScores.reduce((sum, score) => sum + score, 0) /

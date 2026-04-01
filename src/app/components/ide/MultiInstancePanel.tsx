@@ -12,7 +12,7 @@
  * @tags P2,multi-instance,panel,window,workspace,session,ipc
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   AppWindow,
   FolderKanban,

@@ -239,7 +239,7 @@ registerCommand({
   description: "列出目录内容",
   usage: "ls [path] [-a] [-l]",
   handler: (args, ctx) => {
-    const showAll =
+    const _showAll =
       args.includes("-a") || args.includes("-la") || args.includes("-al");
     const showLong =
       args.includes("-l") || args.includes("-la") || args.includes("-al");

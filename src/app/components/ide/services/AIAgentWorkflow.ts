@@ -109,7 +109,7 @@ export class AIAgentWorkflow {
     };
 
     this.executions.set(execution.id, execution);
-    console.log(`[AIAgent] Created workflow: ${execution.name}`);
+    console.warn(`[AIAgent] Created workflow: ${execution.name}`);
     return execution;
   }
 
@@ -122,21 +122,21 @@ export class AIAgentWorkflow {
       throw new Error("Workflow not found");
     }
 
-    console.log(`[AIAgent] Starting workflow: ${execution.name}`);
+    console.warn(`[AIAgent] Starting workflow: ${execution.name}`);
     execution.status = "running";
 
     // 按顺序执行每个步骤
     for (const step of execution.steps) {
       try {
         step.status = "running";
-        console.log(`[AIAgent] Executing step: ${step.name}`);
+        console.warn(`[AIAgent] Executing step: ${step.name}`);
 
         // 模拟 Agent 执行 (实际应调用 AI API)
         const output = await this.executeAgentStep(step);
 
         step.output = output;
         step.status = "completed";
-        console.log(`[AIAgent] Step completed: ${step.name}`);
+        console.warn(`[AIAgent] Step completed: ${step.name}`);
       } catch (error) {
         step.status = "failed";
         step.error = (error as Error).message;
@@ -166,7 +166,7 @@ export class AIAgentWorkflow {
       throw new Error(`Agent not found: ${step.agent}`);
     }
 
-    console.log(`[AIAgent] ${agent.name} executing: ${step.name}`);
+    console.warn(`[AIAgent] ${agent.name} executing: ${step.name}`);
 
     // 模拟执行延迟 (实际应调用 AI API)
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -222,7 +222,7 @@ export class AIAgentWorkflow {
     const execution = this.executions.get(executionId);
     if (execution && execution.status === "running") {
       execution.status = "failed";
-      console.log(`[AIAgent] Cancelled workflow: ${execution.name}`);
+      console.warn(`[AIAgent] Cancelled workflow: ${execution.name}`);
     }
   }
 
@@ -237,7 +237,7 @@ export class AIAgentWorkflow {
         count++;
       }
     }
-    console.log(`[AIAgent] Cleared ${count} completed executions`);
+    console.warn(`[AIAgent] Cleared ${count} completed executions`);
     return count;
   }
 

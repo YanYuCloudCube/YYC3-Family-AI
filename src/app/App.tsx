@@ -2,9 +2,9 @@
  * @file App.tsx
  * @description 应用根组件，集成路由、主题 Provider、错误边界、主题定制器
  * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.2.0
+ * @version v1.3.0
  * @created 2026-03-06
- * @updated 2026-03-14
+ * @updated 2026-04-01
  * @status dev
  * @license MIT
  * @copyright Copyright (c) 2026 YanYuCloudCube Team
@@ -13,11 +13,12 @@
 
 import { RouterProvider } from "react-router";
 import { router } from "./routes";
-import { ThemeProvider, useTheme } from "./components/ide/ThemeStore";
+import { useThemeStore } from "./components/ide/stores/useThemeStore";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ThemeCustomizer } from "./components/ide/ThemeCustomizer";
 import { LoadingSpinner } from "./components/ide/LoadingSpinner";
 import { initErrorReporting } from "./components/ide/services/ErrorReportingService";
+import { useEffect } from "react";
 
 // ── 初始化错误上报服务（应用启动时执行一次） ──
 initErrorReporting({
@@ -29,7 +30,7 @@ initErrorReporting({
 });
 
 /** 路由加载时的全局 Fallback */
-function RouteLoadingFallback() {
+function _RouteLoadingFallback() {
   return (
     <div className="size-full min-h-screen flex items-center justify-center bg-[var(--ide-bg-deep,#060d1a)]">
       <LoadingSpinner size="md" label="加载中..." />
@@ -37,9 +38,9 @@ function RouteLoadingFallback() {
   );
 }
 
-/** Inner shell that can access ThemeContext for the customizer */
+/** Inner shell that can access Zustand theme store for customizer */
 function AppShell() {
-  const { showThemeCustomizer, setShowThemeCustomizer } = useTheme();
+  const { showThemeCustomizer, setShowThemeCustomizer } = useThemeStore();
 
   return (
     <>
@@ -55,9 +56,7 @@ function AppShell() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <AppShell />
-      </ThemeProvider>
+      <AppShell />
     </ErrorBoundary>
   );
 }

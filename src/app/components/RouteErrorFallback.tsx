@@ -135,7 +135,7 @@ export default function RouteErrorFallback() {
     });
 
     if (eventId) {
-      console.info(`[RouteErrorFallback] 错误已自动上报 → eventId: ${eventId}`);
+      console.warn(`[RouteErrorFallback] 错误已自动上报 → eventId: ${eventId}`);
       setReportStatus("sent");
     }
   }, [error]);

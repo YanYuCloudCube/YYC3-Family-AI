@@ -50,7 +50,7 @@ export function PerformanceMonitor({ open = false, onClose }: PerformanceMonitor
       const fcpEntry = entries.find((e) => e.name === "first-contentful-paint")
       if (fcpEntry) {
         setMetrics((prev) => ({ ...prev, fcp: Math.round(fcpEntry.startTime) }))
-        
+
         // FCP > 3s 警告
         if (fcpEntry.startTime > 3000) {
           setAlerts((prev) => [...prev, `FCP 过慢：${Math.round(fcpEntry.startTime)}ms`])
@@ -65,7 +65,7 @@ export function PerformanceMonitor({ open = false, onClose }: PerformanceMonitor
       const lcpEntry = entries[entries.length - 1]
       if (lcpEntry) {
         setMetrics((prev) => ({ ...prev, lcp: Math.round(lcpEntry.startTime) }))
-        
+
         // LCP > 2.5s 警告
         if (lcpEntry.startTime > 2500) {
           setAlerts((prev) => [...prev, `LCP 过慢：${Math.round(lcpEntry.startTime)}ms`])
@@ -127,22 +127,22 @@ export function PerformanceMonitor({ open = false, onClose }: PerformanceMonitor
     const countFPS = () => {
       const now = performance.now()
       frames++
-      
+
       if (now - lastTime >= 1000) {
         fps = frames
         frames = 0
         lastTime = now
         setMetrics((prev) => ({ ...prev, fps }))
-        
+
         // FPS < 30 警告
         if (fps < 30) {
           setAlerts((prev) => [...prev, `FPS 过低：${fps}`])
         }
       }
-      
+
       requestAnimationFrame(countFPS)
     }
-    
+
     requestAnimationFrame(countFPS)
     return () => {}
   }, [])

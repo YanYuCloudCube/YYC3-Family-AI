@@ -54,7 +54,7 @@ export class PerformanceMonitor {
     // 观察性能条目
     this.setupObservers();
 
-    console.log('[PerformanceMonitor] Started');
+    console.warn('[PerformanceMonitor] Started');
   }
 
   /**
@@ -73,7 +73,7 @@ export class PerformanceMonitor {
     this.observers.forEach(observer => observer.disconnect());
     this.observers = [];
 
-    console.log('[PerformanceMonitor] Stopped');
+    console.warn('[PerformanceMonitor] Stopped');
   }
 
   /**
@@ -211,7 +211,7 @@ export class PerformanceMonitor {
    */
   monitorNetwork(): NetworkMetric {
     const entries = performance.getEntriesByType('resource');
-    const requests = entries.filter((entry: any) => 
+    const requests = entries.filter((entry: any) =>
       entry.initiatorType === 'fetch' || entry.initiatorType === 'xmlhttprequest'
     );
 

@@ -777,7 +777,7 @@ export async function listFiles(
 
   const db = await getDB();
   const files = await db.getAllFromIndex(STORE_FILES, "projectId", projectId);
-  
+
   queryCache.set(cacheKey, files);
   return files;
 }
@@ -788,22 +788,22 @@ export async function listFiles(
 export async function clearAllData(): Promise<void> {
   try {
     const db = await getDB();
-    
+
     // 清空所有 stores
     const tx = db.transaction([STORE_FILES, STORE_PROJECTS, STORE_SNAPSHOTS], "readwrite");
-    
+
     await Promise.all([
       tx.objectStore(STORE_FILES).clear(),
       tx.objectStore(STORE_PROJECTS).clear(),
       tx.objectStore(STORE_SNAPSHOTS).clear(),
     ]);
-    
+
     await tx.done;
-    
+
     // 清空缓存
     queryCache.clear();
-    
-    console.log("All IndexedDB data cleared successfully");
+
+    console.warn("All IndexedDB data cleared successfully");
   } catch (error) {
     console.error("Failed to clear all data:", error);
     throw error;

@@ -41,8 +41,8 @@ export function usePWA() {
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      console.log('[PWA] beforeinstallprompt event fired');
-      
+      console.warn('[PWA] beforeinstallprompt event fired');
+
       setState((prev) => ({
         ...prev,
         isInstallable: true,
@@ -66,7 +66,7 @@ export function usePWA() {
   // 监听安装成功
   useEffect(() => {
     const handleAppInstalled = () => {
-      console.log('[PWA] app installed');
+      console.warn('[PWA] app installed');
       setState((prev) => ({
         ...prev,
         isInstalled: true,
@@ -85,7 +85,7 @@ export function usePWA() {
   // 监听网络状态
   useEffect(() => {
     const handleOnline = () => {
-      console.log('[PWA] online');
+      console.warn('[PWA] online');
       setState((prev) => ({
         ...prev,
         isOnline: true,
@@ -94,7 +94,7 @@ export function usePWA() {
     };
 
     const handleOffline = () => {
-      console.log('[PWA] offline');
+      console.warn('[PWA] offline');
       setState((prev) => ({
         ...prev,
         isOnline: false,
@@ -120,7 +120,7 @@ export function usePWA() {
           if (newWorker) {
             newWorker.addEventListener("statechange", () => {
               if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                console.log('[PWA] new version available');
+                console.warn('[PWA] new version available');
                 setState((prev) => ({
                   ...prev,
                   updateAvailable: true,
@@ -136,21 +136,21 @@ export function usePWA() {
   // 安装 PWA
   const install = useCallback(async () => {
     if (!state.promptEvent) {
-      console.log('[PWA] no install prompt available');
+      console.warn('[PWA] no install prompt available');
       return false;
     }
 
     try {
       await state.promptEvent.prompt();
       const { outcome } = await state.promptEvent.userChoice;
-      console.log('[PWA] install outcome:', outcome);
-      
+      console.warn('[PWA] install outcome:', outcome);
+
       setState((prev) => ({
         ...prev,
         promptEvent: null,
         isInstallable: false,
       }));
-      
+
       return outcome === "accepted";
     } catch (err) {
       console.error('[PWA] install error:', err);
@@ -177,7 +177,7 @@ export function usePWA() {
         const registration = await navigator.serviceWorker.register("/sw.js", {
           scope: "/",
         });
-        console.log('[PWA] Service Worker registered:', registration.scope);
+        console.warn('[PWA] Service Worker registered:', registration.scope);
         return true;
       } catch (err) {
         console.error('[PWA] Service Worker registration failed:', err);

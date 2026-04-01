@@ -1,4 +1,17 @@
 /**
+ * @file UserFeedbackTypes.ts
+ * @description UserFeedbackTypes — feedback 模块
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags module,typescript,feedback
+ */
+
+/**
  * 用户反馈收集系统 - 类型定义
  *
  * 提供完整的用户反馈收集、分析和管理功能

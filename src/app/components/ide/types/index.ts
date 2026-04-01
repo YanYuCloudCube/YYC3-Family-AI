@@ -20,26 +20,26 @@ export type {
   PreviewMode,
   PreviewModeConfig,
   PreviewModeControllerConfig,
-  
+
   // SnapshotManager
   SnapshotFile,
   SnapshotMetadata,
   Snapshot,
   SnapshotDiff,
   SnapshotManagerConfig,
-  
+
   // CodeValidator
   ValidationResult,
   ParsedCodeBlock,
   CodeValidatorConfig,
-  
+
   // SystemPromptBuilder
   UserIntent,
   SystemPromptConfig,
   LLMMessage,
   ConversationMessage,
   BuildMessagesConfig,
-  
+
   // ProjectContext
   ProjectContext,
 } from './p0-core';
@@ -363,27 +363,31 @@ export interface WorkflowEvent {
 // ── 插件系统类型 ──
 
 export interface PluginContext {
-  // 插件 API
   registerCommand: (command: string, handler: () => void) => void;
   registerProvider: (provider: unknown) => void;
-  showMessage: (message: string, type?: "info" | "warning" | "error") => void;
-  // 状态管理
+  showMessage: (message: string, type?: "info" | "warning" | "error" | "success") => void;
   getState: () => unknown;
   setState: (state: unknown) => void;
-  // 订阅
   subscribe: (event: string, handler: () => void) => () => void;
-  // UI
-  ui: {
-    showPanel: (id: string, content: unknown) => void;
-    hidePanel: (id: string) => void;
-    showToast: (message: string, type?: "info" | "warning" | "error") => void;
+  editor?: {
+    getSelection: () => { text: string; start: number; end: number } | null;
+    replaceSelection: (text: string) => void;
+    insertAtCursor: (text: string) => void;
+    getContent: () => string;
+    setContent: (content: string) => void;
   };
-  // Commands
+  ui: {
+    showPanel: (id: string | { title: string; content: unknown; width?: number; height?: number }, content?: unknown) => void;
+    hidePanel: (id: string) => void;
+    showToast: (message: string, type?: "info" | "warning" | "error" | "success") => void;
+    registerStatusBarItem: (id: string, options: { text: string; tooltip?: string; command?: string }) => void;
+    registerMenuItem: (id: string, options: { label: string; command?: string; action?: () => void }) => void;
+  };
   commands: {
     register: (id: string, handler: () => void) => void;
     execute: (id: string) => void;
+    registerCommand: (id: string, handler: () => void) => void;
   };
-  // 其他
   logger: {
     log: (...args: unknown[]) => void;
     warn: (...args: unknown[]) => void;

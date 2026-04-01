@@ -81,19 +81,19 @@ export class TaskDeduplicator {
 
         // 检查是否应该合并
         const avgSimilarity = this.calculateAverageSimilarity(group);
-        
+
         if (avgSimilarity >= this.config.mergeThreshold) {
           // 合并任务
           const mergedTask = this.mergeTasks(group);
           merged.push(mergedTask);
           unique.push(mergedTask.task);
-          
+
           details.push({
             taskId: bestTask.id,
             similarity: avgSimilarity,
             action: 'merged',
           });
-          
+
           for (const task of otherTasks) {
             details.push({
               taskId: task.id,
@@ -106,13 +106,13 @@ export class TaskDeduplicator {
           // 保留最佳任务，标记其他为重复
           unique.push(bestTask);
           duplicates.push(...otherTasks);
-          
+
           details.push({
             taskId: bestTask.id,
             similarity: avgSimilarity,
             action: 'kept',
           });
-          
+
           for (const task of otherTasks) {
             details.push({
               taskId: task.id,
@@ -272,7 +272,7 @@ export class TaskDeduplicator {
     const descriptions = tasks
       .map(t => t.description)
       .filter((d): d is string => d !== undefined && d.trim().length > 0);
-    
+
     const mergedDescription = descriptions.length > 0
       ? descriptions.join('\n\n')
       : bestTask.description;
@@ -328,7 +328,7 @@ export class TaskDeduplicator {
    * 保存历史
    */
   private saveHistory(tasks: ExtractedTask[]): void {
-    const timestamp = Date.now();
+    const _timestamp = Date.now();
     for (const task of tasks) {
       const existing = this.taskHistory.get(task.id) || [];
       existing.push(task);

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file VirtualFileTree.test.tsx
  * @description 虚拟滚动文件树基础功能测试

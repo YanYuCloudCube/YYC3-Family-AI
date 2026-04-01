@@ -40,7 +40,7 @@ import {
   X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { useTheme } from "./ide/ThemeStore";
+import { useThemeStore } from "./ide/stores/useThemeStore";
 import { useThemeTokens, type ThemeTokens } from "./ide/hooks/useThemeTokens";
 import { ModelRegistryProvider } from "./ide/ModelRegistry";
 import {
@@ -146,7 +146,7 @@ const SECTIONS: SectionDef[] = [
 
 export default function SettingsPage() {
   const navigate = useNavigate();
-  const { isCyber, toggleTheme, setShowThemeCustomizer } = useTheme();
+  const { isCyber, toggleTheme, setShowThemeCustomizer } = useThemeStore();
   const t = useThemeTokens();
   const [activeSection, setActiveSection] =
     useState<SettingsSection>("general");
@@ -581,7 +581,7 @@ function AccountSection({ t }: { t: ThemeTokens }) {
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
     reader.onload = (ev) => {
       const dataUrl = ev.target?.result as string;

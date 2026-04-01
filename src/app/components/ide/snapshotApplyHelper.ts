@@ -30,14 +30,14 @@ import { usePreviewStore } from "./stores/usePreviewStore";
  * @example
  * ```typescript
  * const result = await applySnapshotFiles([
- *   { path: "src/index.ts", content: "console.log('hello')" },
+ *   { path: "src/index.ts", content: "console.warn('hello')" },
  *   { path: "src/App.tsx", content: "<div>Hello</div>" }
  * ], {
  *   triggerPreview: true,
  *   clearOtherFiles: false
  * });
  *
- * console.log(`Applied ${result.successCount} files`);
+ * console.warn(`Applied ${result.successCount} files`);
  * ```
  */
 export async function applySnapshotFiles(
@@ -81,7 +81,7 @@ export async function applySnapshotFiles(
       fileStore.initializeProject(filesMap, files[0]?.path);
       result.successCount = files.length;
 
-      console.log(
+      console.warn(
         `[applySnapshotFiles] Initialized project with ${files.length} files`
       );
     } else {
@@ -103,7 +103,7 @@ export async function applySnapshotFiles(
         }
       }
 
-      console.log(
+      console.warn(
         `[applySnapshotFiles] Updated ${result.successCount} files (${result.failedCount} failed)`
       );
     }
@@ -116,7 +116,7 @@ export async function applySnapshotFiles(
     // 触发预览更新
     if (triggerPreview) {
       previewStore.triggerRefresh();
-      console.log("[applySnapshotFiles] Triggered preview refresh");
+      console.warn("[applySnapshotFiles] Triggered preview refresh");
     }
 
     return result;

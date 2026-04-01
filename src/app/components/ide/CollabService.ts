@@ -401,7 +401,7 @@ export class CollabService {
     this.eventHandlers.get("*")?.forEach((handler) => {
       try {
         handler(event);
-      } catch {}
+      } catch { /* empty */ }
     });
   }
 

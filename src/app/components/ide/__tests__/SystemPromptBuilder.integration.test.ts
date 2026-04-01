@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file SystemPromptBuilder.integration.test.ts
  * @description SystemPromptBuilder 集成测试 - 测试从用户输入到系统提示词构建的完整流程

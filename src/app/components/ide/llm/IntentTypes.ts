@@ -20,17 +20,17 @@ export enum IntentType {
   MODIFY = 'modify',           // 修改现有代码
   OPTIMIZE = 'optimize',       // 优化代码性能/结构
   REFACTOR = 'refactor',       // 重构代码
-  
+
   // 开发流程类
   DEBUG = 'debug',             // 调试问题
   TEST = 'test',               // 编写/运行测试
   DEPLOY = 'deploy',           // 部署相关
-  
+
   // 信息查询类
   QUERY = 'query',             // 查询信息
   ANALYZE = 'analyze',         // 分析代码/数据
   DOCUMENT = 'document',       // 生成文档
-  
+
   // 其他
   EXPLAIN = 'explain',         // 解释代码
   CONVERT = 'convert',         // 转换格式/语言

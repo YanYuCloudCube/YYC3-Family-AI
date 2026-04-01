@@ -101,7 +101,8 @@ export interface ThemeConfig {
   version: string;
   id: string;
   name: string;
-  type: "light" | "dark";
+  type: "navy" | "cyberpunk" | "oceanic" | "sunset" | "forest" | "desert";
+  isDark: boolean;
   created: string;
   modified: string;
   colors: ThemeColors;
@@ -195,7 +196,8 @@ const PRESET_BASE_LIGHT: ThemeConfig = {
   version: "2.0.0",
   id: "preset-base-light",
   name: "基础色调",
-  type: "light",
+  type: "navy",
+  isDark: false,
   created: "2026-01-01T00:00:00Z",
   modified: "2026-01-01T00:00:00Z",
   colors: {
@@ -247,7 +249,8 @@ const PRESET_COSMIC_DARK: ThemeConfig = {
   ...PRESET_BASE_LIGHT,
   id: "preset-cosmic-dark",
   name: "宇宙之夜",
-  type: "dark",
+  type: "navy",
+  isDark: true,
   colors: {
     primary: "oklch(0.65 0.22 264)",
     primaryForeground: "oklch(0.98 0.01 264)",
@@ -292,7 +295,8 @@ const PRESET_SOFT_POP: ThemeConfig = {
   ...PRESET_BASE_LIGHT,
   id: "preset-soft-pop",
   name: "柔和流行",
-  type: "light",
+  type: "navy",
+  isDark: false,
   colors: {
     ...PRESET_BASE_LIGHT.colors,
     primary: "oklch(0.70 0.18 320)",
@@ -311,7 +315,8 @@ const PRESET_CYBERPUNK: ThemeConfig = {
   ...PRESET_BASE_LIGHT,
   id: "preset-cyberpunk",
   name: "赛博朋克",
-  type: "dark",
+  type: "cyberpunk",
+  isDark: true,
   colors: {
     primary: "oklch(0.60 0.25 300)",
     primaryForeground: "oklch(0.98 0.01 300)",
@@ -339,7 +344,8 @@ const PRESET_MINIMAL: ThemeConfig = {
   ...PRESET_BASE_LIGHT,
   id: "preset-minimal",
   name: "现代极简",
-  type: "light",
+  type: "navy",
+  isDark: false,
   colors: {
     ...PRESET_BASE_LIGHT.colors,
     primary: "oklch(0.30 0.00 0)",
@@ -361,7 +367,8 @@ const PRESET_FUTURE_TECH: ThemeConfig = {
   ...PRESET_BASE_LIGHT,
   id: "preset-future-tech",
   name: "未来科技",
-  type: "dark",
+  type: "navy",
+  isDark: false,
   colors: {
     primary: "oklch(0.55 0.25 200)",
     primaryForeground: "oklch(0.98 0.01 200)",
@@ -529,14 +536,14 @@ export function saveThemes(themes: ThemeConfig[]): void {
       STORAGE_KEY,
       JSON.stringify(themes.filter((t) => t.isCustom)),
     );
-  } catch {}
+  } catch { /* empty */ }
 }
 
 export function loadCustomThemes(): ThemeConfig[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch { /* empty */ }
   return [];
 }
 
@@ -544,7 +551,7 @@ export function saveActiveThemeId(id: string | null): void {
   try {
     if (id) localStorage.setItem(ACTIVE_KEY, id);
     else localStorage.removeItem(ACTIVE_KEY);
-  } catch {}
+  } catch { /* empty */ }
 }
 
 export function loadActiveThemeId(): string | null {
@@ -559,7 +566,7 @@ export function getActiveTheme(): ThemeConfig | null {
   try {
     const activeId = loadActiveThemeId();
     if (!activeId) return null;
-    
+
     const allThemes = [...PRESET_THEMES, ...loadCustomThemes()];
     return allThemes.find((t) => t.id === activeId) || null;
   } catch {
@@ -571,14 +578,14 @@ export function saveVersions(versions: ThemeVersion[]): void {
   try {
     const trimmed = versions.slice(-MAX_VERSIONS);
     localStorage.setItem(VERSION_KEY, JSON.stringify(trimmed));
-  } catch {}
+  } catch { /* empty */ }
 }
 
 export function loadVersions(): ThemeVersion[] {
   try {
     const raw = localStorage.getItem(VERSION_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch { /* empty */ }
   return [];
 }
 

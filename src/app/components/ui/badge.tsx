@@ -1,4 +1,17 @@
 /**
+ * @file badge.tsx
+ * @description badge 组件 — React UI 组件
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags component,react,ui,ui
+ */
+
+/**
  * file: ui/badge.tsx
  * description: 徽章组件 - 基于 Radix UI Slot 和 CVA，支持多种变体和尺寸
  * author: YanYuCloudCube Team <admin@0379.email>
@@ -46,12 +59,14 @@ function Badge({
 }: React.ComponentProps<"span"> &
   VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "span";
+  const { ref, ...rest } = props as React.ComponentProps<"span"> & { ref?: React.Ref<HTMLSpanElement> };
 
   return (
     <Comp
       data-slot="badge"
       className={cn(badgeVariants({ variant }), className)}
-      {...props}
+      ref={ref as any}
+      {...rest}
     />
   );
 }

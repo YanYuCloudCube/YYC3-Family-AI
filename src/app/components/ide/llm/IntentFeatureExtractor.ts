@@ -115,7 +115,7 @@ export class IntentFeatureExtractor {
    */
   extractKeywords(input: string): string[] {
     const keywords: string[] = [];
-    
+
     // 移除停用词
     const stopWords = new Set([
       '的', '了', '是', '在', '我', '有', '和', '就', '不', '人', '都', '一', '一个',
@@ -127,7 +127,7 @@ export class IntentFeatureExtractor {
 
     // 分词
     const words = input.split(/\s+|[，。！？、；：""''（）【】\[\]{}]/);
-    
+
     // 过滤并收集关键词
     for (const word of words) {
       const trimmed = word.trim();
@@ -146,7 +146,7 @@ export class IntentFeatureExtractor {
   extractContext(input: string): string[] {
     // 简单实现：提取名词短语
     const context: string[] = [];
-    
+
     // 匹配引号内容
     const quotedPattern = /["']([^"']+)["']/g;
     let match;
@@ -245,7 +245,7 @@ export class IntentFeatureExtractor {
     for (const { type, pattern, confidence } of ENTITY_PATTERNS) {
       let match;
       const regex = new RegExp(pattern.source, pattern.flags);
-      
+
       while ((match = regex.exec(input)) !== null) {
         const value = match[0];
         const position = [match.index, match.index + value.length];
@@ -290,7 +290,7 @@ export class IntentFeatureExtractor {
   getPrimaryEntities(entities: Entity[]): Entity[] {
     // 按置信度排序
     const sorted = [...entities].sort((a, b) => b.confidence - a.confidence);
-    
+
     // 返回置信度最高的前3个
     return sorted.slice(0, 3);
   }
@@ -307,13 +307,13 @@ export class IntentFeatureExtractor {
    */
   extractLanguageEntities(input: string): Entity[] {
     const languages: Entity[] = [];
-    
+
     // 编程语言
     languages.push(...this.extractEntitiesByType(input, EntityType.LANGUAGE));
-    
+
     // 框架
     languages.push(...this.extractEntitiesByType(input, EntityType.FRAMEWORK));
-    
+
     // 库
     languages.push(...this.extractEntitiesByType(input, EntityType.LIBRARY));
 

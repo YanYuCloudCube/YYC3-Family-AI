@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file llm/__tests__/TaskExtraction.test.ts
  * @description 任务提取系统完整测试套件

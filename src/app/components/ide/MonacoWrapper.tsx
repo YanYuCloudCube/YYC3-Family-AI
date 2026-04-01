@@ -16,7 +16,7 @@ import { useRef, useCallback, useEffect } from "react";
 import Editor, { OnMount, loader } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
 import { getLanguageFromPath } from "./fileData";
-import { useTheme } from "./ThemeStore";
+import { useThemeStore } from "./stores/useThemeStore";
 import { useScrollSyncStore } from "./stores/useScrollSyncStore";
 import { usePreviewStore } from "./stores/usePreviewStore";
 import { errorReporting } from "./services/ErrorReportingService";
@@ -204,7 +204,7 @@ export default function MonacoWrapper({
   const scrollDisposableRef = useRef<any>(null);
   const cursorDisposableRef = useRef<any>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { isCyber } = useTheme();
+  const { isCyber } = useThemeStore();
 
   // Scroll sync stores
   const scrollSyncEnabled = usePreviewStore((s) => s.scrollSyncEnabled);

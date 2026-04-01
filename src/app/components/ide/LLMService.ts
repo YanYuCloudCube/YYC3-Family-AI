@@ -274,7 +274,7 @@ export function setApiKey(providerId: ProviderId, key: string): void {
     } else {
       localStorage.removeItem(`${KEY_PREFIX}${providerId}`);
     }
-  } catch {}
+  } catch { /* empty */ }
 }
 
 export function hasApiKey(providerId: ProviderId): boolean {
@@ -288,7 +288,7 @@ export async function detectOllama(): Promise<{
   models: ProviderModel[];
 }> {
   try {
-    console.log('[LLMService] Attempting to detect Ollama at http://localhost:11434/api/tags');
+    console.warn('[LLMService] Attempting to detect Ollama at http://localhost:11434/api/tags');
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
 
@@ -297,7 +297,7 @@ export async function detectOllama(): Promise<{
     });
     clearTimeout(timeoutId);
 
-    console.log('[LLMService] Ollama response status:', res.status, res.ok);
+    console.warn('[LLMService] Ollama response status:', res.status, res.ok);
 
     if (!res.ok) {
       console.error('[LLMService] Ollama response not OK:', res.status, res.statusText);
@@ -305,8 +305,8 @@ export async function detectOllama(): Promise<{
     }
 
     const data = await res.json();
-    console.log('[LLMService] Ollama detected models:', data.models?.length || 0);
-    
+    console.warn('[LLMService] Ollama detected models:', data.models?.length || 0);
+
     const models: ProviderModel[] = (data.models || []).map((m: any) => ({
       id: m.name || m.model,
       name: (m.name || m.model).split(":")[0],
@@ -398,7 +398,7 @@ export async function testModelConnectivity(
       let errBody = "";
       try {
         errBody = await res.text();
-      } catch {}
+      } catch { /* empty */ }
       // Parse common error patterns
       let reason = `HTTP ${res.status}`;
       if (res.status === 401 || res.status === 403) {
@@ -660,7 +660,7 @@ export async function chatCompletionStream(
               callbacks.onDone(fullText);
               return;
             }
-          } catch {}
+          } catch { /* empty */ }
           continue;
         }
 
@@ -861,7 +861,7 @@ function findAvailableProvider(): {
             };
         }
       }
-    } catch {}
+    } catch { /* empty */ }
   }
 
   // Fallback: scan providers in preferred order

@@ -87,10 +87,10 @@ export class ViewStatePersistence {
       localStorage.setItem(this.config.storageKey, JSON.stringify(states));
     } catch (error) {
       console.error('Failed to save view states to storage:', error);
-      
+
       // 如果存储失败，可能是配额超限，清理过期状态后重试
       this.cleanupExpiredStates();
-      
+
       try {
         const states = Array.from(this.states.values());
         localStorage.setItem(this.config.storageKey, JSON.stringify(states));
@@ -113,7 +113,7 @@ export class ViewStatePersistence {
    */
   private cleanupExpiredStates(): void {
     const expiredIds: string[] = [];
-    
+
     this.states.forEach((state, id) => {
       if (this.isExpired(state)) {
         expiredIds.push(id);
@@ -135,7 +135,7 @@ export class ViewStatePersistence {
 
     // 保留最新的maxStates个状态
     const toKeep = sortedStates.slice(0, this.config.maxStates);
-    
+
     this.states.clear();
     toKeep.forEach(([id, state]) => {
       this.states.set(id, state);
@@ -162,7 +162,7 @@ export class ViewStatePersistence {
   ): ViewState {
     // 查找该文件的现有状态
     const existingState = this.findStateByFile(filePath);
-    
+
     const state: ViewState = {
       id: existingState?.id || this.generateStateId(filePath),
       filePath,
@@ -186,7 +186,7 @@ export class ViewStatePersistence {
    */
   restoreState(filePath: string): ViewState | null {
     const state = this.findStateByFile(filePath);
-    
+
     if (!state) {
       return null;
     }
@@ -218,7 +218,7 @@ export class ViewStatePersistence {
    */
   getState(id: string): ViewState | null {
     const state = this.states.get(id);
-    
+
     if (!state) {
       return null;
     }
@@ -238,7 +238,7 @@ export class ViewStatePersistence {
    */
   deleteState(id: string): boolean {
     const deleted = this.states.delete(id);
-    
+
     if (deleted) {
       this.saveToStorage();
     }
@@ -274,7 +274,7 @@ export class ViewStatePersistence {
    */
   updateStateTTL(id: string, ttl: number): boolean {
     const state = this.states.get(id);
-    
+
     if (!state) {
       return false;
     }
@@ -291,7 +291,7 @@ export class ViewStatePersistence {
    */
   extendStateLife(id: string, additionalTTL: number): boolean {
     const state = this.states.get(id);
-    
+
     if (!state) {
       return false;
     }
@@ -386,7 +386,7 @@ export class ViewStatePersistence {
     newestTimestamp: number;
   } {
     const states = Array.from(this.states.values());
-    
+
     return {
       total: states.length,
       expired: states.filter(s => this.isExpired(s)).length,

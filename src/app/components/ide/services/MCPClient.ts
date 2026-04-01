@@ -90,7 +90,7 @@ export class MCPClient {
       });
 
       this.connected = true;
-      
+
       // 获取可用工具
       const toolsResponse = await this.request("tools/list", {});
       this.tools = toolsResponse.tools || [];
@@ -103,7 +103,7 @@ export class MCPClient {
       const promptsResponse = await this.request("prompts/list", {});
       this.prompts = promptsResponse.prompts || [];
 
-      console.log("[MCP] Connected to server:", response.serverInfo);
+      console.warn("[MCP] Connected to server:", response.serverInfo);
       return true;
     } catch (error) {
       console.error("[MCP] Connection failed:", error);
@@ -122,7 +122,7 @@ export class MCPClient {
       this.tools = [];
       this.resources = [];
       this.prompts = [];
-      console.log("[MCP] Disconnected");
+      console.warn("[MCP] Disconnected");
     } catch (error) {
       console.error("[MCP] Disconnect failed:", error);
     }
@@ -235,7 +235,7 @@ export class MCPClient {
     }
 
     const data = await response.json();
-    
+
     if (data.error) {
       throw new Error(data.error.message);
     }

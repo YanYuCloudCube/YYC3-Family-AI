@@ -195,9 +195,9 @@ export function ModelRegistryProvider({
   const [showSettings, setShowSettings] = useState(false);
   const [showModelSettingsV2, setShowModelSettingsV2] = useState(false);
   const ollamaChecked = useRef(false);
-  
+
   useEffect(() => {
-    console.log('[ModelRegistry] State changed:', { showSettings, showModelSettingsV2 });
+    console.warn('[ModelRegistry] State changed:', { showSettings, showModelSettingsV2 });
   }, [showSettings, showModelSettingsV2]);
 
   // Global connectivity results — shared across all panels
@@ -246,7 +246,7 @@ export function ModelRegistryProvider({
           const val = parseInt(stored, 10);
           if (val >= 10000 && val <= 600000) return val;
         }
-      } catch {}
+      } catch { /* empty */ }
       return 60000;
     },
   );
@@ -255,7 +255,7 @@ export function ModelRegistryProvider({
     setHeartbeatEnabled(enabled);
     try {
       localStorage.setItem(HEARTBEAT_STORAGE_KEY, String(enabled));
-    } catch {}
+    } catch { /* empty */ }
   }, []);
 
   const setHeartbeatIntervalMs = useCallback((ms: number) => {
@@ -263,7 +263,7 @@ export function ModelRegistryProvider({
     setHeartbeatIntervalMsState(clamped);
     try {
       localStorage.setItem(HEARTBEAT_INTERVAL_KEY, String(clamped));
-    } catch {}
+    } catch { /* empty */ }
   }, []);
 
   // Heartbeat ping function — uses current active model
@@ -330,7 +330,7 @@ export function ModelRegistryProvider({
           source: "heartbeat",
         });
         localStorage.setItem(PK, JSON.stringify(existing.slice(-200)));
-      } catch {}
+      } catch { /* empty */ }
     } catch (err: any) {
       if (!heartbeatMountedRef.current) return;
       setConnectivityResults((prev) => ({
@@ -366,7 +366,7 @@ export function ModelRegistryProvider({
           source: "heartbeat",
         });
         localStorage.setItem(PK, JSON.stringify(existing.slice(-200)));
-      } catch {}
+      } catch { /* empty */ }
     }
   }, []);
 
@@ -387,7 +387,7 @@ export function ModelRegistryProvider({
 
     setOllamaStatus("checking");
     detectOllama().then(({ available, models }) => {
-      console.log('[ModelRegistry] Initial Ollama detection result:', { available, models });
+      console.warn('[ModelRegistry] Initial Ollama detection result:', { available, models });
       setOllamaStatus(available ? "available" : "unavailable");
       setProviders((prev) =>
         prev.map((p) =>
@@ -409,10 +409,10 @@ export function ModelRegistryProvider({
   }, []);
 
   const recheckOllama = useCallback(() => {
-    console.log('[ModelRegistry] Rechecking Ollama...');
+    console.warn('[ModelRegistry] Rechecking Ollama...');
     setOllamaStatus("checking");
     detectOllama().then(({ available, models }) => {
-      console.log('[ModelRegistry] Ollama detection result:', { available, models });
+      console.warn('[ModelRegistry] Ollama detection result:', { available, models });
       setOllamaStatus(available ? "available" : "unavailable");
       setProviders((prev) =>
         prev.map((p) =>

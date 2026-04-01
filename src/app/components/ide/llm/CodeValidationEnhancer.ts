@@ -54,16 +54,16 @@ export class CodeValidationEnhancer {
    */
   validateFormat(code: string, language: string): FormatValidationResult {
     const issues: FormatIssue[] = [];
-    
+
     // 检测语言
     const detectedLanguage = this.detectLanguage(code, language);
-    
+
     // 检测缩进风格
     const indentInfo = this.detectIndentStyle(code);
-    
+
     // 检测括号匹配
     const bracketMatch = this.checkBracketMatch(code, issues);
-    
+
     // 检测缩进一致性
     if (this.config.enforceConsistentIndent) {
       this.checkIndentConsistency(code, indentInfo, issues);
@@ -86,15 +86,15 @@ export class CodeValidationEnhancer {
     const lines = code.split('\n');
     const totalLength = code.length;
     const lineCount = lines.length;
-    
+
     // 计算行长度统计
     const lineLengths = lines.map(line => line.length);
     const maxLineLength = Math.max(...lineLengths);
     const avgLineLength = lineLengths.reduce((a, b) => a + b, 0) / lineCount;
-    
+
     // 检测函数长度
     const functionLengths = this.detectFunctionLengths(code, lines);
-    
+
     // 生成建议
     const suggestions: string[] = [];
     if (totalLength > this.config.maxTotalLength) {
@@ -107,7 +107,7 @@ export class CodeValidationEnhancer {
       suggestions.push(`最长行${maxLineLength}超过限制${this.config.maxLineLength}，建议换行`);
     }
 
-    const valid = 
+    const valid =
       totalLength <= this.config.maxTotalLength &&
       lineCount <= this.config.maxLineCount &&
       maxLineLength <= this.config.maxLineLength;
@@ -132,9 +132,9 @@ export class CodeValidationEnhancer {
     const emptyBlocks = this.detectEmptyBlocks(code);
     const duplicates = this.detectDuplicates(code);
     const complexity = this.calculateComplexity(code, language);
-    
+
     const suggestions: string[] = [];
-    
+
     if (emptyBlocks.length > 0) {
       suggestions.push(`发现${emptyBlocks.length}个空代码块，建议补充实现`);
     }
@@ -163,12 +163,12 @@ export class CodeValidationEnhancer {
    */
   private detectLanguage(code: string, specified: string): string {
     if (specified && specified !== 'unknown') return specified;
-    
+
     // 简单的语言检测
     if (code.includes('import React') || code.includes('useState')) return 'typescript';
     if (code.includes('def ') || code.includes('import ')) return 'python';
     if (code.includes('function ') || code.includes('const ')) return 'javascript';
-    
+
     return 'unknown';
   }
 
@@ -178,11 +178,11 @@ export class CodeValidationEnhancer {
   private detectIndentStyle(code: string): { style: 'spaces' | 'tabs' | 'mixed'; size: number } {
     const lines = code.split('\n').filter(line => line.match(/^\s+/));
     if (lines.length === 0) return { style: 'spaces', size: 2 };
-    
+
     let spaces = 0;
     let tabs = 0;
     const spaceSizes: number[] = [];
-    
+
     for (const line of lines) {
       const indent = line.match(/^(\s+)/)?.[1] || '';
       if (indent.includes('\t')) {
@@ -192,12 +192,12 @@ export class CodeValidationEnhancer {
         spaceSizes.push(indent.length);
       }
     }
-    
+
     const style = tabs > spaces ? 'tabs' : spaces > tabs ? 'spaces' : 'mixed';
-    const size = style === 'spaces' 
+    const size = style === 'spaces'
       ? spaceSizes.length > 0 ? Math.round(spaceSizes.reduce((a, b) => a + b, 0) / spaceSizes.length) : 2
       : 1;
-    
+
     return { style, size };
   }
 
@@ -207,7 +207,7 @@ export class CodeValidationEnhancer {
   private checkBracketMatch(code: string, issues: FormatIssue[]): boolean {
     const stack: string[] = [];
     const pairs: Record<string, string> = { '(': ')', '[': ']', '{': '}' };
-    
+
     for (let i = 0; i < code.length; i++) {
       const char = code[i];
       if (pairs[char]) {
@@ -224,7 +224,7 @@ export class CodeValidationEnhancer {
         }
       }
     }
-    
+
     if (stack.length > 0) {
       issues.push({
         type: 'bracket',
@@ -233,7 +233,7 @@ export class CodeValidationEnhancer {
       });
       return false;
     }
-    
+
     return true;
   }
 
@@ -260,16 +260,16 @@ export class CodeValidationEnhancer {
   private detectFunctionLengths(code: string, lines: string[]): FunctionLength[] {
     const functionLengths: FunctionLength[] = [];
     const functionRegex = /(?:function\s+(\w+)|const\s+(\w+)\s*=\s*(?:async\s*)?\(|(\w+)\s*\([^)]*\)\s*{)/g;
-    
+
     let match;
     while ((match = functionRegex.exec(code)) !== null) {
       const name = match[1] || match[2] || match[3];
       const startLine = code.substring(0, match.index).split('\n').length;
-      
+
       // 简化：估算函数长度
       let braceCount = 0;
       let endLine = startLine;
-      
+
       for (let i = match.index; i < code.length; i++) {
         if (code[i] === '{') braceCount++;
         if (code[i] === '}') {
@@ -280,7 +280,7 @@ export class CodeValidationEnhancer {
           }
         }
       }
-      
+
       const lineCount = endLine - startLine + 1;
       if (lineCount > 0) {
         functionLengths.push({
@@ -292,7 +292,7 @@ export class CodeValidationEnhancer {
         });
       }
     }
-    
+
     return functionLengths;
   }
 
@@ -302,7 +302,7 @@ export class CodeValidationEnhancer {
   private detectEmptyBlocks(code: string): CodeBlock[] {
     const blocks: CodeBlock[] = [];
     const emptyBlockRegex = /(?:function\s+\w+|if\s*\(|for\s*\(|while\s*\(|class\s+\w+|try\s*|catch\s*)\s*\{[\s\n]*\}/g;
-    
+
     let match;
     while ((match = emptyBlockRegex.exec(code)) !== null) {
       const startLine = code.substring(0, match.index).split('\n').length;
@@ -313,7 +313,7 @@ export class CodeValidationEnhancer {
         isEmpty: true,
       });
     }
-    
+
     return blocks;
   }
 
@@ -324,7 +324,7 @@ export class CodeValidationEnhancer {
     const duplicates: DuplicateCode[] = [];
     const lines = code.split('\n');
     const lineMap = new Map<string, number[]>();
-    
+
     // 简化的重复检测：检查连续重复行
     lines.forEach((line, index) => {
       const trimmed = line.trim();
@@ -334,7 +334,7 @@ export class CodeValidationEnhancer {
         lineMap.set(trimmed, occurrences);
       }
     });
-    
+
     lineMap.forEach((occurrences, line) => {
       if (occurrences.length >= 2) {
         duplicates.push({
@@ -345,7 +345,7 @@ export class CodeValidationEnhancer {
         });
       }
     });
-    
+
     return duplicates.slice(0, 5); // 最多返回5个重复项
   }
 
@@ -358,9 +358,9 @@ export class CodeValidationEnhancer {
     const forCount = (code.match(/\bfor\b/g) || []).length;
     const whileCount = (code.match(/\bwhile\b/g) || []).length;
     const caseCount = (code.match(/\bcase\b/g) || []).length;
-    
+
     const cyclomaticComplexity = 1 + ifCount + forCount + whileCount + caseCount;
-    
+
     // 计算嵌套层级
     let maxNesting = 0;
     let currentNesting = 0;
@@ -373,12 +373,12 @@ export class CodeValidationEnhancer {
         currentNesting--;
       }
     }
-    
-    const rating = 
+
+    const rating =
       cyclomaticComplexity <= 5 ? 'low' :
       cyclomaticComplexity <= 10 ? 'medium' :
       cyclomaticComplexity <= 20 ? 'high' : 'very-high';
-    
+
     return {
       cyclomaticComplexity,
       cognitiveComplexity: cyclomaticComplexity, // 简化
@@ -396,18 +396,18 @@ export class CodeValidationEnhancer {
     complexity: ComplexityInfo
   ): number {
     let score = 100;
-    
+
     // 空块扣分
     score -= emptyBlocks.length * 10;
-    
+
     // 重复代码扣分
     score -= duplicates.length * 5;
-    
+
     // 复杂度扣分
     if (complexity.cyclomaticComplexity > this.config.maxCyclomaticComplexity) {
       score -= (complexity.cyclomaticComplexity - this.config.maxCyclomaticComplexity) * 2;
     }
-    
+
     return Math.max(0, score);
   }
 
@@ -419,17 +419,17 @@ export class CodeValidationEnhancer {
     length: LengthValidationResult,
     quality: QualityValidationResult
   ): { valid: boolean; score: number; summary: string } {
-    const score = (quality.score * 0.5) + 
-      (format.valid ? 25 : 0) + 
+    const score = (quality.score * 0.5) +
+      (format.valid ? 25 : 0) +
       (length.valid ? 25 : 0);
-    
+
     const valid = format.valid && length.valid && quality.valid;
-    
+
     let summary = valid ? '代码质量良好' : '代码存在问题需要改进';
     if (!format.valid) summary += '，格式不规范';
     if (!length.valid) summary += '，长度超标';
     if (!quality.valid) summary += '，质量分数较低';
-    
+
     return { valid, score, summary };
   }
 }

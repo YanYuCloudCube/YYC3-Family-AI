@@ -79,7 +79,7 @@ export class HistoryMessageManager {
 
   constructor(config: Partial<MessageManagerConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
-    
+
     if (this.config.autoCleanup) {
       this.scheduleCleanup();
     }
@@ -92,22 +92,22 @@ export class HistoryMessageManager {
     const id = this.generateId();
     const timestamp = Date.now();
     const tokenCount = this.estimateTokens(message.content);
-    
+
     const fullMessage: Message = {
       ...message,
       id,
       timestamp,
       tokenCount,
     };
-    
+
     this.messages.set(id, fullMessage);
     this.updateSession(message.sessionId);
-    
+
     // 自动清理
     if (this.messages.size > this.config.maxMessages) {
       this.cleanupMessages();
     }
-    
+
     return fullMessage;
   }
 
@@ -131,14 +131,14 @@ export class HistoryMessageManager {
    * 限制消息
    */
   limitMessages(sessionId?: string): Message[] {
-    let messages = sessionId
+    const messages = sessionId
       ? this.getSessionMessages(sessionId)
       : Array.from(this.messages.values()).sort((a, b) => a.timestamp - b.timestamp);
-    
+
     // Token限制
     let totalTokens = 0;
     const limited: Message[] = [];
-    
+
     for (let i = messages.length - 1; i >= 0; i--) {
       const msg = messages[i];
       if (totalTokens + msg.tokenCount <= this.config.maxTokens) {
@@ -148,7 +148,7 @@ export class HistoryMessageManager {
         break;
       }
     }
-    
+
     // 数量限制
     return limited.slice(-this.config.maxMessages);
   }
@@ -158,30 +158,30 @@ export class HistoryMessageManager {
    */
   searchMessages(criteria: SearchCriteria): Message[] {
     let results = Array.from(this.messages.values());
-    
+
     if (criteria.keyword) {
       const keyword = criteria.keyword.toLowerCase();
-      results = results.filter(msg => 
+      results = results.filter(msg =>
         msg.content.toLowerCase().includes(keyword)
       );
     }
-    
+
     if (criteria.sessionId) {
       results = results.filter(msg => msg.sessionId === criteria.sessionId);
     }
-    
+
     if (criteria.startTime) {
-      results = results.filter(msg => msg.timestamp >= criteria.startTime!);
+      results = results.filter(msg => msg.timestamp >= (criteria.startTime as any));
     }
-    
+
     if (criteria.endTime) {
-      results = results.filter(msg => msg.timestamp <= criteria.endTime!);
+      results = results.filter(msg => msg.timestamp <= (criteria.endTime as any));
     }
-    
+
     if (criteria.role) {
       results = results.filter(msg => msg.role === criteria.role);
     }
-    
+
     return results.sort((a, b) => b.timestamp - a.timestamp);
   }
 
@@ -218,7 +218,7 @@ export class HistoryMessageManager {
     const totalMessages = this.messages.size;
     const totalTokens = Array.from(this.messages.values())
       .reduce((sum, msg) => sum + msg.tokenCount, 0);
-    
+
     return {
       totalMessages,
       totalTokens,
@@ -242,7 +242,7 @@ export class HistoryMessageManager {
   private updateSession(sessionId: string): void {
     const session = this.sessions.get(sessionId);
     const messages = this.getSessionMessages(sessionId);
-    
+
     if (session) {
       session.updatedAt = Date.now();
       session.messageCount = messages.length;
@@ -265,10 +265,10 @@ export class HistoryMessageManager {
   private cleanupMessages(): void {
     const messages = Array.from(this.messages.values())
       .sort((a, b) => b.timestamp - a.timestamp);
-    
-    const toKeep = messages.slice(0, this.config.maxMessages);
+
+    const _toKeep = messages.slice(0, this.config.maxMessages);
     const toDelete = messages.slice(this.config.maxMessages);
-    
+
     for (const msg of toDelete) {
       this.messages.delete(msg.id);
     }
@@ -288,7 +288,7 @@ export class HistoryMessageManager {
    */
   private cleanupOldMessages(): void {
     const cutoffTime = Date.now() - (this.config.cleanupInterval * 60 * 60 * 1000);
-    
+
     for (const [id, msg] of this.messages.entries()) {
       if (msg.timestamp < cutoffTime) {
         this.messages.delete(id);
@@ -311,7 +311,7 @@ export class HistoryMessageManager {
     const englishWords = (content.match(/[a-zA-Z]+/g) || []).length;
     const chineseChars = (content.match(/[\u4e00-\u9fa5]/g) || []).length;
     const otherChars = content.length - englishWords - chineseChars;
-    
+
     return Math.ceil(englishWords * 1.3 + chineseChars * 0.5 + otherChars * 0.3);
   }
 }

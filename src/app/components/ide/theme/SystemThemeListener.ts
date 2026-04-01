@@ -35,19 +35,19 @@ export type SystemThemeCallback = (event: SystemThemeChangeEvent) => void;
  */
 export class SystemThemeListener {
   private static instance: SystemThemeListener;
-  
+
   // Media Query对象
   private mediaQuery: MediaQueryList | null = null;
-  
+
   // 监听器集合
   private listeners: Set<SystemThemeCallback> = new Set();
-  
+
   // 当前系统主题
   private currentTheme: SystemTheme = 'light';
-  
+
   // 是否已初始化
   private initialized: boolean = false;
-  
+
   // 是否支持系统主题检测
   private supported: boolean = false;
 
@@ -75,15 +75,15 @@ export class SystemThemeListener {
       this.supported = false;
       return;
     }
-    
+
     try {
       // 创建Media Query
       this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       this.supported = true;
-      
+
       // 获取初始主题
       this.currentTheme = this.mediaQuery.matches ? 'dark' : 'light';
-      
+
       // 添加监听器
       if (this.mediaQuery.addEventListener) {
         this.mediaQuery.addEventListener('change', this.handleChange);
@@ -92,7 +92,7 @@ export class SystemThemeListener {
         (this.mediaQuery as MediaQueryList & { addListener: (callback: (e: MediaQueryListEvent) => void) => void })
           .addListener(this.handleChange);
       }
-      
+
       this.initialized = true;
     } catch (error) {
       console.error('[SystemThemeListener] Failed to initialize:', error);
@@ -106,7 +106,7 @@ export class SystemThemeListener {
   private handleChange = (e: MediaQueryListEvent | MediaQueryList): void => {
     const newTheme: SystemTheme = e.matches ? 'dark' : 'light';
     const oldTheme = this.currentTheme;
-    
+
     // 只有主题真正变化时才通知
     if (newTheme !== oldTheme) {
       this.currentTheme = newTheme;
@@ -122,7 +122,7 @@ export class SystemThemeListener {
       theme,
       timestamp: Date.now()
     };
-    
+
     this.listeners.forEach(listener => {
       try {
         listener(event);
@@ -140,7 +140,7 @@ export class SystemThemeListener {
     if (!this.supported || !this.mediaQuery) {
       return this.currentTheme;
     }
-    
+
     // 实时查询当前主题
     return this.mediaQuery.matches ? 'dark' : 'light';
   }
@@ -164,7 +164,7 @@ export class SystemThemeListener {
    */
   public addListener(callback: SystemThemeCallback): () => void {
     this.listeners.add(callback);
-    
+
     // 返回取消监听函数
     return () => this.removeListener(callback);
   }
@@ -197,12 +197,12 @@ export class SystemThemeListener {
    */
   public checkTheme(): SystemTheme {
     const theme = this.getSystemTheme();
-    
+
     if (theme !== this.currentTheme) {
       this.currentTheme = theme;
       this.notifyListeners(theme);
     }
-    
+
     return theme;
   }
 
@@ -218,7 +218,7 @@ export class SystemThemeListener {
           .removeListener(this.handleChange);
       }
     }
-    
+
     this.listeners.clear();
     this.mediaQuery = null;
     this.initialized = false;

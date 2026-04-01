@@ -129,7 +129,7 @@ export default function QuickActionsBar() {
     (a) => a.target === "code" && !a.requiresAI,
   );
   const aiActions = availableActions.filter((a) => a.requiresAI);
-  const textActions = availableActions.filter(
+  const _textActions = availableActions.filter(
     (a) => a.target === "text" || a.target === "document",
   );
 

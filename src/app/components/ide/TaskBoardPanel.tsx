@@ -478,7 +478,7 @@ function TaskCard({
           {/* Subtasks */}
           {totalSubs > 0 && (
             <div className="space-y-0.5">
-              {task.subtasks!.map((sub) => (
+              {(task.subtasks as any).map((sub: any) => (
                 <div key={sub.id} className="flex items-center gap-1.5 pl-1">
                   <button
                     onClick={() => onToggleSubTask(task.id, sub.id)}

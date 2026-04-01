@@ -172,3 +172,7 @@ export { useWorkspaceStore } from "./useWorkspaceStore";
 export { useSessionStore } from "./useSessionStore";
 
 export { useIPCStore } from "./useIPCStore";
+
+export { useThemeStore } from "./useThemeStore";
+
+export type { ThemeId, ThemeColors, ThemeState } from "./useThemeStore";

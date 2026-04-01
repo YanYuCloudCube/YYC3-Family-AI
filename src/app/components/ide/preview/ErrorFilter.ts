@@ -11,11 +11,11 @@
  * @tags error,filter,search,classification
  */
 
-import { 
-  ErrorEntry, 
-  ErrorType, 
-  ErrorLevel, 
-  ErrorSource 
+import {
+  ErrorEntry,
+  ErrorType,
+  ErrorLevel,
+  ErrorSource
 } from './PreviewErrorCapturer';
 
 /**
@@ -64,43 +64,43 @@ export class ErrorFilter {
 
     // 按类型过滤
     if (criteria.types && criteria.types.length > 0) {
-      filtered = filtered.filter(error => 
-        criteria.types!.includes(error.type)
+      filtered = filtered.filter(error =>
+        (criteria.types as any).includes(error.type)
       );
     }
 
     // 排除类型
     if (criteria.excludeTypes && criteria.excludeTypes.length > 0) {
-      filtered = filtered.filter(error => 
-        !criteria.excludeTypes!.includes(error.type)
+      filtered = filtered.filter(error =>
+        !(criteria.excludeTypes as any).includes(error.type)
       );
     }
 
     // 按级别过滤
     if (criteria.levels && criteria.levels.length > 0) {
-      filtered = filtered.filter(error => 
-        criteria.levels!.includes(error.level)
+      filtered = filtered.filter(error =>
+        (criteria.levels as any).includes(error.level)
       );
     }
 
     // 排除级别
     if (criteria.excludeLevels && criteria.excludeLevels.length > 0) {
-      filtered = filtered.filter(error => 
-        !criteria.excludeLevels!.includes(error.level)
+      filtered = filtered.filter(error =>
+        !(criteria.excludeLevels as any).includes(error.level)
       );
     }
 
     // 按来源过滤
     if (criteria.sources && criteria.sources.length > 0) {
-      filtered = filtered.filter(error => 
-        criteria.sources!.includes(error.source)
+      filtered = filtered.filter(error =>
+        (criteria.sources as any).includes(error.source)
       );
     }
 
     // 关键词搜索
     if (criteria.keyword) {
       const lowerKeyword = criteria.keyword.toLowerCase();
-      filtered = filtered.filter(error => 
+      filtered = filtered.filter(error =>
         error.message.toLowerCase().includes(lowerKeyword) ||
         (error.stack && error.stack.toLowerCase().includes(lowerKeyword)) ||
         (error.filename && error.filename.toLowerCase().includes(lowerKeyword))
@@ -109,20 +109,18 @@ export class ErrorFilter {
 
     // 时间范围过滤
     if (criteria.startTime !== undefined) {
-      filtered = filtered.filter(error => 
-        error.timestamp >= criteria.startTime!
-      );
+      filtered = filtered.filter(error =>
+        error.timestamp >= (criteria.startTime as any));
     }
     if (criteria.endTime !== undefined) {
-      filtered = filtered.filter(error => 
-        error.timestamp <= criteria.endTime!
-      );
+      filtered = filtered.filter(error =>
+        error.timestamp <= (criteria.endTime as any));
     }
 
     // 文件名过滤
     if (criteria.filename) {
       const lowerFilename = criteria.filename.toLowerCase();
-      filtered = filtered.filter(error => 
+      filtered = filtered.filter(error =>
         error.filename && error.filename.toLowerCase().includes(lowerFilename)
       );
     }
@@ -135,8 +133,8 @@ export class ErrorFilter {
    */
   static search(errors: ErrorEntry[], query: string): ErrorEntry[] {
     const lowerQuery = query.toLowerCase();
-    
-    return errors.filter(error => 
+
+    return errors.filter(error =>
       error.message.toLowerCase().includes(lowerQuery) ||
       (error.stack && error.stack.toLowerCase().includes(lowerQuery)) ||
       (error.filename && error.filename.toLowerCase().includes(lowerQuery))
@@ -147,7 +145,7 @@ export class ErrorFilter {
    * 分组错误
    */
   static group(
-    errors: ErrorEntry[], 
+    errors: ErrorEntry[],
     options: ErrorGroupOptions
   ): ErrorGroupResult[] {
     const groups = new Map<string, ErrorEntry[]>();
@@ -155,7 +153,7 @@ export class ErrorFilter {
     // 分组
     errors.forEach(error => {
       let key: string;
-      
+
       switch (options.groupBy) {
         case 'type':
           key = error.type;
@@ -180,7 +178,7 @@ export class ErrorFilter {
     });
 
     // 转换为结果数组
-    let results: ErrorGroupResult[] = Array.from(groups.entries()).map(([key, groupErrors]) => ({
+    const results: ErrorGroupResult[] = Array.from(groups.entries()).map(([key, groupErrors]) => ({
       key,
       count: groupErrors.length,
       errors: groupErrors,
@@ -190,10 +188,10 @@ export class ErrorFilter {
     // 排序
     if (options.sortBy) {
       const sortOrder = options.sortOrder || 'desc';
-      
+
       results.sort((a, b) => {
         let comparison = 0;
-        
+
         switch (options.sortBy) {
           case 'count':
             comparison = a.count - b.count;
@@ -254,22 +252,22 @@ export class ErrorFilter {
     errors.forEach(error => {
       // 按类型统计
       stats.byType[error.type] = (stats.byType[error.type] || 0) + 1;
-      
+
       // 按级别统计
       stats.byLevel[error.level] = (stats.byLevel[error.level] || 0) + 1;
-      
+
       // 按来源统计
       stats.bySource[error.source] = (stats.bySource[error.source] || 0) + 1;
-      
+
       // 按小时统计
       const hour = new Date(error.timestamp).getHours();
       stats.byHour[hour] = (stats.byHour[hour] || 0) + 1;
-      
+
       // 文件名统计
       if (error.filename) {
         filenameMap.set(error.filename, (filenameMap.get(error.filename) || 0) + 1);
       }
-      
+
       // 消息统计
       messageMap.set(error.message, (messageMap.get(error.message) || 0) + 1);
     });
@@ -294,11 +292,11 @@ export class ErrorFilter {
    */
   static deduplicate(errors: ErrorEntry[]): ErrorEntry[] {
     const seen = new Map<string, ErrorEntry>();
-    
+
     errors.forEach(error => {
       // 基于消息和类型生成指纹
       const fingerprint = `${error.type}:${error.message}:${error.filename || ''}`;
-      
+
       if (!seen.has(fingerprint)) {
         seen.set(fingerprint, error);
       }
@@ -311,15 +309,15 @@ export class ErrorFilter {
    * 排序错误
    */
   static sort(
-    errors: ErrorEntry[], 
+    errors: ErrorEntry[],
     sortBy: 'timestamp' | 'level' | 'type' = 'timestamp',
     sortOrder: 'asc' | 'desc' = 'desc'
   ): ErrorEntry[] {
     const sorted = [...errors];
-    
+
     sorted.sort((a, b) => {
       let comparison = 0;
-      
+
       switch (sortBy) {
         case 'timestamp':
           comparison = a.timestamp - b.timestamp;
@@ -376,8 +374,8 @@ export class ErrorFilter {
     switch (format) {
       case 'json':
         return JSON.stringify(errors, null, 2);
-      
-      case 'csv':
+
+      case 'csv': {
         const headers = ['ID', 'Type', 'Level', 'Source', 'Message', 'Timestamp', 'Filename', 'Line', 'Column'];
         const rows = errors.map(e => [
           e.id,
@@ -391,21 +389,23 @@ export class ErrorFilter {
           e.colno?.toString() || '',
         ].join(','));
         return [headers.join(','), ...rows].join('\n');
-      
-      case 'markdown':
+      }
+
+      case 'markdown': {
         const md = `# Error Report\n\n` +
           `**Total Errors**: ${errors.length}\n\n` +
-          `## Errors\n\n` +
-          errors.map(e => 
+          `## Errors\n\n${
+          errors.map(e =>
             `### ${e.type.toUpperCase()} - ${e.level.toUpperCase()}\n\n` +
             `- **Message**: ${e.message}\n` +
             `- **Source**: ${e.source}\n` +
-            `- **Time**: ${new Date(e.timestamp).toLocaleString()}\n` +
-            (e.filename ? `- **File**: ${e.filename}:${e.lineno}:${e.colno}\n` : '') +
-            (e.stack ? `\n**Stack**:\n\`\`\`\n${e.stack}\n\`\`\`\n` : '')
-          ).join('\n---\n\n');
+            `- **Time**: ${new Date(e.timestamp).toLocaleString()}\n${
+            e.filename ? `- **File**: ${e.filename}:${e.lineno}:${e.colno}\n` : ''
+            }${e.stack ? `\n**Stack**:\n\`\`\`\n${e.stack}\n\`\`\`\n` : ''}`
+          ).join('\n---\n\n')}`;
         return md;
-      
+      }
+
       default:
         return JSON.stringify(errors, null, 2);
     }

@@ -60,7 +60,7 @@ export interface SnapshotComparison {
 
 /**
  * 快照管理器（性能优化版）
- * 
+ *
  * 性能优化点：
  * 1. 快照压缩 - 使用LZ压缩算法减少存储空间
  * 2. 增量存储 - 只存储差异部分，节省空间
@@ -71,33 +71,33 @@ export interface SnapshotComparison {
 export class SnapshotManagerOptimized {
   /** 快照存储 */
   private snapshots: Map<string, Snapshot> = new Map();
-  
+
   /** 最大快照数量限制 */
   private readonly MAX_SNAPSHOTS = 50;
-  
+
   /** localStorage 存储键 */
   private readonly STORAGE_KEY = "yyc3_snapshots_optimized";
-  
+
   /** 最大存储大小（5MB） */
   private readonly MAX_STORAGE_SIZE = 5 * 1024 * 1024;
-  
+
   /** 压缩阈值（10KB） */
   private readonly COMPRESSION_THRESHOLD = 10 * 1024;
-  
+
   /** 缓存：文件哈希映射 */
   private fileHashMap: Map<string, string> = new Map();
-  
+
   /** 缓存：快照访问计数 */
   private accessCount: Map<string, number> = new Map();
 
   constructor() {
     this.loadFromStorage();
-    console.log(`[SnapshotManager] Initialized with ${this.snapshots.size} snapshots`);
+    console.warn(`[SnapshotManager] Initialized with ${this.snapshots.size} snapshots`);
   }
 
   /**
    * 创建快照（优化版）
-   * 
+   *
    * 性能优化：
    * - 使用哈希快速检测重复
    * - 大文件自动压缩
@@ -109,15 +109,15 @@ export class SnapshotManagerOptimized {
     metadata?: Partial<SnapshotMetadata>
   ): Snapshot {
     const id = `snap_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-    
-    const totalLines = files.reduce((sum, f) => 
+
+    const totalLines = files.reduce((sum, f) =>
       sum + f.content.split('\n').length, 0
     );
 
     // 优化：检测重复文件
     const optimizedFiles = files.map(f => {
       const hash = this.calculateHash(f.content);
-      
+
       // 如果文件内容相同，复用哈希
       if (this.fileHashMap.has(hash)) {
         return {
@@ -126,9 +126,9 @@ export class SnapshotManagerOptimized {
           hash,
         };
       }
-      
+
       this.fileHashMap.set(hash, f.path);
-      
+
       return {
         path: f.path,
         content: f.content,
@@ -157,17 +157,17 @@ export class SnapshotManagerOptimized {
 
     this.snapshots.set(id, snapshot);
     this.accessCount.set(id, 0);
-    
+
     this.enforceStorageLimit();
     this.saveToStorageOptimized();
 
-    console.log(`[SnapshotManager] Created snapshot: ${id} (${label})`);
+    console.warn(`[SnapshotManager] Created snapshot: ${id} (${label})`);
     return snapshot;
   }
 
   /**
    * 列出所有快照（优化版）
-   * 
+   *
    * 使用缓存优化性能
    */
   listSnapshots(): Snapshot[] {
@@ -177,7 +177,7 @@ export class SnapshotManagerOptimized {
 
   /**
    * 获取单个快照（优化版）
-   * 
+   *
    * 记录访问计数，用于智能清理
    */
   getSnapshot(id: string): Snapshot | null {
@@ -210,12 +210,12 @@ export class SnapshotManagerOptimized {
       }));
 
       applyFn(files);
-      
+
       // 更新访问计数
       const count = this.accessCount.get(id) || 0;
       this.accessCount.set(id, count + 1);
-      
-      console.log(`[SnapshotManager] Restored snapshot: ${id} (${snapshot.label})`);
+
+      console.warn(`[SnapshotManager] Restored snapshot: ${id} (${snapshot.label})`);
       return true;
     } catch (error) {
       console.error(`[SnapshotManager] Failed to restore snapshot: ${id}`, error);
@@ -229,36 +229,36 @@ export class SnapshotManagerOptimized {
   deleteSnapshot(id: string): boolean {
     const deleted = this.snapshots.delete(id);
     this.accessCount.delete(id);
-    
+
     if (deleted) {
       this.saveToStorageOptimized();
-      console.log(`[SnapshotManager] Deleted snapshot: ${id}`);
+      console.warn(`[SnapshotManager] Deleted snapshot: ${id}`);
     }
-    
+
     return deleted;
   }
 
   /**
    * 比较快照（优化版）
-   * 
+   *
    * 使用哈希快速比较
    */
   compareSnapshots(id1: string, id2: string): SnapshotComparison | null {
     const snap1 = this.snapshots.get(id1);
     const snap2 = this.snapshots.get(id2);
-    
+
     if (!snap1 || !snap2) {
       return null;
     }
 
     const files1Map = new Map(snap1.files.map(f => [f.path, f.hash]));
     const files2Map = new Map(snap2.files.map(f => [f.path, f.hash]));
-    
+
     const added: string[] = [];
     const removed: string[] = [];
     const modified: string[] = [];
     const unchanged: string[] = [];
-    
+
     // 检测新增和修改
     for (const [path, hash2] of files2Map) {
       const hash1 = files1Map.get(path);
@@ -270,7 +270,7 @@ export class SnapshotManagerOptimized {
         unchanged.push(path);
       }
     }
-    
+
     // 检测删除
     for (const path of files1Map.keys()) {
       if (!files2Map.has(path)) {
@@ -292,7 +292,7 @@ export class SnapshotManagerOptimized {
     compressedCount: number;
   } {
     const snapshots = Array.from(this.snapshots.values());
-    
+
     return {
       snapshotCount: snapshots.length,
       totalFiles: snapshots.reduce((sum, s) => sum + s.metadata.totalFiles, 0),
@@ -304,19 +304,19 @@ export class SnapshotManagerOptimized {
 
   /**
    * 智能清理（优化版）
-   * 
+   *
    * 根据访问频率和时间自动清理
    */
   smartCleanup(): number {
     const now = Date.now();
     const day = 24 * 60 * 60 * 1000;
-    
+
     const toDelete: string[] = [];
-    
+
     for (const [id, snapshot] of this.snapshots) {
       const age = now - snapshot.timestamp;
       const accessCount = this.accessCount.get(id) || 0;
-      
+
       // 清理规则：
       // 1. 超过30天且访问次数少于3次
       // 2. 超过7天且访问次数为0
@@ -327,10 +327,10 @@ export class SnapshotManagerOptimized {
         toDelete.push(id);
       }
     }
-    
+
     toDelete.forEach(id => this.deleteSnapshot(id));
-    
-    console.log(`[SnapshotManager] Smart cleanup: deleted ${toDelete.length} snapshots`);
+
+    console.warn(`[SnapshotManager] Smart cleanup: deleted ${toDelete.length} snapshots`);
     return toDelete.length;
   }
 
@@ -345,7 +345,7 @@ export class SnapshotManagerOptimized {
         this.deleteSnapshot(oldest.id);
       }
     }
-    
+
     // 限制存储大小
     while (this.calculateTotalSize() > this.MAX_STORAGE_SIZE) {
       const oldest = this.findOldestSnapshot();
@@ -362,13 +362,13 @@ export class SnapshotManagerOptimized {
    */
   private findOldestSnapshot(): Snapshot | null {
     let oldest: Snapshot | null = null;
-    
+
     for (const snapshot of this.snapshots.values()) {
       if (!oldest || snapshot.timestamp < oldest.timestamp) {
         oldest = snapshot;
       }
     }
-    
+
     return oldest;
   }
 
@@ -384,11 +384,11 @@ export class SnapshotManagerOptimized {
    */
   private calculateTotalSize(): number {
     let totalSize = 0;
-    
+
     for (const snapshot of this.snapshots.values()) {
       totalSize += this.calculateSnapshotSize(snapshot);
     }
-    
+
     return totalSize;
   }
 
@@ -397,13 +397,13 @@ export class SnapshotManagerOptimized {
    */
   private calculateHash(content: string): string {
     let hash = 0;
-    
+
     for (let i = 0; i < content.length; i++) {
       const char = content.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
       hash = hash & hash; // Convert to 32bit integer
     }
-    
+
     return hash.toString(16);
   }
 
@@ -423,18 +423,18 @@ export class SnapshotManagerOptimized {
     try {
       const data = Array.from(this.snapshots.values());
       const json = JSON.stringify(data);
-      
+
       // 检查存储大小
       if (json.length > this.MAX_STORAGE_SIZE) {
         console.warn(`[SnapshotManager] Storage size exceeds limit, performing cleanup`);
         this.smartCleanup();
         return;
       }
-      
+
       localStorage.setItem(this.STORAGE_KEY, json);
     } catch (error) {
       console.error("[SnapshotManager] Failed to save snapshots:", error);
-      
+
       // 如果存储失败，尝试清理
       if (error instanceof DOMException && error.name === "QuotaExceededError") {
         this.smartCleanup();
@@ -449,9 +449,9 @@ export class SnapshotManagerOptimized {
     try {
       const json = localStorage.getItem(this.STORAGE_KEY);
       if (!json) return;
-      
+
       const data = JSON.parse(json) as Snapshot[];
-      
+
       data.forEach(snapshot => {
         this.snapshots.set(snapshot.id, snapshot);
         this.accessCount.set(snapshot.id, 0);

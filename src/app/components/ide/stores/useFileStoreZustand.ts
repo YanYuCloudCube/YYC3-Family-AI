@@ -14,7 +14,6 @@
 
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { persist } from "zustand/middleware";
 import { FILE_CONTENTS, type FileNode } from "../fileData";
 
 // ===== Types =====
@@ -52,6 +51,7 @@ export interface FileStoreState {
 interface FileStoreActions {
   // File operations
   updateFile: (path: string, content: string) => void;
+  updateFileContent: (path: string, content: string) => Promise<void>;
   createFile: (path: string, content?: string) => void;
   deleteFile: (path: string) => void;
   renameFile: (oldPath: string, newPath: string) => void;
@@ -211,7 +211,7 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
     ],
     gitLog: INITIAL_GIT_LOG,
 
-    // ── File operations (Immer makes these clean!) ──
+    // ── File operations (Immer makes these clean as any)2 ──
     updateFile: (path, content) =>
       set((state) => {
         state.fileContents[path] = content;
@@ -221,6 +221,10 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
           state.gitChanges.push({ path, status: "modified", staged: false });
         }
       }),
+
+    updateFileContent: async (path, content) => {
+      get().updateFile(path, content);
+    },
 
     createFile: (path, content = "") =>
       set((state) => {

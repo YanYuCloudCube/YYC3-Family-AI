@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file CryptoService.test.ts
  * @description 加密服务测试 - 覆盖 AES-GCM 加解密、PBKDF2 密钥派生、数据脱敏等核心功能

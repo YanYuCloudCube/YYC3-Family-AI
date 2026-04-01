@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file PreviewModeController.test.ts
  * @description PreviewModeController 单元测试

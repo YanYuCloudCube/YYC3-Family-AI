@@ -88,7 +88,7 @@ export function loadJSON<T>(key: string, fallback: T): T {
 export function saveJSON(key: string, value: unknown): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch {}
+  } catch { /* empty */ }
 }
 
 /** 清除所有 yyc3 前缀的 localStorage 条目，返回清除数量 */

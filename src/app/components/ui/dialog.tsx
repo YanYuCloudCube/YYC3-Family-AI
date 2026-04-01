@@ -1,4 +1,17 @@
 /**
+ * @file dialog.tsx
+ * @description dialog 组件 — React UI 组件
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags component,react,ui,ui
+ */
+
+/**
  * file: ui/dialog.tsx
  * description: 对话框组件 - 基于 Radix UI Dialog，支持触发器、门户、关闭等功能
  * author: YanYuCloudCube Team <admin@0379.email>

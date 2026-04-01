@@ -192,7 +192,7 @@ export function compressContext(
   const currentText = parts.join("\n\n");
   let currentTokens = estimateTokens(currentText);
 
-  if (currentTokens < maxTokens * 0.7) {
+  if (currentTokens < maxTokens * 0.7 && ctx.selectedFilesContent) {
     for (const [path, content] of Object.entries(ctx.selectedFilesContent)) {
       const addition = `\n\n## 相关文件: ${path}\n\`\`\`\n${content}\n\`\`\``;
       const addTokens = estimateTokens(addition);

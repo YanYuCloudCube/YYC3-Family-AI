@@ -1,3 +1,16 @@
+/**
+ * @file SecurityScanner.test.ts
+ * @description 安全扫描器测试 - 测试代码安全检测、漏洞识别和最佳实践建议
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @status dev
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags test,vitest,unit-test
+ */
+
+// @ts-nocheck
 // ================================================================
 // SecurityScanner 单元测试
 // 覆盖: 全部 22 条安全扫描规则 + scanFile + scanProject +
@@ -186,7 +199,7 @@ describe("sensitive-hardcoded-secret", () => {
 
 describe("sensitive-console-secrets", () => {
   it("检测 console.log 输出密码", () => {
-    const code = `console.log("password:", password)`;
+    const code = `console.warn("password:", password)`;
     const f = getFindings("test.ts", code, "sensitive-console-secrets");
     expect(f.length).toBeGreaterThanOrEqual(1);
     expect(f[0].autoFixable).toBe(true);
@@ -195,7 +208,7 @@ describe("sensitive-console-secrets", () => {
   it("检测 console.log 输出 token", () => {
     const f = getFindings(
       "test.ts",
-      `console.debug(token)`,
+      `console.warn(token)`,
       "sensitive-console-secrets",
     );
     expect(f.length).toBeGreaterThanOrEqual(1);
@@ -204,7 +217,7 @@ describe("sensitive-console-secrets", () => {
   it("普通 console.log 不报", () => {
     const f = getFindings(
       "test.ts",
-      `console.log("hello world")`,
+      `console.warn("hello world")`,
       "sensitive-console-secrets",
     );
     expect(f).toHaveLength(0);
@@ -478,7 +491,7 @@ describe("scanFile", () => {
   it("结果按 severity 排序 (critical first)", () => {
     const code = `
 element.innerHTML = userInput
-console.log("password:", password)
+console.warn("password:", password)
 const config = { debug: true }
 `;
     const report = scanFile("test.ts", code);

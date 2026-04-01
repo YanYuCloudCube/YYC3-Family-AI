@@ -79,32 +79,32 @@ export interface SnapshotComparison {
 
 /**
  * 快照管理器
- * 
+ *
  * 管理预览快照的生命周期：
  * - 创建快照：保存当前文件状态
  * - 列出快照：查看所有快照
  * - 恢复快照：恢复到指定快照状态
  * - 删除快照：删除不需要的快照
  * - 比较快照：查看两个快照的差异
- * 
+ *
  * @example
  * ```typescript
  * const manager = new SnapshotManager();
- * 
+ *
  * // 创建快照
  * const snapshot = manager.createSnapshot(
  *   "版本1",
- *   [{ path: "index.ts", content: "console.log('hello')" }]
+ *   [{ path: "index.ts", content: "console.warn('hello')" }]
  * );
- * 
+ *
  * // 列出快照
  * const snapshots = manager.listSnapshots();
- * 
+ *
  * // 恢复快照
  * manager.restoreSnapshot(snapshot.id, (files) => {
- *   files.forEach(f => console.log(f.path, f.content));
+ *   files.forEach(f => console.warn(f.path, f.content));
  * });
- * 
+ *
  * // 比较快照
  * const diff = manager.compareSnapshots(snap1.id, snap2.id);
  * ```
@@ -112,31 +112,31 @@ export interface SnapshotComparison {
 export class SnapshotManager {
   /** 快照存储（使用Map保证唯一性） */
   private snapshots: Map<string, Snapshot> = new Map();
-  
+
   /** 最大快照数量限制 */
   private readonly MAX_SNAPSHOTS = 50;
-  
+
   /** localStorage 存储键 */
   private readonly STORAGE_KEY = "yyc3_snapshots";
 
   /**
    * 构造函数
-   * 
+   *
    * 自动从 localStorage 加载已保存的快照
    */
   constructor() {
     this.loadFromStorage();
-    console.log(`[SnapshotManager] Initialized with ${this.snapshots.size} snapshots`);
+    console.warn(`[SnapshotManager] Initialized with ${this.snapshots.size} snapshots`);
   }
 
   /**
    * 创建快照
-   * 
+   *
    * @param label - 快照标签/名称
    * @param files - 文件列表（路径和内容）
    * @param metadata - 可选的元数据
    * @returns 创建的快照对象
-   * 
+   *
    * @example
    * ```typescript
    * const snapshot = manager.createSnapshot(
@@ -156,9 +156,9 @@ export class SnapshotManager {
   ): Snapshot {
     // 生成唯一ID
     const id = `snap_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-    
+
     // 计算总行数
-    const totalLines = files.reduce((sum, f) => 
+    const totalLines = files.reduce((sum, f) =>
       sum + f.content.split('\n').length, 0
     );
 
@@ -181,44 +181,44 @@ export class SnapshotManager {
 
     // 保存到内存
     this.snapshots.set(id, snapshot);
-    
+
     // 强制限制数量
     this.enforceLimit();
-    
+
     // 持久化到 localStorage
     this.saveToStorage();
 
-    console.log(`[SnapshotManager] Created snapshot: ${id} (${label})`);
+    console.warn(`[SnapshotManager] Created snapshot: ${id} (${label})`);
     return snapshot;
   }
 
   /**
    * 列出所有快照
-   * 
+   *
    * @returns 快照列表，按时间戳降序排列（最新的在前）
-   * 
+   *
    * @example
    * ```typescript
    * const snapshots = manager.listSnapshots();
-   * snapshots.forEach(s => console.log(s.label, s.timestamp));
+   * snapshots.forEach(s => console.warn(s.label, s.timestamp));
    * ```
    */
   listSnapshots(): Snapshot[] {
     return Array.from(this.snapshots.values())
-      .sort((a, b) => b.timestamp - a.timestamp);
+      .sort((a, b) => b.timestamp - a.timestamp || b.id.localeCompare(a.id));
   }
 
   /**
    * 获取单个快照
-   * 
+   *
    * @param id - 快照ID
    * @returns 快照对象，不存在则返回 null
-   * 
+   *
    * @example
    * ```typescript
    * const snapshot = manager.getSnapshot("snap_1234567890_abc123");
    * if (snapshot) {
-   *   console.log("Found:", snapshot.label);
+   *   console.warn("Found:", snapshot.label);
    * }
    * ```
    */
@@ -228,11 +228,11 @@ export class SnapshotManager {
 
   /**
    * 恢复快照
-   * 
+   *
    * @param id - 快照ID
    * @param applyFn - 文件应用函数，接收文件列表作为参数
    * @returns 是否成功恢复
-   * 
+   *
    * @example
    * ```typescript
    * const success = manager.restoreSnapshot(snapshot.id, (files) => {
@@ -261,8 +261,8 @@ export class SnapshotManager {
 
       // 调用应用函数
       applyFn(files);
-      
-      console.log(`[SnapshotManager] Restored snapshot: ${id} (${snapshot.label})`);
+
+      console.warn(`[SnapshotManager] Restored snapshot: ${id} (${snapshot.label})`);
       return true;
     } catch (error) {
       console.error(`[SnapshotManager] Failed to restore snapshot: ${id}`, error);
@@ -272,33 +272,33 @@ export class SnapshotManager {
 
   /**
    * 删除快照
-   * 
+   *
    * @param id - 快照ID
    * @returns 是否成功删除
-   * 
+   *
    * @example
    * ```typescript
    * if (manager.deleteSnapshot(snapshot.id)) {
-   *   console.log("快照已删除");
+   *   console.warn("快照已删除");
    * }
    * ```
    */
   deleteSnapshot(id: string): boolean {
     const deleted = this.snapshots.delete(id);
-    
+
     if (deleted) {
       this.saveToStorage();
-      console.log(`[SnapshotManager] Deleted snapshot: ${id}`);
+      console.warn(`[SnapshotManager] Deleted snapshot: ${id}`);
     } else {
       console.warn(`[SnapshotManager] Snapshot not found for deletion: ${id}`);
     }
-    
+
     return deleted;
   }
 
   /**
    * 批量删除快照
-   * 
+   *
    * @param ids - 快照ID列表
    * @returns 成功删除的数量
    */
@@ -309,29 +309,29 @@ export class SnapshotManager {
         count++;
       }
     }
-    
+
     if (count > 0) {
       this.saveToStorage();
-      console.log(`[SnapshotManager] Deleted ${count} snapshots`);
+      console.warn(`[SnapshotManager] Deleted ${count} snapshots`);
     }
-    
+
     return count;
   }
 
   /**
    * 比较两个快照
-   * 
+   *
    * @param id1 - 第一个快照ID（旧快照）
    * @param id2 - 第二个快照ID（新快照）
    * @returns 比较结果
    * @throws 如果任一快照不存在
-   * 
+   *
    * @example
    * ```typescript
    * const diff = manager.compareSnapshots(oldSnap.id, newSnap.id);
-   * console.log("Added:", diff.added);
-   * console.log("Removed:", diff.removed);
-   * console.log("Modified:", diff.modified);
+   * console.warn("Added:", diff.added);
+   * console.warn("Removed:", diff.removed);
+   * console.warn("Modified:", diff.modified);
    * ```
    */
   compareSnapshots(id1: string, id2: string): SnapshotComparison {
@@ -373,8 +373,8 @@ export class SnapshotManager {
       }
     }
 
-    console.log(`[SnapshotManager] Compared ${id1} vs ${id2}: +${added.length} -${removed.length} ~${modified.length}`);
-    
+    console.warn(`[SnapshotManager] Compared ${id1} vs ${id2}: +${added.length} -${removed.length} ~${modified.length}`);
+
     return { added, removed, modified, unchanged };
   }
 
@@ -384,12 +384,12 @@ export class SnapshotManager {
   clearAll(): void {
     this.snapshots.clear();
     this.saveToStorage();
-    console.log("[SnapshotManager] Cleared all snapshots");
+    console.warn("[SnapshotManager] Cleared all snapshots");
   }
 
   /**
    * 获取快照数量
-   * 
+   *
    * @returns 当前快照总数
    */
   getSnapshotCount(): number {
@@ -398,7 +398,7 @@ export class SnapshotManager {
 
   /**
    * 检查快照是否存在
-   * 
+   *
    * @param id - 快照ID
    * @returns 是否存在
    */
@@ -408,7 +408,7 @@ export class SnapshotManager {
 
   /**
    * 更新快照标签
-   * 
+   *
    * @param id - 快照ID
    * @param label - 新标签
    * @returns 是否成功更新
@@ -416,7 +416,7 @@ export class SnapshotManager {
   updateSnapshotLabel(id: string, label: string): boolean {
     const snapshot = this.snapshots.get(id);
     if (!snapshot) return false;
-    
+
     snapshot.label = label;
     this.saveToStorage();
     return true;
@@ -424,9 +424,9 @@ export class SnapshotManager {
 
   /**
    * 计算内容哈希（简单实现）
-   * 
+   *
    * 使用简单的哈希算法，用于快速比较文件内容
-   * 
+   *
    * @param content - 文件内容
    * @returns 哈希字符串
    */
@@ -442,19 +442,19 @@ export class SnapshotManager {
 
   /**
    * 强制限制快照数量
-   * 
+   *
    * 当快照数量超过限制时，删除最旧的快照
    */
   private enforceLimit(): void {
     if (this.snapshots.size > this.MAX_SNAPSHOTS) {
       const sorted = this.listSnapshots();
       const toRemove = sorted.slice(this.MAX_SNAPSHOTS);
-      
+
       for (const snap of toRemove) {
         this.snapshots.delete(snap.id);
       }
-      
-      console.log(`[SnapshotManager] Removed ${toRemove.length} old snapshots (limit: ${this.MAX_SNAPSHOTS})`);
+
+      console.warn(`[SnapshotManager] Removed ${toRemove.length} old snapshots (limit: ${this.MAX_SNAPSHOTS})`);
     }
   }
 
@@ -465,18 +465,18 @@ export class SnapshotManager {
     try {
       const data = Array.from(this.snapshots.values());
       const json = JSON.stringify(data);
-      
+
       // 检查存储大小
       const sizeInMB = (json.length * 2) / (1024 * 1024); // UTF-16编码
       if (sizeInMB > 4) {
         console.warn(`[SnapshotManager] Storage size: ${sizeInMB.toFixed(2)}MB (close to limit)`);
       }
-      
+
       localStorage.setItem(this.STORAGE_KEY, json);
-      console.log(`[SnapshotManager] Saved ${data.length} snapshots to localStorage`);
+      console.warn(`[SnapshotManager] Saved ${data.length} snapshots to localStorage`);
     } catch (error) {
       console.error("[SnapshotManager] Failed to save to localStorage:", error);
-      
+
       // 如果是配额错误，尝试清理旧快照
       if (error instanceof DOMException && error.name === "QuotaExceededError") {
         console.warn("[SnapshotManager] Storage quota exceeded, removing old snapshots");
@@ -501,9 +501,9 @@ export class SnapshotManager {
       if (!data) return;
 
       const snapshots = JSON.parse(data) as Snapshot[];
-      
+
       // 验证数据完整性
-      const validSnapshots = snapshots.filter(snap => 
+      const validSnapshots = snapshots.filter(snap =>
         snap.id && snap.label && snap.timestamp && Array.isArray(snap.files)
       );
 
@@ -523,23 +523,23 @@ export class SnapshotManager {
 
   /**
    * 删除最旧的N个快照
-   * 
+   *
    * @param count - 要删除的数量
    */
   private removeOldestSnapshots(count: number): void {
     const sorted = this.listSnapshots();
     const toRemove = sorted.slice(-count); // 取最后N个（最旧的）
-    
+
     for (const snap of toRemove) {
       this.snapshots.delete(snap.id);
     }
-    
-    console.log(`[SnapshotManager] Removed ${toRemove.length} oldest snapshots`);
+
+    console.warn(`[SnapshotManager] Removed ${toRemove.length} oldest snapshots`);
   }
 
   /**
    * 获取存储统计信息
-   * 
+   *
    * @returns 统计信息对象
    */
   getStorageStats(): {
@@ -551,11 +551,11 @@ export class SnapshotManager {
     const snapshots = this.listSnapshots();
     const totalFiles = snapshots.reduce((sum, s) => sum + s.metadata.totalFiles, 0);
     const totalLines = snapshots.reduce((sum, s) => sum + s.metadata.totalLines, 0);
-    
+
     // 估算存储大小
     const json = JSON.stringify(snapshots);
     const sizeInBytes = json.length * 2; // UTF-16编码
-    const estimatedSize = sizeInBytes < 1024 
+    const estimatedSize = sizeInBytes < 1024
       ? `${sizeInBytes} B`
       : sizeInBytes < 1024 * 1024
       ? `${(sizeInBytes / 1024).toFixed(2)} KB`
@@ -572,7 +572,7 @@ export class SnapshotManager {
 
 /**
  * 工厂函数：创建快照管理器实例
- * 
+ *
  * @returns SnapshotManager 实例
  */
 export function createSnapshotManager(): SnapshotManager {

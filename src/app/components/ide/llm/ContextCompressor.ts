@@ -83,8 +83,8 @@ export class ContextCompressor {
     const compressedTokens = this.estimateTokens(compressed);
 
     // 10. 计算压缩率
-    const compressionRatio = originalTokens > 0 
-      ? (1 - compressedTokens / originalTokens) * 100 
+    const compressionRatio = originalTokens > 0
+      ? (1 - compressedTokens / originalTokens) * 100
       : 0;
 
     // 11. 评估压缩质量
@@ -250,10 +250,10 @@ export class ContextCompressor {
   private removeComments(code: string): string {
     // 删除单行注释
     let result = code.replace(/\/\/.*$/gm, '');
-    
+
     // 删除多行注释
     result = result.replace(/\/\*[\s\S]*?\*\//g, '');
-    
+
     return result;
   }
 
@@ -263,10 +263,10 @@ export class ContextCompressor {
   private compressWhitespace(code: string): string {
     // 删除多余空行
     let result = code.replace(/\n\s*\n\s*\n/g, '\n\n');
-    
+
     // 删除行尾空格
     result = result.replace(/[ \t]+$/gm, '');
-    
+
     return result;
   }
 
@@ -308,11 +308,11 @@ export class ContextCompressor {
   private checkStructurePreserved(original: string, compressed: string): boolean {
     // 检查主要结构元素
     const structures = ['function', 'class', 'interface', 'type', 'import', 'export'];
-    
+
     for (const structure of structures) {
       const originalCount = (original.match(new RegExp(`\\b${structure}\\b`, 'g')) || []).length;
       const compressedCount = (compressed.match(new RegExp(`\\b${structure}\\b`, 'g')) || []).length;
-      
+
       // 允许一定损失，但至少保留70%
       if (compressedCount < originalCount * 0.7) {
         return false;
@@ -472,7 +472,7 @@ export class ContextCompressor {
     strategy: CompressionStrategyType
   ): void {
     this.stats.totalFiles++;
-    
+
     if (compressionRatio > 0) {
       this.stats.compressedFiles++;
     }

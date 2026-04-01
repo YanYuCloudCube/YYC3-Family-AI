@@ -401,7 +401,7 @@ function AIChatInner() {
     };
 
     setMessages((prev) => [...prev, userMsg, assistantMsg]);
-    const inputText = chatInput;
+    const _inputText = chatInput;
     setChatInput("");
     setIsStreaming(true);
 
@@ -1051,7 +1051,7 @@ function AIChatInner() {
                           </span>
                           <button
                             onClick={() =>
-                              handleCopy(msg.codeBlock!.code, `${msg.id  }-code`)
+                              handleCopy((msg.codeBlock as any).code, `${msg.id  }-code`)
                             }
                             className={`flex items-center gap-1 px-2 py-0.5 rounded text-[0.6rem] transition-all ${
                               copiedId === `${msg.id  }-code`

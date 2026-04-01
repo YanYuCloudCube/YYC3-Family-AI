@@ -309,14 +309,14 @@ export class SnapshotDiffEngine {
       '  <div class="container">',
       '    <div class="header">',
       '      <h1>快照差异报告</h1>',
-      '      <p>对比时间: ' + new Date(diff.timestamp).toLocaleString('zh-CN') + '</p>',
+      `      <p>对比时间: ${  new Date(diff.timestamp).toLocaleString('zh-CN')  }</p>`,
       '    </div>',
       '    <div class="stats">',
-      '      <div class="stat-item">总文件数: <span class="stat-value">' + diff.stats.totalFiles + '</span></div>',
-      '      <div class="stat-item">新增: <span class="stat-value status-added">' + diff.stats.addedFiles + '</span></div>',
-      '      <div class="stat-item">删除: <span class="stat-value status-removed">' + diff.stats.removedFiles + '</span></div>',
-      '      <div class="stat-item">修改: <span class="stat-value status-modified">' + diff.stats.modifiedFiles + '</span></div>',
-      '      <div class="stat-item">相似度: <span class="stat-value">' + (diff.stats.similarity * 100).toFixed(1) + '%</span></div>',
+      `      <div class="stat-item">总文件数: <span class="stat-value">${  diff.stats.totalFiles  }</span></div>`,
+      `      <div class="stat-item">新增: <span class="stat-value status-added">${  diff.stats.addedFiles  }</span></div>`,
+      `      <div class="stat-item">删除: <span class="stat-value status-removed">${  diff.stats.removedFiles  }</span></div>`,
+      `      <div class="stat-item">修改: <span class="stat-value status-modified">${  diff.stats.modifiedFiles  }</span></div>`,
+      `      <div class="stat-item">相似度: <span class="stat-value">${  (diff.stats.similarity * 100).toFixed(1)  }%</span></div>`,
       '    </div>',
       '    <ul class="file-list">'
     ];
@@ -324,7 +324,7 @@ export class SnapshotDiffEngine {
     for (const file of diff.files) {
       if (file.status === 'unchanged') continue;
 
-      const statusClass = 'status-' + file.status;
+      const statusClass = `status-${  file.status}`;
       const statusText = {
         added: '新增',
         removed: '删除',
@@ -335,8 +335,8 @@ export class SnapshotDiffEngine {
 
       lines.push('      <li class="file-item">');
       lines.push('        <div class="file-header">');
-      lines.push('          <span class="file-path">' + this.escapeHtml(file.path) + '</span>');
-      lines.push('          <span class="' + statusClass + '" style="margin-left: 10px;">[' + statusText + ']</span>');
+      lines.push(`          <span class="file-path">${  this.escapeHtml(file.path)  }</span>`);
+      lines.push(`          <span class="${  statusClass  }" style="margin-left: 10px;">[${  statusText  }]</span>`);
       lines.push('        </div>');
 
       if (file.diff && file.diff.blocks.length > 0) {
@@ -348,8 +348,8 @@ export class SnapshotDiffEngine {
                         block.type === 'delete' ? '-' : ' ';
 
           const lineNum = block.oldLineNumber || block.newLineNumber || '';
-          lines.push('          <div class="' + lineClass + '">');
-          lines.push('            <span class="line-number">' + lineNum + '</span>' + prefix + ' ' + this.escapeHtml(block.content));
+          lines.push(`          <div class="${  lineClass  }">`);
+          lines.push(`            <span class="line-number">${  lineNum  }</span>${  prefix  } ${  this.escapeHtml(block.content)}`);
           lines.push('          </div>');
         }
         lines.push('        </div>');
@@ -373,19 +373,19 @@ export class SnapshotDiffEngine {
     const lines: string[] = [
       '# 快照差异报告',
       '',
-      '**对比时间**: ' + new Date(diff.timestamp).toLocaleString('zh-CN'),
+      `**对比时间**: ${  new Date(diff.timestamp).toLocaleString('zh-CN')}`,
       '',
       '## 统计信息',
       '',
       '| 指标 | 数量 |',
       '|------|------|',
-      '| 总文件数 | ' + diff.stats.totalFiles + ' |',
-      '| 新增文件 | ' + diff.stats.addedFiles + ' |',
-      '| 删除文件 | ' + diff.stats.removedFiles + ' |',
-      '| 修改文件 | ' + diff.stats.modifiedFiles + ' |',
-      '| 总新增行数 | ' + diff.stats.totalAdditions + ' |',
-      '| 总删除行数 | ' + diff.stats.totalDeletions + ' |',
-      '| 相似度 | ' + (diff.stats.similarity * 100).toFixed(1) + '% |',
+      `| 总文件数 | ${  diff.stats.totalFiles  } |`,
+      `| 新增文件 | ${  diff.stats.addedFiles  } |`,
+      `| 删除文件 | ${  diff.stats.removedFiles  } |`,
+      `| 修改文件 | ${  diff.stats.modifiedFiles  } |`,
+      `| 总新增行数 | ${  diff.stats.totalAdditions  } |`,
+      `| 总删除行数 | ${  diff.stats.totalDeletions  } |`,
+      `| 相似度 | ${  (diff.stats.similarity * 100).toFixed(1)  }% |`,
       '',
       '## 文件差异',
       ''
@@ -402,7 +402,7 @@ export class SnapshotDiffEngine {
         unchanged: '➖ 未改变'
       }[file.status];
 
-      lines.push('### ' + statusText + ': `' + file.path + '`');
+      lines.push(`### ${  statusText  }: \`${  file.path  }\``);
 
       if (file.diff) {
         lines.push('');
@@ -411,7 +411,7 @@ export class SnapshotDiffEngine {
         for (const block of file.diff.blocks) {
           const prefix = block.type === 'add' ? '+' :
                         block.type === 'delete' ? '-' : ' ';
-          lines.push(prefix + ' ' + block.content);
+          lines.push(`${prefix  } ${  block.content}`);
         }
 
         lines.push('```');
@@ -429,14 +429,14 @@ export class SnapshotDiffEngine {
   private exportAsUnified(diff: SnapshotDiffResult): string {
     const lines: string[] = [];
 
-    lines.push('--- Snapshot: ' + diff.oldSnapshotId);
-    lines.push('+++ Snapshot: ' + diff.newSnapshotId);
+    lines.push(`--- Snapshot: ${  diff.oldSnapshotId}`);
+    lines.push(`+++ Snapshot: ${  diff.newSnapshotId}`);
     lines.push('');
 
     for (const file of diff.files) {
       if (file.status === 'unchanged') continue;
 
-      lines.push('diff --git a/' + file.path + ' b/' + file.path);
+      lines.push(`diff --git a/${  file.path  } b/${  file.path}`);
 
       if (file.status === 'added') {
         lines.push('new file mode 100644');
@@ -444,9 +444,9 @@ export class SnapshotDiffEngine {
         lines.push('deleted file mode 100644');
       }
 
-      lines.push('index ' + (file.oldFile?.hash || '0000000') + '..' + (file.newFile?.hash || '0000000'));
-      lines.push('--- a/' + (file.status === 'added' ? '/dev/null' : file.path));
-      lines.push('+++ b/' + (file.status === 'removed' ? '/dev/null' : file.path));
+      lines.push(`index ${  file.oldFile?.hash || '0000000'  }..${  file.newFile?.hash || '0000000'}`);
+      lines.push(`--- a/${  file.status === 'added' ? '/dev/null' : file.path}`);
+      lines.push(`+++ b/${  file.status === 'removed' ? '/dev/null' : file.path}`);
 
       if (file.diff) {
         for (const block of file.diff.blocks) {

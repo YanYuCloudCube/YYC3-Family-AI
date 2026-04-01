@@ -31,7 +31,7 @@
 // ================================================================
 
 import { useMemo } from "react";
-import { useTheme } from "../ThemeStore";
+import { useThemeStore } from "../stores/useThemeStore";
 
 // ── Modal-level tokens (弹窗组件) ──
 export interface ModalTokens {
@@ -372,7 +372,7 @@ export interface ThemeTokens {
 }
 
 export function useThemeTokens(): ThemeTokens {
-  const { isCyber } = useTheme();
+  const { isCyber } = useThemeStore();
 
   return useMemo<ThemeTokens>(() => {
     if (isCyber) {

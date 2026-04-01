@@ -718,7 +718,7 @@ export class NLCommandService {
       examples: ["部署应用", "kubectl apply -f deployment.yaml", "k8s 部署"],
     });
 
-    console.log(`[NLCommand] Loaded ${this.templates.size} command templates`);
+    console.warn(`[NLCommand] Loaded ${this.templates.size} command templates`);
   }
 
   /**
@@ -764,7 +764,7 @@ export class NLCommandService {
 
     // 匹配模板
     const match = this.matchTemplate(normalizedInput);
-    
+
     if (!match) {
       return {
         success: false,
@@ -791,7 +791,7 @@ export class NLCommandService {
     for (const template of this.templates.values()) {
       for (const pattern of template.patterns) {
         const normalizedPattern = pattern.toLowerCase();
-        
+
         // 精确匹配
         if (input.includes(normalizedPattern)) {
           const params = this.extractParams(input, template);
@@ -822,7 +822,7 @@ export class NLCommandService {
       if (fileMatch && template.params.includes("source")) {
         params.source = fileMatch[1];
       }
-      
+
       // 提取路径
       const pathMatch = input.match(/(?:目录 | 文件夹 | 路径)[:：]?\s*(\S+)/);
       if (pathMatch && template.params.includes("path")) {
@@ -836,7 +836,7 @@ export class NLCommandService {
       if (branchMatch && template.params.includes("branch")) {
         params.branch = branchMatch[1];
       }
-      
+
       // 提取提交消息
       const messageMatch = input.match(/(?:消息 |message)[:：]?\s*["']?([^"']+)["']?/);
       if (messageMatch && template.params.includes("message")) {
@@ -850,7 +850,7 @@ export class NLCommandService {
       if (packageMatch && template.params.includes("package")) {
         params.package = packageMatch[1];
       }
-      
+
       // 提取脚本名
       const scriptMatch = input.match(/(?:运行 |run|脚本 |script)[:：]?\s*(\S+)/);
       if (scriptMatch && template.params.includes("script")) {
@@ -864,7 +864,7 @@ export class NLCommandService {
       if (imageMatch && template.params.includes("image")) {
         params.image = imageMatch[1];
       }
-      
+
       // 提取端口
       const portMatch = input.match(/(?:端口 |port)[:：]?\s*(\d+)/);
       if (portMatch && template.params.includes("port")) {
@@ -878,7 +878,7 @@ export class NLCommandService {
       if (nsMatch && template.params.includes("namespace")) {
         params.namespace = nsMatch[1];
       }
-      
+
       // 提取文件名
       const fileMatch = input.match(/(?:文件 |file|yaml)[:：]?\s*(\S+\.yaml)/);
       if (fileMatch && template.params.includes("file")) {
@@ -936,7 +936,7 @@ export class NLCommandService {
 
     let explanation = `执行${categoryName}：${template.name}\n`;
     explanation += `命令：${this.renderTemplate(template, params)}\n`;
-    
+
     if (Object.keys(params).length > 0) {
       explanation += `参数：${JSON.stringify(params)}\n`;
     }

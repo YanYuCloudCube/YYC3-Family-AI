@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @file DiffPreviewModal.tsx
  * @description AI 代码变更差异预览模态框，显示 CodeApplicationPlan 的所有代码块，

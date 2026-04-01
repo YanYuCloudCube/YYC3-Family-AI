@@ -1,4 +1,17 @@
 /**
+ * @file resizable.tsx
+ * @description resizable 组件 — React UI 组件
+ * @author YanYuCloudCube Team <admin@0379.email>
+ * @version v1.0.0
+ * @created 2026-04-01
+ * @updated 2026-04-01
+ * @status stable
+ * @license MIT
+ * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @tags component,react,ui,ui
+ */
+
+/**
  * file: ui/resizable.tsx
  * description: 可调整大小面板组件 - 基于 react-resizable-panels，支持面板组、面板、手柄
  * author: YanYuCloudCube Team <admin@0379.email>

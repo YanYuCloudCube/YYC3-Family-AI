@@ -61,7 +61,7 @@ export class ContentSummarizer {
       description,
       dependencies,
       keyFeatures,
-      tokenCount: this.estimateTokens(signature + ' ' + description),
+      tokenCount: this.estimateTokens(`${signature  } ${  description}`),
       preservedComments,
     };
   }
@@ -83,7 +83,7 @@ export class ContentSummarizer {
       description,
       dependencies,
       keyFeatures,
-      tokenCount: this.estimateTokens(signature + ' ' + description),
+      tokenCount: this.estimateTokens(`${signature  } ${  description}`),
       preservedComments,
     };
   }
@@ -198,10 +198,10 @@ export class ContentSummarizer {
     let depth = 0;
 
     for (const line of lines) {
-      signature += line + '\n';
+      signature += `${line  }\n`;
       depth += (line.match(/{/g) || []).length;
       depth -= (line.match(/}/g) || []).length;
-      
+
       if (depth > 0 && line.includes('{')) {
         break;
       }
