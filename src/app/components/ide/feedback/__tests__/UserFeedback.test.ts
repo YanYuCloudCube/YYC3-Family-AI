@@ -305,7 +305,7 @@ describe('UserFeedbackManager', () => {
           title: `测试反馈 ${i + 1}`,
           content: `这是第${i + 1}个测试反馈，内容${i % 2 === 0 ? '很好很满意' : '很差很失望需要改进'}`,
           priority: priorities[i % priorities.length],
-          status: i < 10 ? 'new' : 'resolved',
+          status: i < 15 ? 'new' : 'resolved',
           source: 'in_app',
           module: modules[i % modules.length],
           tags: [tags[i % tags.length], tags[(i + 1) % tags.length]], // 添加标签以便聚类
@@ -323,8 +323,8 @@ describe('UserFeedbackManager', () => {
       expect(report.id).toBeDefined();
       expect(report.title).toBe('测试报告');
       expect(report.summary.totalFeedback).toBe(20);
-      expect(report.summary.newFeedback).toBe(10);
-      expect(report.summary.resolvedFeedback).toBe(10);
+      expect(report.summary.newFeedback).toBe(15);
+      expect(report.summary.resolvedFeedback).toBe(5);
       expect(report.categoryBreakdown.length).toBeGreaterThan(0);
       expect(report.trends.length).toBeGreaterThan(0);
       expect(report.issueClusters.length).toBeGreaterThanOrEqual(0);
