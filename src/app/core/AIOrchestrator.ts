@@ -12,10 +12,10 @@
  * @tags ai,orchestrator,pipeline,extensibility
  */
 
-import type { PipelineInput, PipelineStreamCallbacks, PipelineOptions } from '../ide/ai/AIPipeline';
-import { executePipeline } from '../ide/ai/AIPipeline';
-import type { UserIntent } from '../ide/ai/SystemPromptBuilder';
-import type { CodeApplicationPlan } from '../ide/ai/CodeApplicator';
+import type { PipelineInput, PipelineStreamCallbacks, PipelineOptions } from '../components/ide/ai/AIPipeline';
+import { runPipeline } from '../components/ide/ai/AIPipeline';
+import type { UserIntent } from '../components/ide/ai/SystemPromptBuilder';
+import type { CodeApplicationPlan } from '../components/ide/ai/CodeApplicator';
 
 export interface AIOrchestratorConfig {
   /** 默认 LLM Provider 配置 */
@@ -160,18 +160,18 @@ export class AIOrchestrator {
         signal: options.signal,
       };
 
-      await executePipeline(processedInput, {
+      await runPipeline(processedInput, {
         ...callbacks,
-        onContextReady: async (ctx, intent) => {
+        onContextReady: async (ctx: unknown, intent: unknown) => {
           for (const middleware of this.middlewares) {
             if (middleware.afterContext) {
-              await middleware.afterContext(ctx, intent);
+              await middleware.afterContext(ctx, intent as UserIntent);
             }
           }
-          callbacks.onContextReady?.(ctx, intent);
+          callbacks.onContextReady?.(ctx as any, intent as UserIntent);
         },
-        onDone: async (fullText, codePlan, validationResult) => {
-          let processedPlan = codePlan;
+        onDone: async (fullText: unknown, codePlan: unknown, validationResult: unknown) => {
+          let processedPlan = codePlan as CodeApplicationPlan | null;
 
           for (const middleware of this.middlewares) {
             if (middleware.beforeApply && processedPlan) {
@@ -179,17 +179,17 @@ export class AIOrchestrator {
             }
           }
 
-          callbacks.onDone(fullText, processedPlan, validationResult);
+          callbacks.onDone(fullText as string, processedPlan, validationResult as any);
 
           for (const middleware of this.middlewares) {
             if (middleware.afterApply) {
-              await middleware.afterApply({ fullText, codePlan: processedPlan, validationResult });
+              await middleware.afterApply({ fullText: fullText as string, codePlan: processedPlan, validationResult });
             }
           }
         },
-        onError: async (error) => {
-          await this.handleError(error, 'stream');
-          callbacks.onError(error);
+        onError: async (error: unknown) => {
+          await this.handleError(error as Error, 'stream');
+          callbacks.onError(error as string);
         },
       });
     } catch (error) {
@@ -225,23 +225,23 @@ export class AIOrchestrator {
   ): Promise<AIOrchestratorResult> {
     return new Promise((resolve, reject) => {
       let contextStartTime = 0;
-      let llmStartTime = 0;
-      let applyStartTime = 0;
+      const llmStartTime = 0;
+      const applyStartTime = 0;
 
-      executePipeline(input, {
+      runPipeline(input, {
         onToken: () => {},
         onContextReady: () => {
           contextStartTime = Date.now();
         },
-        onDone: (fullText, codePlan, validationResult) => {
+        onDone: (fullText: unknown, codePlan: unknown, validationResult: unknown) => {
           metrics.contextCollectionTime = contextStartTime;
           metrics.llmTime = llmStartTime - contextStartTime;
           metrics.codeApplicationTime = Date.now() - llmStartTime;
 
           resolve({
-            fullText,
-            codePlan,
-            validationResult,
+            fullText: fullText as string,
+            codePlan: codePlan as CodeApplicationPlan | null,
+            validationResult: validationResult as any,
             metrics,
           });
         },

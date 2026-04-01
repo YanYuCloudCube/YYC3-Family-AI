@@ -154,19 +154,17 @@ export class SnapshotManager {
     files: Array<{ path: string; content: string }>,
     metadata?: Partial<SnapshotMetadata>
   ): Snapshot {
-    // 生成唯一ID
-    const id = `snap_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+    const timestamp = Date.now();
+    const id = `snap_${timestamp}_${Math.random().toString(36).slice(2, 9)}`;
 
-    // 计算总行数
     const totalLines = files.reduce((sum, f) =>
       sum + f.content.split('\n').length, 0
     );
 
-    // 创建快照对象
     const snapshot: Snapshot = {
       id,
       label,
-      timestamp: Date.now(),
+      timestamp,
       files: files.map(f => ({
         path: f.path,
         content: f.content,
@@ -179,13 +177,10 @@ export class SnapshotManager {
       }
     };
 
-    // 保存到内存
     this.snapshots.set(id, snapshot);
 
-    // 强制限制数量
     this.enforceLimit();
 
-    // 持久化到 localStorage
     this.saveToStorage();
 
     console.warn(`[SnapshotManager] Created snapshot: ${id} (${label})`);

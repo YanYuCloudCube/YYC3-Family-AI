@@ -56,7 +56,7 @@ import {
 } from "lucide-react";
 import { useThemeTokens } from "../ide/hooks/useThemeTokens";
 import { useModelRegistry } from "../ide/ModelRegistry";
-import { useSettingsStore, type MCPConfig } from "../stores/useSettingsStore";
+import { useSettingsStore, type MCPConfig } from "../ide/stores/useSettingsStore";
 import { ItemCard, EmptyState, Toggle } from "./SettingsShared";
 import { useI18n } from "../ide/i18n";
 import {

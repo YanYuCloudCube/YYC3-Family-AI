@@ -16,8 +16,9 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { ErrorBoundary, useErrorBoundary } from "../ErrorBoundary";
 
 // 用于测试的出错组件
-function ThrowError({ message }: { message: string }) {
+function ErrorComponent({ message }: { message: string }) {
   throw new Error(message);
+  return null;
 }
 
 describe("ErrorBoundary - 增强版错误边界", () => {
@@ -39,11 +40,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 1. 基础错误捕获 ──
 
   it("捕获子组件渲染错误", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -55,11 +56,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   });
 
   it("使用自定义 fallback", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary fallback={<div>自定义错误页面</div>}>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -71,11 +72,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 2. 错误分类 ──
 
   it("网络错误分类", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="Failed to fetch network error" />
+        <ErrorComponent message="Failed to fetch network error" />
       </ErrorBoundary>,
     );
 
@@ -85,11 +86,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   });
 
   it("API 错误分类", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="API response error" />
+        <ErrorComponent message="API response error" />
       </ErrorBoundary>,
     );
 
@@ -99,11 +100,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   });
 
   it("代码错误分类", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="Syntax error: parse failed" />
+        <ErrorComponent message="Syntax error: parse failed" />
       </ErrorBoundary>,
     );
 
@@ -115,12 +116,12 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 3. 自动恢复机制 ──
 
   it("自动恢复 - 达到最大重试次数后停止", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
     const onError = vi.fn();
 
     render(
-      <ErrorBoundary maxRetries={3} autoRecover recoverDelay={1000} onError={onError}>
-        <ThrowError message="测试错误" />
+      <ErrorBoundary maxRetries={3} autoRecover={true} recoverDelay={1000} onError={onError}>
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -146,12 +147,12 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   });
 
   it("不可恢复错误不触发自动重试", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
+    const consoleWarn = vi.spyOn(global.console, "warn").mockImplementation(() => {});
 
     render(
-      <ErrorBoundary autoRecover recoverDelay={1000}>
-        <ThrowError message="Syntax error: parse failed" />
+      <ErrorBoundary autoRecover={true} recoverDelay={1000}>
+        <ErrorComponent message="Syntax error: parse failed" />
       </ErrorBoundary>,
     );
 
@@ -170,11 +171,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
 
   it("点击立即重试按钮", () => {
     // 简化测试，只验证按钮存在
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -188,11 +189,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
 
   it("达到最大重试次数后显示不同按钮", () => {
     // 简化测试
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary maxRetries={2}>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -206,11 +207,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 5. 错误详情展示 ──
 
   it("显示错误消息", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="自定义错误消息" />
+        <ErrorComponent message="自定义错误消息" />
       </ErrorBoundary>,
     );
 
@@ -220,11 +221,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   });
 
   it("可展开查看组件堆栈", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -236,7 +237,7 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 6. 操作按钮 ──
 
   it("点击返回首页按钮", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
     const originalHref = window.location.href;
     Object.defineProperty(window, "location", {
       value: { href: originalHref },
@@ -245,7 +246,7 @@ describe("ErrorBoundary - 增强版错误边界", () => {
 
     render(
       <ErrorBoundary>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -258,11 +259,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
 
   it("点击清除错误状态按钮", () => {
     // 简化测试
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -277,12 +278,12 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 7. onError 回调 ──
 
   it("调用 onError 回调", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
     const onError = vi.fn();
 
     render(
       <ErrorBoundary onError={onError}>
-        <ThrowError message="测试错误" />
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 
@@ -333,11 +334,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 9. 帮助文本 ──
 
   it("显示错误类型对应的帮助文本", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError message="Failed to fetch" />
+        <ErrorComponent message="Failed to fetch" />
       </ErrorBoundary>,
     );
 
@@ -351,11 +352,11 @@ describe("ErrorBoundary - 增强版错误边界", () => {
   // ── 10. 组件卸载清理 ──
 
   it("组件卸载时清理定时器", () => {
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi.spyOn(global.console, "error").mockImplementation(() => {});
 
     const { unmount } = render(
-      <ErrorBoundary autoRecover recoverDelay={5000}>
-        <ThrowError message="测试错误" />
+      <ErrorBoundary autoRecover={true} recoverDelay={5000}>
+        <ErrorComponent message="测试错误" />
       </ErrorBoundary>,
     );
 

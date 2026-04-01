@@ -25,7 +25,7 @@ export type {
   StoreDescriptor,
 } from './StateManager';
 
-export { PluginSDK, BasePlugin, createPlugin, createPluginBuilder, validateManifest } from './PluginSDK';
+export { BasePlugin, createPlugin, createPluginBuilder, validateManifest } from './PluginSDK';
 export type {
   PluginManifest,
   PluginPermission,
@@ -77,17 +77,6 @@ export type {
   ExtensionLoadResult,
   ExtensionSystemConfig,
 } from './ExtensionSystem';
-
-export { DIContainer, ServiceToken, Lifecycle, Injectable, factoryFor, getGlobalContainer, resetGlobalContainer } from '../ide/di';
-export type {
-  IServiceLocator,
-  IFactory,
-  IDisposable,
-  ISubscription,
-  IEventEmitter,
-} from '../ide/interfaces';
-
-export { TOKENS } from '../ide/di';
 
 export { createAIOrchestrator as createOrchestrator } from './AIOrchestrator';
 export { getStateManager as getStoreManager } from './StateManager';

@@ -640,6 +640,7 @@ export function importTheme(json: string): ThemeConfig | null {
       id: makeId(),
       name: data.name,
       type: data.type,
+      isDark: data.isDark ?? false,
       created: data.created || now,
       modified: now,
       colors: { ...PRESET_BASE_LIGHT.colors, ...data.colors },

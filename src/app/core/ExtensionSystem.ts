@@ -63,6 +63,8 @@ export interface ExtensionSystemConfig {
   enablePermissionCheck?: boolean;
 }
 
+type ExtensionHook = ExtensionHandler;
+
 export class ExtensionSystem {
   private extensions = new Map<string, ExtensionManifest>();
   private extensionPoints = new Map<string, Set<ExtensionPoint>>();
@@ -180,7 +182,7 @@ export class ExtensionSystem {
     for (const point of enabledPoints) {
       try {
         const result = await point.handler(context);
-        results.push(result);
+        results.push(result as T);
       } catch (error) {
         console.error(
           `[ExtensionSystem] Error executing extension point "${pointId}":`,
@@ -218,7 +220,7 @@ export class ExtensionSystem {
     for (const handler of handlers) {
       try {
         const result = await handler(context);
-        results.push(result);
+        results.push(result as T);
       } catch (error) {
         console.error(
           `[ExtensionSystem] Error executing hook "${hookId}":`,
@@ -328,8 +330,6 @@ export class ExtensionSystem {
   }
 }
 
-type ExtensionHook = ExtensionHandler;
-
 let globalExtensionSystem: ExtensionSystem | null = null;
 
 export function getExtensionSystem(config?: ExtensionSystemConfig): ExtensionSystem {
@@ -351,8 +351,6 @@ export function createExtensionBuilder(id: string, name: string) {
 
 export class ExtensionBuilder {
   private manifest: Partial<ExtensionManifest> = {
-    id,
-    name,
     version: '1.0.0',
     description: '',
     author: '',
@@ -361,7 +359,10 @@ export class ExtensionBuilder {
     permissions: [],
   };
 
-  constructor(private id: string, private name: string) {}
+  constructor(private id: string, private name: string) {
+    this.manifest.id = id;
+    this.manifest.name = name;
+  }
 
   version(version: string): this {
     this.manifest.version = version;

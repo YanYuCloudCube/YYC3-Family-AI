@@ -236,7 +236,6 @@ export interface PreviewState {
   clearPreviewError: () => void;
   restoreProjectSnapshot: (id: string) => Promise<{ success: boolean; restoredFiles: Array<{ path: string; content: string }> }>;
   compareSnapshots: (id1: string, id2: string) => any;
-  deleteProjectSnapshot: (id: string) => boolean;
   createProjectSnapshot: (
     label: string,
     files: Array<{ path: string; content: string }>,

@@ -52,7 +52,7 @@ const themePresets: Record<ThemeId, ThemeColors> = {
     accent: "#7c3aed",
     muted: "#a1a1aa",
   },
-  dark: {
+  cyberpunk: {
     background: "#0a0a0a",
     foreground: "#fafafa",
     primary: "#3b82f6",

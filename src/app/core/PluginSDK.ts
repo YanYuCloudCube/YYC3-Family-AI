@@ -255,8 +255,8 @@ export type StatusBarItemHandle = {
 export type NotificationHandle = () => void;
 
 export abstract class BasePlugin {
-  protected api: PluginAPI;
-  protected context: PluginContext;
+  protected api!: PluginAPI;
+  protected context!: PluginContext;
 
   constructor(protected manifest: PluginManifest) {}
 
@@ -323,7 +323,6 @@ export function createPluginBuilder(name: string) {
 
 export class PluginBuilder {
   private manifest: Partial<PluginManifest> = {
-    name,
     version: '1.0.0',
     description: '',
     author: '',
@@ -331,7 +330,9 @@ export class PluginBuilder {
     activationEvents: [],
   };
 
-  constructor(private name: string) {}
+  constructor(private name: string) {
+    this.manifest.name = name;
+  }
 
   version(version: string): this {
     this.manifest.version = version;

@@ -42,10 +42,10 @@ export interface PrioritizedEvent<T = unknown> {
 }
 
 export class EventBus<TEventMap extends Record<string, unknown> = Record<string, unknown>> {
-  private listeners = new Map<keyof TEventMap, Set<EventHandler>>();
-  private onceListeners = new Map<keyof TEventMap, Set<EventHandler>>();
+  private listeners = new Map<keyof TEventMap, Set<EventHandler<unknown>>>();
+  private onceListeners = new Map<keyof TEventMap, Set<EventHandler<unknown>>>();
   private config: EventBusConfig;
-  private eventHistory: Array<{ event: keyof TEventMap; data: unknown; metadata: EventMetadata }> = [];
+  private eventHistory: Array<{ event: string; data: unknown; metadata: EventMetadata }> = [];
   private maxHistorySize = 100;
 
   constructor(config: EventBusConfig = {}) {
@@ -70,7 +70,7 @@ export class EventBus<TEventMap extends Record<string, unknown> = Record<string,
       console.warn(`[EventBus] Max listeners reached for event "${String(event)}"`);
     }
 
-    handlers.add(handler);
+    handlers.add(handler as EventHandler<unknown>);
 
     return {
       unsubscribe: () => this.off(event, handler),
@@ -86,12 +86,12 @@ export class EventBus<TEventMap extends Record<string, unknown> = Record<string,
       this.onceListeners.set(event, new Set());
     }
 
-    const onceHandler: EventHandler = async (data) => {
+    const onceHandler: EventHandler<TEventMap[K]> = async (data) => {
       await handler(data);
       this.off(event, onceHandler);
     };
 
-    this.onceListeners.get(event)!.add(onceHandler);
+    this.onceListeners.get(event)!.add(onceHandler as EventHandler<unknown>);
 
     return {
       unsubscribe: () => this.off(event, onceHandler),
@@ -103,8 +103,8 @@ export class EventBus<TEventMap extends Record<string, unknown> = Record<string,
     event: K,
     handler: EventHandler<TEventMap[K]>
   ): void {
-    this.listeners.get(event)?.delete(handler);
-    this.onceListeners.get(event)?.delete(handler);
+    this.listeners.get(event)?.delete(handler as EventHandler<unknown>);
+    this.onceListeners.get(event)?.delete(handler as EventHandler<unknown>);
   }
 
   emit<K extends keyof TEventMap>(

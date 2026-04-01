@@ -89,20 +89,21 @@ export class StateManager {
     callback: (state: T) => void,
     options?: { selector?: (state: T) => unknown; equalityFn?: (a: unknown, b: unknown) => boolean }
   ): () => void {
-    const store = this.stores.get(name)?.store;
-    if (!store) {
+    const descriptor = this.stores.get(name);
+    if (!descriptor) {
       throw new Error(`Store "${name}" not found`);
     }
 
-    const { selector, equalityFn } = options || {};
+    const store = descriptor.store as StoreApi<T>;
+    const { selector } = options || {};
 
     const unsubscribe = store.subscribe(
       selector
-        ? (state) => {
-            const selected = selector(state as T);
+        ? (state, prevState) => {
+            const selected = selector(state);
             callback(selected as T);
           }
-        : callback
+        : (state) => callback(state)
     );
 
     return unsubscribe;
@@ -188,11 +189,11 @@ export function createStoreHelper<T>(name: string, store: StoreApi<T>, initialSt
 
   return {
     use: (selector?: (state: T) => unknown) => {
-      const store = manager.getStore<T>(name)!;
+      const storeApi = manager.getStore<T>(name)!;
       if (selector) {
-        return store(selector);
+        return selector(storeApi.getState());
       }
-      return store();
+      return storeApi.getState();
     },
     getState: () => manager.getState<T>(name)!,
     setState: (partial: Partial<T>) => manager.setState(name, partial),

@@ -73,6 +73,10 @@ export class HelloWorldPlugin extends BasePlugin {
             await this.sayHello();
           }
         });
+
+        return () => {
+          container.innerHTML = '';
+        };
       },
       onActivate: () => {
         this.log('info', 'Hello World panel activated');

@@ -93,7 +93,7 @@ export class CommandRegistry {
     return this.commands.delete(commandId);
   }
 
-  execute(commandId: string, ...args: unknown[]): Promise<CommandResult> {
+  async execute(commandId: string, ...args: unknown[]): Promise<CommandResult> {
     const command = this.commands.get(commandId);
     if (!command) {
       throw new Error(`Command "${commandId}" not found`);
@@ -108,12 +108,6 @@ export class CommandRegistry {
     }
 
     const startTime = Date.now();
-    const context: CommandContext = {
-      commandId,
-      timestamp: startTime,
-      args,
-      source: 'api',
-    };
 
     try {
       await command.handler(...args);
@@ -221,12 +215,12 @@ export function createCommandBuilder(id: string, title: string) {
 }
 
 export class CommandBuilder {
-  private definition: Partial<CommandDefinition> = {
-    id,
-    title,
-  };
+  private definition: Partial<CommandDefinition> = {};
 
-  constructor(private id: string, private title: string) {}
+  constructor(private id: string, private title: string) {
+    this.definition.id = id;
+    this.definition.title = title;
+  }
 
   description(desc: string): this {
     this.definition.description = desc;
