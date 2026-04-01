@@ -664,6 +664,17 @@ export function ModelSection() {
     "Custom",
   ];
 
+  // API Key获取URL映射
+  const API_KEY_URLS: Record<string, string> = {
+    OpenAI: "https://platform.openai.com/api-keys",
+    Anthropic: "https://console.anthropic.com/settings/keys",
+    Google: "https://aistudio.google.com/app/apikey",
+    Zhipu: "https://open.bigmodel.cn/usercenter/apikeys",
+    Baidu: "https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application",
+    Alibaba: "https://dashscope.console.aliyun.com/apiKey",
+    DeepSeek: "https://platform.deepseek.com/api_keys",
+  };
+
   // Provider API keys & URLs (persisted)
   const [apiKeys, setApiKeys] = useState<Record<string, string>>(() =>
     loadJSON(STORAGE_KEYS.providerKeys, {}),
@@ -1268,13 +1279,25 @@ export function ModelSection() {
                 onChange={(e) => setDraft({ ...draft, endpoint: e.target.value })}
                 className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] font-mono ${th.page.inputBg} ${th.page.inputBorder} ${th.page.inputText} ${th.page.inputFocus} focus:outline-none`}
               />
-              <input
-                type="password"
-                placeholder="API Key"
-                value={draft.apiKey || ""}
-                onChange={(e) => setDraft({ ...draft, apiKey: e.target.value })}
-                className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] font-mono ${th.page.inputBg} ${th.page.inputBorder} ${th.page.inputText} ${th.page.inputFocus} focus:outline-none`}
-              />
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  placeholder="API Key"
+                  value={draft.apiKey || ""}
+                  onChange={(e) => setDraft({ ...draft, apiKey: e.target.value })}
+                  className={`flex-1 px-3 py-2 rounded-lg border text-[0.82rem] font-mono ${th.page.inputBg} ${th.page.inputBorder} ${th.page.inputText} ${th.page.inputFocus} focus:outline-none`}
+                />
+                {API_KEY_URLS[draft.provider || ""] && (
+                  <button
+                    onClick={() => window.open(API_KEY_URLS[draft.provider || ""], "_blank")}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[0.72rem] transition-all duration-200 hover:scale-105 active:scale-95 ${th.btn.ghost} ${th.btn.ghostHover} whitespace-nowrap`}
+                    title="获取API密钥"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    获取密钥
+                  </button>
+                )}
+              </div>
               <div className="flex gap-2 justify-end">
                 <button
                   onClick={() => {

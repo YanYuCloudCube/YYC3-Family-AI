@@ -294,13 +294,17 @@ export async function detectOllama(): Promise<{
 
     const res = await fetch("http://localhost:11434/api/tags", {
       signal: controller.signal,
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/json',
+      },
     });
     clearTimeout(timeoutId);
 
     console.warn('[LLMService] Ollama response status:', res.status, res.ok);
 
     if (!res.ok) {
-      console.error('[LLMService] Ollama response not OK:', res.status, res.statusText);
+      console.warn('[LLMService] Ollama response not OK:', res.status, res.statusText);
       return { available: false, models: [] };
     }
 
@@ -321,8 +325,14 @@ export async function detectOllama(): Promise<{
     }));
 
     return { available: true, models };
-  } catch (error) {
-    console.error('[LLMService] Ollama detection failed:', error);
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      console.warn('[LLMService] Ollama detection timeout after 3s');
+    } else if (error?.message?.includes('Failed to fetch')) {
+      console.warn('[LLMService] Ollama not reachable - service may not be running or CORS not configured');
+    } else {
+      console.warn('[LLMService] Ollama detection error:', error?.message || error);
+    }
     return { available: false, models: [] };
   }
 }

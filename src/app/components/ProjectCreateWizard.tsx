@@ -265,7 +265,7 @@ export default function ProjectCreateWizard({ open, onClose }: WizardProps) {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className={`relative w-[780px] max-h-[85vh] rounded-2xl flex flex-col overflow-hidden ${w.modalBg}`}
+        className={`relative w-[780px] max-h-[92vh] rounded-2xl flex flex-col overflow-hidden ${w.modalBg}`}
         style={{ boxShadow: "0 25px 60px -12px rgba(0,0,0,0.6)" }}
       >
         {/* Header */}

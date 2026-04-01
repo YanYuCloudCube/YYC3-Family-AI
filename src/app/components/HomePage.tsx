@@ -538,12 +538,12 @@ const RECENT_PROJECTS = [
 ];
 
 const QUICK_ACTIONS = [
-  { icon: Upload, label: "图片上传", shortcut: "PNG, JPG, SVG" },
-  { icon: FolderOpen, label: "文件导入", shortcut: "多文件" },
-  { icon: Github, label: "GitHub 链接", shortcut: "仓库 URL" },
-  { icon: Figma, label: "Figma 文件", shortcut: ".fig" },
-  { icon: Code2, label: "代码片段", shortcut: "多语言" },
-  { icon: Clipboard, label: "剪贴板", shortcut: "Ctrl+V" },
+  { icon: Upload, label: "图片上传", shortcut: "PNG, JPG, SVG", action: "upload-image" },
+  { icon: FolderOpen, label: "文件导入", shortcut: "多文件", action: "upload-file" },
+  { icon: Github, label: "GitHub 链接", shortcut: "仓库 URL", action: "github-url" },
+  { icon: Figma, label: "Figma 文件", shortcut: ".fig", action: "figma-file" },
+  { icon: Code2, label: "代码片段", shortcut: "多语言", action: "code-snippet" },
+  { icon: Clipboard, label: "剪贴板", shortcut: "Ctrl+V", action: "clipboard" },
 ];
 
 // ── 边栏图标定义（功能完善） ──
@@ -806,6 +806,42 @@ export default function HomePage() {
   const [intentResult, setIntentResult] = useState<IntentResult | null>(null);
   const [intentVisible, setIntentVisible] = useState(false);
   const navigateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // File upload refs
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle quick action clicks
+  const handleQuickAction = useCallback((action: string) => {
+    switch (action) {
+      case "upload-image":
+        imageInputRef.current?.click();
+        break;
+      case "upload-file":
+        fileInputRef.current?.click();
+        break;
+      case "github-url":
+        window.open("https://github.com/new", "_blank");
+        break;
+      case "figma-file":
+        window.open("https://www.figma.com/", "_blank");
+        break;
+      case "code-snippet":
+        setChatInput(prev => prev + "\n```typescript\n// 在此粘贴代码\n```\n");
+        setShowActions(false);
+        break;
+      case "clipboard":
+        navigator.clipboard.readText().then(text => {
+          if (text) {
+            setChatInput(prev => prev + text);
+          }
+        }).catch(() => {
+          console.log("无法读取剪贴板");
+        });
+        setShowActions(false);
+        break;
+    }
+  }, []);
 
   // Live intent preview (as user types)
   const [liveIntent, setLiveIntent] = useState<IntentResult | null>(null);
@@ -1114,10 +1150,15 @@ export default function HomePage() {
                     {QUICK_ACTIONS.map((action) => (
                       <button
                         key={action.label}
-                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-colors text-left ${t.home.actionBtnHover}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleQuickAction(action.action);
+                        }}
+                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-all duration-200 text-left hover:scale-[1.02] active:scale-[0.98] ${t.home.actionBtnHover}`}
                       >
                         <action.icon
-                          className={`w-4 h-4 ${t.home.actionIcon}`}
+                          className={`w-4 h-4 ${t.home.actionIcon} transition-transform`}
                         />
                         <div className="min-w-0">
                           <div
@@ -1134,6 +1175,34 @@ export default function HomePage() {
                       </button>
                     ))}
                   </div>
+                  {/* Hidden file inputs */}
+                  <input
+                    ref={imageInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/svg+xml"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        Array.from(e.target.files).forEach(file => {
+                          setChatInput(prev => prev + `[图片: ${file.name}] `);
+                        });
+                      }
+                    }}
+                  />
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        Array.from(e.target.files).forEach(file => {
+                          setChatInput(prev => prev + `[文件: ${file.name}] `);
+                        });
+                      }
+                    }}
+                  />
                 </motion.div>
               )}
 
