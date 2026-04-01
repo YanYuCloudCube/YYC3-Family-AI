@@ -111,8 +111,8 @@ export class SnapshotViewController {
       ...config,
     };
 
-    this.syncScroll = (this.config.comparisonConfig as any)?.syncScroll!;
-    this.syncZoom = (this.config.comparisonConfig as any)?.syncZoom!;
+    this.syncScroll = (this.config.comparisonConfig as any)?.syncScroll ?? true;
+    this.syncZoom = (this.config.comparisonConfig as any)?.syncZoom ?? true;
 
     this.views = new Map();
 
