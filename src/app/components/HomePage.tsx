@@ -52,6 +52,7 @@ import {
   X,
   Lightbulb,
   Image as ImageIcon,
+  Loader2,
 } from "lucide-react";
 import { useThemeTokens } from "./ide/hooks/useThemeTokens";
 import ThemeSwitcher from "./ide/ThemeSwitcher";
@@ -1140,12 +1141,13 @@ export default function HomePage() {
               <div className="flex items-end gap-2 p-3">
                 <button
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     setShowActions(!showActions);
                   }}
-                  className={`flex-shrink-0 w-9 h-9 rounded-lg border flex items-center justify-center transition-colors ${t.home.plusBtn}`}
+                  className={`flex-shrink-0 w-9 h-9 rounded-lg border flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 ${t.home.plusBtn}`}
                 >
-                  <Plus className={`w-4 h-4 ${t.home.plusIcon}`} />
+                  <Plus className={`w-4 h-4 ${t.home.plusIcon} transition-transform`} />
                 </button>
                 <div className="flex-1 relative">
                   <textarea
@@ -1231,24 +1233,30 @@ export default function HomePage() {
             {/* Quick entry buttons */}
             <div className="flex items-center justify-center gap-3 mt-5">
               <button
-                onClick={() => setWizardOpen(true)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[0.8rem] transition-all ${t.home.newProjectBtn}`}
+                onClick={() => {
+                  setWizardOpen(true);
+                }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[0.8rem] transition-all duration-200 hover:scale-105 active:scale-95 ${t.home.newProjectBtn}`}
               >
-                <Sparkles className="w-4 h-4" />
-                <span>新建项目</span>
+                {wizardOpen ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Sparkles className="w-4 h-4" />
+                )}
+                <span>{wizardOpen ? "加载中..." : "新建项目"}</span>
               </button>
               <button
                 onClick={() =>
                   navigate("/ide/new", { state: { mode: "designer" } })
                 }
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[0.8rem] transition-all ${t.home.codingBtn}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[0.8rem] transition-all duration-200 hover:scale-105 active:scale-95 ${t.home.codingBtn}`}
               >
                 <Terminal className="w-4 h-4" />
                 <span>直接进入编程</span>
               </button>
               <button
                 onClick={() => navigate("/ai-chat")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[0.8rem] transition-all ${t.home.aiChatBtn}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[0.8rem] transition-all duration-200 hover:scale-105 active:scale-95 ${t.home.aiChatBtn}`}
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>AI 自由对话</span>

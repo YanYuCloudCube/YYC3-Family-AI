@@ -688,6 +688,9 @@ export function ModelSection() {
     Record<string, DiagnosticResult>
   >({});
 
+  // Testing providers state for progress animation
+  const [testingProviders, setTestingProviders] = useState<Set<string>>(new Set());
+
   // Ollama
   const [ollamaHost, setOllamaHost] = useState("http://localhost:11434");
   const [ollamaScanning, setOllamaScanning] = useState(false);
@@ -1524,15 +1527,25 @@ export function ModelSection() {
             </div>
             <button
               onClick={(e) => {
-                console.warn('[MCPModelSection] Recheck button clicked');
                 e.preventDefault();
                 e.stopPropagation();
-                recheckOllama();
+                if (ollamaStatus !== "checking") {
+                  recheckOllama();
+                }
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.78rem] ${th.btn.ghost} ${th.btn.ghostHover}`}
+              disabled={ollamaStatus === "checking"}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.78rem] transition-all ${
+                ollamaStatus === "checking"
+                  ? "opacity-50 cursor-not-allowed"
+                  : `${th.btn.ghost} ${th.btn.ghostHover}`
+              }`}
             >
-              <Zap className={`w-3.5 h-3.5 ${th.text.accent}`} />
-              重新检测
+              {ollamaStatus === "checking" ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-400" />
+              ) : (
+                <Zap className={`w-3.5 h-3.5 ${th.text.accent}`} />
+              )}
+              {ollamaStatus === "checking" ? "检测中..." : "重新检测"}
             </button>
           </div>
           {ollamaDetectedModels.length > 0 ? (
@@ -2007,14 +2020,35 @@ export function ModelSection() {
                   </div>
                   <button
                     onClick={() => {
-                      provider.models.forEach((model) => {
-                        handleTestConnection(provider.id, model.id);
+                      if (testingProviders.has(provider.id)) return;
+                      
+                      setTestingProviders(prev => new Set([...prev, provider.id]));
+                      
+                      const testPromises = provider.models.map(model => 
+                        handleTestConnection(provider.id, model.id)
+                      );
+                      
+                      Promise.allSettled(testPromises).finally(() => {
+                        setTestingProviders(prev => {
+                          const next = new Set(prev);
+                          next.delete(provider.id);
+                          return next;
+                        });
                       });
                     }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.72rem] ${th.btn.ghost} ${th.btn.ghostHover}`}
+                    disabled={testingProviders.has(provider.id)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.72rem] transition-all ${
+                      testingProviders.has(provider.id)
+                        ? "opacity-50 cursor-not-allowed"
+                        : `${th.btn.ghost} ${th.btn.ghostHover}`
+                    }`}
                   >
-                    <Zap className={`w-3 h-3 ${th.text.accent}`} />
-                    测试全部
+                    {testingProviders.has(provider.id) ? (
+                      <Loader2 className="w-3 h-3 animate-spin text-blue-400" />
+                    ) : (
+                      <Zap className={`w-3 h-3 ${th.text.accent}`} />
+                    )}
+                    {testingProviders.has(provider.id) ? "测试中..." : "测试全部"}
                   </button>
                 </div>
               </ItemCard>
