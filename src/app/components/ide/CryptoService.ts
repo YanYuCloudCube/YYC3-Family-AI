@@ -148,7 +148,7 @@ export async function decrypt(
 ): Promise<string> {
   const salt = new Uint8Array(base64ToArrayBuffer(data.salt));
   const iv = new Uint8Array(base64ToArrayBuffer(data.iv));
-  const ciphertext = base64ToArrayBuffer(data.ciphertext);
+  const ciphertext = new Uint8Array(base64ToArrayBuffer(data.ciphertext));
 
   const key = await deriveKey(password, salt);
 
