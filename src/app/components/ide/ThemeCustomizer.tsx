@@ -63,6 +63,7 @@ import {
   type HarmonyType,
   type WCAGLevel,
 } from "./CustomThemeStore";
+import { useThemeTokens } from "./hooks/useThemeTokens";
 
 // ===== Props =====
 interface ThemeCustomizerProps {
@@ -129,6 +130,7 @@ const CONTRAST_PAIRS: [keyof ThemeColors, keyof ThemeColors, string][] = [
 
 // ===== Component =====
 export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
+  const t = useThemeTokens();
   const [tab, setTab] = useState<EditorTab>("presets");
   const [customThemes, setCustomThemes] = useState<ThemeConfig[]>(() =>
     loadCustomThemes(),
@@ -331,19 +333,19 @@ export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
           initial={{ opacity: 0, scale: 0.96, y: 8 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 8 }}
-          className="w-[960px] max-w-[95vw] h-[680px] max-h-[90vh] bg-[#0d1117] border border-white/[0.08] rounded-2xl overflow-hidden flex flex-col"
+          className={`w-[960px] max-w-[95vw] h-[680px] max-h-[90vh] ${t.page.cardBg} border ${t.page.cardBorder} rounded-2xl overflow-hidden flex flex-col`}
           style={{ boxShadow: "0 25px 50px -12px rgba(0,0,0,0.6)" }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06] flex-shrink-0">
+          <div className={`flex items-center justify-between px-5 py-3 border-b ${t.page.cardBorder} flex-shrink-0`}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
                 <Palette className="w-4 h-4 text-white" />
               </div>
               <div>
-                <h2 className="text-[0.88rem] text-white/90">自定义主题系统</h2>
-                <p className="text-[0.62rem] text-white/35">
+                <h2 className={`text-[0.88rem] ${t.text.primary}`}>自定义主题系统</h2>
+                <p className={`text-[0.62rem] ${t.text.muted}`}>
                   {editingTheme
                     ? `编辑: ${editingTheme.name}`
                     : activeTheme
@@ -357,13 +359,13 @@ export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
                 <>
                   <button
                     onClick={cancelEditing}
-                    className="px-3 py-1.5 rounded-lg text-[0.72rem] text-white/50 hover:bg-white/5 transition-colors"
+                    className={`px-3 py-1.5 rounded-lg text-[0.72rem] ${t.text.muted} hover:bg-white/5 transition-colors`}
                   >
                     取消
                   </button>
                   <button
                     onClick={saveEditing}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.72rem] bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 transition-colors"
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.72rem] ${t.btn.accent} ${t.btn.accentHover} transition-colors`}
                   >
                     <Save className="w-3 h-3" />
                     保存主题
@@ -372,9 +374,9 @@ export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
               )}
               <button
                 onClick={onClose}
-                className="w-7 h-7 rounded-lg hover:bg-white/5 flex items-center justify-center"
+                className={`w-7 h-7 rounded-lg hover:bg-white/5 flex items-center justify-center`}
               >
-                <X className="w-4 h-4 text-white/40" />
+                <X className={`w-4 h-4 ${t.text.muted}`} />
               </button>
             </div>
           </div>
@@ -382,19 +384,19 @@ export function ThemeCustomizer({ open, onClose }: ThemeCustomizerProps) {
           {/* Body */}
           <div className="flex-1 flex overflow-hidden">
             {/* Left Tabs */}
-            <div className="w-[180px] border-r border-white/[0.06] py-2 flex-shrink-0 overflow-y-auto">
-              {TABS.map((t) => (
+            <div className={`w-[180px] border-r ${t.page.cardBorder} py-2 flex-shrink-0 overflow-y-auto`}>
+              {TABS.map((tabItem) => (
                 <button
-                  key={t.id}
-                  onClick={() => setTab(t.id)}
+                  key={tabItem.id}
+                  onClick={() => setTab(tabItem.id)}
                   className={`w-full flex items-center gap-2.5 px-4 py-2 text-[0.72rem] transition-colors ${
-                    tab === t.id
-                      ? "bg-indigo-500/[0.08] text-indigo-400 border-r-2 border-indigo-400"
-                      : "text-white/50 hover:text-white/70 hover:bg-white/[0.03]"
+                    tab === tabItem.id
+                      ? `${t.btn.accent} border-r-2 ${t.page.cardBorder}`
+                      : `${t.text.muted} hover:${t.text.secondary} hover:bg-white/[0.03]`
                   }`}
                 >
-                  <t.icon className="w-3.5 h-3.5 flex-shrink-0" />
-                  {t.label}
+                  <tabItem.icon className="w-3.5 h-3.5 flex-shrink-0" />
+                  {tabItem.label}
                 </button>
               ))}
             </div>
