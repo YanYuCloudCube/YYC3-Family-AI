@@ -137,7 +137,8 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "6.4.2",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.4",
+    "y-protocols": "^1.0.7"
   },
   "peerDependencies": {
     "react": "18.3.1",

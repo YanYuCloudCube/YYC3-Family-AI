@@ -14,6 +14,7 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import * as Y from "yjs";
+import { Awareness } from "y-protocols/awareness";
 
 // Mock Yjs provider
 class MockProvider {
@@ -214,10 +215,10 @@ describe("CollabService - 实时协作服务", () => {
 
   // ── 5. 感知光标 (Awareness) ──
 
-  describe.skip("感知光标", () => {
+  describe("感知光标", () => {
     it("设置和获取用户状态", () => {
-      const awareness = new Y.Awareness(doc);
-      
+      const awareness = new Awareness(doc);
+
       const userState = {
         user: { name: "Test User", color: "#38bdf8" },
         cursor: { line: 10, column: 5 },
@@ -231,18 +232,24 @@ describe("CollabService - 实时协作服务", () => {
       expect((state as any).cursor.line).toBe(10);
     });
 
-    it("多个用户状态", () => {
-      const awareness1 = new Y.Awareness(new Y.Doc());
-      const awareness2 = new Y.Awareness(new Y.Doc());
+    it("获取远程用户状态列表", () => {
+      const awareness = new Awareness(doc);
 
-      awareness1.setLocalState({ user: { name: "User1" }, cursor: { line: 1 } });
-      awareness2.setLocalState({ user: { name: "User2" }, cursor: { line: 2 } });
+      awareness.setLocalState({ user: { name: "Local User" }, cursor: { line: 1 } });
 
-      const state1 = awareness1.getLocalState();
-      const state2 = awareness2.getLocalState();
+      const states = awareness.getStates();
+      expect(states.size).toBe(1);
+      expect(states.has(awareness.clientID)).toBe(true);
+    });
 
-      expect((state1 as any).user.name).toBe("User1");
-      expect((state2 as any).user.name).toBe("User2");
+    it("清理本地状态", () => {
+      const awareness = new Awareness(doc);
+
+      awareness.setLocalState({ user: { name: "Test" } });
+      expect(awareness.getLocalState()).toBeDefined();
+
+      awareness.setLocalState(null);
+      expect(awareness.getLocalState()).toBeNull();
     });
   });
 
