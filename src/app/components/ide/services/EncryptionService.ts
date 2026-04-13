@@ -44,6 +44,15 @@ export class EncryptionService {
     this.config = this.loadConfig()
   }
 
+  /**
+   * 将 Uint8Array 转换为纯 ArrayBuffer（兼容 Web Crypto API）
+   */
+  private static toArrayBuffer(uint8Array: Uint8Array): ArrayBuffer {
+    const buffer = new ArrayBuffer(uint8Array.byteLength)
+    new Uint8Array(buffer).set(uint8Array)
+    return buffer
+  }
+
   static getInstance(): EncryptionService {
     if (!EncryptionService.instance) {
       EncryptionService.instance = new EncryptionService()
@@ -180,10 +189,10 @@ export class EncryptionService {
     const encryptedBuffer = await crypto.subtle.encrypt(
       {
         name: this.getAlgorithm(),
-        iv: iv.buffer as ArrayBuffer,
+        iv: EncryptionService.toArrayBuffer(iv),
       },
       derivedKey,
-      encodedData.buffer as ArrayBuffer,
+      EncryptionService.toArrayBuffer(encodedData),
     )
 
     return {
@@ -218,10 +227,10 @@ export class EncryptionService {
     const decryptedBuffer = await crypto.subtle.decrypt(
       {
         name: this.getAlgorithm(),
-        iv: iv.buffer as ArrayBuffer,
+        iv: EncryptionService.toArrayBuffer(iv),
       },
       derivedKey,
-      data.buffer as ArrayBuffer,
+      EncryptionService.toArrayBuffer(data),
     )
 
     const decoder = new TextDecoder()
@@ -297,7 +306,7 @@ export class EncryptionService {
 
     const keyMaterial = await crypto.subtle.importKey(
       'raw',
-      password.buffer as ArrayBuffer,
+      EncryptionService.toArrayBuffer(password),
       'PBKDF2',
       false,
       ['deriveBits', 'deriveKey'],
@@ -306,7 +315,7 @@ export class EncryptionService {
     return crypto.subtle.deriveKey(
       {
         name: 'PBKDF2',
-        salt: salt.buffer as ArrayBuffer,
+        salt: EncryptionService.toArrayBuffer(salt),
         iterations,
         hash: 'SHA-256',
       },

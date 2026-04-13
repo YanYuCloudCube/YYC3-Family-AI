@@ -516,8 +516,7 @@ export class ChunkedFileHandler {
 
   async calculateHash(blob: Blob): Promise<string> {
     const buffer = await blob.arrayBuffer();
-    const uint8Array = new Uint8Array(buffer);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', uint8Array.buffer as ArrayBuffer);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }

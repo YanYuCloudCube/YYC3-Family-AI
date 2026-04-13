@@ -100,10 +100,13 @@ export async function deriveKey(
   );
 
   // Derive AES-GCM key
+  const saltBuffer = new ArrayBuffer(salt.byteLength);
+  new Uint8Array(saltBuffer).set(salt);
+
   return crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
-      salt: salt.buffer as ArrayBuffer,
+      salt: saltBuffer,
       iterations,
       hash: "SHA-256",
     },
@@ -126,15 +129,21 @@ export async function encrypt(
   const iv = generateRandomBytes(SECURITY_IV_LENGTH);
   const key = await deriveKey(password, salt);
 
+  const ivBuffer = new ArrayBuffer(iv.byteLength);
+  new Uint8Array(ivBuffer).set(iv);
+
   const ciphertext = await crypto.subtle.encrypt(
-    { name: SECURITY_ENCRYPTION_ALGORITHM, iv: iv.buffer as ArrayBuffer },
+    { name: SECURITY_ENCRYPTION_ALGORITHM, iv: ivBuffer },
     key,
     textToBuffer(plaintext),
   );
 
+  const saltBuffer = new ArrayBuffer(salt.byteLength);
+  new Uint8Array(saltBuffer).set(salt);
+
   return {
-    iv: arrayBufferToBase64(iv.buffer as ArrayBuffer),
-    salt: arrayBufferToBase64(salt.buffer as ArrayBuffer),
+    iv: arrayBufferToBase64(ivBuffer),
+    salt: arrayBufferToBase64(saltBuffer),
     ciphertext: arrayBufferToBase64(ciphertext),
     algorithm: SECURITY_ENCRYPTION_ALGORITHM,
     version: 1,
@@ -152,10 +161,16 @@ export async function decrypt(
 
   const key = await deriveKey(password, salt);
 
+  const ivBuffer = new ArrayBuffer(iv.byteLength);
+  new Uint8Array(ivBuffer).set(iv);
+
+  const ciphertextBuffer = new ArrayBuffer(ciphertext.byteLength);
+  new Uint8Array(ciphertextBuffer).set(ciphertext);
+
   const plaintext = await crypto.subtle.decrypt(
-    { name: SECURITY_ENCRYPTION_ALGORITHM, iv: iv.buffer as ArrayBuffer },
+    { name: SECURITY_ENCRYPTION_ALGORITHM, iv: ivBuffer },
     key,
-    ciphertext.buffer as ArrayBuffer,
+    ciphertextBuffer,
   );
 
   return bufferToText(plaintext);
