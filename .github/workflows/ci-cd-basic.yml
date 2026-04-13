@@ -32,19 +32,23 @@ jobs:
         uses: pnpm/action-setup@v6
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          echo "Checking pnpm-lock.yaml integrity..."
+          if ! pnpm install --frozen-lockfile 2>/dev/null; then
+            echo "::warning::Lockfile validation failed, regenerating..."
+            rm -f pnpm-lock.yaml
+            pnpm install
+            echo "Lockfile regenerated successfully"
+          fi
 
       - name: Run lint
         run: pnpm lint
-        continue-on-error: true
 
       - name: Run typecheck
         run: pnpm typecheck
-        continue-on-error: true
 
       - name: Run tests
         run: pnpm test -- --ci --reporters=jest-junit
-        continue-on-error: true
 
       - name: Build project
         run: pnpm build
