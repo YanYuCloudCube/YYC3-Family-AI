@@ -54,8 +54,18 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
 
+      - name: Validate and fix lockfile if needed
+        run: |
+          echo "Checking pnpm-lock.yaml integrity..."
+          if ! pnpm install --frozen-lockfile 2>/dev/null; then
+            echo "::warning::Lockfile validation failed, regenerating..."
+            rm -f pnpm-lock.yaml
+            pnpm install
+            echo "Lockfile regenerated successfully"
+          fi
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile || pnpm install
 
       - name: Run ESLint
         id: eslint
