@@ -326,7 +326,7 @@ jobs:
 
       - name: Comment on PR
         if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           path: ci-report.md
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
