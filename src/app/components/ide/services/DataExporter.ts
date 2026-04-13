@@ -13,6 +13,31 @@
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";
+import { logger } from "./Logger";
+
+export interface ExportFileRecord {
+  id: string;
+  name: string;
+  path: string;
+  content: string;
+  language?: string;
+}
+
+export interface ExportProjectRecord {
+  id: string;
+  name: string;
+  description?: string;
+  files: string[];
+  settings?: Record<string, unknown>;
+}
+
+export interface ExportSnapshotRecord {
+  id: string;
+  projectId: string;
+  name: string;
+  timestamp: number;
+  fileStates: Array<{ path: string; content: string }>;
+}
 
 export interface ExportData {
   version: string;
@@ -24,9 +49,9 @@ export interface ExportData {
   };
   localStorage: Record<string, string>;
   indexedDB: {
-    files: any[];
-    projects: any[];
-    snapshots: any[];
+    files: ExportFileRecord[];
+    projects: ExportProjectRecord[];
+    snapshots: ExportSnapshotRecord[];
   };
 }
 
@@ -76,7 +101,7 @@ export class DataExporter {
       }
     }
 
-    console.warn(`[DataExporter] Exported ${Object.keys(data).length} localStorage items`);
+    logger.info(`Exported ${Object.keys(data).length} localStorage items`, null, 'DataExporter');
     return data;
   }
 
@@ -91,10 +116,10 @@ export class DataExporter {
       indexedDB.projects = await db.getAll("projects");
       indexedDB.snapshots = await db.getAll("snapshots");
 
-      console.warn(`[DataExporter] Exported ${indexedDB.files.length} files, ${indexedDB.projects.length} projects, ${indexedDB.snapshots.length} snapshots`);
+      logger.info(`Exported ${indexedDB.files.length} files, ${indexedDB.projects.length} projects, ${indexedDB.snapshots.length} snapshots`, null, 'DataExporter');
 
     } catch (e) {
-      console.error("[DataExporter] Error exporting IndexedDB:", e);
+      logger.error("Error exporting IndexedDB", e, 'DataExporter');
       throw e;
     }
   }
@@ -116,7 +141,7 @@ export class DataExporter {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    console.warn("[DataExporter] Download started");
+    logger.info("Download started", null, 'DataExporter');
   }
 
   /**
@@ -165,7 +190,7 @@ export class DataExporter {
       exportData.indexedDB.snapshots = snapshots;
 
     } catch (e) {
-      console.error("[DataExporter] Error exporting project:", e);
+      logger.error("Error exporting project", e, 'DataExporter');
       throw e;
     }
 
@@ -218,7 +243,7 @@ export class DataExporter {
 
       const files = await db.getAll("files");
       stats.filesCount = files.length;
-      stats.filesSize = files.reduce((sum, file: any) => {
+      stats.filesSize = files.reduce((sum, file: ExportFileRecord) => {
         return sum + (file.content?.length || 0) * 2;
       }, 0);
 
@@ -229,7 +254,7 @@ export class DataExporter {
       stats.snapshotsCount = snapshots.length;
 
     } catch (e) {
-      console.error("[DataExporter] Error getting export stats:", e);
+      logger.error("Error getting export stats", e, 'DataExporter');
     }
 
     stats.totalSize = stats.localStorageSize + stats.filesSize;

@@ -36,13 +36,16 @@ jobs:
         run: pnpm install
 
       - name: Run lint
-        run: pnpm lint || true
+        run: pnpm lint
 
       - name: Run typecheck
-        run: pnpm typecheck || true
+        run: pnpm typecheck
 
       - name: Run tests
-        run: pnpm test -- --ci --reporters=jest-junit || true
+        run: pnpm test -- --ci --reporters=jest-junit
+
+      - name: Security Audit
+        run: pnpm audit --audit-level=moderate
 
       - name: Generate test coverage
         run: pnpm test:coverage

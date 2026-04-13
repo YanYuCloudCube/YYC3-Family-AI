@@ -13,6 +13,7 @@
 
 import { getDB } from '../adapters/IndexedDBAdapter'
 import { STORAGE_PREFIXES } from '../constants/storage-keys'
+import { logger } from './Logger'
 
 export interface BackupMetadata {
   id: string
@@ -32,13 +33,42 @@ export interface BackupMetadata {
   }
 }
 
+export interface BackupFileRecord {
+  id: string;
+  name: string;
+  path: string;
+  content: string;
+  language?: string;
+  createdAt?: number;
+  updatedAt?: number;
+}
+
+export interface BackupProjectRecord {
+  id: string;
+  name: string;
+  description?: string;
+  files: string[];
+  settings?: Record<string, unknown>;
+  createdAt?: number;
+  updatedAt?: number;
+}
+
+export interface BackupSnapshotRecord {
+  id: string;
+  projectId: string;
+  name: string;
+  timestamp: number;
+  fileStates: Array<{ path: string; content: string; hash: string }>;
+  metadata?: Record<string, unknown>;
+}
+
 export interface BackupData {
   metadata: BackupMetadata
   localStorage: Record<string, string>
   indexedDB: {
-    files: any[]
-    projects: any[]
-    snapshots: any[]
+    files: BackupFileRecord[]
+    projects: BackupProjectRecord[]
+    snapshots: BackupSnapshotRecord[]
   }
 }
 
@@ -58,40 +88,33 @@ export interface BackupInfo {
   description?: string
 }
 
-const BACKUP_STORE = 'backups'
+const BACKUP_STORE = 'yyc3-backups'
 const BACKUP_CONFIG_KEY = 'yyc3-backup-config'
+
 const DEFAULT_CONFIG: BackupConfig = {
   enabled: true,
-  interval: 3600000,
+  interval: 30 * 60 * 1000,
   maxBackups: 10,
   autoBackupOnExit: true,
   compressBackups: false,
 }
 
-export class BackupService {
-  private static instance: BackupService
-  private config: BackupConfig
+class BackupServiceClass {
+  private config: BackupConfig = DEFAULT_CONFIG
   private autoBackupTimer: ReturnType<typeof setInterval> | null = null
 
-  private constructor() {
-    this.config = this.loadConfig()
+  constructor() {
+    this.loadConfig()
   }
 
-  static getInstance(): BackupService {
-    if (!BackupService.instance) {
-      BackupService.instance = new BackupService()
-    }
-    return BackupService.instance
-  }
-
-  private loadConfig(): BackupConfig {
+  private loadConfig(): void {
     try {
       const stored = localStorage.getItem(BACKUP_CONFIG_KEY)
       if (stored) {
         return { ...DEFAULT_CONFIG, ...JSON.parse(stored) }
       }
     } catch (e) {
-      console.warn('[BackupService] Failed to load config:', e)
+      logger.warn('Failed to load config', e, 'BackupService')
     }
     return DEFAULT_CONFIG
   }
@@ -100,7 +123,7 @@ export class BackupService {
     try {
       localStorage.setItem(BACKUP_CONFIG_KEY, JSON.stringify(this.config))
     } catch (e) {
-      console.error('[BackupService] Failed to save config:', e)
+      logger.error('Failed to save config', e, 'BackupService')
     }
   }
 
@@ -171,7 +194,7 @@ export class BackupService {
       backupData.metadata.metadata.indexedDBProjects = backupData.indexedDB.projects.length
       backupData.metadata.metadata.indexedDBSnapshots = backupData.indexedDB.snapshots.length
     } catch (e) {
-      console.warn('[BackupService] Failed to backup IndexedDB:', e)
+      logger.warn('Failed to backup IndexedDB', e, 'BackupService')
     }
 
     const backupString = JSON.stringify(backupData)
@@ -180,17 +203,17 @@ export class BackupService {
     try {
       const db = await getDB()
       if (!db.objectStoreNames.contains(BACKUP_STORE)) {
-        console.warn('[BackupService] Backup store not found, skipping save')
+        logger.warn('Backup store not found, skipping save', null, 'BackupService')
         return id
       }
       await db.put(BACKUP_STORE, backupData)
-      console.log(`[BackupService] Backup created: ${id}`)
+      logger.info(`Backup created: ${id}`, null, 'BackupService')
 
       await this.cleanupOldBackups()
 
       return id
     } catch (e) {
-      console.error('[BackupService] Failed to save backup:', e)
+      logger.error('Failed to save backup', e, 'BackupService')
       throw e
     }
   }
@@ -213,7 +236,7 @@ export class BackupService {
         }))
         .sort((a, b) => b.createdAt - a.createdAt)
     } catch (e) {
-      console.error('[BackupService] Failed to list backups:', e)
+      logger.error('Failed to list backups', e, 'BackupService')
       return []
     }
   }
@@ -227,7 +250,7 @@ export class BackupService {
       const backup = await db.get(BACKUP_STORE, id)
       return backup || null
     } catch (e) {
-      console.error('[BackupService] Failed to get backup:', e)
+      logger.error('Failed to get backup', e, 'BackupService')
       return null
     }
   }
@@ -267,14 +290,14 @@ export class BackupService {
           await db.put('snapshots', snapshot)
         }
       } catch (e) {
-        console.error('[BackupService] Failed to restore IndexedDB:', e)
+        logger.error('Failed to restore IndexedDB', e, 'BackupService')
         return { success: false, message: 'IndexedDB 恢复失败' }
       }
 
-      console.log(`[BackupService] Backup restored: ${id}`)
+      logger.info(`Backup restored: ${id}`, null, 'BackupService')
       return { success: true, message: '备份恢复成功' }
     } catch (e) {
-      console.error('[BackupService] Failed to restore backup:', e)
+      logger.error('Failed to restore backup', e, 'BackupService')
       return { success: false, message: `恢复失败: ${(e as Error).message}` }
     }
   }
@@ -286,10 +309,10 @@ export class BackupService {
         return false
       }
       await db.delete(BACKUP_STORE, id)
-      console.log(`[BackupService] Backup deleted: ${id}`)
+      logger.info(`Backup deleted: ${id}`, null, 'BackupService')
       return true
     } catch (e) {
-      console.error('[BackupService] Failed to delete backup:', e)
+      logger.error('Failed to delete backup', e, 'BackupService')
       return false
     }
   }
@@ -336,7 +359,7 @@ export class BackupService {
           }
           await db.put(BACKUP_STORE, backup)
 
-          console.log(`[BackupService] Backup imported: ${backup.metadata.id}`)
+          logger.info(`Backup imported: ${backup.metadata.id}`, null, 'BackupService')
           resolve(backup.metadata.id)
         } catch (e) {
           reject(new Error(`导入失败: ${(e as Error).message}`))
@@ -358,7 +381,7 @@ export class BackupService {
       for (const backup of toDelete) {
         await this.deleteBackup(backup.id)
       }
-      console.log(`[BackupService] Cleaned up ${toDelete.length} old backups`)
+      logger.info(`Cleaned up ${toDelete.length} old backups`, null, 'BackupService')
     }
   }
 
@@ -371,13 +394,13 @@ export class BackupService {
       this.autoBackupTimer = setInterval(async () => {
         try {
           await this.createBackup('auto', '自动备份')
-          console.log('[BackupService] Auto backup completed')
+          logger.info('Auto backup completed', null, 'BackupService')
         } catch (e) {
-          console.error('[BackupService] Auto backup failed:', e)
+          logger.error('Auto backup failed', e, 'BackupService')
         }
       }, this.config.interval)
 
-      console.log(`[BackupService] Auto backup started (interval: ${this.config.interval}ms)`)
+      logger.info(`Auto backup started (interval: ${this.config.interval}ms)`, null, 'BackupService')
     }
   }
 
@@ -385,7 +408,7 @@ export class BackupService {
     if (this.autoBackupTimer) {
       clearInterval(this.autoBackupTimer)
       this.autoBackupTimer = null
-      console.log('[BackupService] Auto backup stopped')
+      logger.info('Auto backup stopped', null, 'BackupService')
     }
   }
 
@@ -397,29 +420,36 @@ export class BackupService {
 
   async getBackupStats(): Promise<{
     total: number
-    autoCount: number
-    manualCount: number
-    totalSize: number
-    oldestBackup: number | null
-    newestBackup: number | null
+    totalSize: string
+    oldest: Date | null
+    newest: Date | null
   }> {
-    const backups = await this.listBackups()
+    try {
+      const backups = await this.listBackups()
+      
+      if (backups.length === 0) {
+        return {
+          total: 0,
+          totalSize: '0 B',
+          oldest: null,
+          newest: null,
+        }
+      }
 
-    return {
-      total: backups.length,
-      autoCount: backups.filter((b) => b.type === 'auto').length,
-      manualCount: backups.filter((b) => b.type === 'manual').length,
-      totalSize: backups.reduce((sum, b) => {
-        const size = parseFloat(b.size.split(' ')[0])
-        const unit = b.size.split(' ')[1]
-        const bytes =
-          unit === 'MB' ? size * 1024 * 1024 : unit === 'KB' ? size * 1024 : size
-        return sum + bytes
-      }, 0),
-      oldestBackup: backups.length > 0 ? backups[backups.length - 1].createdAt : null,
-      newestBackup: backups.length > 0 ? backups[0].createdAt : null,
+      const totalBytes = backups.reduce((sum, b) => sum + parseInt(b.size.replace(/[^0-9]/g, '')), 0)
+      
+      return {
+        total: backups.length,
+        totalSize: this.formatSize(totalBytes),
+        oldest: new Date(backups[backups.length - 1].createdAt),
+        newest: new Date(backups[0].createdAt),
+      }
+    } catch (e) {
+      logger.error('Failed to get backup stats', e, 'BackupService')
+      throw e
     }
   }
 }
 
-export default BackupService
+export const backupService = new BackupServiceClass()
+export default backupService

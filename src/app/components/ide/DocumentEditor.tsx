@@ -57,6 +57,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { PanelHeader } from "./PanelManager";
+import { sanitizer } from "./services/Sanitizer";
 
 // ── Types ──
 
@@ -506,7 +507,7 @@ export default function DocumentEditor({
                 </div>
                 <div
                   className="prose prose-sm prose-invert max-w-none text-slate-400"
-                  dangerouslySetInnerHTML={{ __html: editor.getHTML() }}
+                  dangerouslySetInnerHTML={{ __html: sanitizer.sanitize(editor.getHTML()) }}
                 />
               </div>
             )}

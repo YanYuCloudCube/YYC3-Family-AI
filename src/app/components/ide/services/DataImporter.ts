@@ -14,6 +14,7 @@
 
 import { getDB } from "../adapters/IndexedDBAdapter";
 import type { ExportData } from "./DataExporter";
+import { sanitizer } from "./Sanitizer";
 
 export interface ImportResult {
   success: boolean;
@@ -347,12 +348,17 @@ export class DataImporter {
       line-height: 1.5;
     `;
 
+    const sanitizedMessage = sanitizer.sanitize(message, {
+      ALLOWED_TAGS: ['div', 'span', 'strong', 'em'],
+      ALLOWED_ATTR: ['class', 'style']
+    })
+
     notification.innerHTML = `
       <div style="font-weight: bold; margin-bottom: 8px;">
         ${type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️"}
         ${type === "success" ? "成功" : type === "error" ? "错误" : "提示"}
       </div>
-      <div>${message}</div>
+      <div>${sanitizedMessage}</div>
       <button onclick="this.parentElement.remove()" style="
         margin-top: 12px;
         padding: 4px 12px;

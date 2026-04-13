@@ -13,6 +13,7 @@
  */
 
 import { getDB, type StoredFile } from "../adapters/IndexedDBAdapter";
+import { sanitizer } from "./Sanitizer";
 
 export interface StorageUsage {
   // localStorage
@@ -294,6 +295,10 @@ class StorageMonitorService {
       font-size: 14px;
     `;
 
+    const sanitizedRecommendations = usage.recommendations
+      .map(rec => sanitizer.escapeHtml(rec))
+      .join("<br>")
+
     notification.innerHTML = `
       <div style="font-weight: bold; margin-bottom: 8px;">
         ⚠️ 存储空间不足
@@ -305,7 +310,7 @@ class StorageMonitorService {
         使用率：${usage.totalPercent.toFixed(1)}%
       </div>
       <div style="font-size: 12px; opacity: 0.9;">
-        ${usage.recommendations.join("<br>")}
+        ${sanitizedRecommendations}
       </div>
       <button onclick="this.parentElement.remove()" style="
         margin-top: 12px;
