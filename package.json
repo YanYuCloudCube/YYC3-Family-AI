@@ -118,7 +118,7 @@
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
-    "@tailwindcss/vite": "4.1.12",
+    "@tailwindcss/vite": "4.2.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/node": "^25.5.0",
     "@types/ws": "^8.18.1",
@@ -132,7 +132,7 @@
     "globals": "^17.4.0",
     "lighthouse": "^13.0.3",
     "prettier": "^3.8.1",
-    "tailwindcss": "4.1.12",
+    "tailwindcss": "4.2.2",
     "terser": "^5.46.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.57.1",
