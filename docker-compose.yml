@@ -1,0 +1,100 @@
+# YYC³ Family-AI Docker Compose 配置
+# 用于企业私有部署
+
+version: '3.8'
+
+services:
+  # ==========================================
+  # YYC³ Family-AI 主服务
+  # ==========================================
+  yyc3-family-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    image: yyc3-family-ai:latest
+    container_name: yyc3-family-ai
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3200}:80"
+    environment:
+      - TZ=${TZ:-Asia/Shanghai}
+    networks:
+      - yyc3-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "com.yyccube.service=yyc3-family-ai"
+      - "com.yyccube.version=1.0.0"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================
+  # 可选: 反向代理 (Traefik)
+  # ==========================================
+  # traefik:
+  #   image: traefik:v2.10
+  #   container_name: yyc3-traefik
+  #   restart: unless-stopped
+  #   command:
+  #     - "--api.insecure=true"
+  #     - "--providers.docker=true"
+  #     - "--providers.docker.exposedbydefault=false"
+  #     - "--entrypoints.web.address=:80"
+  #     - "--entrypoints.websecure.address=:443"
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #     - "8080:8080"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - ./docker/traefik:/etc/traefik
+  #   networks:
+  #     - yyc3-network
+
+  # ==========================================
+  # 可选: 监控服务 (Prometheus)
+  # ==========================================
+  # prometheus:
+  #   image: prom/prometheus:v2.45.0
+  #   container_name: yyc3-prometheus
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #     - prometheus-data:/prometheus
+  #   networks:
+  #     - yyc3-network
+
+  # ==========================================
+  # 可选: 日志收集 (Loki)
+  # ==========================================
+  # loki:
+  #   image: grafana/loki:2.8.0
+  #   container_name: yyc3-loki
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3100:3100"
+  #   volumes:
+  #     - ./docker/loki/loki-config.yaml:/etc/loki/local-config.yaml
+  #     - loki-data:/loki
+  #   networks:
+  #     - yyc3-network
+
+networks:
+  yyc3-network:
+    driver: bridge
+    name: yyc3-network
+
+# volumes:
+#   prometheus-data:
+#   loki-data:

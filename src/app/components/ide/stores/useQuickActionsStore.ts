@@ -1,15 +1,15 @@
 /**
- * @file stores/useQuickActionsStore.ts
- * @description 智能一键操作 Zustand Store — 管理代码/文档/文本操作、剪贴板历史、
+ * @file: stores/useQuickActionsStore.ts
+ * @description: 智能一键操作 Zustand Store — 管理代码/文档/文本操作、剪贴板历史、
  *              上下文感知操作、AI 辅助操作，对齐 YYC3-P1-AI-一键操作交互.md 规范
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,quick-actions,clipboard,code-operations
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,quick-actions,clipboard,code-operations
  */
 
 import { create } from "zustand";

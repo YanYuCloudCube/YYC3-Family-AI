@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file DataImporter.ts
- * @description 数据导入服务 - 从 JSON 文件导入数据到 localStorage 和 IndexedDB
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags storage,import,restore,utility
+ * @file: DataImporter.ts
+ * @description: 数据导入服务 - 从 JSON 文件导入数据到 localStorage 和 IndexedDB
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: storage,import,restore,utility
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";

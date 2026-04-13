@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file SnapshotFlow.integration.test.ts
- * @description 快照恢复流程集成测试 - 测试快照的创建、恢复、比较、删除和视图同步
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status test
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,integration,snapshot-flow,restore,compare
+ * @file: SnapshotFlow.integration.test.ts
+ * @description: 快照恢复流程集成测试 - 测试快照的创建、恢复、比较、删除和视图同步
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: test
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,integration,snapshot-flow,restore,compare
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";

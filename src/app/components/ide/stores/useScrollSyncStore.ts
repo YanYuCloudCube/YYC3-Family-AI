@@ -1,15 +1,15 @@
 /**
- * @file stores/useScrollSyncStore.ts
- * @description 编辑器与预览面板之间的滚动位置同步 Zustand Store，
+ * @file: stores/useScrollSyncStore.ts
+ * @description: 编辑器与预览面板之间的滚动位置同步 Zustand Store，
  *              通过 pub/sub 模式实现双向滚动联动，内含 300ms 防循环保护
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,scroll-sync,zustand,preview,editor
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,scroll-sync,zustand,preview,editor
  */
 
 import { create } from "zustand";

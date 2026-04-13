@@ -1,14 +1,14 @@
 /**
- * @file llm/PerformanceMonitor.ts
- * @description 性能监控系统 - 监控渲染、内存、CPU、网络请求
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags performance,monitor,metrics
+ * @file: llm/PerformanceMonitor.ts
+ * @description: 性能监控系统 - 监控渲染、内存、CPU、网络请求
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: performance,monitor,metrics
  */
 
 import {

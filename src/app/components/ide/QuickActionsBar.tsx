@@ -1,15 +1,15 @@
 /**
- * @file QuickActionsBar.tsx
- * @description 智能一键操作浮动工具栏 — 代码选中后弹出，提供复制/重构/优化/解释等一键操作，
+ * @file: QuickActionsBar.tsx
+ * @description: 智能一键操作浮动工具栏 — 代码选中后弹出，提供复制/重构/优化/解释等一键操作，
  *              集成剪贴板历史、AI 辅助操作、上下文感知，对齐 P1-AI-一键操作交互.md 规范
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags quick-actions,toolbar,clipboard,ai,code-operations
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: quick-actions,toolbar,clipboard,ai,code-operations
  */
 
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";

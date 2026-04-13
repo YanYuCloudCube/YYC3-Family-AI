@@ -1,15 +1,15 @@
 /**
- * @file APIKeySettingsUI.tsx
- * @description API Key 管理设置 UI，支持多 Provider API Key 配置、
+ * @file: APIKeySettingsUI.tsx
+ * @description: API Key 管理设置 UI，支持多 Provider API Key 配置、
  *              安全存储、可视化显隐、连通性测试、使用统计
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags api-key,settings,security,providers
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: api-key,settings,security,providers
  */
 
 import React, { useState, useRef, useEffect, useMemo } from "react";

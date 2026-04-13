@@ -1,17 +1,17 @@
 // @ts-nocheck
 /**
- * @file ErrorReportingService.ts
- * @description 统一错误上报服务 — 提供 Sentry 风格的错误采集、去重、批量上报、
+ * @file: ErrorReportingService.ts
+ * @description: 统一错误上报服务 — 提供 Sentry 风格的错误采集、去重、批量上报、
  *              本地持久化回放能力。当前为本地模式（LocalTransport），
  *              接入真实 Sentry DSN 后只需替换 transport 即可无缝切换。
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags error-reporting,sentry,monitoring,observability
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: error-reporting,sentry,monitoring,observability
  */
 
 // ── 类型定义 ──────────────────────────────────────────────

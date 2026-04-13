@@ -1,14 +1,14 @@
 // @ts-nocheck
 /**
- * @file P0-E2E.test.ts
- * @description P0核心功能端到端测试 - 完整工作流测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags e2e,test,p0,preview,snapshot,validation,prompt-builder
+ * @file: P0-E2E.test.ts
+ * @description: P0核心功能端到端测试 - 完整工作流测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: e2e,test,p0,preview,snapshot,validation,prompt-builder
  */
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";

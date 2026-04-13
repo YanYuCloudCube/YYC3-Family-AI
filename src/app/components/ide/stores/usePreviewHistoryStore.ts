@@ -1,14 +1,14 @@
 /**
- * @file stores/usePreviewHistoryStore.ts
- * @description 预览历史 Store — 对齐 P2-预览-预览历史.md，管理预览快照、版本对比、回滚
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,preview,history,snapshots,rollback
+ * @file: stores/usePreviewHistoryStore.ts
+ * @description: 预览历史 Store — 对齐 P2-预览-预览历史.md，管理预览快照、版本对比、回滚
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,preview,history,snapshots,rollback
  */
 
 // ================================================================

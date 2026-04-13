@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file CryptoService.test.ts
- * @description 加密服务测试 - 覆盖 AES-GCM 加解密、PBKDF2 密钥派生、数据脱敏等核心功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,crypto,encryption,security
+ * @file: CryptoService.test.ts
+ * @description: 加密服务测试 - 覆盖 AES-GCM 加解密、PBKDF2 密钥派生、数据脱敏等核心功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,crypto,encryption,security
  */
 
 import { describe, it, expect } from "vitest";

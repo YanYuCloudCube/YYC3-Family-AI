@@ -1,14 +1,14 @@
 /**
- * @file __tests__/ErrorBoundary.test.tsx
- * @description 增强版 ErrorBoundary 组件测试 - 覆盖错误分类、自动恢复、重试机制
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,error-boundary,recovery
+ * @file: __tests__/ErrorBoundary.test.tsx
+ * @description: 增强版 ErrorBoundary 组件测试 - 覆盖错误分类、自动恢复、重试机制
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,error-boundary,recovery
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";

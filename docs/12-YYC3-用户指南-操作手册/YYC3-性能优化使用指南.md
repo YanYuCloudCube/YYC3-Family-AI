@@ -514,4 +514,4 @@ setInterval(() => {
 ---
 
 **维护者**: YYC3 团队  
-**反馈渠道**: [GitHub Issues](https://github.com/YYC-Cube/YYC3-Family-AI/issues)
+**反馈渠道**: [GitHub Issues](https://github.com/YanYuCloudCube/YYC3-Family-AI/issues)

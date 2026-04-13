@@ -1,15 +1,15 @@
 /**
- * @file ChatHistoryStore.ts
- * @description AI 对话历史持久化模块，基于 localStorage 管理会话历史，
+ * @file: ChatHistoryStore.ts
+ * @description: AI 对话历史持久化模块，基于 localStorage 管理会话历史，
  *              支持多会话切换、最大条数限制、会话元数据管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags chat,history,persistence,localStorage,sessions
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: chat,history,persistence,localStorage,sessions
  */
 
 // ── AI 对话历史持久化 (localStorage) ──

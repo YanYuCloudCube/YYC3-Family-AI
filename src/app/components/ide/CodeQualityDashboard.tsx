@@ -1,15 +1,15 @@
 /**
- * @file CodeQualityDashboard.tsx
- * @description 统一代码质量仪表盘，聚合 ErrorAnalyzer + PerformanceOptimizer + SecurityScanner，
+ * @file: CodeQualityDashboard.tsx
+ * @description: 统一代码质量仪表盘，聚合 ErrorAnalyzer + PerformanceOptimizer + SecurityScanner，
  *              提供全局评分、趋势折线图、类别分布、雷达图、快捷入口
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags dashboard,quality,metrics,charts,analysis
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: dashboard,quality,metrics,charts,analysis
  */
 
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
@@ -235,7 +235,7 @@ export default function CodeQualityDashboard({ nodeId }: { nodeId: string }) {
   useEffect(() => {
     timer.current = setTimeout(runFullAnalysis, 600);
     return () => clearTimeout(timer.current);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);  
 
   // Navigate to sub-panel
   const openPanel = useCallback(

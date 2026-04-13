@@ -1,13 +1,13 @@
 /**
- * @file LLMService.test.ts
- * @description LLM 服务测试 - 测试 LLM API 调用、流式响应和错误处理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: LLMService.test.ts
+ * @description: LLM 服务测试 - 测试 LLM API 调用、流式响应和错误处理
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck
@@ -93,7 +93,7 @@ describe("API Key 管理", () => {
 // ================================================================
 
 describe("PROVIDER_CONFIGS 验证", () => {
-  it("包含所有 6 个 Provider", () => {
+  it("包含所有 7 个 Provider", () => {
     const ids = PROVIDER_CONFIGS.map((p) => p.id);
     expect(ids).toContain("ollama");
     expect(ids).toContain("openai");
@@ -101,7 +101,7 @@ describe("PROVIDER_CONFIGS 验证", () => {
     expect(ids).toContain("dashscope");
     expect(ids).toContain("deepseek");
     expect(ids).toContain("custom");
-    expect(PROVIDER_CONFIGS).toHaveLength(6);
+    expect(PROVIDER_CONFIGS).toHaveLength(7);
   });
 
   it("Ollama 为本地 provider、无需 auth", () => {

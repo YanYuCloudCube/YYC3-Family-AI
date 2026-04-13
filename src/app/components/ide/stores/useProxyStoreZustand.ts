@@ -1,15 +1,15 @@
 /**
- * @file stores/useProxyStoreZustand.ts
- * @description Zustand + Immer 代理配置 Store，管理 CORS 代理设置、
+ * @file: stores/useProxyStoreZustand.ts
+ * @description: Zustand + Immer 代理配置 Store，管理 CORS 代理设置、
  *              代理模式切换、自定义代理 URL
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,immer,proxy,cors
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,immer,proxy,cors
  */
 
 // ================================================================

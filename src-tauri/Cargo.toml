@@ -4,7 +4,7 @@ version = "0.0.1"
 description = "YYC3 Family AI - 智能编程助手"
 authors = ["YanYuCloudCube Team <admin@0379.email>"]
 license = "MIT"
-repository = "https://github.com/YYC-Cube/yyc3-family-ai"
+repository = "https://github.com/YanYuCloudCube/yyc3-family-ai"
 edition = "2021"
 
 [build-dependencies]

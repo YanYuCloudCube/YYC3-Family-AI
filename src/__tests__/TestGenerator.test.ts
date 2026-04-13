@@ -1,13 +1,13 @@
 /**
- * @file TestGenerator.test.ts
- * @description 测试生成器 - 自动化测试用例生成工具
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: TestGenerator.test.ts
+ * @description: 测试生成器 - 自动化测试用例生成工具
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck

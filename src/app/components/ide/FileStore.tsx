@@ -1,15 +1,15 @@
 /**
- * @file FileStore.tsx
- * @description 文件系统 Context Provider，管理文件内容、文件树、标签页、
+ * @file: FileStore.tsx
+ * @description: 文件系统 Context Provider，管理文件内容、文件树、标签页、
  *              Git 状态模拟、格式化、IndexedDB 持久化、项目 ID 路由
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.5.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags files,context,provider,indexeddb,git,tabs
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.5.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: files,context,provider,indexeddb,git,tabs
  */
 
 import React, {

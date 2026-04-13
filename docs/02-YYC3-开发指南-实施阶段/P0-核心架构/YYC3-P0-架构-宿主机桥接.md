@@ -1,18 +1,18 @@
 ---
-@file: YYC3-P0-架构-宿主机桥接.md
-@description: P0-核心架构 - 宿主机桥接（Tauri）提示词
-@author: YanYuCloudCube Team <admin@0379.email>
-@version: v1.0.0
-@created: 2026-03-14
-@updated: 2026-03-14
-@status: stable
-@tags: p0,architecture,host-bridge,tauri
-@category: prompt-system
-@language: zh-CN
-@design_type: prompt-engineering
-@review_status: approved
-@audience: developers,ai-engineers
-@complexity: advanced
+file: YYC3-P0-架构-宿主机桥接.md
+description: P0-核心架构 - 宿主机桥接（Tauri）提示词
+author: YanYuCloudCube Team <admin0379.email>
+version: v1.0.0
+created: 2026-03-14
+updated: 2026-03-14
+status: stable
+tags: p0,architecture,host-bridge,tauri
+category: prompt-system
+language: zh-CN
+design_type: prompt-engineering
+review_status: approved
+audience: developers,ai-engineers
+complexity: advanced
 ---
 
 > ***YanYuCloudCube***
@@ -924,7 +924,7 @@ version = "1.0.0"
 description = "{{PROJECT_NAME}}"
 authors = ["{{TEAM_NAME}}"]
 license = "{{LICENSE}}"
-repository = "https://github.com/YYC-Cube/{{PROJECT_SLUG}}"
+repository = "https://github.com/YanYuCloudCube/{{PROJECT_SLUG}}"
 edition = "2021"
 
 [dependencies]

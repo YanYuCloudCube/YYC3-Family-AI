@@ -1,15 +1,15 @@
 /**
- * @file RightPanel.tsx
- * @description 文件代码编辑面板，集成 Monaco Editor、语法高亮、
+ * @file: RightPanel.tsx
+ * @description: 文件代码编辑面板，集成 Monaco Editor、语法高亮、
  *              代码复制/格式化、类型信息展示、多标签页
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.3.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags editor,code,monaco,formatting,tabs
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.3.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: editor,code,monaco,formatting,tabs
  */
 
 import {

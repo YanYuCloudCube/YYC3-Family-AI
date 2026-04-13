@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file CodeValidator.integration.test.ts
- * @description CodeValidator 集成测试 - 测试从 LLM 响应到代码验证的完整流程
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status test
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,integration,code-validator,pipeline
+ * @file: CodeValidator.integration.test.ts
+ * @description: CodeValidator 集成测试 - 测试从 LLM 响应到代码验证的完整流程
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: test
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,integration,code-validator,pipeline
  */
 
 import { describe, it, expect, beforeEach } from "vitest";

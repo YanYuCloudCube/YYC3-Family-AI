@@ -1,15 +1,15 @@
 /**
- * @file stores/index.ts
- * @description Zustand Store Hub — 统一导出所有 Zustand stores，
+ * @file: stores/index.ts
+ * @description: Zustand Store Hub — 统一导出所有 Zustand stores，
  *              包括文件管理、模型注册、代理、AI 修复、预览、滚动同步等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.3.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,hub,exports,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.3.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,hub,exports,wave3
  */
 
 // ================================================================

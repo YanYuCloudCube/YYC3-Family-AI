@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file PluginAPIManager.ts
- * @description 插件API管理器 - 提供核心API、UI扩展API、数据访问API、事件系统
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,api,editor,ui,events,storage
+ * @file: PluginAPIManager.ts
+ * @description: 插件API管理器 - 提供核心API、UI扩展API、数据访问API、事件系统
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,api,editor,ui,events,storage
  */
 
 import type {

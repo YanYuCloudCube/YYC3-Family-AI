@@ -1,13 +1,13 @@
 /**
- * @file setup.ts
- * @description 测试环境配置 - Vitest 测试环境初始化和全局设置
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: setup.ts
+ * @description: 测试环境配置 - Vitest 测试环境初始化和全局设置
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 import "@testing-library/jest-dom/vitest";

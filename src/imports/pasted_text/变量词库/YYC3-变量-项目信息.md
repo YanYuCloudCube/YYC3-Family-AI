@@ -20,4 +20,4 @@
 
 完整内容含 6 大分类 30+ 变量、使用方法（sed/envsubst/dotenv）、JSON 模板、验证脚本。
 
-原始文件: https://github.com/YYC-Cube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-项目信息.md
+原始文件: https://github.com/YanYuCloudCube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-项目信息.md

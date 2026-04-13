@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file left-panel/ConnectivityIndicator.tsx
- * @description 模型连通性指示器子组件 — 实时 Ping 测试、延迟显示、
+ * @file: left-panel/ConnectivityIndicator.tsx
+ * @description: 模型连通性指示器子组件 — 实时 Ping 测试、延迟显示、
  *              连接详情面板、当前文件路径指示
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags left-panel,connectivity,ping,status
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: left-panel,connectivity,ping,status
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";

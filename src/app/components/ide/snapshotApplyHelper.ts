@@ -1,14 +1,14 @@
 /**
- * @file snapshotApplyHelper.ts
- * @description 快照应用辅助函数，负责将快照恢复到文件系统和触发预览更新
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags snapshot,apply,helper,restore
+ * @file: snapshotApplyHelper.ts
+ * @description: 快照应用辅助函数，负责将快照恢复到文件系统和触发预览更新
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: snapshot,apply,helper,restore
  */
 
 // ================================================================

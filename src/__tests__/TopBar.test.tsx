@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/TopBar.test.tsx
- * @description P0 组件测试 — TopBar 顶部导航栏核心交互：
+ * @file: __tests__/TopBar.test.tsx
+ * @description: P0 组件测试 — TopBar 顶部导航栏核心交互：
  *              Logo 渲染、项目标题编辑、工具栏按钮、返回导航、导出
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,component,top-bar,navigation,toolbar
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,component,top-bar,navigation,toolbar
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";

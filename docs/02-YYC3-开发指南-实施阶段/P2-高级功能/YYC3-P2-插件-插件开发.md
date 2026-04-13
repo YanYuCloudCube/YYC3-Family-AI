@@ -1003,7 +1003,7 @@ MIT License
 #### 报告问题
 
 在 GitHub 上提交 Issue:
-https://github.com/YYC-Cube/yyc3-ai-code-designer/issues
+https://github.com/YanYuCloudCube/yyc3-ai-code-designer/issues
 
 ---
 

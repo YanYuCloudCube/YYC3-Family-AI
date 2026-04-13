@@ -1,15 +1,15 @@
 /**
- * @file TabGroupBar.tsx
- * @description 面板标签页分组栏，展示面板分组、支持折叠/展开、
+ * @file: TabGroupBar.tsx
+ * @description: 面板标签页分组栏，展示面板分组、支持折叠/展开、
  *              颜色标识、快速切换、分组管理，以弹出面板形式集成到 ViewSwitcher
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags tab-group,panels,navigation,organization,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: tab-group,panels,navigation,organization,wave3
  */
 
 import { useState, useCallback, useRef } from "react";
@@ -53,6 +53,7 @@ const PANEL_TITLES: Record<PanelId, string> = {
   "document-editor": "文档编辑",
   taskboard: "任务看板",
   "multi-instance": "多实例",
+  "multi-agent": "多智能体",
 };
 
 // ── Color options ──

@@ -1,0 +1,346 @@
+/**
+ * @file: xterm.css
+ * @description: xterm.js 终端组件专用样式
+ *              确保正确的渲染、字体、滚动条和交互效果
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-04
+ * @updated: 2026-04-09
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: xterm,css,styling,terminal
+ */
+
+/* ═══════════════════════════════════════════
+   YYC³ Terminal Styles for xterm.js
+   ═══════════════════════════════════════════ */
+
+/* 基础容器样式 */
+.xterm-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #1e1e1e;
+}
+
+.xterm-wrapper .xterm {
+  height: 100% !important;
+  padding: 4px;
+}
+
+.xterm-wrapper .xterm-viewport {
+  background-color: transparent !important;
+}
+
+.xterm-wrapper .xterm-screen {
+  height: calc(100% - 8px) !important; /* 减去 padding */
+}
+
+/* 字体渲染优化 */
+.xterm-wrapper {
+  --xterm-font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
+  --xterm-font-size: 13px;
+  --xterm-line-height: 1.2;
+  --xterm-letter-spacing: 0px;
+  
+  font-family: var(--xterm-font-family);
+  font-size: var(--xterm-font-size);
+  line-height: var(--xterm-line-height);
+  letter-spacing: var(--xterm-letter-spacing);
+  
+  /* 文本渲染优化 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "calt" 1, "zero" 1;
+}
+
+/* 光标样式 */
+.xterm-wrapper .xterm-cursor {
+  animation: xterm-cursor-blink 1s step-end infinite;
+}
+
+.xterm-wrapper .xterm-cursor.blink-block {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.xterm-wrapper .xterm-cursor.blink-bar {
+  border-left: 2px solid #ffffff !important;
+  width: 0 !important;
+}
+
+.xterm-wrapper .xterm-cursor.blink-underline {
+  border-bottom: 2px solid #ffffff !important;
+  height: auto !important;
+}
+
+@keyframes xterm-cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 选择文本样式 */
+.xterm-wrapper .xterm-selection {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.xterm-wrapper .xterm-selection div {
+  position: absolute;
+  background-color: rgba(38, 79, 120, 0.5); /* VS Code selection color */
+}
+
+/* 滚动条样式 (自定义) */
+.xterm-wrapper .xterm-viewport::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.xterm-wrapper .xterm-viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.xterm-wrapper .xterm-viewport::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.xterm-wrapper .xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.xterm-wrapper .xterm-viewport::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox 滚动条 */
+.xterm-wrapper .xterm-viewport {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+/* 链接识别样式 (WebLinksAddon) */
+.xterm-wrapper .xterm-link {
+  text-decoration: underline;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.xterm-wrapper .xterm-link:hover {
+  background-color: rgba(66, 153, 225, 0.3);
+  color: #93c5fd;
+}
+
+/* 搜索框样式 (SearchAddon) */
+.xterm-wrapper .xterm-search-container {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background-color: rgba(30, 30, 46, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.xterm-wrapper .xterm-search-input {
+  padding: 4px 8px;
+  background-color: rgba(45, 45, 94, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #d4d4d4;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  min-width: 200px;
+}
+
+.xterm-wrapper .xterm-search-input:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+}
+
+.xterm-wrapper .xterm-search-button {
+  padding: 4px 8px;
+  background-color: #2d2d5e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #d4d4d4;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s ease;
+}
+
+.xterm-wrapper .xterm-search-button:hover {
+  background-color: #3d3d7e;
+  color: #fff;
+}
+
+/* WebGL 渲染器支持 (可选) */
+.xterm-wrapper .xterm-text-layer canvas,
+.xterm-wrapper .xterm-decoration-layer canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* 连接状态覆盖层 */
+.xterm-connection-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  pointer-events: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.xterm-connection-overlay > * {
+  pointer-events: auto;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 加载动画 */
+.xterm-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #fbbf24;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 终端尺寸调整手柄 */
+.xterm-resize-handle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  cursor: row-resize;
+  background: transparent;
+  transition: background-color 0.15s ease;
+  z-index: 50;
+}
+
+.xterm-resize-handle:hover {
+  background-color: rgba(34, 211, 238, 0.4);
+}
+
+.xterm-resize-handle:active {
+  background-color: rgba(34, 211, 238, 0.7);
+}
+
+/* 全屏模式 */
+.xterm-fullscreen {
+  position: fixed !important;
+  top: 56px; /* IDE header 高度 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: #1a1a2e;
+  border: none;
+  border-radius: 0;
+}
+
+.xterm-fullscreen .xterm-resize-handle {
+  display: none;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .xterm-wrapper {
+    --xterm-font-size: 11px;
+    --xterm-line-height: 1.3;
+    padding: 2px;
+  }
+
+  .xterm-search-container {
+    top: 4px;
+    right: 4px;
+    padding: 4px 8px;
+  }
+
+  .xterm-search-input {
+    min-width: 150px;
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .xterm-wrapper {
+    --xterm-font-size: 14px;
+    --xterm-line-height: 1.25;
+    padding: 6px;
+  }
+}
+
+/* 打印样式 (可选) */
+@media print {
+  .xterm-wrapper {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .xterm-wrapper .xterm-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .xterm-resize-handle {
+    display: none;
+  }
+}
+
+/* 无障碍访问 (Accessibility) */
+@media (prefers-reduced-motion: reduce) {
+  .xterm-wrapper .xterm-cursor {
+    animation: none;
+    opacity: 1;
+  }
+
+  .xterm-connection-overlay {
+    animation: none;
+  }
+
+  .xterm-loading-spinner {
+    animation: none;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .xterm-wrapper .xterm-selection div {
+    background-color: rgba(0, 122, 204, 0.8);
+  }
+
+  .xterm-wrapper .xterm-link {
+    text-decoration-style: double;
+    text-decoration-thickness: 2px;
+  }
+}

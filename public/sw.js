@@ -9,7 +9,10 @@ const DYNAMIC_CACHE_NAME = 'yyc3-ai-dynamic-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
+  '/offline.html',
   '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
   '/Web App/favicon-32.png',
   '/Web App/favicon-16.png',
   '/Web App/apple-touch-icon.png',
@@ -155,7 +158,7 @@ async function networkFirst(request) {
     
     // Return offline fallback for navigation requests
     if (request.mode === 'navigate') {
-      return caches.match('/');
+      return caches.match('/offline.html');
     }
     
     throw error;
@@ -195,6 +198,263 @@ self.addEventListener('message', (event) => {
       })
     );
   }
+
+  if (event.data && event.data.type === 'CACHE_URLS') {
+    event.waitUntil(
+      caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+        return cache.addAll(event.data.urls);
+      })
+    );
+  }
+
+  if (event.data && event.data.type === 'GET_CACHE_STATUS') {
+    event.waitUntil(
+      caches.keys().then(async (cacheNames) => {
+        const totalSize = await Promise.all(
+          cacheNames.map(async (name) => {
+            const cache = await caches.open(name);
+            const keys = await cache.keys();
+            return keys.length;
+          })
+        );
+        const client = await self.clients.get(event.source.id);
+        client.postMessage({
+          type: 'CACHE_STATUS',
+          payload: {
+            caches: cacheNames.length,
+            totalEntries: totalSize.reduce((a, b) => a + b, 0),
+          },
+        });
+      })
+    );
+  }
 });
 
-console.log('[SW] Service Worker loaded');
+// ── Background Sync ──
+
+self.addEventListener('sync', (event) => {
+  console.log('[SW] Background sync event:', event.tag);
+
+  if (event.tag === 'sync-files') {
+    event.waitUntil(syncFiles());
+  }
+
+  if (event.tag === 'sync-settings') {
+    event.waitUntil(syncSettings());
+  }
+
+  if (event.tag === 'sync-memories') {
+    event.waitUntil(syncMemories());
+  }
+});
+
+async function syncFiles() {
+  try {
+    const pendingSyncs = await getPendingSyncs('files');
+    
+    for (const sync of pendingSyncs) {
+      try {
+        const response = await fetch('/api/sync/files', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sync.data),
+        });
+
+        if (response.ok) {
+          await removePendingSync('files', sync.id);
+        }
+      } catch (error) {
+        console.error('[SW] Failed to sync file:', sync.id, error);
+      }
+    }
+
+    await notifyClients({ type: 'SYNC_COMPLETE', tag: 'files' });
+  } catch (error) {
+    console.error('[SW] Background sync failed:', error);
+  }
+}
+
+async function syncSettings() {
+  try {
+    const pendingSyncs = await getPendingSyncs('settings');
+    
+    for (const sync of pendingSyncs) {
+      try {
+        const response = await fetch('/api/sync/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sync.data),
+        });
+
+        if (response.ok) {
+          await removePendingSync('settings', sync.id);
+        }
+      } catch (error) {
+        console.error('[SW] Failed to sync settings:', sync.id, error);
+      }
+    }
+
+    await notifyClients({ type: 'SYNC_COMPLETE', tag: 'settings' });
+  } catch (error) {
+    console.error('[SW] Background sync failed:', error);
+  }
+}
+
+async function syncMemories() {
+  try {
+    const pendingSyncs = await getPendingSyncs('memories');
+    
+    for (const sync of pendingSyncs) {
+      try {
+        const response = await fetch('/api/sync/memories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sync.data),
+        });
+
+        if (response.ok) {
+          await removePendingSync('memories', sync.id);
+        }
+      } catch (error) {
+        console.error('[SW] Failed to sync memories:', sync.id, error);
+      }
+    }
+
+    await notifyClients({ type: 'SYNC_COMPLETE', tag: 'memories' });
+  } catch (error) {
+    console.error('[SW] Background sync failed:', error);
+  }
+}
+
+// ── IndexedDB Helpers for Background Sync ──
+
+async function getPendingSyncs(storeName) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('yyc3-pending-sync', 1);
+    
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        resolve([]);
+        return;
+      }
+      const tx = db.transaction(storeName, 'readonly');
+      const store = tx.objectStore(storeName);
+      const getAll = store.getAll();
+      getAll.onsuccess = () => resolve(getAll.result);
+      getAll.onerror = () => reject(getAll.error);
+    };
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { keyPath: 'id' });
+      }
+    };
+  });
+}
+
+async function removePendingSync(storeName, id) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('yyc3-pending-sync', 1);
+    
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const db = request.result;
+      const tx = db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
+      store.delete(id);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    };
+  });
+}
+
+async function notifyClients(message) {
+  const clients = await self.clients.matchAll();
+  clients.forEach((client) => {
+    client.postMessage(message);
+  });
+}
+
+// ── Push Notifications ──
+
+self.addEventListener('push', (event) => {
+  console.log('[SW] Push received:', event);
+
+  let data = { title: 'YYC³ Family AI', body: '您有新消息', icon: '/icons/icon-192x192.png' };
+
+  if (event.data) {
+    try {
+      data = { ...data, ...event.data.json() };
+    } catch (e) {
+      data.body = event.data.text();
+    }
+  }
+
+  const options = {
+    body: data.body,
+    icon: data.icon || '/icons/icon-192x192.png',
+    badge: '/icons/badge-72x72.png',
+    vibrate: [100, 50, 100],
+    data: {
+      url: data.url || '/',
+      timestamp: Date.now(),
+    },
+    actions: data.actions || [
+      { action: 'open', title: '打开' },
+      { action: 'close', title: '关闭' },
+    ],
+    tag: data.tag || 'default',
+    renotify: true,
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  console.log('[SW] Notification clicked:', event);
+
+  event.notification.close();
+
+  if (event.action === 'close') {
+    return;
+  }
+
+  const urlToOpen = event.notification.data?.url || '/';
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+      for (const client of clients) {
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow(urlToOpen);
+    })
+  );
+});
+
+self.addEventListener('notificationclose', (event) => {
+  console.log('[SW] Notification closed:', event);
+});
+
+// ── Periodic Background Sync ──
+
+self.addEventListener('periodicsync', (event) => {
+  console.log('[SW] Periodic sync event:', event.tag);
+
+  if (event.tag === 'sync-all') {
+    event.waitUntil(
+      Promise.all([
+        syncFiles(),
+        syncSettings(),
+        syncMemories(),
+      ])
+    );
+  }
+});
+
+console.log('[SW] Service Worker loaded - v2.0.0 with Background Sync & Push Notifications');

@@ -1,15 +1,15 @@
 /**
- * @file stores/useSettingsStore.ts
- * @description 全局设置状态管理 Store，基于 Zustand + persist 中间件，
+ * @file: stores/useSettingsStore.ts
+ * @description: 全局设置状态管理 Store，基于 Zustand + persist 中间件，
  *              覆盖账号、通用、智能体、MCP、模型、上下文、对话流、规则、技能等模块
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,zustand,persist,state-management
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,zustand,persist,state-management
  */
 
 import { create } from "zustand";

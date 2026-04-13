@@ -1,14 +1,14 @@
 /**
- * @file PreviewErrorCapturer.ts
- * @description 预览窗口错误捕获系统 - 捕获运行时错误、Promise异常、资源加载错误、控制台错误
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags error,capture,preview,runtime,monitoring
+ * @file: PreviewErrorCapturer.ts
+ * @description: 预览窗口错误捕获系统 - 捕获运行时错误、Promise异常、资源加载错误、控制台错误
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: error,capture,preview,runtime,monitoring
  */
 
 import { generateId } from '../utils/generateId';

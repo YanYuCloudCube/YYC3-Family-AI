@@ -1,21 +1,21 @@
 /**
- * @file PreviewModeController.ts
- * @description 预览模式控制器，管理实时/手动/延迟三种预览模式，控制预览更新策略
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags preview,controller,mode,realtime,manual,delayed
+ * @file: PreviewModeController.ts
+ * @description: 预览模式控制器，管理实时/手动/延迟三种预览模式，控制预览更新策略
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: preview,controller,mode,realtime,manual,delayed
  */
 
 // ================================================================
 // PreviewModeController — Preview mode control strategy
 // ================================================================
 
-import type { PreviewMode } from "./stores/usePreviewStore";
+import type { PreviewMode } from "./types/previewTypes";
 
 /**
  * 预览模式控制器

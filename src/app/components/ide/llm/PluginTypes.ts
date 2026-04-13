@@ -1,14 +1,14 @@
 /**
- * @file PluginTypes.ts
- * @description 插件系统类型定义 - 定义插件接口、扩展点、生命周期、依赖管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,types,extension,lifecycle,dependency
+ * @file: PluginTypes.ts
+ * @description: 插件系统类型定义 - 定义插件接口、扩展点、生命周期、依赖管理
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,types,extension,lifecycle,dependency
  */
 
 // ================================================================

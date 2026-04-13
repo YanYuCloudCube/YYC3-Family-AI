@@ -1,15 +1,15 @@
 /**
- * @file ThemeStore.tsx
- * @description 全局主题 Context Provider，管理深海军蓝/赛博朋克/自定义主题切换，
+ * @file: ThemeStore.tsx
+ * @description: 全局主题 Context Provider，管理深海军蓝/赛博朋克/自定义主题切换，
  *              集成 CustomThemeStore 动态主题引擎
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.2.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,context,provider,dark-mode,customization
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.2.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,context,provider,dark-mode,customization
  */
 
 import React, {

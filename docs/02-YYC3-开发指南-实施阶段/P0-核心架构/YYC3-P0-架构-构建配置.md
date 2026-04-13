@@ -240,7 +240,7 @@ version = "{{PROJECT_VERSION}}"
 description = "{{PROJECT_DESCRIPTION}}"
 authors = ["{{TEAM_NAME}}"]
 license = "MIT"
-repository = "https://github.com/YYC-Cube/{{PROJECT_SLUG}}"
+repository = "https://github.com/YanYuCloudCube/{{PROJECT_SLUG}}"
 edition = "2021"
 
 [build-dependencies]
@@ -364,7 +364,7 @@ module.exports = {
 
 - **维护团队**: YanYuCloudCube Team
 - **联系邮箱**: admin@0379.email
-- **项目地址**: https://github.com/YYC-Cube/
+- **项目地址**: https://github.com/YanYuCloudCube/
 
 ---
 

@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file llm/__tests__/Stage3Features.test.ts
- * @description 任务3.3和3.4完整测试套件
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,test,code-validation,message-management
+ * @file: llm/__tests__/Stage3Features.test.ts
+ * @description: 任务3.3和3.4完整测试套件
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,test,code-validation,message-management
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';

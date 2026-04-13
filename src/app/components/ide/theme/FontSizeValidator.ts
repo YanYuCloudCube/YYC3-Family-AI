@@ -1,14 +1,14 @@
 // @ts-nocheck
 /**
- * @file FontSizeValidator.ts
- * @description 字体大小验证器 - 验证字体大小的范围、格式等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,font-size,validator
+ * @file: FontSizeValidator.ts
+ * @description: 字体大小验证器 - 验证字体大小的范围、格式等
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,font-size,validator
  */
 
 // ================================================================

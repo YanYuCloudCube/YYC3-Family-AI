@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file AIPipelineIntegration.test.ts
- * @description AI Pipeline 集成测试——
+ * @file: AIPipelineIntegration.test.ts
+ * @description: AI Pipeline 集成测试——
  *              完整流程、多步骤代码生成、错误处理、组件集成
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,ai,pipeline,integration
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,ai,pipeline,integration
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";

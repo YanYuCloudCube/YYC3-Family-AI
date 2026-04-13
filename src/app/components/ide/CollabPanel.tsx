@@ -1,15 +1,15 @@
 /**
- * @file CollabPanel.tsx
- * @description 实时协同编辑面板，展示在线用户、编辑状态、权限管理、
+ * @file: CollabPanel.tsx
+ * @description: 实时协同编辑面板，展示在线用户、编辑状态、权限管理、
  *              协同会话信息及通信状态
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags collaboration,realtime,users,panel
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: collaboration,realtime,users,panel
  */
 
 import { useState } from "react";

@@ -1,14 +1,14 @@
 /**
- * @file MonacoWorkerManager.ts
- * @description Monaco Editor Worker 按需加载管理器
+ * @file: MonacoWorkerManager.ts
+ * @description: Monaco Editor Worker 按需加载管理器
  *              仅在需要时加载对应的语言Worker，减少首屏加载资源
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags monaco,worker,lazy-load,optimization
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: monaco,worker,lazy-load,optimization
  */
 
 /**

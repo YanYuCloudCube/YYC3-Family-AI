@@ -1,14 +1,14 @@
 /**
- * @file adapters/IndexedDBAdapter.ts
- * @description IndexedDB 文件系统持久化层，使用 idb 封装提供 offline-first 文件存储
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags adapters,indexeddb,persistence,offline
+ * @file: adapters/IndexedDBAdapter.ts
+ * @description: IndexedDB 文件系统持久化层，使用 idb 封装提供 offline-first 文件存储
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: adapters,indexeddb,persistence,offline
  */
 
 import { openDB, type IDBPDatabase } from "idb";
@@ -52,7 +52,7 @@ export interface StoredSnapshot {
 
 let dbPromise: Promise<IDBPDatabase> | null = null;
 
-function getDB(): Promise<IDBPDatabase> {
+export function getDB(): Promise<IDBPDatabase> {
   if (!dbPromise) {
     dbPromise = openDB(DB_NAME, DB_VERSION, {
       upgrade(db) {

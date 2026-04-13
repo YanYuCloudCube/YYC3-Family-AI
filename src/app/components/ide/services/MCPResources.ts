@@ -1,14 +1,14 @@
 /**
- * @file MCPResources.ts
- * @description MCP 资源管理 - 管理 MCP 资源读取和缓存
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags mcp,resources,cache
+ * @file: MCPResources.ts
+ * @description: MCP 资源管理 - 管理 MCP 资源读取和缓存
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: mcp,resources,cache
  */
 
 import type { MCPClient, MCPResource, MCPResourceContent } from "./MCPClient";

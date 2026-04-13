@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/LeftPanel.test.tsx
- * @description P0 组件测试 — LeftPanel AI 对话面板核心交互：
+ * @file: __tests__/LeftPanel.test.tsx
+ * @description: P0 组件测试 — LeftPanel AI 对话面板核心交互：
  *              消息渲染、发送流程、模型切换、空状态、会话管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,component,left-panel,ai,chat
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,component,left-panel,ai,chat
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";

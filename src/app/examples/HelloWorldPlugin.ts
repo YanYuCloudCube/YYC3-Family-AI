@@ -1,14 +1,14 @@
 /**
- * @file examples/HelloWorldPlugin.ts
- * @description 示例插件 - 演示如何使用 Plugin SDK 开发插件
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status example
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,hello-world
+ * @file: examples/HelloWorldPlugin.ts
+ * @description: 示例插件 - 演示如何使用 Plugin SDK 开发插件
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: example
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,hello-world
  */
 
 import {

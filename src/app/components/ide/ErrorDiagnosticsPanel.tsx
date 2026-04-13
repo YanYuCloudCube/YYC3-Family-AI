@@ -1,15 +1,15 @@
 /**
- * @file ErrorDiagnosticsPanel.tsx
- * @description 智能错误诊断面板，实时展示 ErrorAnalyzer 的分析结果，
+ * @file: ErrorDiagnosticsPanel.tsx
+ * @description: 智能错误诊断面板，实时展示 ErrorAnalyzer 的分析结果，
  *              支持按文件分组/按严重度过滤/搜索、点击定位、一键 AutoFix、AI 辅助修复
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags diagnostics,error-analysis,autofix,panel,ai-fix
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: diagnostics,error-analysis,autofix,panel,ai-fix
  */
 
 import React, { useState, useCallback, useMemo } from "react";

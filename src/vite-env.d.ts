@@ -1,14 +1,14 @@
 /**
- * @file vite-env.d.ts
- * @description vite-env.d — src 模块
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags module,typescript,src
+ * @file: vite-env.d.ts
+ * @description: vite-env.d — src 模块
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: module,typescript,src
  */
 
 declare module "*.png" {

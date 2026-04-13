@@ -1,15 +1,15 @@
 /**
- * @file stores/usePanelTabGroupStore.ts
- * @description 面板标签页分组 Store，支持将面板标签页归类到命名分组中，
+ * @file: stores/usePanelTabGroupStore.ts
+ * @description: 面板标签页分组 Store，支持将面板标签页归类到命名分组中，
  *              分组折叠/展开、拖拽排序、颜色标识、持久化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,tab-group,panels,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,tab-group,panels,wave3
  */
 
 import { create } from "zustand";

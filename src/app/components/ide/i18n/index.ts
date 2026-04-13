@@ -1,15 +1,15 @@
 /**
- * @file i18n/index.ts
- * @description 国際化システム — 对齐 P3-国际化-多语言支持.md，轻量级 i18n 实现，
+ * @file: i18n/index.ts
+ * @description: 国際化システム — 对齐 P3-国际化-多语言支持.md，轻量级 i18n 实现，
  *              支持 zh-CN / en-US / ja-JP 三语，动态切换，Context 驱动
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags i18n,internationalization,locale,translation
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: i18n,internationalization,locale,translation
  */
 
 // ================================================================

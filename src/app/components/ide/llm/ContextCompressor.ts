@@ -1,14 +1,14 @@
 /**
- * @file llm/ContextCompressor.ts
- * @description 智能压缩算法 - 核心压缩引擎
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,compression,algorithm,engine
+ * @file: llm/ContextCompressor.ts
+ * @description: 智能压缩算法 - 核心压缩引擎
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,compression,algorithm,engine
  */
 
 import {

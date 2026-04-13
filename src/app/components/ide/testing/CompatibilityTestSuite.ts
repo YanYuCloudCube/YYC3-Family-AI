@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file CompatibilityTestSuite.ts
- * @description 兼容性测试工具 - 浏览器、操作系统、分辨率、DPI测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags testing,compatibility,browser,os,resolution,dpi
+ * @file: CompatibilityTestSuite.ts
+ * @description: 兼容性测试工具 - 浏览器、操作系统、分辨率、DPI测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: testing,compatibility,browser,os,resolution,dpi
  */
 
 import type {

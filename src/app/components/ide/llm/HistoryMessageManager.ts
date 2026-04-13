@@ -1,14 +1,14 @@
 /**
- * @file llm/HistoryMessageManager.ts
- * @description 历史消息管理 - 存储、限制、检索
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,message,history,management
+ * @file: llm/HistoryMessageManager.ts
+ * @description: 历史消息管理 - 存储、限制、检索
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,message,history,management
  */
 
 /**

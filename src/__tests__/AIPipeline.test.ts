@@ -1,13 +1,13 @@
 /**
- * @file AIPipeline.test.ts
- * @description AI Pipeline 测试 - 测试上下文构建、提示词生成和代码解析
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: AIPipeline.test.ts
+ * @description: AI Pipeline 测试 - 测试上下文构建、提示词生成和代码解析
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck

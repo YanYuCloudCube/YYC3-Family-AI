@@ -1,14 +1,14 @@
 /**
- * @file adapters/IndexedDBAdapter.optimized.ts
- * @description IndexedDB 性能优化版本 - 添加缓存层、批量优化、性能监控
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags adapters,indexeddb,persistence,offline,performance,cache
+ * @file: adapters/IndexedDBAdapter.optimized.ts
+ * @description: IndexedDB 性能优化版本 - 添加缓存层、批量优化、性能监控
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: adapters,indexeddb,persistence,offline,performance,cache
  */
 
 import { openDB, type IDBPDatabase } from "idb";

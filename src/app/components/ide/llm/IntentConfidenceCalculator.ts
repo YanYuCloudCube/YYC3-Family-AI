@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file IntentConfidenceCalculator.ts
- * @description 意图置信度计算器 - 计算意图置信度、检测冲突、提供建议
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags intent,confidence,calculator,llm
+ * @file: IntentConfidenceCalculator.ts
+ * @description: 意图置信度计算器 - 计算意图置信度、检测冲突、提供建议
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: intent,confidence,calculator,llm
  */
 
 import {

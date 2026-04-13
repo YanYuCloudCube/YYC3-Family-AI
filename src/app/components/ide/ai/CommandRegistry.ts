@@ -1,15 +1,15 @@
 /**
- * @file ai/CommandRegistry.ts
- * @description 可扩展的终端命令系统，内置 19 个文件系统命令（ls, cat, pwd 等）
+ * @file: ai/CommandRegistry.ts
+ * @description: 可扩展的终端命令系统，内置 19 个文件系统命令（ls, cat, pwd 等）
  *              和 4 个模拟命令（npm, git, node, tsc）
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags terminal,commands,filesystem,simulation
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: terminal,commands,filesystem,simulation
  */
 
 // ===================================================================

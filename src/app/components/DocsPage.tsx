@@ -1,15 +1,15 @@
 /**
- * @file DocsPage.tsx
- * @description 文档中心页面，提供 API 文档、教程指南、组件文档、
+ * @file: DocsPage.tsx
+ * @description: 文档中心页面，提供 API 文档、教程指南、组件文档、
  *              搜索过滤等功能。已完成 isCyber → useThemeTokens 迁移
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-06
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags docs,documentation,tutorials,api-reference,token-migrated
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: docs,documentation,tutorials,api-reference,token-migrated
  */
 
 import { useState, useMemo } from "react";
@@ -262,10 +262,10 @@ export default function DocsPage() {
   }, [search, allArticles]);
 
   return (
-    <div className={`size-full min-h-screen ${t.page.pageBg}`}>
+    <div className={`h-screen flex flex-col ${t.page.pageBg}`}>
       {/* Top bar */}
       <div
-        className={`sticky top-0 z-30 border-b backdrop-blur-md ${t.templates.topBarBg}`}
+        className={`sticky top-0 z-30 border-b backdrop-blur-md flex-shrink-0 ${t.templates.topBarBg}`}
       >
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center gap-4">
           <button
@@ -285,7 +285,7 @@ export default function DocsPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto px-6 py-8 flex-1 min-h-0 overflow-y-auto">
         {/* Hero */}
         <div className="text-center mb-8">
           <h2 className={`text-[1.5rem] mb-2 ${t.text.heading}`}>

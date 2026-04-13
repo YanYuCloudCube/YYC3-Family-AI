@@ -1,15 +1,15 @@
 /**
- * @file PanelMinimap.tsx
- * @description 面板布局小地图，实时可视化当前布局结构缩略图，
+ * @file: PanelMinimap.tsx
+ * @description: 面板布局小地图，实时可视化当前布局结构缩略图，
  *              支持点击聚焦面板、布局概览、面板状态指示
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags minimap,layout,visualization,overview,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: minimap,layout,visualization,overview,wave3
  */
 
 import { useState, useMemo } from "react";
@@ -40,6 +40,7 @@ const PANEL_COLORS: Record<PanelId, string> = {
   "document-editor": "#6366f1", // slate
   taskboard: "#8b5cf6", // blue-500
   "multi-instance": "#d946ef", // violet
+  "multi-agent": "#ec4899", // pink-500
 };
 
 const PANEL_SHORT_LABELS: Record<PanelId, string> = {
@@ -64,6 +65,7 @@ const PANEL_SHORT_LABELS: Record<PanelId, string> = {
   "document-editor": "文档",
   taskboard: "任务",
   "multi-instance": "实例",
+  "multi-agent": "智能体",
 };
 
 // ── Recursive minimap renderer ──

@@ -298,7 +298,7 @@
 |------|------|
 | **团队** | YanYuCloudCube Team |
 | **邮箱** | admin@0379.email |
-| **项目地址** | https://github.com/YYC-Cube/yyc3-family-ai |
+| **项目地址** | https://github.com/YanYuCloudCube/yyc3-family-ai |
 | **文档** | docs/ 目录 |
 
 ---

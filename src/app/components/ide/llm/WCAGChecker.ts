@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file llm/WCAGChecker.ts
- * @description WCAG合规检查 - 颜色对比度、键盘导航、屏幕阅读器、焦点管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags accessibility,wcag,checker
+ * @file: llm/WCAGChecker.ts
+ * @description: WCAG合规检查 - 颜色对比度、键盘导航、屏幕阅读器、焦点管理
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: accessibility,wcag,checker
  */
 
 import {

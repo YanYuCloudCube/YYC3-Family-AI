@@ -1,14 +1,14 @@
 /**
- * @file llm/PerformanceReporter.ts
- * @description 性能报告生成 - 生成报告、识别瓶颈、提供建议、导出报告
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags performance,report,analysis
+ * @file: llm/PerformanceReporter.ts
+ * @description: 性能报告生成 - 生成报告、识别瓶颈、提供建议、导出报告
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: performance,report,analysis
  */
 
 import {

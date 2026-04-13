@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ThemeSystem.test.ts
- * @description 主题系统完整测试 - CSS变量注入、颜色验证、Design Token
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,theme,css-variables,color-validation,design-tokens
+ * @file: ThemeSystem.test.ts
+ * @description: 主题系统完整测试 - CSS变量注入、颜色验证、Design Token
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,theme,css-variables,color-validation,design-tokens
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

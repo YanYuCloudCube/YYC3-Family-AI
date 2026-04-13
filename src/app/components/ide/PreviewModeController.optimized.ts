@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file PreviewModeController.optimized.ts
- * @description 预览模式控制器（性能优化版），管理实时/手动/延迟三种预览模式
+ * @file: PreviewModeController.optimized.ts
+ * @description: 预览模式控制器（性能优化版），管理实时/手动/延迟三种预览模式
  *              优化点：节流、防抖、智能批量更新、内存优化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags preview,controller,mode,optimized,performance
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: preview,controller,mode,optimized,performance
  */
 
 import type { PreviewMode } from "./stores/usePreviewStore";

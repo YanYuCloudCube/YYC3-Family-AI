@@ -1,13 +1,13 @@
 /**
- * @file ProxyStoreZustand.test.ts
- * @description 代理状态管理测试 - 测试代理服务器配置和健康检查
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: ProxyStoreZustand.test.ts
+ * @description: 代理状态管理测试 - 测试代理服务器配置和健康检查
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck

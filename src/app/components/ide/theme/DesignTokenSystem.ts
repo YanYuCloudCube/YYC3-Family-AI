@@ -1,14 +1,14 @@
 /**
- * @file DesignTokenSystem.ts
- * @description Design Token层级系统，支持基础Token、语义Token、组件Token
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,design-tokens,hierarchy,inheritance
+ * @file: DesignTokenSystem.ts
+ * @description: Design Token层级系统，支持基础Token、语义Token、组件Token
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,design-tokens,hierarchy,inheritance
  */
 
 // ================================================================

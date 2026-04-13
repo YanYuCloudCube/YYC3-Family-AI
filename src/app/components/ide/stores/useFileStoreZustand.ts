@@ -1,15 +1,15 @@
 /**
- * @file stores/useFileStoreZustand.ts
- * @description Zustand + Immer 文件系统 Store，替代 FileStore.tsx Context，
+ * @file: stores/useFileStoreZustand.ts
+ * @description: Zustand + Immer 文件系统 Store，替代 FileStore.tsx Context，
  *              支持 selector 优化、immer mutation、localStorage 持久化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,immer,files,persistence
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,immer,files,persistence
  */
 
 import { create } from "zustand";
@@ -55,6 +55,10 @@ interface FileStoreActions {
   createFile: (path: string, content?: string) => void;
   deleteFile: (path: string) => void;
   renameFile: (oldPath: string, newPath: string) => void;
+  moveFile: (sourcePath: string, targetPath: string) => boolean;
+  copyFile: (sourcePath: string, targetPath: string) => boolean;
+  moveFolder: (sourcePath: string, targetPath: string) => boolean;
+  duplicateFile: (path: string) => string | null;
 
   // Tab operations
   setActiveFile: (path: string) => void;
@@ -262,6 +266,125 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
           { path: newPath, status: "added", staged: false },
         ];
       }),
+
+    moveFile: (sourcePath, targetPath) => {
+      const state = get();
+      if (!state.fileContents[sourcePath]) {
+        console.warn(`[FileStore] moveFile: source file not found: ${sourcePath}`);
+        return false;
+      }
+      if (state.fileContents[targetPath]) {
+        console.warn(`[FileStore] moveFile: target already exists: ${targetPath}`);
+        return false;
+      }
+
+      set((s) => {
+        s.fileContents[targetPath] = s.fileContents[sourcePath] || "";
+        delete s.fileContents[sourcePath];
+        s.openTabs = s.openTabs.map((t) =>
+          t.path === sourcePath ? { ...t, path: targetPath } : t,
+        );
+        if (s.activeFile === sourcePath) s.activeFile = targetPath;
+        s.gitChanges = [
+          ...s.gitChanges.filter((c) => c.path !== sourcePath),
+          { path: sourcePath, status: "deleted", staged: false },
+          { path: targetPath, status: "added", staged: false },
+        ];
+      });
+
+      console.warn(`[FileStore] moveFile: ${sourcePath} -> ${targetPath}`);
+      return true;
+    },
+
+    copyFile: (sourcePath, targetPath) => {
+      const state = get();
+      if (!state.fileContents[sourcePath]) {
+        console.warn(`[FileStore] copyFile: source file not found: ${sourcePath}`);
+        return false;
+      }
+      if (state.fileContents[targetPath]) {
+        console.warn(`[FileStore] copyFile: target already exists: ${targetPath}`);
+        return false;
+      }
+
+      set((s) => {
+        s.fileContents[targetPath] = s.fileContents[sourcePath] || "";
+        s.gitChanges = [
+          ...s.gitChanges.filter((c) => c.path !== targetPath),
+          { path: targetPath, status: "added", staged: false },
+        ];
+      });
+
+      console.warn(`[FileStore] copyFile: ${sourcePath} -> ${targetPath}`);
+      return true;
+    },
+
+    moveFolder: (sourcePath, targetPath) => {
+      const state = get();
+      const filesToMove = Object.keys(state.fileContents).filter(
+        (path) => path.startsWith(sourcePath + "/") || path === sourcePath
+      );
+
+      if (filesToMove.length === 0) {
+        console.warn(`[FileStore] moveFolder: folder not found: ${sourcePath}`);
+        return false;
+      }
+
+      set((s) => {
+        for (const oldPath of filesToMove) {
+          const relativePath = oldPath.slice(sourcePath.length);
+          const newPath = targetPath + relativePath;
+
+          s.fileContents[newPath] = s.fileContents[oldPath] || "";
+          delete s.fileContents[oldPath];
+
+          s.openTabs = s.openTabs.map((t) =>
+            t.path === oldPath ? { ...t, path: newPath } : t,
+          );
+
+          if (s.activeFile === oldPath) s.activeFile = newPath;
+
+          s.gitChanges = [
+            ...s.gitChanges.filter((c) => c.path !== oldPath),
+            { path: oldPath, status: "deleted", staged: false },
+            { path: newPath, status: "added", staged: false },
+          ];
+        }
+      });
+
+      console.warn(`[FileStore] moveFolder: ${sourcePath} -> ${targetPath} (${filesToMove.length} files)`);
+      return true;
+    },
+
+    duplicateFile: (path) => {
+      const state = get();
+      if (!state.fileContents[path]) {
+        console.warn(`[FileStore] duplicateFile: file not found: ${path}`);
+        return null;
+      }
+
+      const ext = path.lastIndexOf(".");
+      const basePath = ext > 0 ? path.slice(0, ext) : path;
+      const extension = ext > 0 ? path.slice(ext) : "";
+
+      let newPath = `${basePath}-copy${extension}`;
+      let counter = 1;
+      while (state.fileContents[newPath]) {
+        newPath = `${basePath}-copy-${counter}${extension}`;
+        counter++;
+      }
+
+      set((s) => {
+        s.fileContents[newPath] = s.fileContents[path] || "";
+        s.gitChanges = [
+          ...s.gitChanges.filter((c) => c.path !== newPath),
+          { path: newPath, status: "added", staged: false },
+        ];
+      });
+
+      console.warn(`[FileStore] duplicateFile: ${path} -> ${newPath}`);
+      return newPath;
+    },
 
     // ── Tab operations ──
     setActiveFile: (path) =>

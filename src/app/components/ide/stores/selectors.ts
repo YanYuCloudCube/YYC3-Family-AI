@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file stores/selectors.ts
- * @description Zustand 细粒度 Selector 工具，优化订阅性能，避免过度渲染
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,selectors,performance,optimization
+ * @file: stores/selectors.ts
+ * @description: Zustand 细粒度 Selector 工具，优化订阅性能，避免过度渲染
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,selectors,performance,optimization
  */
 
 import { useStore } from "zustand";

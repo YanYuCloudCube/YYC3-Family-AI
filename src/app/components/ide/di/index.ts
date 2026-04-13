@@ -1,14 +1,14 @@
 /**
- * @file di/index.ts
- * @description 轻量级依赖注入容器 — 零第三方依赖的 DI 实现
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags di,dependency-injection,container,ioc
+ * @file: di/index.ts
+ * @description: 轻量级依赖注入容器 — 零第三方依赖的 DI 实现
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: di,dependency-injection,container,ioc
  */
 
 // ================================================================
@@ -440,7 +440,7 @@ const INJECTABLE_METADATA = Symbol('injectable');
  */
 
 export function Injectable(lifecycle: Lifecycle = Lifecycle.Transient): ClassDecorator {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return function (target: any): any {
     target[INJECTABLE_METADATA] = { lifecycle };
     return target;

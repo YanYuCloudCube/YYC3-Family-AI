@@ -1,15 +1,15 @@
 /**
- * @file RouteErrorFallback.tsx
- * @description 路由级错误回退 UI — 当某个路由页面加载或渲染失败时展示友好提示，
+ * @file: RouteErrorFallback.tsx
+ * @description: 路由级错误回退 UI — 当某个路由页面加载或渲染失败时展示友好提示，
  *              支持重试、返回首页、查看错误详情，风格与项目整体 IDE 暗色主题一致
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags error,route,fallback,recovery,ux,error-reporting
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: error,route,fallback,recovery,ux,error-reporting
  */
 
 import { useRouteError, isRouteErrorResponse, useNavigate } from "react-router";

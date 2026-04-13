@@ -1,14 +1,14 @@
 /**
- * @file settings/KeybindingsEditor.tsx
- * @description 可编辑的快捷键映射 UI — 支持录制新快捷键、恢复默认、冲突检测
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,keybindings,editor,shortcuts
+ * @file: settings/KeybindingsEditor.tsx
+ * @description: 可编辑的快捷键映射 UI — 支持录制新快捷键、恢复默认、冲突检测
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,keybindings,editor,shortcuts
  */
 
 import { useState, useEffect, useRef, useCallback } from "react";

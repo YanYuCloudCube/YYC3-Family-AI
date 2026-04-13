@@ -1,15 +1,15 @@
 /**
- * @file LayoutPresets.tsx
- * @description 用户自定义布局预设管理，支持保存当前布局、加载预设、
+ * @file: LayoutPresets.tsx
+ * @description: 用户自定义布局预设管理，支持保存当前布局、加载预设、
  *              删除预设、内置预设切换
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags layout,presets,persistence,panel-management
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: layout,presets,persistence,panel-management
  */
 
 import { useState } from "react";

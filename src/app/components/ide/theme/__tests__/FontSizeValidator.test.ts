@@ -1,13 +1,13 @@
 // @ts-nocheck
 /**
- * @file FontSizeValidator.test.ts
- * @description FontSizeValidator单元测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
+ * @file: FontSizeValidator.test.ts
+ * @description: FontSizeValidator单元测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
  */
 
 import { describe, it, expect } from "vitest";

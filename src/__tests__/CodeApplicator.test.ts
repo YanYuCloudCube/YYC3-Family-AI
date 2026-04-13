@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file CodeApplicator.test.ts
- * @description 代码应用器测试 - 覆盖代码解析、应用等核心功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,code-applicator,ai,pipeline
+ * @file: CodeApplicator.test.ts
+ * @description: 代码应用器测试 - 覆盖代码解析、应用等核心功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,code-applicator,ai,pipeline
  */
 
 import { describe, it, expect, vi } from "vitest";

@@ -1,15 +1,15 @@
 /**
- * @file TaskBoardPanel.tsx
- * @description AI 智能任务看板面板 — Kanban/List 视图、任务 CRUD、AI 推理任务接受/拒绝、
+ * @file: TaskBoardPanel.tsx
+ * @description: AI 智能任务看板面板 — Kanban/List 视图、任务 CRUD、AI 推理任务接受/拒绝、
  *              优先级拖拽、子任务管理，对齐 P1-AI-任务看板交互.md 规范
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags task-board,kanban,panel,ai-inference
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: task-board,kanban,panel,ai-inference
  */
 
 import { useState, useCallback, useMemo } from "react";

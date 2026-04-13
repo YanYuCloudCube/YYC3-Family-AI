@@ -1,15 +1,15 @@
 /**
- * @file CustomThemeStore.ts
- * @description YYC3 自定义主题引擎，支持 OKLch 颜色、6 种预设、品牌定制、
+ * @file: CustomThemeStore.ts
+ * @description: YYC3 自定义主题引擎，支持 OKLch 颜色、6 种预设、品牌定制、
  *              导入/导出、版本控制、CSS 变量生成
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,engine,oklch,presets,css-variables,persistence
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,engine,oklch,presets,css-variables,persistence
  */
 
 // ================================================================

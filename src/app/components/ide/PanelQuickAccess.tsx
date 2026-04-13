@@ -1,15 +1,15 @@
 /**
- * @file PanelQuickAccess.tsx
- * @description 面板快速访问组件，提供面板目录、快速切换、搜索过滤、
+ * @file: PanelQuickAccess.tsx
+ * @description: 面板快速访问组件，提供面板目录、快速切换、搜索过滤、
  *              分类导航等功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags panels,quick-access,navigation,search
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: panels,quick-access,navigation,search
  */
 
 import { useState } from "react";

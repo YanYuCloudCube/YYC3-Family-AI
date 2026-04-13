@@ -1,13 +1,13 @@
 /**
- * @file ErrorAnalyzer.test.ts
- * @description 错误分析器测试 - 测试错误分类、分析和建议生成
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: ErrorAnalyzer.test.ts
+ * @description: 错误分析器测试 - 测试错误分类、分析和建议生成
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck

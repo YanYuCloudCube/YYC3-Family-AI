@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file SnapshotService.ts
- * @description 快照服务 - 支持项目快照、快照对比、快照恢复
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags snapshot,backup,restore,project
+ * @file: SnapshotService.ts
+ * @description: 快照服务 - 支持项目快照、快照对比、快照恢复
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: snapshot,backup,restore,project
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";

@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file IconAssets.test.tsx
- * @description 图标资产功能测试 - 覆盖图标渲染、分类、可访问性等核心功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,icon,assets
+ * @file: IconAssets.test.tsx
+ * @description: 图标资产功能测试 - 覆盖图标渲染、分类、可访问性等核心功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,icon,assets
  */
 
 import { describe, it, expect } from "vitest";

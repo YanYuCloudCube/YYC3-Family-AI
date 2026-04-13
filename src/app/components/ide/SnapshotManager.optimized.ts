@@ -1,15 +1,15 @@
 /**
- * @file SnapshotManager.optimized.ts
- * @description 快照管理器（性能优化版），负责创建、存储、恢复、比较预览快照
+ * @file: SnapshotManager.optimized.ts
+ * @description: 快照管理器（性能优化版），负责创建、存储、恢复、比较预览快照
  *              优化点：快照压缩、增量存储、localStorage容量控制、性能优化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags snapshot,manager,optimized,compression,storage
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: snapshot,manager,optimized,compression,storage
  */
 
 import type { DevicePreset } from "./stores/usePreviewStore";

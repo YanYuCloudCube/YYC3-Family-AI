@@ -1,15 +1,15 @@
 /**
- * @file hooks/useThemeTokens.ts
- * @description 将主题 CSS 变量映射为 Tailwind class tokens，
+ * @file: hooks/useThemeTokens.ts
+ * @description: 将主题 CSS 变量映射为 Tailwind class tokens，
  *              消除组件中大量 isCyber 三元表达式，分层支持 Modal/Page/Common/Home/IntentToast/ShareDialog tokens
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.5.0
- * @created 2026-03-10
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags hooks,theme,tokens,tailwind,css-variables
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.5.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: hooks,theme,tokens,tailwind,css-variables
  */
 
 // ================================================================

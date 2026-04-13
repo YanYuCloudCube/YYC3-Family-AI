@@ -1,15 +1,23 @@
-/**
- * @file plugins/README.md
- * @description YYC3 Family AI 插件系统示例插件说明文档
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,documentation
- */
+---
+file: plugins/README.md
+description: YYC3 Family AI 插件系统示例插件说明文档
+author: YanYuCloudCube Team <admin@0379.email>
+version: v1.0.0
+created: 2026-03-19
+updated: 2026-04-09
+status: stable
+tags: plugin,example,documentation
+category: guide
+language: zh-CN
+---
+
+> ***YanYuCloudCube***
+> *言启象限 | 语枢未来*
+> ***Words Initiate Quadrants, Language Serves as Core for Future***
+> *万象归元于云枢 | 深栈智启新纪元*
+> ***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***
+
+---
 
 # YYC3 Family AI 示例插件
 

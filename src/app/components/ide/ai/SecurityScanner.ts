@@ -1,16 +1,16 @@
 /**
- * @file ai/SecurityScanner.ts
- * @description F2.4 智能安全扫描模块，对项目文件执行安全漏洞检测，
+ * @file: ai/SecurityScanner.ts
+ * @description: F2.4 智能安全扫描模块，对项目文件执行安全漏洞检测，
  *              覆盖 XSS / 注入 / 认证 / 敏感数据 / 依赖 / CSRF / 配置 / 加密 / 权限 / 供应链，
  *              每条规则产出 severity + CWE 编号 + OWASP 分类 + 修复建议
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,security,scanner,vulnerabilities,cwe,owasp
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,security,scanner,vulnerabilities,cwe,owasp
  */
 
 // ===================================================================

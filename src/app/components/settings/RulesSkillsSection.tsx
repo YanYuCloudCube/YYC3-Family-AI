@@ -1,14 +1,14 @@
 /**
- * @file settings/RulesSkillsSection.tsx
- * @description 规则与技能管理面板 — 支持个人/项目级规则 CRUD、全局/项目技能配置，全面 i18n 国际化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,rules,skills,management,i18n
+ * @file: settings/RulesSkillsSection.tsx
+ * @description: 规则与技能管理面板 — 支持个人/项目级规则 CRUD、全局/项目技能配置，全面 i18n 国际化
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,rules,skills,management,i18n
  */
 
 import { useState } from "react";

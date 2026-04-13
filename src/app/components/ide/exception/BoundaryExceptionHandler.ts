@@ -1,14 +1,14 @@
 // @ts-nocheck
 /**
- * @file BoundaryExceptionHandler.ts
- * @description 边界异常处理器 - 统一捕获、记录、处理各种边界异常
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags exception,handler,boundary,error
+ * @file: BoundaryExceptionHandler.ts
+ * @description: 边界异常处理器 - 统一捕获、记录、处理各种边界异常
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: exception,handler,boundary,error
  */
 
 // ================================================================

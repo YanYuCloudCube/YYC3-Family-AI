@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file __tests__/CollabService.test.ts
- * @description 实时协作服务测试 - 覆盖 Yjs CRDT 文档同步、感知光标、冲突解决
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,collaboration,yjs,crdt
+ * @file: __tests__/CollabService.test.ts
+ * @description: 实时协作服务测试 - 覆盖 Yjs CRDT 文档同步、感知光标、冲突解决
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,collaboration,yjs,crdt
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";

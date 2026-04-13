@@ -1,14 +1,14 @@
 /**
- * @file config/index.ts
- * @description 配置外部化系统 — 支持多配置源、类型安全、变更通知
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags config,settings,externalization
+ * @file: config/index.ts
+ * @description: 配置外部化系统 — 支持多配置源、类型安全、变更通知
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: config,settings,externalization
  */
 
 // ================================================================

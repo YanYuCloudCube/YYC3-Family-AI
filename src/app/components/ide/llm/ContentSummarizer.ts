@@ -1,14 +1,14 @@
 /**
- * @file llm/ContentSummarizer.ts
- * @description 内容摘要生成 - 函数签名、类结构、依赖关系、关键注释
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,compression,summarizer,content
+ * @file: llm/ContentSummarizer.ts
+ * @description: 内容摘要生成 - 函数签名、类结构、依赖关系、关键注释
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,compression,summarizer,content
  */
 
 import {

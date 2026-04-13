@@ -1,15 +1,15 @@
 /**
- * @file FloatingPanelContainer.tsx
- * @description 浮动面板窗口容器，渲染所有从布局中分离的浮动面板，
+ * @file: FloatingPanelContainer.tsx
+ * @description: 浮动面板窗口容器，渲染所有从布局中分离的浮动面板，
  *              支持自由拖拽、调整大小、最小化/还原、回停入布局
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags floating,panels,windows,drag,resize,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: floating,panels,windows,drag,resize,wave3
  */
 
 import React, { useCallback, useRef } from "react";
@@ -51,6 +51,7 @@ const PANEL_TITLES: Record<PanelId, string> = {
   "document-editor": "文档编辑",
   taskboard: "任务看板",
   "multi-instance": "多实例",
+  "multi-agent": "多智能体",
 };
 
 // ── Single Floating Window ──

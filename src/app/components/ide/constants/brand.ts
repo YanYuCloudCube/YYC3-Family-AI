@@ -1,14 +1,14 @@
 /**
- * @file constants/brand.ts
- * @description 品牌标识常量 — 对齐 YYC3-变量-品牌标识.md，集中管理品牌名称、标语、颜色、联系方式等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags constants,brand,identity,design-prompt
+ * @file: constants/brand.ts
+ * @description: 品牌标识常量 — 对齐 YYC3-变量-品牌标识.md，集中管理品牌名称、标语、颜色、联系方式等
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: constants,brand,identity,design-prompt
  */
 
 // ================================================================
@@ -42,8 +42,8 @@ export const BRAND_GRADIENT_ACCENT =
 
 // ── 品牌联系方式 ──
 export const BRAND_EMAIL = "admin@0379.email";
-export const BRAND_GITHUB = "https://github.com/YYC-Cube";
-export const BRAND_GITHUB_REPO = "https://github.com/YYC-Cube/YanYuCloud";
+export const BRAND_GITHUB = "https://github.com/YanYuCloudCube";
+export const BRAND_GITHUB_REPO = "https://github.com/YanYuCloudCube/YYC3-Family-AI";
 
 // ── 品牌法律信息 ──
 export const BRAND_LICENSE = "MIT";

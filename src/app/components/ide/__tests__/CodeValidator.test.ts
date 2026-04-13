@@ -1,7 +1,7 @@
 // @ts-nocheck
 /**
- * @file CodeValidator.test.ts
- * @description CodeValidator 单元测试
+ * @file: CodeValidator.test.ts
+ * @description: CodeValidator 单元测试
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';

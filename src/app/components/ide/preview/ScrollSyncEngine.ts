@@ -1,14 +1,14 @@
 /**
- * @file ScrollSyncEngine.ts
- * @description 滚动同步引擎 - 管理编辑器和预览窗口的滚动同步
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags scroll,sync,preview,editor,view
+ * @file: ScrollSyncEngine.ts
+ * @description: 滚动同步引擎 - 管理编辑器和预览窗口的滚动同步
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: scroll,sync,preview,editor,view
  */
 
 /**

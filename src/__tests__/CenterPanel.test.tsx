@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/CenterPanel.test.tsx
- * @description P0 组件测试 — CenterPanel 文件管理面板核心交互：
+ * @file: __tests__/CenterPanel.test.tsx
+ * @description: P0 组件测试 — CenterPanel 文件管理面板核心交互：
  *              文件树渲染、文件选择、搜索过滤、文件 CRUD、编辑器区域
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,component,center-panel,file-tree,editor
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,component,center-panel,file-tree,editor
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";

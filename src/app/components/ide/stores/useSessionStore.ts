@@ -1,15 +1,15 @@
 /**
- * @file stores/useSessionStore.ts
- * @description 会话管理 Zustand Store — 管理多会话的创建、激活、暂停、恢复、
+ * @file: stores/useSessionStore.ts
+ * @description: 会话管理 Zustand Store — 管理多会话的创建、激活、暂停、恢复、
  *              会话数据更新，支持 AI 对话、代码编辑、终端等多种会话类型
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,multi-instance,session-manager,zustand
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,multi-instance,session-manager,zustand
  */
 
 import { create } from "zustand";

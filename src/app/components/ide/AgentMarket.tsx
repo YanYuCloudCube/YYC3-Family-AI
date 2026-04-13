@@ -1,15 +1,15 @@
 /**
- * @file AgentMarket.tsx
- * @description Agent 市场面板，展示可用的 AI Agent 模板，支持搜索、
+ * @file: AgentMarket.tsx
+ * @description: Agent 市场面板，展示可用的 AI Agent 模板，支持搜索、
  *              分类筛选、下载安装、评分排序
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags agent,market,templates,ai,plugins
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: agent,market,templates,ai,plugins
  */
 
 import { useState } from "react";

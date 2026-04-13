@@ -1,14 +1,14 @@
 /**
- * @file settings/SettingsShared.tsx
- * @description 设置页面共享 UI 基础组件：Toggle、SettingRow、SettingGroup、SectionHeader 等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,ui,shared,components
+ * @file: settings/SettingsShared.tsx
+ * @description: 设置页面共享 UI 基础组件：Toggle、SettingRow、SettingGroup、SectionHeader 等
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,ui,shared,components
  */
 
 import React from "react";

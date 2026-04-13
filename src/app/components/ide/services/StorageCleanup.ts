@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file StorageCleanup.ts
- * @description 存储清理服务 - 自动清理旧数据、对话历史、临时文件等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags storage,cleanup,maintenance,utility
+ * @file: StorageCleanup.ts
+ * @description: 存储清理服务 - 自动清理旧数据、对话历史、临时文件等
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: storage,cleanup,maintenance,utility
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";

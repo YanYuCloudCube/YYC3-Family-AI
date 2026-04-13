@@ -1,15 +1,15 @@
 /**
- * @file GitPanel.tsx
- * @description Git 版本控制面板，模拟 Git 工作流操作，包括暂存、提交、分支管理、
+ * @file: GitPanel.tsx
+ * @description: Git 版本控制面板，模拟 Git 工作流操作，包括暂存、提交、分支管理、
  *              差异查看、文件状态跟踪、拉取/推送等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags git,version-control,panel,branch,commit
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: git,version-control,panel,branch,commit
  */
 
 import { useState } from "react";

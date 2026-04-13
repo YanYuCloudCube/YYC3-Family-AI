@@ -1,13 +1,13 @@
 /**
- * @file ColorValidator.ts
- * @description 颜色验证器 - 验证颜色值的格式、有效性、对比度等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,color,validator,accessibility
+ * @file: ColorValidator.ts
+ * @description: 颜色验证器 - 验证颜色值的格式、有效性、对比度等
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,color,validator,accessibility
  */
 
 // ================================================================

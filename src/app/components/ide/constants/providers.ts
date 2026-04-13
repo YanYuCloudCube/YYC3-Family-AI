@@ -1,14 +1,14 @@
 /**
- * @file constants/providers.ts
- * @description 服务商元数据共享常量，由 ModelSettings 和 SettingsPage 共同引用
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags constants,providers,metadata
+ * @file: constants/providers.ts
+ * @description: 服务商元数据共享常量，由 ModelSettings 和 SettingsPage 共同引用
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: constants,providers,metadata
  */
 
 // ================================================================
@@ -147,6 +147,8 @@ export const BUILTIN_PROVIDERS: ProviderDef[] = [
         description: "最新旗舰推理模型",
         contextWindow: "128K",
       },
+      { id: "glm-5.1", name: "GLM-5.1", description: "增强版旗舰模型" },
+      { id: "glm-5-turbo", name: "GLM-5-Turbo", description: "高速推理模型" },
       { id: "glm-4.7", name: "GLM-4.7", description: "高性能通用模型" },
       { id: "glm-4.6", name: "GLM-4.6", description: "均衡型通用模型" },
       {
@@ -156,6 +158,47 @@ export const BUILTIN_PROVIDERS: ProviderDef[] = [
         contextWindow: "128K",
       },
       { id: "glm-4.5-air", name: "GLM-4.5-Air", description: "轻量高速模型" },
+    ],
+  },
+  {
+    id: "zai-coding",
+    name: "Z.ai Coding Plan",
+    shortName: "Z.ai",
+    icon: Cpu,
+    color: "text-indigo-400",
+    colorBg: "bg-indigo-500/10",
+    colorBorder: "border-indigo-500/20",
+    description: "GLM-5 编程专精版",
+    baseURL: "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+    apiKeyUrl: "https://open.bigmodel.cn/usercenter/apikeys",
+    apiKeyPlaceholder: "输入 Z.ai API Key...",
+    openaiCompatible: true,
+    docsUrl: "https://open.bigmodel.cn/dev/api",
+    models: [
+      {
+        id: "glm-5",
+        name: "GLM-5",
+        description: "最新旗舰推理模型",
+        contextWindow: "128K",
+      },
+      {
+        id: "glm-5.1",
+        name: "GLM-5.1",
+        description: "增强版旗舰模型",
+        contextWindow: "128K",
+      },
+      {
+        id: "glm-5-turbo",
+        name: "GLM-5-Turbo",
+        description: "高速推理模型",
+        contextWindow: "128K",
+      },
+      {
+        id: "glm-4.7",
+        name: "GLM-4.7",
+        description: "高性能通用模型",
+        contextWindow: "128K",
+      },
     ],
   },
   {
@@ -240,29 +283,12 @@ export const BUILTIN_PROVIDERS: ProviderDef[] = [
     color: "text-amber-400",
     colorBg: "bg-amber-500/10",
     colorBorder: "border-amber-500/20",
-    description: "本地部署 · 私有数据",
+    description: "本地自动识别 · 私有数据",
     baseURL: "http://localhost:11434/api/chat",
     apiKeyUrl: "",
     apiKeyPlaceholder: "",
     openaiCompatible: false,
     docsUrl: "https://ollama.com",
-    models: [
-      {
-        id: "llama3.1:8b",
-        name: "Llama 3.1 8B",
-        description: "Meta 开源通用模型",
-      },
-      {
-        id: "codellama:13b",
-        name: "CodeLlama 13B",
-        description: "代码专精模型",
-      },
-      { id: "qwen2.5:7b", name: "Qwen 2.5 7B", description: "通义千问本地版" },
-      {
-        id: "deepseek-coder:6.7b",
-        name: "DeepSeek Coder 6.7B",
-        description: "代码生成模型",
-      },
-    ],
+    models: [], // 自动识别本地已安装模型，无需预设
   },
 ];

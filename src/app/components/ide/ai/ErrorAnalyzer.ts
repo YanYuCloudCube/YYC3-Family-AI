@@ -1,16 +1,16 @@
 /**
- * @file ai/ErrorAnalyzer.ts
- * @description 静态错误分析引擎，对 FileStore 中的文件执行 25+ 条规则检测，
+ * @file: ai/ErrorAnalyzer.ts
+ * @description: 静态错误分析引擎，对 FileStore 中的文件执行 25+ 条规则检测，
  *              支持 TypeScript / React / Tailwind / 可访问性 / 性能反模式，
  *              每条规则可产出 severity + message + autoFix
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,error-analysis,diagnostics,static-analysis,autofix
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,error-analysis,diagnostics,static-analysis,autofix
  */
 
 // ===================================================================

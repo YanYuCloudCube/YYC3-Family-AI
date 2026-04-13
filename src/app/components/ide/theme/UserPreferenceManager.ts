@@ -1,14 +1,14 @@
 /**
- * @file UserPreferenceManager.ts
- * @description 用户偏好管理器，保存和恢复用户主题偏好设置
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,preference,storage,user-settings
+ * @file: UserPreferenceManager.ts
+ * @description: 用户偏好管理器，保存和恢复用户主题偏好设置
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,preference,storage,user-settings
  */
 
 // ================================================================

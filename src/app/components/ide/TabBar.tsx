@@ -1,15 +1,15 @@
 /**
- * @file TabBar.tsx
- * @description 编辑器标签栏组件，支持多标签页切换、文件类型图标、
+ * @file: TabBar.tsx
+ * @description: 编辑器标签栏组件，支持多标签页切换、文件类型图标、
  *              修改状态指示、关闭标签、右键菜单等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags tabs,editor,file-navigation,ui
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: tabs,editor,file-navigation,ui
  */
 
 import { useRef, useState } from "react";

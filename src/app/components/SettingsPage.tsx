@@ -1,15 +1,15 @@
 /**
- * @file SettingsPage.tsx
- * @description 全局设置页面 — 集成搜索、账号、通用、智能体、MCP、模型、
+ * @file: SettingsPage.tsx
+ * @description: 全局设置页面 — 集成搜索、账号、通用、智能体、MCP、模型、
  *              上下文、对话流、规则技能、导入导出等完整设置模块
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v2.0.0
- * @created 2026-03-06
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,preferences,models,theme,agents,mcp,rules,skills
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v2.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,preferences,models,theme,agents,mcp,rules,skills
  */
 
 import React, { useState, useCallback, useMemo } from "react";
@@ -38,6 +38,8 @@ import {
   Download,
   Upload,
   X,
+  Plus,
+  Globe,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useThemeStore } from "./ide/stores/useThemeStore";
@@ -55,13 +57,20 @@ import {
   ThemeButton,
 } from "./settings/SettingsShared";
 import { AgentSection } from "./settings/AgentSection";
-import { MCPSection, ModelSection } from "./settings/MCPModelSection";
+import { MCPSection } from "./settings/MCPModelSection";
+import YYC3MCPServiceSection from "./settings/YYC3MCPServiceSection";
+import { ModelSettings } from "./ide/ModelSettings";
 import {
   ConversationSection,
   ContextSection,
 } from "./settings/ConversationContextSection";
 import { RulesSection, SkillsSection } from "./settings/RulesSkillsSection";
 import { KeybindingsEditor } from "./settings/KeybindingsEditor";
+import { useWorkflowPluginStore } from "./settings/WorkflowPluginStore";
+import { PluginSection } from "./settings/PluginSection";
+import { StorageSection } from "./settings/StorageSection";
+import EnvironmentConfigPanel from "./ide/config/EnvironmentConfigPanel";
+import UnifiedStoragePanel from "./ide/storage/UnifiedStoragePanel";
 
 // ── Section definitions ──
 
@@ -69,12 +78,19 @@ type SettingsSection =
   | "general"
   | "account"
   | "agents"
-  | "mcp"
+  | "agent-skills"
+  | "agent-workflow"
+  | "plugins"
+  | "plugin-custom"
+  | "plugin-market"
+  | "plugin-dev"
+  | "templates"
   | "models"
+  | "environment"
   | "context"
   | "conversation"
   | "rules"
-  | "skills"
+  | "storage"
   | "import";
 
 interface SectionDef {
@@ -103,12 +119,59 @@ const SECTIONS: SectionDef[] = [
     icon: Bot,
     description: "内置/自定义智能体管理",
   },
-  { id: "mcp", label: "MCP 连接", icon: Plug, description: "MCP 工具服务管理" },
+  {
+    id: "agent-skills",
+    label: "Skills 设计",
+    icon: Zap,
+    description: "智能体技能设计编辑",
+  },
+  {
+    id: "agent-workflow",
+    label: "工作流系统",
+    icon: MessageSquare,
+    description: "Agent工作流可视化推演执行",
+  },
+  {
+    id: "plugins",
+    label: "MCP服务",
+    icon: Plug,
+    description: "通用 MCP / YYC³ MCP 服务集成"
+  },
+  {
+    id: "plugin-custom",
+    label: "自研插件",
+    icon: Zap,
+    description: "自定义插件开发与管理"
+  },
+  {
+    id: "plugin-market",
+    label: "插件市场",
+    icon: Download,
+    description: "9 个核心插件管理（ESLint/AI/Git等）"
+  },
+  {
+    id: "plugin-dev",
+    label: "插件定制",
+    icon: Settings,
+    description: "插件开发工具与模板"
+  },
+  {
+    id: "templates",
+    label: "模版设计",
+    icon: Database,
+    description: "项目模版管理与设计",
+  },
   {
     id: "models",
     label: "模型配置",
     icon: Cpu,
     description: "AI 模型 Provider 与 API Key",
+  },
+  {
+    id: "environment",
+    label: "环境配置",
+    icon: Globe,
+    description: "网关、认证、终端、心跳同步",
   },
   {
     id: "context",
@@ -129,10 +192,10 @@ const SECTIONS: SectionDef[] = [
     description: "个人/项目级编码规则",
   },
   {
-    id: "skills",
-    label: "技能管理",
-    icon: Zap,
-    description: "全局/项目技能配置",
+    id: "storage",
+    label: "存储管理",
+    icon: Database,
+    description: "IndexedDB、LocalStorage、缓存管理",
   },
   {
     id: "import",
@@ -151,6 +214,7 @@ export default function SettingsPage() {
   const [activeSection, setActiveSection] =
     useState<SettingsSection>("general");
   const [saved, setSaved] = useState(false);
+  const [pluginsSubTab, setPluginsSubTab] = useState<"general-mcp" | "yyc3-mcp">("yyc3-mcp");
 
   // Search
   const {
@@ -177,12 +241,12 @@ export default function SettingsPage() {
     const sectionMap: Record<string, SettingsSection> = {
       general: "general",
       agents: "agents",
-      mcp: "mcp",
+      mcp: "plugins",
       models: "models",
       conversation: "conversation",
       context: "context",
       rules: "rules",
-      skills: "skills",
+      skills: "storage",
     };
     const target = sectionMap[result.section];
     if (target) setActiveSection(target);
@@ -207,18 +271,70 @@ export default function SettingsPage() {
         return <AccountSection t={t} />;
       case "agents":
         return <AgentSection />;
-      case "mcp":
-        return <MCPSection />;
+      case "agent-skills":
+        return <SkillsSection />;
+      case "agent-workflow":
+        return <AgentWorkflowSection t={t} />;
+      case "plugins":
+        return (
+          <div className="space-y-4">
+            {/* Sub-tabs for Plugin System */}
+            <div className="flex items-center gap-1 p-1 bg-white/[0.03] rounded-lg border border-white/[0.06]">
+              <button
+                onClick={() => setPluginsSubTab("general-mcp")}
+                className={`flex-1 px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                  pluginsSubTab === "general-mcp"
+                    ? "bg-blue-500/20 text-blue-400 shadow-sm"
+                    : `${t.textTertiary  } hover:bg-white/[0.04]`
+                }`}
+              >
+                <Plug className="w-3.5 h-3.5 inline mr-1.5" />
+                通用 MCP
+              </button>
+              <button
+                onClick={() => setPluginsSubTab("yyc3-mcp")}
+                className={`flex-1 px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                  pluginsSubTab === "yyc3-mcp"
+                    ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 shadow-sm"
+                    : `${t.textTertiary  } hover:bg-white/[0.04]`
+                }`}
+              >
+                <Zap className="w-3.5 h-3.5 inline mr-1.5" />
+                YYC³ MCP
+                <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[9px] bg-emerald-500/20 text-emerald-400">
+                  4 项服务
+                </span>
+              </button>
+            </div>
+
+            {/* Sub-tab Content */}
+            {pluginsSubTab === "general-mcp" ? (
+              <MCPSection />
+            ) : (
+              <YYC3MCPServiceSection />
+            )}
+          </div>
+        );
+      case "plugin-custom":
+        return <PluginCustomSection t={t} />;
+      case "plugin-market":
+        return <PluginSection />;
+      case "plugin-dev":
+        return <PluginDevSection t={t} />;
+      case "templates":
+        return <TemplateDesignSection t={t} />;
       case "models":
-        return <ModelSection />;
+        return <ModelSettings mode="embedded" />;
+      case "environment":
+        return <EnvironmentConfigPanel />;
       case "context":
         return <ContextSection />;
       case "conversation":
         return <ConversationSection />;
       case "rules":
         return <RulesSection />;
-      case "skills":
-        return <SkillsSection />;
+      case "storage":
+        return <UnifiedStoragePanel />;
       case "import":
         return <ImportExportSection t={t} />;
       default:
@@ -363,7 +479,7 @@ export default function SettingsPage() {
             </nav>
 
             {/* Content */}
-            <div className="flex-1 min-w-0 overflow-y-auto pr-2" style={{ maxHeight: 'calc(100vh - 140px)' }}>
+            <div className="flex-1 min-w-0 overflow-y-auto pr-2">
               <motion.div
                 key={activeSection}
                 initial={{ opacity: 0, x: 10 }}
@@ -614,9 +730,6 @@ function AccountSection({ t }: { t: ThemeTokens }) {
           ) : (
             <User className="w-8 h-8 text-white" />
           )}
-          <div className="absolute inset-0 bg-black/0 hover:bg-black/20 flex items-center justify-center transition-all">
-            <span className="text-[0.68rem] text-white font-medium">更换</span>
-          </div>
         </div>
         <input
           ref={fileInputRef}
@@ -888,6 +1001,655 @@ function ImportExportSection({ t }: { t: ThemeTokens }) {
           API Key），请妥善保管。
         </div>
       </div>
+    </div>
+  );
+}
+
+// ===== Agent Workflow Section =====
+function AgentWorkflowSection({ t }: { t: ThemeTokens }) {
+  const {
+    workflows,
+    addWorkflow,
+    updateWorkflow,
+    deleteWorkflow,
+    duplicateWorkflow,
+    executeWorkflow,
+  } = useWorkflowPluginStore();
+  const [isCreating, setIsCreating] = useState(false);
+  const [draft, setDraft] = useState({ name: "", description: "" });
+
+  const handleCreate = () => {
+    if (!draft.name.trim()) return;
+    addWorkflow({
+      name: draft.name,
+      description: draft.description,
+      nodes: [
+        { id: "start", type: "start", name: "开始", position: { x: 100, y: 100 } },
+        { id: "end", type: "end", name: "结束", position: { x: 100, y: 300 } },
+      ],
+      edges: [{ id: "edge-1", source: "start", target: "end" }],
+      status: "draft",
+    });
+    setDraft({ name: "", description: "" });
+    setIsCreating(false);
+  };
+
+  return (
+    <div className="space-y-4">
+      <SettingGroup title="工作流管理" t={t}>
+        <div className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+          <div className="flex items-center gap-2">
+            <MessageSquare className={`w-4 h-4 ${t.text.accent}`} />
+            <span className={`text-[0.82rem] ${t.text.primary}`}>
+              {workflows.length} 个工作流
+            </span>
+            <span className={`text-[0.72rem] ${t.text.caption}`}>
+              ({workflows.filter(w => w.status === "active").length} 个运行中)
+            </span>
+          </div>
+          <button
+            onClick={() => setIsCreating(true)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.accent} ${t.btn.accentHover}`}
+          >
+            <Plus className="w-3.5 h-3.5" />
+            创建工作流
+          </button>
+        </div>
+
+        {isCreating && (
+          <div className={`p-4 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder} space-y-3`}>
+            <input
+              placeholder="工作流名称"
+              value={draft.name}
+              onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+            />
+            <textarea
+              placeholder="工作流描述（可选）"
+              value={draft.description}
+              onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              rows={2}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] resize-none ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleCreate}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.accent} ${t.btn.accentHover}`}
+              >
+                创建
+              </button>
+              <button
+                onClick={() => setIsCreating(false)}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.ghost} ${t.btn.ghostHover}`}
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        )}
+
+        {workflows.length > 0 ? (
+          <div className="space-y-2">
+            {workflows.map((workflow) => (
+              <div
+                key={workflow.id}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[0.82rem] ${t.text.primary}`}>
+                      {workflow.name}
+                    </span>
+                    <span className={`text-[0.68rem] px-2 py-0.5 rounded ${
+                      workflow.status === "active"
+                        ? t.status.successBg
+                        : workflow.status === "paused"
+                        ? t.status.warningBg
+                        : t.status.infoBg
+                    }`}>
+                      {workflow.status === "active" ? "运行中" : workflow.status === "paused" ? "已暂停" : "草稿"}
+                    </span>
+                  </div>
+                  {workflow.description && (
+                    <div className={`text-[0.72rem] ${t.text.muted} mt-1`}>
+                      {workflow.description}
+                    </div>
+                  )}
+                  <div className={`text-[0.68rem] ${t.text.caption} mt-1`}>
+                    执行次数: {workflow.executionCount} ·
+                    创建于 {new Date(workflow.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => executeWorkflow(workflow.id)}
+                    className={`px-2 py-1 rounded text-[0.72rem] ${t.btn.ghost} ${t.btn.ghostHover}`}
+                    title="执行"
+                  >
+                    ▶
+                  </button>
+                  <button
+                    onClick={() => duplicateWorkflow(workflow.id)}
+                    className={`px-2 py-1 rounded text-[0.72rem] ${t.btn.ghost} ${t.btn.ghostHover}`}
+                    title="复制"
+                  >
+                    📋
+                  </button>
+                  <button
+                    onClick={() => deleteWorkflow(workflow.id)}
+                    className={`px-2 py-1 rounded text-[0.72rem] ${t.status.error} hover:opacity-80`}
+                    title="删除"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={`p-8 text-center rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+            <MessageSquare className={`w-12 h-12 mx-auto mb-3 ${t.text.muted}`} />
+            <div className={`text-[0.82rem] ${t.text.secondary}`}>暂无工作流</div>
+            <div className={`text-[0.72rem] ${t.text.muted} mt-1`}>点击上方按钮创建第一个工作流</div>
+          </div>
+        )}
+      </SettingGroup>
+    </div>
+  );
+}
+
+// ===== Plugin Custom Section =====
+function PluginCustomSection({ t }: { t: ThemeTokens }) {
+  const {
+    plugins,
+    installPlugin,
+    uninstallPlugin,
+    togglePlugin,
+  } = useWorkflowPluginStore();
+  const [isCreating, setIsCreating] = useState(false);
+  const [draft, setDraft] = useState({ name: "", description: "", version: "1.0.0", author: "" });
+
+  const handleCreate = () => {
+    if (!draft.name.trim()) return;
+    installPlugin({
+      name: draft.name,
+      description: draft.description,
+      version: draft.version,
+      author: draft.author,
+      category: "custom",
+      enabled: true,
+      source: "local",
+    });
+    setDraft({ name: "", description: "", version: "1.0.0", author: "" });
+    setIsCreating(false);
+  };
+
+  const customPlugins = plugins.filter(p => p.source === "local");
+
+  return (
+    <div className="space-y-4">
+      <SettingGroup title="自研插件" t={t}>
+        <div className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+          <div className="flex items-center gap-2">
+            <Zap className={`w-4 h-4 ${t.text.accent}`} />
+            <span className={`text-[0.82rem] ${t.text.primary}`}>
+              {customPlugins.length} 个自研插件
+            </span>
+            <span className={`text-[0.72rem] ${t.text.caption}`}>
+              ({customPlugins.filter(p => p.enabled).length} 个已启用)
+            </span>
+          </div>
+          <button
+            onClick={() => setIsCreating(true)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.accent} ${t.btn.accentHover}`}
+          >
+            <Plus className="w-3.5 h-3.5" />
+            创建插件
+          </button>
+        </div>
+
+        {isCreating && (
+          <div className={`p-4 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder} space-y-3`}>
+            <input
+              placeholder="插件名称"
+              value={draft.name}
+              onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+            />
+            <textarea
+              placeholder="插件描述"
+              value={draft.description}
+              onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              rows={2}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] resize-none ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+            />
+            <div className="flex gap-2">
+              <input
+                placeholder="版本号"
+                value={draft.version}
+                onChange={(e) => setDraft({ ...draft, version: e.target.value })}
+                className={`flex-1 px-3 py-2 rounded-lg border text-[0.82rem] ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+              />
+              <input
+                placeholder="作者"
+                value={draft.author}
+                onChange={(e) => setDraft({ ...draft, author: e.target.value })}
+                className={`flex-1 px-3 py-2 rounded-lg border text-[0.82rem] ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleCreate}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.accent} ${t.btn.accentHover}`}
+              >
+                创建
+              </button>
+              <button
+                onClick={() => setIsCreating(false)}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.ghost} ${t.btn.ghostHover}`}
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        )}
+
+        {customPlugins.length > 0 ? (
+          <div className="space-y-2">
+            {customPlugins.map((plugin) => (
+              <div
+                key={plugin.id}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[0.82rem] ${t.text.primary}`}>
+                      {plugin.name}
+                    </span>
+                    <span className={`text-[0.68rem] px-2 py-0.5 rounded ${t.status.infoBg}`}>
+                      v{plugin.version}
+                    </span>
+                  </div>
+                  {plugin.description && (
+                    <div className={`text-[0.72rem] ${t.text.muted} mt-1`}>
+                      {plugin.description}
+                    </div>
+                  )}
+                  <div className={`text-[0.68rem] ${t.text.caption} mt-1`}>
+                    作者: {plugin.author} ·
+                    安装于 {new Date(plugin.installedAt || 0).toLocaleDateString()}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => togglePlugin(plugin.id)}
+                    className={`px-2 py-1 rounded text-[0.72rem] ${plugin.enabled ? t.status.successBg : t.status.warningBg}`}
+                  >
+                    {plugin.enabled ? "已启用" : "已禁用"}
+                  </button>
+                  <button
+                    onClick={() => uninstallPlugin(plugin.id)}
+                    className={`px-2 py-1 rounded text-[0.72rem] ${t.status.error} hover:opacity-80`}
+                    title="卸载"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={`p-8 text-center rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+            <Zap className={`w-12 h-12 mx-auto mb-3 ${t.text.muted}`} />
+            <div className={`text-[0.82rem] ${t.text.secondary}`}>暂无自研插件</div>
+            <div className={`text-[0.72rem] ${t.text.muted} mt-1`}>点击上方按钮创建第一个插件</div>
+          </div>
+        )}
+      </SettingGroup>
+    </div>
+  );
+}
+
+// ===== Plugin Market Section =====
+function PluginMarketSection({ t }: { t: ThemeTokens }) {
+  const { plugins, installPlugin } = useWorkflowPluginStore();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const marketPlugins = [
+    { id: "market-1", name: "AI代码补全", description: "基于GPT的智能代码补全插件", category: "ai", version: "2.1.0", author: "YYC3 Team", downloads: 1520 },
+    { id: "market-2", name: "Git增强", description: "Git工作流增强和可视化", category: "productivity", version: "1.5.2", author: "Community", downloads: 890 },
+    { id: "market-3", name: "数据库管理", description: "数据库连接和查询管理工具", category: "integration", version: "3.0.1", author: "DB Tools", downloads: 2100 },
+    { id: "market-4", name: "主题定制", description: "自定义编辑器主题和配色方案", category: "utility", version: "1.2.0", author: "Theme Maker", downloads: 750 },
+  ];
+
+  const categories = [
+    { id: "all", label: "全部" },
+    { id: "ai", label: "AI" },
+    { id: "productivity", label: "效率" },
+    { id: "integration", label: "集成" },
+    { id: "utility", label: "工具" },
+  ];
+
+  const filteredPlugins = marketPlugins.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         p.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || p.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const handleInstall = (plugin: typeof marketPlugins[0]) => {
+    installPlugin({
+      name: plugin.name,
+      description: plugin.description,
+      version: plugin.version,
+      author: plugin.author,
+      category: plugin.category as any,
+      enabled: true,
+      source: "market",
+    });
+  };
+
+  const isInstalled = (pluginId: string) => plugins.some(p => p.name === marketPlugins.find(mp => mp.id === pluginId)?.name);
+
+  return (
+    <div className="space-y-4">
+      <SettingGroup title="插件市场" t={t}>
+        <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+          <Search className={`w-4 h-4 ${t.text.muted}`} />
+          <input
+            placeholder="搜索插件..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`flex-1 bg-transparent text-[0.82rem] outline-none ${t.page.inputText}`}
+          />
+        </div>
+
+        <div className="flex gap-2 px-4">
+          {categories.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-3 py-1.5 rounded-lg text-[0.78rem] transition-all ${
+                selectedCategory === cat.id
+                  ? `${t.btn.accent} ${t.btn.accentHover}`
+                  : `${t.btn.ghost} ${t.btn.ghostHover}`
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="space-y-2">
+          {filteredPlugins.map((plugin) => (
+            <div
+              key={plugin.id}
+              className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}
+            >
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className={`text-[0.82rem] ${t.text.primary}`}>
+                    {plugin.name}
+                  </span>
+                  <span className={`text-[0.68rem] px-2 py-0.5 rounded ${t.status.infoBg}`}>
+                    v{plugin.version}
+                  </span>
+                  <span className={`text-[0.68rem] px-2 py-0.5 rounded ${t.page.cardBorder}`}>
+                    {plugin.category}
+                  </span>
+                </div>
+                <div className={`text-[0.72rem] ${t.text.muted} mt-1`}>
+                  {plugin.description}
+                </div>
+                <div className={`text-[0.68rem] ${t.text.caption} mt-1`}>
+                  作者: {plugin.author} · 下载量: {plugin.downloads}
+                </div>
+              </div>
+              <button
+                onClick={() => handleInstall(plugin)}
+                disabled={isInstalled(plugin.id)}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${
+                  isInstalled(plugin.id)
+                    ? "opacity-50 cursor-not-allowed"
+                    : `${t.btn.accent} ${t.btn.accentHover}`
+                }`}
+              >
+                {isInstalled(plugin.id) ? "已安装" : "安装"}
+              </button>
+            </div>
+          ))}
+        </div>
+      </SettingGroup>
+    </div>
+  );
+}
+
+// ===== Plugin Dev Section =====
+function PluginDevSection({ t }: { t: ThemeTokens }) {
+  const { pluginTemplates } = useWorkflowPluginStore();
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [customCode, setCustomCode] = useState("");
+
+  const handleUseTemplate = (templateId: string) => {
+    const template = pluginTemplates.find(t => t.id === templateId);
+    if (template) {
+      setCustomCode(template.template);
+      setSelectedTemplate(templateId);
+    }
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(customCode);
+  };
+
+  return (
+    <div className="space-y-4">
+      <SettingGroup title="插件开发工具" t={t}>
+        <div className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+          <div className="flex items-center gap-2">
+            <Settings className={`w-4 h-4 ${t.text.accent}`} />
+            <span className={`text-[0.82rem] ${t.text.primary}`}>
+              {pluginTemplates.length} 个开发模版
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          {pluginTemplates.map((template) => (
+            <button
+              key={template.id}
+              onClick={() => handleUseTemplate(template.id)}
+              className={`p-4 rounded-xl border text-left transition-all ${
+                selectedTemplate === template.id
+                  ? `${t.page.cardBg} ${t.page.inputBorder} ${t.page.inputFocus}`
+                  : `${t.page.cardBg} ${t.page.cardBorder} ${t.hoverBg}`
+              }`}
+            >
+              <div className={`text-[0.82rem] ${t.text.primary} mb-1`}>
+                {template.name}
+              </div>
+              <div className={`text-[0.72rem] ${t.text.muted}`}>
+                {template.description}
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {selectedTemplate && customCode && (
+          <div className={`p-4 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+            <div className="flex items-center justify-between mb-3">
+              <span className={`text-[0.82rem] ${t.text.primary}`}>
+                代码模版
+              </span>
+              <button
+                onClick={handleCopyCode}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.ghost} ${t.btn.ghostHover}`}
+              >
+                复制代码
+              </button>
+            </div>
+            <textarea
+              value={customCode}
+              onChange={(e) => setCustomCode(e.target.value)}
+              rows={12}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.72rem] font-mono resize-none ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+            />
+          </div>
+        )}
+      </SettingGroup>
+    </div>
+  );
+}
+
+// ===== Template Design Section =====
+function TemplateDesignSection({ t }: { t: ThemeTokens }) {
+  const {
+    templates,
+    addTemplate,
+    updateTemplate,
+    deleteTemplate,
+    duplicateTemplate,
+    useTemplate: applyTemplate,
+  } = useWorkflowPluginStore();
+  const [isCreating, setIsCreating] = useState(false);
+  const [draft, setDraft] = useState({ name: "", description: "", category: "custom" as const, icon: "📦", tags: "" });
+
+  const handleCreate = () => {
+    if (!draft.name.trim()) return;
+    addTemplate({
+      name: draft.name,
+      description: draft.description,
+      category: draft.category,
+      icon: draft.icon,
+      tags: draft.tags.split(",").map(t => t.trim()).filter(Boolean),
+      template: {},
+    });
+    setDraft({ name: "", description: "", category: "custom", icon: "📦", tags: "" });
+    setIsCreating(false);
+  };
+
+  return (
+    <div className="space-y-4">
+      <SettingGroup title="模版管理" t={t}>
+        <div className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}>
+          <div className="flex items-center gap-2">
+            <Database className={`w-4 h-4 ${t.text.accent}`} />
+            <span className={`text-[0.82rem] ${t.text.primary}`}>
+              {templates.length} 个模版
+            </span>
+            <span className={`text-[0.72rem] ${t.text.caption}`}>
+              (总使用次数: {templates.reduce((sum, t) => sum + t.usageCount, 0)})
+            </span>
+          </div>
+          <button
+            onClick={() => setIsCreating(true)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.accent} ${t.btn.accentHover}`}
+          >
+            <Plus className="w-3.5 h-3.5" />
+            创建模版
+          </button>
+        </div>
+
+        {isCreating && (
+          <div className={`p-4 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder} space-y-3`}>
+            <input
+              placeholder="模版名称"
+              value={draft.name}
+              onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+            />
+            <textarea
+              placeholder="模版描述"
+              value={draft.description}
+              onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              rows={2}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.82rem] resize-none ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+            />
+            <div className="flex gap-2">
+              <input
+                placeholder="图标 (emoji)"
+                value={draft.icon}
+                onChange={(e) => setDraft({ ...draft, icon: e.target.value })}
+                className={`w-20 px-3 py-2 rounded-lg border text-[0.82rem] ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+              />
+              <input
+                placeholder="标签 (逗号分隔)"
+                value={draft.tags}
+                onChange={(e) => setDraft({ ...draft, tags: e.target.value })}
+                className={`flex-1 px-3 py-2 rounded-lg border text-[0.82rem] ${t.page.inputBg} ${t.page.inputBorder} ${t.page.inputText} ${t.page.inputFocus} focus:outline-none`}
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleCreate}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.accent} ${t.btn.accentHover}`}
+              >
+                创建
+              </button>
+              <button
+                onClick={() => setIsCreating(false)}
+                className={`px-3 py-1.5 rounded-lg text-[0.78rem] ${t.btn.ghost} ${t.btn.ghostHover}`}
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-2">
+          {templates.map((template) => (
+            <div
+              key={template.id}
+              className={`flex items-center justify-between px-4 py-3 rounded-xl border ${t.page.cardBg} ${t.page.cardBorder}`}
+            >
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{template.icon}</span>
+                  <span className={`text-[0.82rem] ${t.text.primary}`}>
+                    {template.name}
+                  </span>
+                  <span className={`text-[0.68rem] px-2 py-0.5 rounded ${t.status.infoBg}`}>
+                    {template.category}
+                  </span>
+                </div>
+                {template.description && (
+                  <div className={`text-[0.72rem] ${t.text.muted} mt-1`}>
+                    {template.description}
+                  </div>
+                )}
+                <div className={`text-[0.68rem] ${t.text.caption} mt-1`}>
+                  使用次数: {template.usageCount} ·
+                  创建于 {new Date(template.createdAt).toLocaleDateString()}
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => applyTemplate(template.id)}
+                  className={`px-2 py-1 rounded text-[0.72rem] ${t.btn.accent} ${t.btn.accentHover}`}
+                  title="使用"
+                >
+                  使用
+                </button>
+                <button
+                  onClick={() => duplicateTemplate(template.id)}
+                  className={`px-2 py-1 rounded text-[0.72rem] ${t.btn.ghost} ${t.btn.ghostHover}`}
+                  title="复制"
+                >
+                  📋
+                </button>
+                <button
+                  onClick={() => deleteTemplate(template.id)}
+                  className={`px-2 py-1 rounded text-[0.72rem] ${t.status.error} hover:opacity-80`}
+                  title="删除"
+                >
+                  🗑️
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SettingGroup>
     </div>
   );
 }

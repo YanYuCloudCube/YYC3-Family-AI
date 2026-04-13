@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file PluginSystemDesign.ts
- * @description 插件系统设计 - 实现扩展点、依赖管理和生命周期管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,system,extension,dependency,lifecycle
+ * @file: PluginSystemDesign.ts
+ * @description: 插件系统设计 - 实现扩展点、依赖管理和生命周期管理
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,system,extension,dependency,lifecycle
  */
 
 import type {

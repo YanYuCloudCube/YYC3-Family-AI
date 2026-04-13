@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file useSentry.ts
- * @description Sentry Hook - 提供 React 组件级别的错误追踪和性能监控
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags sentry,react,hook,monitoring
+ * @file: useSentry.ts
+ * @description: Sentry Hook - 提供 React 组件级别的错误追踪和性能监控
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: sentry,react,hook,monitoring
  */
 
 import { useEffect, useCallback } from "react";

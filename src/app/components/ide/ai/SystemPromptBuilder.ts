@@ -1,14 +1,14 @@
 /**
- * @file ai/SystemPromptBuilder.ts
- * @description 构建上下文感知的 System Prompt，根据用户意图和项目上下文生成最优的系统提示词
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,prompt,system-prompt,intent-detection
+ * @file: ai/SystemPromptBuilder.ts
+ * @description: 构建上下文感知的 System Prompt，根据用户意图和项目上下文生成最优的系统提示词
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,prompt,system-prompt,intent-detection
  */
 
 import { type ProjectContext, compressContext } from "./ContextCollector";

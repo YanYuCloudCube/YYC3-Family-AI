@@ -16,6 +16,7 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { createTerminalAPI } from './src/app/components/ide/api/terminal-api'
 
 // CDN 配置 - 通过环境变量控制是否启用
 const USE_CDN = process.env.USE_CDN === 'true'
@@ -45,6 +46,7 @@ export default defineConfig({
     // Tailwind is not being actively used – do not remove them
     react(),
     tailwindcss(),
+    createTerminalAPI(), // 真实终端执行 API
   ],
   resolve: {
     alias: {

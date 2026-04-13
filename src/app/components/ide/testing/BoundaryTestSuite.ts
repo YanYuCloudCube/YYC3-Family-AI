@@ -1,14 +1,14 @@
 /**
- * @file BoundaryTestSuite.ts
- * @description 边界条件测试工具 - 空文件、超大文件、特殊字符、并发冲突测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags testing,boundary,edge-case,empty-file,large-file,special-chars
+ * @file: BoundaryTestSuite.ts
+ * @description: 边界条件测试工具 - 空文件、超大文件、特殊字符、并发冲突测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: testing,boundary,edge-case,empty-file,large-file,special-chars
  */
 
 import type {

@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file DiffPreviewModal.tsx
- * @description AI 代码变更差异预览模态框，显示 CodeApplicationPlan 的所有代码块，
+ * @file: DiffPreviewModal.tsx
+ * @description: AI 代码变更差异预览模态框，显示 CodeApplicationPlan 的所有代码块，
  *              支持逐文件 diff 查看（新增/修改/删除行高亮）、单独接受/拒绝、一键应用
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags diff,preview,modal,code-review,ai
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: diff,preview,modal,code-review,ai
  */
 
 import { useState, useMemo, useCallback } from "react";

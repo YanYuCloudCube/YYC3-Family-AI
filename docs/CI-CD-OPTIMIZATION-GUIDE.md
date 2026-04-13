@@ -1,7 +1,25 @@
-# CI/CD 优化实施指南
+---
+file: CI-CD-OPTIMIZATION-GUIDE.md
+description: CI/CD 优化实施指南 - 构建缓存、部署通知、性能监控、多环境支持
+author: YanYuCloudCube Team <admin@0379.email>
+version: v1.0.0
+created: 2026-04-01
+updated: 2026-04-09
+status: stable
+tags: ci-cd,optimization,deployment,github-actions
+category: devops
+language: zh-CN
+---
 
-## 更新日期
-2026-04-01
+> ***YanYuCloudCube***
+> *言启象限 | 语枢未来*
+> ***Words Initiate Quadrants, Language Serves as Core for Future***
+> *万象归元于云枢 | 深栈智启新纪元***
+> ***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***
+
+---
+
+# CI/CD 优化实施指南
 
 ## 优化概述
 
@@ -185,8 +203,8 @@
 
 | 环境 | 分支 | 部署 URL | 用途 |
 |------|------|---------|------|
-| **production** | `main` | https://code.yyccube.xin | 生产环境 |
-| **staging** | `staging` | https://staging.code.yyccube.xin | 预发布环境 |
+| **production** | `main` | https://family-ai.yyccube.com | 生产环境 |
+| **staging** | `staging` | https://staging.family-ai.yyccube.com | 预发布环境 |
 | **development** | `develop` | 本地开发 | 开发环境 |
 
 ### 技术实现
@@ -335,7 +353,7 @@ git push origin main
 
 # 自动触发：
 # - 构建和测试
-# - 部署到 https://code.yyccube.xin
+# - 部署到 https://family-ai.yyccube.com
 # - 发送通知到 admin@0379.email
 ```
 
@@ -347,13 +365,13 @@ git push origin staging
 
 # 自动触发：
 # - 构建和测试
-# - 部署到 https://staging.code.yyccube.xin
+# - 部署到 https://staging.family-ai.yyccube.com
 # - 发送通知到 admin@0379.email
 ```
 
 ### 手动触发部署
 
-1. 访问 https://github.com/YYC-Cube/YYC3-Family-AI/actions
+1. 访问 https://github.com/YanYuCloudCube/YYC3-Family-AI/actions
 2. 选择 "YYC3 Family AI - Multi-Environment CI/CD"
 3. 点击 "Run workflow"
 4. 选择目标环境

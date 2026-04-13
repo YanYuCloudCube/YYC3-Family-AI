@@ -1,16 +1,16 @@
 /**
- * @file SandpackPreview.tsx
- * @description 基于 Sandpack 的完整 React 应用实时预览面板，
+ * @file: SandpackPreview.tsx
+ * @description: 基于 Sandpack 的完整 React 应用实时预览面板，
  *              将 FileStore 中的文件实时渲染在 Sandpack 沙箱 iframe 中，
  *              支持设备模拟、控制台、自动重编译
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags preview,sandpack,react,sandbox,live-preview
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: preview,sandpack,react,sandbox,live-preview
  */
 
 import { useMemo, useState } from "react";

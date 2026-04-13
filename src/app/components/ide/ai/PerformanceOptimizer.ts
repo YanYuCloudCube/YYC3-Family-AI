@@ -1,15 +1,15 @@
 /**
- * @file ai/PerformanceOptimizer.ts
- * @description F2.3 智能性能优化建议模块，分析 React 组件代码产出可操作的优化建议，
+ * @file: ai/PerformanceOptimizer.ts
+ * @description: F2.3 智能性能优化建议模块，分析 React 组件代码产出可操作的优化建议，
  *              覆盖渲染优化 / 状态管理 / 代码分割 / 缓存策略 / 资源优化 / 内存管理 / 网络优化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,performance,optimization,react,analysis
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,performance,optimization,react,analysis
  */
 
 // ===================================================================

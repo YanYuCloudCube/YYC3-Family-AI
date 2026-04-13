@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file IntentRecognitionEngine.ts
- * @description 意图识别引擎 - 整合分类、特征提取、置信度计算的统一引擎
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags intent,engine,recognition,llm
+ * @file: IntentRecognitionEngine.ts
+ * @description: 意图识别引擎 - 整合分类、特征提取、置信度计算的统一引擎
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: intent,engine,recognition,llm
  */
 
 import {

@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file RealtimePreview.integration.test.tsx
- * @description 实时预览集成测试 - 覆盖预览引擎、设备模拟、控制台捕获、历史快照
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,preview,integration
+ * @file: RealtimePreview.integration.test.tsx
+ * @description: 实时预览集成测试 - 覆盖预览引擎、设备模拟、控制台捕获、历史快照
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,preview,integration
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";

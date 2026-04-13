@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file LargeScaleTesting.test.ts
- * @description 大规模场景测试 - 性能、边界、兼容性测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags testing,performance,boundary,compatibility,large-scale
+ * @file: LargeScaleTesting.test.ts
+ * @description: 大规模场景测试 - 性能、边界、兼容性测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: testing,performance,boundary,compatibility,large-scale
  */
 
 import { describe, it, expect, beforeAll } from 'vitest';

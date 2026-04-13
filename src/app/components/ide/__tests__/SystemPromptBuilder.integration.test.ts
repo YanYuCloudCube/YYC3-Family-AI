@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file SystemPromptBuilder.integration.test.ts
- * @description SystemPromptBuilder 集成测试 - 测试从用户输入到系统提示词构建的完整流程
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status test
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,integration,system-prompt-builder,intent-detection,pipeline
+ * @file: SystemPromptBuilder.integration.test.ts
+ * @description: SystemPromptBuilder 集成测试 - 测试从用户输入到系统提示词构建的完整流程
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: test
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,integration,system-prompt-builder,intent-detection,pipeline
  */
 
 import { describe, it, expect, beforeEach } from "vitest";

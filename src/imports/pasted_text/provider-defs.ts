@@ -1,14 +1,14 @@
 /**
- * @file provider-defs.ts
- * @description provider-defs — pasted_text 模块
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags module,typescript,pasted_text
+ * @file: provider-defs.ts
+ * @description: provider-defs — pasted_text 模块
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: module,typescript,pasted_text
  */
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';

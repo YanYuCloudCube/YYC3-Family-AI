@@ -1,14 +1,14 @@
 /**
- * @file IconAssetsPage.tsx
- * @description YYC3 Design Prompt 图标资产查看器 - 展示从 GitHub YYC3-Design-Prompt/public/yyc3 拉取的全平台图标
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v2.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags icons,assets,github,viewer,multi-platform
+ * @file: IconAssetsPage.tsx
+ * @description: YYC3 Design Prompt 图标资产查看器 - 展示从 GitHub YYC3-Design-Prompt/public/yyc3 拉取的全平台图标
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v2.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: icons,assets,github,viewer,multi-platform
  */
 
 import { useState } from "react";
@@ -33,7 +33,7 @@ const GITHUB_RAW_BASE =
   "https://raw.githubusercontent.com/YYC-Cube/YanYuCloud/main/YYC3-Design-Prompt/public/yyc3";
 
 const GITHUB_REPO_URL =
-  "https://github.com/YYC-Cube/YanYuCloud/tree/main/YYC3-Design-Prompt/public/yyc3";
+  "https://github.com/YanYuCloudCube/YanYuCloud/tree/main/YYC3-Design-Prompt/public/yyc3";
 
 interface IconAsset {
   name: string;
@@ -507,9 +507,9 @@ export default function IconAssetsPage() {
   const totalAssets = categories.reduce((sum, c) => sum + c.assets.length, 0);
 
   return (
-    <div className="min-h-screen bg-[var(--ide-bg-deep,#060d1a)] text-[var(--ide-text,#e2e8f0)]">
+    <div className="h-screen flex flex-col bg-[var(--ide-bg-deep,#060d1a)] text-[var(--ide-text,#e2e8f0)]">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-[var(--ide-border,#1e3a5f)] bg-[var(--ide-bg-deep,#060d1a)]/95 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-[var(--ide-border,#1e3a5f)] bg-[var(--ide-bg-deep,#060d1a)]/95 backdrop-blur-md flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
@@ -542,7 +542,7 @@ export default function IconAssetsPage() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 min-h-0 overflow-y-auto">
         {/* Stats */}
         <StatsBar />
 

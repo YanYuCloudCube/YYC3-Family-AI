@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file IndexedDBAdapter.performance.test.ts
- * @description IndexedDB 性能优化测试 - 验证缓存、批量查询、性能监控等功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,performance,indexeddb,cache,benchmark
+ * @file: IndexedDBAdapter.performance.test.ts
+ * @description: IndexedDB 性能优化测试 - 验证缓存、批量查询、性能监控等功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,performance,indexeddb,cache,benchmark
  */
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";

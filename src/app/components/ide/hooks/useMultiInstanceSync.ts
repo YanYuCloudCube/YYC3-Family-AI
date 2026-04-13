@@ -1,16 +1,16 @@
 /**
- * @file hooks/useMultiInstanceSync.ts
- * @description 跨标签页多实例自动同步 Hook — 基于 BroadcastChannel + storage 事件
+ * @file: hooks/useMultiInstanceSync.ts
+ * @description: 跨标签页多实例自动同步 Hook — 基于 BroadcastChannel + storage 事件
  *              监听其他标签页的 Window/Workspace/Session store 变更，
  *              自动拉取 localStorage 最新状态刷新本地 Zustand store
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,multi-instance,sync,broadcast-channel,storage-event
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,multi-instance,sync,broadcast-channel,storage-event
  */
 
 import { useEffect, useRef } from "react";

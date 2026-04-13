@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file ai/AIPipeline.ts
- * @description 端到端 AI 代码生成流水线，串联 ContextCollector → SystemPromptBuilder → LLM → CodeApplicator，
+ * @file: ai/AIPipeline.ts
+ * @description: 端到端 AI 代码生成流水线，串联 ContextCollector → SystemPromptBuilder → LLM → CodeApplicator，
  *              供 LeftPanel / AIChatPage 调用
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,pipeline,code-generation,llm,streaming
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,pipeline,code-generation,llm,streaming
  */
 
 import {

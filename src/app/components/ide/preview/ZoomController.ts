@@ -1,13 +1,13 @@
 /**
- * @file ZoomController.ts
- * @description 视图缩放控制器 - 管理预览视图的缩放级别、范围验证、步进控制
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags preview,zoom,controller,view
+ * @file: ZoomController.ts
+ * @description: 视图缩放控制器 - 管理预览视图的缩放级别、范围验证、步进控制
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: preview,zoom,controller,view
  */
 
 // ================================================================

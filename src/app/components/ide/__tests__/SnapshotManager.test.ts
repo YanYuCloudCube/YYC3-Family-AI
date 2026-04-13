@@ -1,13 +1,13 @@
 // @ts-nocheck
 /**
- * @file SnapshotManager.test.ts
- * @description SnapshotManager 单元测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
+ * @file: SnapshotManager.test.ts
+ * @description: SnapshotManager 单元测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";

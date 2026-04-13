@@ -1,18 +1,18 @@
 ---
-@file: YYC3-P0-架构-项目初始化.md
-@description: P0-核心架构 - 项目初始化和基础配置提示词
-@author: YanYuCloudCube Team <admin@0379.email>
-@version: v1.0.0
-@created: 2026-03-14
-@updated: 2026-03-14
-@status: stable
-@tags: p0,architecture,project-initialization
-@category: prompt-system
-@language: zh-CN
-@design_type: prompt-engineering
-@review_status: approved
-@audience: developers,ai-engineers
-@complexity: intermediate
+file: YYC3-P0-架构-项目初始化.md
+description: P0-核心架构 - 项目初始化和基础配置提示词
+author: YanYuCloudCube Team <admin0379.email>
+version: v1.0.0
+created: 2026-03-14
+updated: 2026-03-14
+status: stable
+tags: p0,architecture,project-initialization
+category: prompt-system
+language: zh-CN
+design_type: prompt-engineering
+review_status: approved
+audience: developers,ai-engineers
+complexity: intermediate
 ---
 
 > ***YanYuCloudCube***

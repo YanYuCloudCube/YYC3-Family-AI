@@ -1,16 +1,16 @@
 /**
- * @file SettingsBridge.ts
- * @description 设置模块与 IDE 核心模块的协同桥接层 —
+ * @file: SettingsBridge.ts
+ * @description: 设置模块与 IDE 核心模块的协同桥接层 —
  *              实现 Settings Store ↔ ModelRegistry / FileStore / LLMService / MCP 的双向数据同步，
  *              包含快捷键全局映射绑定、MCP 运行时注入、规则注入到 AI 系统提示词
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,bridge,sync,keybindings,mcp,rules,integration
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,bridge,sync,keybindings,mcp,rules,integration
  */
 
 import { useSettingsStore } from "./stores/useSettingsStore";

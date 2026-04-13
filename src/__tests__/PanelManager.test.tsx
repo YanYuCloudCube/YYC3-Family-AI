@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file PanelManager.test.tsx
- * @description Panel Manager 核心功能测试 - 覆盖布局管理、面板拆分合并、拖拽、持久化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,panel-manager,layout,dnd
+ * @file: PanelManager.test.tsx
+ * @description: Panel Manager 核心功能测试 - 覆盖布局管理、面板拆分合并、拖拽、持久化
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,panel-manager,layout,dnd
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";

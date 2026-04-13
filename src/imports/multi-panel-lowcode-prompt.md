@@ -1,12 +1,14 @@
 ---
-@file: Multi-panel-lowcode-prompt.md
-@description: YYC3-AI-Family 智能AI编程助理核心提示词 - 多联式低码编程实时预览系统
-@author: YanYuCloudCube Team
-@version: 2.0.0
-@created: 2026-03-03
-@updated: 2026-03-04
-@status: production
-@tags: ai-assistant, low-code, multi-panel, real-time-preview
+file: Multi-panel-lowcode-prompt.md
+description: YYC3-AI-Family 智能AI编程助理核心提示词 - 多联式低码编程实时预览系统
+author: YanYuCloudCube Team <admin@0379.email>
+version: v2.0.0
+created: 2026-03-03
+updated: 2026-04-09
+status: stable
+tags: ai-assistant,low-code,multi-panel,real-time-preview
+category: prompt
+language: zh-CN
 ---
 
 > ***YanYuCloudCube***

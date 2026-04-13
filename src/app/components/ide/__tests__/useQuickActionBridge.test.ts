@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/useQuickActionBridge.test.ts
- * @description QuickActionBridge Store 单元测试 — 覆盖 dispatch/consume/clear 生命周期、
+ * @file: __tests__/useQuickActionBridge.test.ts
+ * @description: QuickActionBridge Store 单元测试 — 覆盖 dispatch/consume/clear 生命周期、
  *              actionLog 记录与上限、幂等性、buildActionPrompt 提示词构建
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,zustand,quick-actions,bridge
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,zustand,quick-actions,bridge
  */
 
 import { describe, it, expect, beforeEach } from "vitest";

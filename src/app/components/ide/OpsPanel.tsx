@@ -1,15 +1,15 @@
 /**
- * @file OpsPanel.tsx
- * @description DevOps 运维面板，展示系统健康状态、性能指标、AI 模型监控、
+ * @file: OpsPanel.tsx
+ * @description: DevOps 运维面板，展示系统健康状态、性能指标、AI 模型监控、
  *              代理配置管理、自动扩缩策略等运维信息
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags devops,monitoring,health,proxy,panel
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: devops,monitoring,health,proxy,panel
  */
 
 import { useState, useEffect, useCallback } from "react";

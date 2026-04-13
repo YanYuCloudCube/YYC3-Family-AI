@@ -1,18 +1,18 @@
 /**
- * @file LeftPanel.tsx
- * @description AI 对话面板（重构版），集成真实 LLM 调用（六大 Provider SSE 流式）、
+ * @file: LeftPanel.tsx
+ * @description: AI 对话面板（重构版），集成真实 LLM 调用（六大 Provider SSE 流式）、
  *              代码生成流水线、Diff 预览确认、会话历史、跨面板 AI 修复通信、
  *              QuickActions 桥接（ref 回调模式）、TaskBoard 自动任务提取、
  *              AI 上下文增强（当前打开文件自动注入系统提示词）
  *              拆分为 ModelSelector / ConnectivityIndicator / ChatMessageList / ChatInputArea 四子组件
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v3.0.0
- * @created 2026-03-06
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,chat,llm,pipeline,streaming,diff-preview,quick-actions,task-inference,context-enhanced
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v3.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,chat,llm,pipeline,streaming,diff-preview,quick-actions,task-inference,context-enhanced
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -50,7 +50,9 @@ import { extractTasksFromResponse } from "./ai/TaskInferenceEngine";
 import ChatMessageList, {
   type ChatMessage,
 } from "./left-panel/ChatMessageList";
-import ChatInputArea from "./left-panel/ChatInputArea";
+import ChatInputArea, {
+  type AttachedFile,
+} from "./left-panel/ChatInputArea";
 import { useChatSessionSync } from "./hooks/useChatSessionSync";
 
 // ── Constants ──
@@ -157,6 +159,17 @@ export default function LeftPanel({ nodeId }: { nodeId: string }) {
   const [chatInput, setChatInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+
+  // ── File attachments ──
+  const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([]);
+
+  const handleAttachFiles = useCallback((files: AttachedFile[]) => {
+    setAttachedFiles(files);
+  }, []);
+
+  const handleRemoveFile = useCallback((fileId: string) => {
+    setAttachedFiles((prev) => prev.filter((f) => f.id !== fileId));
+  }, []);
 
   // ── Diff Preview Modal state ─
   const [pendingPlan, setPendingPlan] = useState<CodeApplicationPlan | null>(
@@ -570,7 +583,7 @@ export default function LeftPanel({ nodeId }: { nodeId: string }) {
 
   return (
     <>
-      <div className="size-full flex flex-col bg-[var(--ide-bg)]">
+      <div className="size-full min-w-[350px] flex flex-col bg-[var(--ide-bg)]">
         {/* Panel Header */}
         <PanelHeader
           nodeId={nodeId}
@@ -670,6 +683,9 @@ export default function LeftPanel({ nodeId }: { nodeId: string }) {
           showSuggestions={messages.length <= 1}
           onSend={handleSend}
           onStop={handleStop}
+          attachedFiles={attachedFiles}
+          onAttachFiles={handleAttachFiles}
+          onRemoveFile={handleRemoveFile}
         />
       </div>
 

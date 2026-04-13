@@ -41,6 +41,14 @@ lerna-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.cdn
+.env.cdn.local
+
+# API Keys and Secrets (NEVER commit these)
+*api-key*
+*secret*
+*.pem
+*.key
 
 # Temporary files
 *.tmp

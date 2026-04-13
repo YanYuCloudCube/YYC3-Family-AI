@@ -1,14 +1,14 @@
 /**
- * @file useThemeTokens.test.tsx
- * @description 主题令牌 Hook 测试 - 测试主题令牌获取和 CSS 变量生成
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: useThemeTokens.test.tsx
+ * @description: 主题令牌 Hook 测试 - 测试主题令牌获取和 CSS 变量生成
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // ================================================================

@@ -1,14 +1,14 @@
 /**
- * @file ErrorHandler.ts
- * @description 统一的错误处理器，提供异常捕获、错误分类、友好提示和日志记录
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags error,handler,exception,stability
+ * @file: ErrorHandler.ts
+ * @description: 统一的错误处理器，提供异常捕获、错误分类、友好提示和日志记录
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: error,handler,exception,stability
  */
 
 /**

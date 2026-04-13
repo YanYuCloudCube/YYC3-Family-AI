@@ -1,15 +1,15 @@
 /**
- * @file stores/useTaskBoardStore.ts
- * @description AI 智能任务看板 Zustand Store — 管理任务 CRUD、状态流转、优先级、子任务、
+ * @file: stores/useTaskBoardStore.ts
+ * @description: AI 智能任务看板 Zustand Store — 管理任务 CRUD、状态流转、优先级、子任务、
  *              提醒系统、AI 对话自动提取任务，对齐 P1-AI-任务看板交互.md 规范
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,task-board,kanban,ai-inference
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,task-board,kanban,ai-inference
  */
 
 import { create } from "zustand";

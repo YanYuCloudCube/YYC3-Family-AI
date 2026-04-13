@@ -97,7 +97,7 @@ jobs:
     needs: build-and-test
     environment:
       name: github-pages
-      url: https://code.yyccube.xin
+      url: https://family-ai.yyccube.com
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages

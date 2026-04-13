@@ -1,15 +1,15 @@
 /**
- * @file RecentErrorsEntry.tsx
- * @description 跨面板"近期错误"快捷入口组件，在各功能面板 Footer 区域展示
+ * @file: RecentErrorsEntry.tsx
+ * @description: 跨面板"近期错误"快捷入口组件，在各功能面板 Footer 区域展示
  *              错误/警告计数徽标，点击跳转到 OpsPanel 错误标签页，实现正向溯源链路
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags errors,cross-panel,footer,tracing
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: errors,cross-panel,footer,tracing
  */
 
 import { Bug } from "lucide-react";

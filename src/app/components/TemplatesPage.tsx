@@ -1,15 +1,15 @@
 /**
- * @file TemplatesPage.tsx
- * @description 项目模板市场页面，支持搜索、分类筛选、模板预览、
+ * @file: TemplatesPage.tsx
+ * @description: 项目模板市场页面，支持搜索、分类筛选、模板预览、
  *              快速创建项目。已完成 isCyber → useThemeTokens 迁移
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-06
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags templates,marketplace,projects,creation,token-migrated
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: templates,marketplace,projects,creation,token-migrated
  */
 
 import { useState, useMemo } from "react";
@@ -262,10 +262,10 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className={`size-full min-h-screen ${t.templates.pageBg}`}>
+    <div className={`h-screen flex flex-col ${t.templates.pageBg}`}>
       {/* Top bar */}
       <div
-        className={`sticky top-0 z-30 border-b backdrop-blur-md ${t.templates.topBarBg}`}
+        className={`sticky top-0 z-30 border-b backdrop-blur-md flex-shrink-0 ${t.templates.topBarBg}`}
       >
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-4">
           <button
@@ -284,7 +284,7 @@ export default function TemplatesPage() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-6xl mx-auto px-6 py-6 flex-1 min-h-0 overflow-y-auto">
         {/* Search & Filter bar */}
         <div className="flex items-center gap-4 mb-6">
           <div

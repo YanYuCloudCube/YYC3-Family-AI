@@ -1,15 +1,15 @@
 /**
- * @file ai/ContextCollector.ts
- * @description 收集项目上下文供 LLM 使用，从 FileStore 中提取文件树、活跃文件、
+ * @file: ai/ContextCollector.ts
+ * @description: 收集项目上下文供 LLM 使用，从 FileStore 中提取文件树、活跃文件、
  *              打开标签页、最近编辑等信息
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,context,file-tree,project-analysis
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,context,file-tree,project-analysis
  */
 
 export interface ProjectContext {

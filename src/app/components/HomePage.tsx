@@ -1,15 +1,15 @@
 /**
- * @file HomePage.tsx
- * @description 首页入口，包含品牌标识、智能编程 AI 聊天框、项目快速访问卡片、
+ * @file: HomePage.tsx
+ * @description: 首页入口，包含品牌标识、智能编程 AI 聊天框、项目快速访问卡片、
  *              智能路由决策系统
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.5.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags homepage,brand,chat,projects,routing
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.5.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: homepage,brand,chat,projects,routing
  */
 
 import React, {
@@ -596,7 +596,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     icon: LayoutGrid,
-    label: "板中心",
+    label: "模版中心",
     id: "templates",
     action: "navigate",
     target: "/templates",
@@ -827,7 +827,7 @@ export default function HomePage() {
         window.open("https://www.figma.com/", "_blank");
         break;
       case "code-snippet":
-        setChatInput(prev => prev + "\n```typescript\n// 在此粘贴代码\n```\n");
+        setChatInput(prev => `${prev  }\n\`\`\`typescript\n// 在此粘贴代码\n\`\`\`\n`);
         setShowActions(false);
         break;
       case "clipboard":
@@ -1007,7 +1007,7 @@ export default function HomePage() {
       {/* ===== Left Sidebar Icon Rail ===== */}
       <div className="fixed left-0 top-0 bottom-0 z-40">
         <div
-          className={`w-[52px] h-full flex flex-col items-center py-3 ${t.page.sidebarBg} ${t.page.sidebarBorder} backdrop-blur-md`}
+          className={`w-[52px] h-screen flex flex-col items-center py-3 ${t.page.sidebarBg} ${t.page.sidebarBorder} backdrop-blur-md`}
         >
           {/* Logo */}
           <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-5 cursor-pointer overflow-hidden">
@@ -1015,7 +1015,7 @@ export default function HomePage() {
           </div>
 
           {/* Nav items */}
-          <nav className="flex flex-col items-center gap-0.5 flex-1">
+          <nav className="flex flex-col items-center gap-0.5 flex-1 min-h-0 overflow-y-auto">
             {NAV_ITEMS.map((item) => {
               const isActive = activeNav === item.id;
               return (
@@ -1185,7 +1185,7 @@ export default function HomePage() {
                     onChange={(e) => {
                       if (e.target.files && e.target.files.length > 0) {
                         Array.from(e.target.files).forEach(file => {
-                          setChatInput(prev => prev + `[图片: ${file.name}] `);
+                          setChatInput(prev => `${prev  }[图片: ${file.name}] `);
                         });
                       }
                     }}
@@ -1198,7 +1198,7 @@ export default function HomePage() {
                     onChange={(e) => {
                       if (e.target.files && e.target.files.length > 0) {
                         Array.from(e.target.files).forEach(file => {
-                          setChatInput(prev => prev + `[文件: ${file.name}] `);
+                          setChatInput(prev => `${prev  }[文件: ${file.name}] `);
                         });
                       }
                     }}

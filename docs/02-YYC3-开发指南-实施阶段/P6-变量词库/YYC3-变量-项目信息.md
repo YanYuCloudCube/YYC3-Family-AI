@@ -48,7 +48,7 @@
 |--------|--------|------|------|
 | `{{TEAM_NAME}}` | YanYuCloudCube Team | 团队名称 | YanYuCloudCube Team |
 | `{{CONTACT_EMAIL}}` | admin@0379.email | 联系邮箱 | admin@0379.email |
-| `{{CONTACT_WEBSITE}}` | https://github.com/YYC-Cube/ | 官方网站 | https://github.com/YYC-Cube/ |
+| `{{CONTACT_WEBSITE}}` | https://github.com/YanYuCloudCube/ | 官方网站 | https://github.com/YanYuCloudCube/ |
 
 ### 3. 品牌标识
 
@@ -362,7 +362,7 @@ module.exports = { validateVariables };
 
 - **维护团队**: YanYuCloudCube Team
 - **联系邮箱**: admin@0379.email
-- **项目地址**: https://github.com/YYC-Cube/
+- **项目地址**: https://github.com/YanYuCloudCube/
 
 ---
 

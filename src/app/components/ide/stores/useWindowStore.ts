@@ -1,15 +1,15 @@
 /**
- * @file stores/useWindowStore.ts
- * @description 窗口管理 Zustand Store — 管理应用多实例窗口的创建、关闭、激活、
+ * @file: stores/useWindowStore.ts
+ * @description: 窗口管理 Zustand Store — 管理应用多实例窗口的创建、关闭、激活、
  *              位置/尺寸调整，使用 BroadcastChannel 实现跨标签页 IPC 通信
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,multi-instance,window-manager,zustand,broadcast-channel
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,multi-instance,window-manager,zustand,broadcast-channel
  */
 
 import { create } from "zustand";

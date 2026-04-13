@@ -1,7 +1,7 @@
 // @ts-nocheck
 /**
- * @file SystemPromptBuilder.test.ts
- * @description SystemPromptBuilder 单元测试
+ * @file: SystemPromptBuilder.test.ts
+ * @description: SystemPromptBuilder 单元测试
  */
 
 import { describe, it, expect } from 'vitest';

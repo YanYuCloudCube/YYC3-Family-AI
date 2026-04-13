@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ai/CodeApplicator.ts
- * @description 解析 LLM 响应并应用代码到文件系统，支持单文件/多文件、创建/更新、diff 预览、代码验证
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-10
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,code-applicator,diff,file-system,validation
+ * @file: ai/CodeApplicator.ts
+ * @description: 解析 LLM 响应并应用代码到文件系统，支持单文件/多文件、创建/更新、diff 预览、代码验证
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,code-applicator,diff,file-system,validation
  */
 
 // ===================================================================

@@ -2,9 +2,9 @@
 file: YYC3-团队规范-开发标准.md
 description: YYC³ 团队统一开发标准 — 涵盖文档规范、代码标准、项目规范、质量保障的全量规范体系
 author: YanYuCloudCube Team <admin@0379.email>
-version: v1.1.0
-created: 2026-04-01
-updated: 2026-04-01
+version: v1.0.0
+created: 2026-03-21
+updated: 2026-03-21
 status: stable
 tags: [规范],[标准],[文档格式],[代码标准],[命名规范],[质量保障]
 category: policy
@@ -60,37 +60,6 @@ complexity: intermediate
 | Markdown | CommonMark |
 | 代码风格 | ESLint / Prettier / TypeScript Strict |
 | 测试 | Vitest / React Testing Library |
-
-### 规范治理与闭环机制
-
-**单一事实来源 (SSOT)**
-
-本文件 `YYC3-团队规范-开发标准.md` 是 YYC³ 团队开发标准的**唯一权威来源**。所有其他分散的规范文件（如 `01-团队规范-代码标头.md`、`10-技术规范-代码标头.md` 等）均已归并至此，并标记为 `deprecated`。
-
-**规范演进流程**
-
-```
-需求提出 → 草案编写 (draft) → 团队评审 (review) → 批准发布 (stable) → 定期复审
-                                                                    ↓
-                                                              发现偏差 → 修正 → 版本递增
-```
-
-**历史格式兼容声明**
-
-| 历史格式 | 状态 | 说明 |
-|----------|------|------|
-| `@file` / `@description` / `@author` | **deprecated** | 旧版 JSDoc `@tag` 格式，v1.0 之前使用 |
-| `file:` / `description:` / `author:` | **current** | 当前标准格式，v1.0 起使用 |
-
-> ⚠️ **迁移指引**：项目中仍存在使用 `@file` 格式的旧代码文件，新文件必须使用 `file:` 格式。旧文件在修改时同步迁移，不强制一次性全量替换。
-
-**闭环验证清单**
-
-- [ ] 新建文件标头是否符合 §2.1 格式
-- [ ] 修改文件时是否更新 `updated` 和 `version`
-- [ ] 旧格式文件修改时是否同步迁移为 `file:` 格式
-- [ ] 废弃规范文件是否标记 `deprecated` 并指向本文件
-- [ ] 技术栈版本是否与实际项目 `package.json` 一致
 
 ---
 
@@ -503,10 +472,8 @@ import { useState, useCallback, useMemo, createContext, useContext } from "react
 | 对象 | 规范 | 示例 |
 |------|------|------|
 | 项目名称 | `yyc3-` 前缀 + kebab-case | `yyc3-platform`, `yyc3-cp-im` |
-| 端口分配 | 推荐范围 3100-3500，核心服务优先 3200-3500 | `3126` (yyc3-family-ai), `3218` (yyc3-platform) |
+| 端口分配 | 默认 3200-3500，禁止占用 3000-3199 | `3218` (开发), `3113` (WebSocket) |
 | 包名 | `@yyc3/` 作用域 + kebab-case | `@yyc3/ui-components` |
-
-> **端口分配说明**：3100-3199 可用于辅助工具和独立服务（如当前 yyc3-family-ai 使用 3126），3200-3500 为核心应用推荐范围。各项目端口在 `vite.config.ts` 中通过 `server.port` + `strictPort: true` 固定。
 
 ### 3.2 文件命名
 
@@ -627,14 +594,12 @@ yyc3-{project-name}/
 
 **核心框架**
 
-| 技术 | 用途 | 推荐版本 | 当前项目版本 |
-|------|------|----------|-------------|
-| React | UI 框架 | 19+ | 18.3.1 |
-| TypeScript | 类型安全 | 5+ | 5.8.3 |
-| Vite | 构建工具 | 7+ | 6.3.5 |
-| React Router DOM | 客户端路由 | 7+ | 7.13.0 |
-
-> **说明**：「推荐版本」为标准推荐的新项目起始版本，「当前项目版本」为 yyc3-family-ai 实际使用版本。已有项目可沿用当前版本，新项目建议采用推荐版本。
+| 技术 | 用途 | 版本要求 |
+|------|------|----------|
+| React | UI 框架 | 19+ |
+| TypeScript | 类型安全 | 5+ |
+| Vite | 构建工具 | 7+ |
+| React Router DOM | 客户端路由 | 7+ |
 
 **状态管理**
 
@@ -921,8 +886,7 @@ exit 0
 
 | 版本 | 日期 | 变更内容 | 作者 |
 |------|------|----------|------|
-| v1.1.0 | 2026-04-01 | 全局统一性审核：新增规范治理闭环章节、历史格式兼容声明、技术栈版本双列对照、端口规范调整、旧文件 deprecated 标记 | YanYuCloudCube Team |
-| v1.0.0 | 2026-04-01 | 初始版本 — 合并文档格式、命名规范、代码标准三份文档为统一开发标准 | YanYuCloudCube Team |
+| v1.0.0 | 2026-03-21 | 初始版本 — 合并文档格式、命名规范、代码标准三份文档为统一开发标准 | YanYuCloudCube Team |
 
 ---
 

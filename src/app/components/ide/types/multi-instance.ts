@@ -1,14 +1,14 @@
 /**
- * @file types/multi-instance.ts
- * @description 应用多开系统核心类型定义，包含实例、窗口、工作区、会话、IPC 消息等类型
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,multi-instance,types,workspace,session
+ * @file: types/multi-instance.ts
+ * @description: 应用多开系统核心类型定义，包含实例、窗口、工作区、会话、IPC 消息等类型
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,multi-instance,types,workspace,session
  */
 
 /** 实例类型 */

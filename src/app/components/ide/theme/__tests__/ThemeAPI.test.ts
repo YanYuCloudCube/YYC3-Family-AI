@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ThemeAPI.test.ts
- * @description 任务1.2主题系统完整API测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,theme,api,events,contrast
+ * @file: ThemeAPI.test.ts
+ * @description: 任务1.2主题系统完整API测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,theme,api,events,contrast
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

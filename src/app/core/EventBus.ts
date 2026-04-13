@@ -1,15 +1,15 @@
 /**
- * @file core/EventBus.ts
- * @description 事件总线 - 提供类型安全的事件发布订阅机制
+ * @file: core/EventBus.ts
+ * @description: 事件总线 - 提供类型安全的事件发布订阅机制
  *              支持事件优先级、异步处理、错误隔离
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags events,bus,pub-sub,typescript
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: events,bus,pub-sub,typescript
  */
 
 export interface EventHandler<T = unknown> {

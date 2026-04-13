@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ThemeSyncManager.ts
- * @description 主题同步管理器，协调系统主题、用户偏好和应用主题
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,sync,coordination,auto-sync
+ * @file: ThemeSyncManager.ts
+ * @description: 主题同步管理器，协调系统主题、用户偏好和应用主题
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,sync,coordination,auto-sync
  */
 
 // ================================================================

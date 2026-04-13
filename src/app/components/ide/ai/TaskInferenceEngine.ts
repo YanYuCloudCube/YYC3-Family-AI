@@ -1,15 +1,15 @@
 /**
- * @file ai/TaskInferenceEngine.ts
- * @description AI 响应任务推理引擎 — 从 AI 响应文本中基于关键词模式匹配提取候选任务，
+ * @file: ai/TaskInferenceEngine.ts
+ * @description: AI 响应任务推理引擎 — 从 AI 响应文本中基于关键词模式匹配提取候选任务，
  *              支持 6 种模式（TODO/BUG/重构/测试/文档/列表项），最多提取 5 个任务
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,task-inference,pattern-matching,heuristic
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,task-inference,pattern-matching,heuristic
  */
 
 import type {

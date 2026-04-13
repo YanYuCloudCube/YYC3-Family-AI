@@ -1,16 +1,16 @@
 /**
- * @file IDEPage.tsx
- * @description 智能编程 IDE 主页面，集成三栏布局、多联式面板拖拽系统、
+ * @file: IDEPage.tsx
+ * @description: 智能编程 IDE 主页面，集成三栏布局、多联式面板拖拽系统、
  *              视图切换（默认/预览/代码）、终端、快捷键、18 面板渲染路由、
  *              全局命令面板、面板小地图、快捷键帮助、浮动面板窗口、面板分组
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v3.1.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ide,layout,panels,routing,dnd,preview,command-palette,minimap,floating,tab-groups,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v3.1.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ide,layout,panels,routing,dnd,preview,command-palette,minimap,floating,tab-groups,wave3
  */
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
@@ -26,7 +26,7 @@ import {
   LAYOUT_PRESETS,
 } from "./ide/PanelManager";
 import PanelQuickAccess from "./ide/PanelQuickAccess";
-import LayoutPresets from "./ide/LayoutPresets";
+import PanelLayoutManager from "./ide/PanelLayoutManager";
 import CommandPalette from "./ide/CommandPalette";
 import PanelMinimap from "./ide/PanelMinimap";
 import KeyboardShortcutsHelp from "./ide/KeyboardShortcutsHelp";
@@ -44,6 +44,7 @@ import CollabPanel from "./ide/CollabPanel";
 import OpsPanel from "./ide/OpsPanel";
 import WorkflowPipeline from "./ide/WorkflowPipeline";
 import Terminal from "./ide/Terminal";
+import TerminalPanel from "./ide/TerminalPanel";
 import RealtimePreviewPanel from "./ide/RealtimePreviewPanel";
 import ErrorDiagnosticsPanel from "./ide/ErrorDiagnosticsPanel";
 import PerformancePanel from "./ide/PerformancePanel";
@@ -116,8 +117,6 @@ export default function IDEPage() {
   const location = useLocation();
   const [viewMode, setViewMode] = useState<ViewMode>("default");
   const [searchOpen, setSearchOpen] = useState(false);
-  const [terminalVisible, setTerminalVisible] = useState(false);
-  const [terminalHeight, setTerminalHeight] = useState(180);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [shortcutsHelpOpen, setShortcutsHelpOpen] = useState(false);
 
@@ -160,10 +159,6 @@ export default function IDEPage() {
       if (e.ctrlKey && e.shiftKey && e.key === "F") {
         e.preventDefault();
         setSearchOpen((prev) => !prev);
-      }
-      if (e.ctrlKey && e.key === "`") {
-        e.preventDefault();
-        setTerminalVisible((prev) => !prev);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -235,16 +230,7 @@ export default function IDEPage() {
         case "multi-instance":
           return <MultiInstancePanel />;
         case "terminal":
-          return (
-            <div className="size-full bg-[var(--ide-bg-deep)]">
-              <Terminal
-                height={9999}
-                onHeightChange={() => {}}
-                visible={true}
-                onToggle={() => setTerminalVisible(false)}
-              />
-            </div>
-          );
+          return <TerminalPanel nodeId={nodeId} />;
         default:
           return (
             <div className="size-full flex items-center justify-center bg-[var(--ide-bg)] text-[var(--ide-text-dim)] text-[0.72rem]">
@@ -288,37 +274,16 @@ export default function IDEPage() {
                   <div className="h-3.5 w-px bg-[var(--ide-border-dim)] mx-1" />
                   <TabGroupBar />
                   <div className="h-3.5 w-px bg-[var(--ide-border-dim)] mx-1" />
-                  <LayoutPresets />
+                  <PanelLayoutManager />
                   <LayoutResetButton />
                 </ViewSwitcher>
                 {/* Main Content */}
                 <div className="flex-1 overflow-hidden flex flex-col">
                   {viewMode === "preview" ? (
-                    <PreviewLayout
-                      terminalVisible={terminalVisible}
-                      terminalHeight={terminalHeight}
-                      onTerminalToggle={() =>
-                        setTerminalVisible(!terminalVisible)
-                      }
-                      onTerminalHeightChange={setTerminalHeight}
-                      renderPanel={renderPanel}
-                    />
+                    <PreviewLayout renderPanel={renderPanel} />
                   ) : (
-                    <div className="flex-1 flex flex-col overflow-hidden">
-                      {/* Panel layout area */}
-                      <div className="flex-1 overflow-hidden">
-                        <PanelLayoutArea />
-                      </div>
-
-                      {/* Terminal bar at bottom */}
-                      <div className="flex-shrink-0">
-                        <Terminal
-                          height={terminalHeight}
-                          onHeightChange={setTerminalHeight}
-                          visible={terminalVisible}
-                          onToggle={() => setTerminalVisible(!terminalVisible)}
-                        />
-                      </div>
+                    <div className="flex-1 overflow-hidden">
+                      <PanelLayoutArea />
                     </div>
                   )}
                 </div>
@@ -331,7 +296,6 @@ export default function IDEPage() {
                 onNavigateHome={handleBack}
                 onViewModeChange={setViewMode}
                 onSearchToggle={() => setSearchOpen((prev) => !prev)}
-                onTerminalToggle={() => setTerminalVisible((prev) => !prev)}
               />
               <KeyboardShortcutsHelp
                 open={shortcutsHelpOpen}
@@ -350,40 +314,19 @@ export default function IDEPage() {
 
 /* ===== Preview Layout ===== */
 interface PreviewLayoutProps {
-  terminalVisible: boolean;
-  terminalHeight: number;
-  onTerminalToggle: () => void;
-  onTerminalHeightChange: (h: number) => void;
   renderPanel: (panelId: PanelId, nodeId: string) => React.ReactNode;
 }
 
-function PreviewLayout({
-  terminalVisible,
-  terminalHeight,
-  onTerminalToggle,
-  onTerminalHeightChange,
-  renderPanel,
-}: PreviewLayoutProps) {
+function PreviewLayout({ renderPanel }: PreviewLayoutProps) {
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <div className="flex-1 overflow-hidden flex">
-        {/* Left AI Panel */}
-        <div className="w-[25%] min-w-[200px] border-r border-dashed border-[var(--ide-border-dim)]">
-          {renderPanel("ai", "preview-left")}
-        </div>
-        {/* Preview area */}
-        <div className="flex-1">
-          <PreviewContent />
-        </div>
+    <div className="flex-1 overflow-hidden flex">
+      {/* Left AI Panel */}
+      <div className="w-[25%] min-w-[200px] border-r border-dashed border-[var(--ide-border-dim)]">
+        {renderPanel("ai", "preview-left")}
       </div>
-      {/* Terminal */}
-      <div className="flex-shrink-0">
-        <Terminal
-          height={terminalHeight}
-          onHeightChange={onTerminalHeightChange}
-          visible={terminalVisible}
-          onToggle={onTerminalToggle}
-        />
+      {/* Preview area */}
+      <div className="flex-1">
+        <PreviewContent />
       </div>
     </div>
   );

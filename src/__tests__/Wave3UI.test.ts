@@ -1,17 +1,17 @@
 // @ts-nocheck
 /**
- * @file Wave3UI.test.ts
- * @description Wave 3 UI 逻辑单元测试——
+ * @file: Wave3UI.test.ts
+ * @description: Wave 3 UI 逻辑单元测试——
  *              CommandPalette 模糊搜索、KeyboardShortcutsHelp 过滤逻辑、
  *              PanelMinimap 颜色/标签映射
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,wave3,command-palette,shortcuts,minimap
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,wave3,command-palette,shortcuts,minimap
  */
 
 import { describe, it, expect } from "vitest";

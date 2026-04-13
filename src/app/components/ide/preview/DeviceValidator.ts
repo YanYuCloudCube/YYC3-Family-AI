@@ -1,14 +1,14 @@
 /**
- * @file DeviceValidator.ts
- * @description 设备参数验证模块，验证设备宽度、高度、DPR、User-Agent等参数的有效性
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags validation,device,parameters,dpr,user-agent
+ * @file: DeviceValidator.ts
+ * @description: 设备参数验证模块，验证设备宽度、高度、DPR、User-Agent等参数的有效性
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: validation,device,parameters,dpr,user-agent
  */
 
 // ================================================================

@@ -1,15 +1,15 @@
 /**
- * @file ViewSwitcher.tsx
- * @description IDE 视图切换栏，支持预览/代码/默认三种视图模式切换，
+ * @file: ViewSwitcher.tsx
+ * @description: IDE 视图切换栏，支持预览/代码/默认三种视图模式切换，
  *              集成搜索开关、命令面板、快捷键帮助、子控件插槽
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v2.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags view-switcher,navigation,toolbar,shortcuts,command-palette,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v2.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: view-switcher,navigation,toolbar,shortcuts,command-palette,wave3
  */
 
 import {

@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file host.ts
- * @description 宿主机桥接层 - 统一的文件系统接口，内部自行决定是 IndexedDB 还是原生文件系统
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags bridge,host,filesystem,tauri,indexeddb
+ * @file: host.ts
+ * @description: 宿主机桥接层 - 统一的文件系统接口，内部自行决定是 IndexedDB 还是原生文件系统
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: bridge,host,filesystem,tauri,indexeddb
  */
 
 // Tauri API (如果可用)

@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file VersioningService.ts
- * @description 版本管理服务 - 支持文件版本历史、版本对比、版本恢复
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags versioning,history,restore,git
+ * @file: VersioningService.ts
+ * @description: 版本管理服务 - 支持文件版本历史、版本对比、版本恢复
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: versioning,history,restore,git
  */
 
 import { getDB, type _StoredFile } from "../adapters/IndexedDBAdapter";

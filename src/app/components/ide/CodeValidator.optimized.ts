@@ -1,15 +1,15 @@
 /**
- * @file CodeValidator.optimized.ts
- * @description 代码验证器（性能优化版），检查生成代码的质量和安全性
+ * @file: CodeValidator.optimized.ts
+ * @description: 代码验证器（性能优化版），检查生成代码的质量和安全性
  *              优化点：正则缓存、并行验证、性能优化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags code,validator,optimized,performance,parallel
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: code,validator,optimized,performance,parallel
  */
 
 /**

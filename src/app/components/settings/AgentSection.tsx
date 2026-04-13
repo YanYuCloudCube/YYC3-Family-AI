@@ -1,14 +1,14 @@
 /**
- * @file settings/AgentSection.tsx
- * @description 智能体管理设置面板 — 支持内置/自定义智能体的 CRUD、参数调节，全面 i18n 国际化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,agents,management,i18n
+ * @file: settings/AgentSection.tsx
+ * @description: 智能体管理设置面板 — 支持内置/自定义智能体的 CRUD、参数调节，全面 i18n 国际化
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,agents,management,i18n
  */
 
 import { useState } from "react";

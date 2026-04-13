@@ -1,14 +1,14 @@
 /**
- * @file factory/index.ts
- * @description 组件工厂 — 整合 DI 和配置系统，提供统一的组件创建入口
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags factory,di,config,bootstrap
+ * @file: factory/index.ts
+ * @description: 组件工厂 — 整合 DI 和配置系统，提供统一的组件创建入口
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: factory,di,config,bootstrap
  */
 
 // ================================================================

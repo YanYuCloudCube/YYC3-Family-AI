@@ -1,15 +1,15 @@
 /**
- * @file hooks/useErrorDiagnostics.ts
- * @description 响应式错误诊断 Hook，监听 FileStore 变更并自动触发 ErrorAnalyzer，
+ * @file: hooks/useErrorDiagnostics.ts
+ * @description: 响应式错误诊断 Hook，监听 FileStore 变更并自动触发 ErrorAnalyzer，
  *              支持防抖、按文件/严重度过滤、统计
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags hooks,diagnostics,error-analysis,debounce
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: hooks,diagnostics,error-analysis,debounce
  */
 
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";

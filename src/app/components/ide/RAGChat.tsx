@@ -1,15 +1,15 @@
 /**
- * @file RAGChat.tsx
- * @description RAG 增强检索对话面板，结合知识库文档检索与 LLM 问答，
+ * @file: RAGChat.tsx
+ * @description: RAG 增强检索对话面板，结合知识库文档检索与 LLM 问答，
  *              支持引用溯源、上下文注入、实时流式响应
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags rag,chat,knowledge-base,retrieval,llm
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: rag,chat,knowledge-base,retrieval,llm
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -117,7 +117,7 @@ const RAG_SYSTEM_PROMPT = `你是一个基于知识库的 RAG (Retrieval-Augment
 请用中文回答。`;
 
 export default function RAGChat({ nodeId }: { nodeId: string }) {
-  const { models, activeModel, getActiveProvider, hasProviderKey } =
+  const { models, activeModel, activeModelId, setActiveModelId, getActiveProvider, hasProviderKey } =
     useModelRegistry();
   // Filter models suitable for RAG (llm, qa, code types)
   const ragModels = models.filter(
@@ -139,13 +139,26 @@ export default function RAGChat({ nodeId }: { nodeId: string }) {
   const [config, setConfig] = useState<RAGConfig>({
     topK: 5,
     scoreThreshold: 0.7,
-    model: "model-1",
+    model: activeModelId || "model-1",
     temperature: 0.3,
     knowledgeBase: "all",
   });
   const [showConfig, setShowConfig] = useState(false);
   const messagesEnd = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // 同步全局模型选择到本地配置
+  useEffect(() => {
+    if (activeModelId && activeModelId !== config.model) {
+      setConfig(prev => ({ ...prev, model: activeModelId }));
+    }
+  }, [activeModelId]);
+
+  // 本地模型选择变化时同步到全局状态
+  const handleModelChange = useCallback((modelId: string) => {
+    setConfig(prev => ({ ...prev, model: modelId }));
+    setActiveModelId(modelId);
+  }, [setActiveModelId]);
 
   useEffect(() => {
     messagesEnd.current?.scrollIntoView({ behavior: "smooth" });
@@ -362,9 +375,7 @@ export default function RAGChat({ nodeId }: { nodeId: string }) {
             </label>
             <select
               value={config.model}
-              onChange={(e) =>
-                setConfig((p) => ({ ...p, model: e.target.value }))
-              }
+              onChange={(e) => handleModelChange(e.target.value)}
               className="flex-1 px-1.5 py-0.5 bg-[var(--ide-bg)] border border-[var(--ide-border-mid)] rounded text-[0.65rem] text-slate-300 outline-none"
             >
               {ragModels.map((m) => (

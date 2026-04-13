@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file plugins/FileExplorerPlusPlugin.ts
- * @description 文件浏览器增强插件示例 - 提供高级文件管理功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,file-explorer,productivity
+ * @file: plugins/FileExplorerPlusPlugin.ts
+ * @description: 文件浏览器增强插件示例 - 提供高级文件管理功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,file-explorer,productivity
  */
 
 import type { PluginManifest, PluginContext } from "../types";
@@ -22,7 +22,7 @@ export const FileExplorerPlusPlugin: PluginManifest = {
   description: "提供高级文件管理功能，如快速搜索、最近文件、书签等",
   descriptionEn: "Advanced file management with quick search, recent files, bookmarks and more",
   author: "YYC3 Team <admin@0379.email>",
-  homepage: "https://github.com/YYC-Cube/yyc3-family-ai",
+  homepage: "https://github.com/YanYuCloudCube/yyc3-family-ai",
   license: "MIT",
   tags: ["file", "explorer", "productivity"],
   icon: "FolderOpen",

@@ -1,14 +1,14 @@
 /**
- * @file adapters/ProjectExporter.ts
- * @description 项目导出功能，支持 ZIP 下载和 JSON 导出
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags adapters,export,zip,json
+ * @file: adapters/ProjectExporter.ts
+ * @description: 项目导出功能，支持 ZIP 下载和 JSON 导出
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: adapters,export,zip,json
  */
 
 import JSZip from "jszip";

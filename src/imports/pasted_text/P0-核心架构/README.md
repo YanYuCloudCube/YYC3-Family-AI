@@ -16,4 +16,4 @@
 
 ## 总大小: ~135.6 KB
 
-原始目录: https://github.com/YYC-Cube/YanYuCloud/tree/main/YYC3-Design-Prompt/P0-核心架构
+原始目录: https://github.com/YanYuCloudCube/YanYuCloud/tree/main/YYC3-Design-Prompt/P0-核心架构

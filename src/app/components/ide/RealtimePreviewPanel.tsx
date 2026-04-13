@@ -1,16 +1,16 @@
 /**
- * @file RealtimePreviewPanel.tsx
- * @description 全功能实时代码预览面板，支持 HTML/CSS/JS/React/Markdown/SVG/JSON
+ * @file: RealtimePreviewPanel.tsx
+ * @description: 全功能实时代码预览面板，支持 HTML/CSS/JS/React/Markdown/SVG/JSON
  *              实时预览、设备模拟（8 种预设）、控制台（含级别过滤）、历史快照（含 Diff 对比）、
  *              滚动同步、Sandpack 切换、缩放控制、网格叠加、错误边界等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.2.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags preview,realtime,device-simulation,console,history,scroll-sync,sandpack
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.2.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: preview,realtime,device-simulation,console,history,scroll-sync,sandpack
  */
 
 import {

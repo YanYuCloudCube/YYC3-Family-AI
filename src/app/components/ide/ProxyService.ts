@@ -1,15 +1,15 @@
 /**
- * @file ProxyService.ts
- * @description 后端代理层架构设计，解决 CORS 跨域限制和 API Key 安全暴露问题，
+ * @file: ProxyService.ts
+ * @description: 后端代理层架构设计，解决 CORS 跨域限制和 API Key 安全暴露问题，
  *              前端 → 代理服务器 → LLM Provider 架构模式
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags proxy,cors,security,api,architecture
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: proxy,cors,security,api,architecture
  */
 
 // ============================================================

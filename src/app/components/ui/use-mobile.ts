@@ -1,14 +1,14 @@
 /**
- * @file use-mobile.ts
- * @description use-mobile — 自定义 React Hook
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags module,typescript,hook,react,ui
+ * @file: use-mobile.ts
+ * @description: use-mobile — 自定义 React Hook
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: module,typescript,hook,react,ui
  */
 
 import * as React from "react";

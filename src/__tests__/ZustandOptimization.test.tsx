@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file __tests__/ZustandOptimization.test.tsx
- * @description Zustand Store 订阅优化性能测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags tests,zustand,performance,optimization
+ * @file: __tests__/ZustandOptimization.test.tsx
+ * @description: Zustand Store 订阅优化性能测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: tests,zustand,performance,optimization
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";

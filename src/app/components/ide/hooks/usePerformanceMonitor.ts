@@ -1,14 +1,14 @@
 /**
- * @file usePerformanceMonitor.ts
- * @description 性能监控 Hook - 提供性能指标采集、报告、预警功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags performance,monitoring,hook,web-vitals
+ * @file: usePerformanceMonitor.ts
+ * @description: 性能监控 Hook - 提供性能指标采集、报告、预警功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: performance,monitoring,hook,web-vitals
  */
 
 import { useEffect, useCallback, useRef } from "react"

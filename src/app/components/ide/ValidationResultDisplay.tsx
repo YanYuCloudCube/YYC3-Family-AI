@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ValidationResultDisplay.tsx
- * @description 验证结果展示组件，显示代码验证的错误、警告、建议和指标
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ui,validation,result,display
+ * @file: ValidationResultDisplay.tsx
+ * @description: 验证结果展示组件，显示代码验证的错误、警告、建议和指标
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ui,validation,result,display
  */
 
 import React, { useState } from "react";

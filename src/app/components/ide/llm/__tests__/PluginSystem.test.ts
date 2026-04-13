@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file PluginSystem.test.ts
- * @description 插件系统测试 - 测试插件加载、API、隔离等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,test,loader,api,sandbox
+ * @file: PluginSystem.test.ts
+ * @description: 插件系统测试 - 测试插件加载、API、隔离等
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,test,loader,api,sandbox
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';

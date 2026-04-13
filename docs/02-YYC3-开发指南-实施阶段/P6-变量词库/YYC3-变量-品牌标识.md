@@ -57,7 +57,7 @@
 |--------|--------|------|------|
 | `{{BRAND_EMAIL}}` | admin@0379.email | 联系邮箱 | admin@0379.email |
 | `{{BRAND_WEBSITE}}` | https://yyc3.0379.email | 官方网站 | https://yyc3.0379.email |
-| `{{BRAND_GITHUB}}` | https://github.com/YYC-Cube | GitHub 仓库 | https://github.com/YYC-Cube |
+| `{{BRAND_GITHUB}}` | https://github.com/YanYuCloudCube | GitHub 仓库 | https://github.com/YanYuCloudCube |
 | `{{BRAND_GITHUB_ORG}}` | YYC-Cube | GitHub 组织名 | YYC-Cube |
 | `{{BRAND_GITHUB_REPO}}` | YYC3-AI-Code | GitHub 仓库名 | YYC3-AI-Code |
 | `{{BRAND_TWITTER}}` | @YYC3Family | Twitter 账号 | @YYC3Family |
@@ -265,7 +265,7 @@ export const brandConfig = {
 
 - **维护团队**: YanYuCloudCube Team
 - **联系邮箱**: admin@0379.email
-- **项目地址**: https://github.com/YYC-Cube/
+- **项目地址**: https://github.com/YanYuCloudCube/
 
 ---
 

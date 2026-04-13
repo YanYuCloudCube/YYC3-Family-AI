@@ -1,14 +1,14 @@
 /**
- * @file ErrorFilter.ts
- * @description 错误分级与过滤系统 - 提供错误分级、过滤和搜索功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags error,filter,search,classification
+ * @file: ErrorFilter.ts
+ * @description: 错误分级与过滤系统 - 提供错误分级、过滤和搜索功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: error,filter,search,classification
  */
 
 import {

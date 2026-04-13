@@ -1,7 +1,7 @@
 {
-  "name": "YYC3 Family AI - 智能编程助手",
-  "short_name": "YYC3 AI",
-  "description": "基于 React/TypeScript 的多联式低码智能编程平台",
+  "name": "YYC³ Family AI - 开源本地 AI 编程助手",
+  "short_name": "YYC³ AI",
+  "description": "开源本地优先的 AI 智能编程助手，数据完全本地存储，隐私安全",
   "start_url": "/#/ide",
   "display": "standalone",
   "background_color": "#060d1a",

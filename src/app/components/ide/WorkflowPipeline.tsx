@@ -1,14 +1,14 @@
 /**
- * @file WorkflowPipeline.tsx
- * @description 工作流流水线可视化面板，展示 CI/CD 阶段状态，订阅 WorkflowEventBus 事件驱动
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags workflow,pipeline,cicd,visualization,events
+ * @file: WorkflowPipeline.tsx
+ * @description: 工作流流水线可视化面板，展示 CI/CD 阶段状态，订阅 WorkflowEventBus 事件驱动
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: workflow,pipeline,cicd,visualization,events
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";

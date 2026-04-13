@@ -1,15 +1,15 @@
 /**
- * @file core/StateManager.ts
- * @description 状态管理器 - 统一管理所有 Zustand stores
+ * @file: core/StateManager.ts
+ * @description: 状态管理器 - 统一管理所有 Zustand stores
  *              提供类型安全的状态访问和订阅机制
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags state,zustand,management,typescript
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: state,zustand,management,typescript
  */
 
 import type { StoreApi } from 'zustand';

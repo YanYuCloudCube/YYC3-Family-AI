@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file Stability.test.ts
- * @description 稳定性和边界情况测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,stability,boundary,error
+ * @file: Stability.test.ts
+ * @description: 稳定性和边界情况测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,stability,boundary,error
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";

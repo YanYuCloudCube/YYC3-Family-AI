@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file SentryService.ts
- * @description Sentry 错误追踪服务 - 集成 Sentry SDK，提供错误上报、性能监控、用户追踪功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags sentry,error-tracking,monitoring,performance
+ * @file: SentryService.ts
+ * @description: Sentry 错误追踪服务 - 集成 Sentry SDK，提供错误上报、性能监控、用户追踪功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: sentry,error-tracking,monitoring,performance
  */
 
 import * as Sentry from "@sentry/react";

@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file IconComponents.integration.test.tsx
- * @description 图标组件集成测试 - 覆盖所有使用图标的组件
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,icon,components,integration
+ * @file: IconComponents.integration.test.tsx
+ * @description: 图标组件集成测试 - 覆盖所有使用图标的组件
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,icon,components,integration
  */
 
 import { describe, it, expect, vi } from "vitest";

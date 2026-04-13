@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file DeviceSimulator.test.ts
- * @description 设备模拟引擎完整测试套件
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,device,simulator,validation
+ * @file: DeviceSimulator.test.ts
+ * @description: 设备模拟引擎完整测试套件
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,device,simulator,validation
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

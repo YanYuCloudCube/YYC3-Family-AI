@@ -1,15 +1,15 @@
 /**
- * @file ThemeCustomizer.tsx
- * @description YYC3 自定义主题编辑器，支持颜色编辑、预设选择、品牌定制、
+ * @file: ThemeCustomizer.tsx
+ * @description: YYC3 自定义主题编辑器，支持颜色编辑、预设选择、品牌定制、
  *              导入/导出、WCAG 检测、实时预览
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,customizer,colors,wcag,brands,presets
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,customizer,colors,wcag,brands,presets
  */
 
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";

@@ -14,7 +14,7 @@
 
 ---
 
-[![YYC³ Version](https://img.shields.io/badge/YYC³-v1.0.0-6366f1?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiI+PHBvbHlnb24gcG9pbnRzPSIxMiAyIDIyIDguNSAyMiAxNS41IDEyIDIyIDIgMTUuNSAyIDguNSAxMiAyIi8+PC9zdmc+)](https://github.com/YYC-Cube/YYC3-Family-AI/releases)
+[![YYC³ Version](https://img.shields.io/badge/YYC³-v1.0.0-6366f1?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiI+PHBvbHlnb24gcG9pbnRzPSIxMiAyIDIyIDguNSAyMiAxNS41IDEyIDIyIDIgMTUuNSAyIDguNSAxMiAyIi8+PC9zdmc+)](https://github.com/YanYuCloudCube/YYC3-Family-AI/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3b82f6)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.x-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3.1-61dafb?logo=react&logoColor=black)](https://react.dev/)
@@ -22,14 +22,15 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.x-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Zustand](https://img.shields.io/badge/Zustand-5.x-f5a623?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZjVhNjIzIj48cGF0aCBkPSJNMTIgMkw0IDd2MTBsOCA1IDgtNSA4LTVWN2wtOC01eiIvPjwvc3ZnPg==)](https://zustand-demo.pmnd.rs/)
 
-[![Tests 2434](https://img.shields.io/badge/Tests-2434-22c55e?logo=vitest&logoColor=white)](https://github.com/YYC-Cube/YYC3-Family-AI/actions)
-[![Test Files 85](https://img.shields.io/badge/Test_Files-85-8b5cf6)](https://github.com/YYC-Cube/YYC3-Family-AI/actions)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088ff?logo=githubactions&logoColor=white)](https://github.com/YYC-Cube/YYC3-Family-AI/actions)
-[![GitHub Stars](https://img.shields.io/github/stars/YYC-Cube/YYC3-Family-AI?style=social)](https://github.com/YYC-Cube/YYC3-Family-AI/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/YYC-Cube/YYC3-Family-AI?style=social)](https://github.com/YYC-Cube/YYC3-Family-AI/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/YYC-Cube/YYC3-Family-AI)](https://github.com/YYC-Cube/YYC3-Family-AI/issues)
+[![Tests 2697](https://img.shields.io/badge/Tests-2697_passed-22c55e?logo=vitest&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
+[![Test Files 104](https://img.shields.io/badge/Test_Files-104-8b5cf6)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
+[![Coverage 85%+](https://img.shields.io/badge/Coverage-85%25+-4fcf25?logo=codecov&logoColor=white)](https://codecov.io/gh/YanYuCloudCube/YYC3-Family-AI)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088ff?logo=githubactions&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
+[![GitHub Stars](https://img.shields.io/github/stars/YanYuCloudCube/YYC3-Family-AI?style=social)](https://github.com/YanYuCloudCube/YYC3-Family-AI/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/YanYuCloudCube/YYC3-Family-AI?style=social)](https://github.com/YanYuCloudCube/YYC3-Family-AI/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/YanYuCloudCube/YYC3-Family-AI)](https://github.com/YanYuCloudCube/YYC3-Family-AI/issues)
 
-**[🌐 在线体验](https://code.yyccube.xin)** · **[📖 文档中心](docs/README.md)** · **[🐛 报告问题](https://github.com/YYC-Cube/YYC3-Family-AI/issues)** · **[💡 功能建议](https://github.com/YYC-Cube/YYC3-Family-AI/issues)**
+**[🌐 项目主页](https://family-ai.yyccube.com)** · **[📖 文档中心](https://docs.yyccube.com)** · **[🏠 品牌官网](https://yyccube.com)** · **[🐛 报告问题](https://github.com/YanYuCloudCube/YYC3-Family-AI/issues)** · **[💡 功能建议](https://github.com/YanYuCloudCube/YYC3-Family-AI/issues)**
 
 </div>
 
@@ -55,12 +56,27 @@
 
 ## 项目简介
 
-YYC³（YanYuCloudCube）Family AI 是一个基于 React/TypeScript 的多联式低码智能编程平台，通过集成六大主流 LLM Provider，提供智能代码生成、实时预览、任务管理等全方位的 AI 辅助编程体验。
+YYC³（YanYuCloudCube）Family AI 是一个**开源本地优先**的 AI 智能编程助手，基于 React/TypeScript 构建，通过集成六大主流 LLM Provider 和 MCP 服务生态，提供智能代码生成、实时预览、任务管理等全方位的 AI 辅助编程体验。
 
-**项目愿景**：打造下一代 AI 驱动的智能编程环境，让每一位开发者都能享受 AI 带来的编程效率提升。
+### 🌟 开源本地工具特性
+
+> **数据主权在你手中** - YYC³ 是一个完全运行在浏览器中的本地开发工具，所有数据存储在您的设备上，无需注册账号，无需云端依赖。
+
+| 特性 | 说明 |
+|------|------|
+| 🔒 **隐私优先** | 所有数据本地存储 (IndexedDB + localStorage)，无第三方追踪 |
+| 🚀 **零配置启动** | 克隆仓库即可使用，无需数据库、无需后端服务 |
+| 📴 **离线可用** | PWA 支持，断网环境下仍可正常工作 |
+| 🎨 **完全可定制** | Logo、标语、主题均可自定义修改 |
+| 🆓 **完全免费** | MIT 开源协议，可自由使用、修改、分发 |
+| 🤖 **AI 本地化** | 支持 Ollama 本地模型，数据不出本机 |
+
+### 项目愿景
+
+打造下一代 **AI 驱动的开源本地开发环境**，让每一位开发者都能享受 AI 带来的编程效率提升，同时**完全掌控自己的数据**。
 
 **核心理念**：
-- **五高**：高可用性、高性能、高安全性、高可扩展性、高可维护性
+- **五高**：高可用性、高性能、高安全性、高扩展性、高可维护性
 - **五标**：标准化、规范化、自动化、智能化、可视化
 - **五化**：流程化、文档化、工具化、数字化、生态化
 
@@ -96,11 +112,18 @@ YYC³（YanYuCloudCube）Family AI 是一个基于 React/TypeScript 的多联式
 
 ## 项目仓库
 
-**GitHub 仓库地址**：https://github.com/YYC-Cube/YYC3-Family-AI.git
+**GitHub 仓库地址**：https://github.com/YanYuCloudCube/YYC3-Family-AI.git
+
+**组织主页**：https://github.com/YanYuCloudCube
+
+**项目域名**：
+- 🌐 **项目主页**: https://family-ai.yyccube.com
+- 📖 **文档中心**: https://docs.yyccube.com
+- 🏠 **品牌官网**: https://yyccube.com
 
 **克隆仓库**：
 ```bash
-git clone https://github.com/YYC-Cube/YYC3-Family-AI.git
+git clone https://github.com/YanYuCloudCube/YYC3-Family-AI.git
 cd YYC3-Family-AI
 ```
 
@@ -570,24 +593,24 @@ pnpm test:e2e        # E2E 测试
 
 | 指标 | 数值 |
 |------|------|
-| **测试文件** | 85 个 |
-| **测试用例** | 2,434 个 |
-| **通过** | 2,434 个 |
+| **测试文件** | 104 个 |
+| **测试用例** | 2,697 个 |
+| **通过** | 2,697 个 |
 | **跳过** | 4 个 |
 | **通过率** | 100% |
 
 ### 测试类型分布
 
-- **单元测试**: 2,200+ 个
-- **集成测试**: 200+ 个
-- **E2E 测试**: 30+ 个
+- **单元测试**: 2,400+ 个
+- **集成测试**: 250+ 个
+- **E2E 测试**: 40+ 个
 - **覆盖率**: 85%+
 
 ## CI/CD 部署
 
 ### 自动部署流程
 
-项目已配置 GitHub Actions 自动部署到 GitHub Pages，访问地址：**[https://code.yyccube.xin](https://code.yyccube.xin)**
+项目已配置 GitHub Actions 自动部署到 GitHub Pages，访问地址：**[https://family-ai.yyccube.com](https://family-ai.yyccube.com)**
 
 ### 部署触发条件
 
@@ -624,8 +647,8 @@ pnpm test:e2e        # E2E 测试
 
 #### 4. 多环境支持 ✅
 
-- **Production**: `main` 分支 → https://code.yyccube.xin
-- **Staging**: `staging` 分支 → https://staging.code.yyccube.xin
+- **Production**: `main` 分支 → https://family-ai.yyccube.com
+- **Staging**: `staging` 分支 → https://staging.family-ai.yyccube.com
 - **Development**: `develop` 分支 → 本地开发
 - 支持手动触发并选择目标环境
 - 独立的并发控制，避免环境冲突
@@ -683,13 +706,13 @@ pnpm test:e2e        # E2E 测试
 ### 部署环境
 
 - **环境名称**: `github-pages`
-- **部署 URL**: https://code.yyccube.xin
+- **部署 URL**: https://family-ai.yyccube.com
 - **静态站点**: GitHub Pages
 - **构建输出**: `dist/` 目录
 
 ### 查看部署状态
 
-1. 访问 GitHub Actions 页面：https://github.com/YYC-Cube/YYC3-Family-AI/actions
+1. 访问 GitHub Actions 页面：https://github.com/YanYuCloudCube/YYC3-Family-AI/actions
 2. 查看最新的 workflow 运行记录
 3. 点击具体 workflow 查看详细日志和部署状态
 
@@ -728,8 +751,8 @@ pnpm preview
 
 - **团队**: YanYuCloudCube Team
 - **邮箱**: admin@0379.email
-- **GitHub**: [YYC-Cube](https://github.com/YYC-Cube)
-- **在线体验**: [https://code.yyccube.xin](https://code.yyccube.xin)
+- **GitHub**: [YanYuCloudCube](https://github.com/YanYuCloudCube)
+- **在线体验**: [https://family-ai.yyccube.com](https://family-ai.yyccube.com)
 
 ---
 
@@ -737,7 +760,7 @@ pnpm preview
 **最后更新**: 2026-04-01  
 **维护团队**: YanYuCloudCube Team  
 **文档状态**: ✅ 已完善  
-**在线地址**: [https://code.yyccube.xin](https://code.yyccube.xin)
+**在线地址**: [https://family-ai.yyccube.com](https://family-ai.yyccube.com)
 
 ---
 
@@ -750,6 +773,6 @@ pnpm preview
 
 <br />
 
-**Built with ❤️ by [YanYuCloudCube Team](https://github.com/YYC-Cube)**
+**Built with ❤️ by [YanYuCloudCube Team](https://github.com/YanYuCloudCube)**
 
 </div>

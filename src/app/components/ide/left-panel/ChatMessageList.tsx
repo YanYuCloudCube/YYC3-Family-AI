@@ -1,15 +1,15 @@
 /**
- * @file left-panel/ChatMessageList.tsx
- * @description 聊天消息列表子组件 — 渲染用户/AI 消息气泡、代码块操作、
+ * @file: left-panel/ChatMessageList.tsx
+ * @description: 聊天消息列表子组件 — 渲染用户/AI 消息气泡、代码块操作、
  *              流式指示器、自动滚动到底部
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags left-panel,chat,message-list,streaming
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: left-panel,chat,message-list,streaming
  */
 
 import { useRef, useEffect, useState, useCallback } from "react";
@@ -72,7 +72,7 @@ export default function ChatMessageList({
           className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
         >
           <div
-            className={`max-w-[95%] rounded-lg px-3 py-2 ${
+            className={`max-w-[330px] rounded-lg px-3 py-2 ${
               msg.role === "user"
                 ? "bg-gradient-to-r from-sky-700 to-blue-700 text-white"
                 : "border border-dashed border-[var(--ide-border-mid)] bg-[var(--ide-bg-elevated)]/50 text-slate-300"

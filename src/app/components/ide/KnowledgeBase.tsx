@@ -1,15 +1,15 @@
 /**
- * @file KnowledgeBase.tsx
- * @description 知识库管理面板，支持文档上传、分片索引、搜索过滤、
+ * @file: KnowledgeBase.tsx
+ * @description: 知识库管理面板，支持文档上传、分片索引、搜索过滤、
  *              文档预览、嵌入状态管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags knowledge-base,documents,embeddings,search
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: knowledge-base,documents,embeddings,search
  */
 
 import { useState } from "react";

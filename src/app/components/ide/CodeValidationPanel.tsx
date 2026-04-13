@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file CodeValidationPanel.tsx
- * @description 代码验证结果面板组件，显示多个文件的验证结果、统计信息和筛选功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ui,validation,panel,results
+ * @file: CodeValidationPanel.tsx
+ * @description: 代码验证结果面板组件，显示多个文件的验证结果、统计信息和筛选功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ui,validation,panel,results
  */
 
 import React, { useState, useMemo } from "react";

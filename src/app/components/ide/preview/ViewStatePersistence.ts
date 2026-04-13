@@ -1,14 +1,14 @@
 /**
- * @file ViewStatePersistence.ts
- * @description 视图状态持久化 - 保存和恢复滚动位置、缩放级别等视图状态
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags view,state,persistence,storage,restore
+ * @file: ViewStatePersistence.ts
+ * @description: 视图状态持久化 - 保存和恢复滚动位置、缩放级别等视图状态
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: view,state,persistence,storage,restore
  */
 
 import { ScrollPosition } from './ScrollSyncEngine';

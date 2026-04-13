@@ -29,4 +29,4 @@
 
 完整内容含 15 大分类 40+ 版本变量、package.json 模板、安装脚本、版本兼容性矩阵。
 
-原始文件: https://github.com/YYC-Cube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-技术栈版本.md
+原始文件: https://github.com/YanYuCloudCube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-技术栈版本.md

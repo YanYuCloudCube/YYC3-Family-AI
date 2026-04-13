@@ -1,15 +1,15 @@
 /**
- * @file SecurityPanel.tsx
- * @description F2.4 智能安全扫描面板，可视化展示 SecurityScanner 的扫描结果，
+ * @file: SecurityPanel.tsx
+ * @description: F2.4 智能安全扫描面板，可视化展示 SecurityScanner 的扫描结果，
  *              支持按严重度过滤、分类统计、OWASP/CWE 引用、修复建议
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags security,scanner,panel,owasp,cwe,vulnerabilities
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: security,scanner,panel,owasp,cwe,vulnerabilities
  */
 
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
@@ -142,7 +142,7 @@ export default function SecurityPanel({ nodeId }: { nodeId: string }) {
   useEffect(() => {
     scanTimer.current = setTimeout(runScan, 800);
     return () => clearTimeout(scanTimer.current);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);  
 
   // Filtered findings
   const filteredFindings = useMemo(() => {

@@ -1,15 +1,15 @@
 /**
- * @file left-panel/ModelSelector.tsx
- * @description 模型选择器子组件 — 按 Provider 分组展示可用 AI 模型，
+ * @file: left-panel/ModelSelector.tsx
+ * @description: 模型选择器子组件 — 按 Provider 分组展示可用 AI 模型，
  *              支持快速切换、API Key 配置入口、连通状态指示
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags left-panel,model-selector,provider,ai
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: left-panel,model-selector,provider,ai
  */
 
 import { useState, useMemo } from "react";
@@ -29,6 +29,7 @@ export const PROVIDER_ICONS: Record<
 > = {
   ollama: { icon: Server, color: "text-emerald-400" },
   zhipu: { icon: Cloud, color: "text-blue-400" },
+  "zai-coding": { icon: Cloud, color: "text-indigo-400" },
   dashscope: { icon: Cloud, color: "text-orange-400" },
   openai: { icon: Cloud, color: "text-slate-300" },
   deepseek: { icon: Cloud, color: "text-sky-400" },

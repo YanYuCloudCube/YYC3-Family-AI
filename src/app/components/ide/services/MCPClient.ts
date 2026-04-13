@@ -1,14 +1,14 @@
 /**
- * @file MCPClient.ts
- * @description MCP (Model Context Protocol) 客户端 - 支持 MCP 服务器连接、工具调用、资源管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags mcp,client,protocol,ai
+ * @file: MCPClient.ts
+ * @description: MCP (Model Context Protocol) 客户端 - 支持 MCP 服务器连接、工具调用、资源管理
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: mcp,client,protocol,ai
  */
 
 export interface MCPConfig {

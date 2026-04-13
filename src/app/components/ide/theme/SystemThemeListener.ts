@@ -1,14 +1,14 @@
 /**
- * @file SystemThemeListener.ts
- * @description 系统主题监听器，检测操作系统深色/浅色模式变化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,system,dark-mode,light-mode,media-query
+ * @file: SystemThemeListener.ts
+ * @description: 系统主题监听器，检测操作系统深色/浅色模式变化
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,system,dark-mode,light-mode,media-query
  */
 
 // ================================================================

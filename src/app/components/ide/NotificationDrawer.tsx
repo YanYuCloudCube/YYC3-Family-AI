@@ -1,15 +1,15 @@
 /**
- * @file NotificationDrawer.tsx
- * @description 通知中心抽屉组件，展示系统通知、更新提醒、协作消息，
+ * @file: NotificationDrawer.tsx
+ * @description: 通知中心抽屉组件，展示系统通知、更新提醒、协作消息，
  *              支持分类过滤、已读标记、一键清除
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags notifications,drawer,ui,messages
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: notifications,drawer,ui,messages
  */
 
 import { useState } from "react";

@@ -1,12 +1,12 @@
 // @ts-nocheck
 /**
- * @file ReactWindow.test.tsx
- * @description 测试react-window的基本功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @license MIT
+ * @file: ReactWindow.test.tsx
+ * @description: 测试react-window的基本功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @license: MIT
  */
 
 import { describe, it, expect } from "vitest";

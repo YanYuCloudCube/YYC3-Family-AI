@@ -1,15 +1,15 @@
 /**
- * @file AIChatPage.tsx
- * @description 全屏智能 AI 交互工作台，支持多模型对话、流式响应、
+ * @file: AIChatPage.tsx
+ * @description: 全屏智能 AI 交互工作台，支持多模型对话、流式响应、
  *              会话管理、代码高亮、Markdown 渲染
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.5.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,chat,fullscreen,streaming,models
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.5.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,chat,fullscreen,streaming,models
  */
 
 import yyc3Logo from "/macOS/512.png";
@@ -108,6 +108,7 @@ const PROVIDER_ICONS: Record<
 > = {
   ollama: { icon: Server, color: "text-emerald-400" },
   zhipu: { icon: Cloud, color: "text-blue-400" },
+  "zai-coding": { icon: Cloud, color: "text-indigo-400" },
   dashscope: { icon: Cloud, color: "text-orange-400" },
   openai: { icon: Cloud, color: "text-slate-300" },
   deepseek: { icon: Cloud, color: "text-sky-400" },

@@ -1,14 +1,14 @@
 /**
- * @file NLCommandService.ts
- * @description 自然语言命令转换服务 - 将自然语言转换为终端命令
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status mvp
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags nlp,terminal,command,ai,natural-language
+ * @file: NLCommandService.ts
+ * @description: 自然语言命令转换服务 - 将自然语言转换为终端命令
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: mvp
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: nlp,terminal,command,ai,natural-language
  */
 
 export interface CommandTemplate {

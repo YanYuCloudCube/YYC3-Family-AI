@@ -1,0 +1,29 @@
+{
+  "categories": [
+    {
+      "slug": "announcements",
+      "title": "📢 公告",
+      "description": "项目更新、版本发布、重要通知"
+    },
+    {
+      "slug": "general",
+      "title": "💬 交流讨论",
+      "description": "一般性讨论、使用心得、经验分享"
+    },
+    {
+      "slug": "ideas",
+      "title": "💡 功能建议",
+      "description": "新功能想法、改进建议、头脑风暴"
+    },
+    {
+      "slug": "q-a",
+      "title": "❓ 问答",
+      "description": "使用问题、技术问答、故障排查"
+    },
+    {
+      "slug": "show-and-tell",
+      "title": "🎨 展示分享",
+      "description": "项目展示、插件分享、主题定制"
+    }
+  ]
+}

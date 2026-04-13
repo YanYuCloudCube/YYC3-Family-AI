@@ -1,13 +1,13 @@
 /**
- * @file PerformanceOptimizer.test.ts
- * @description 性能优化器测试 - 测试性能分析、瓶颈识别和优化建议
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: PerformanceOptimizer.test.ts
+ * @description: 性能优化器测试 - 测试性能分析、瓶颈识别和优化建议
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck

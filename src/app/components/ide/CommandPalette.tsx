@@ -1,15 +1,15 @@
 /**
- * @file CommandPalette.tsx
- * @description 全局命令面板，支持 Ctrl+Shift+P 快速访问面板、操作、布局预设、
+ * @file: CommandPalette.tsx
+ * @description: 全局命令面板，支持 Ctrl+Shift+P 快速访问面板、操作、布局预设、
  *              模糊搜索、分类导航、快捷键提示、历史记录
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags command-palette,search,navigation,shortcuts,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: command-palette,search,navigation,shortcuts,wave3
  */
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
@@ -94,6 +94,7 @@ const PANEL_ICONS: Record<
   "document-editor": FileText,
   taskboard: KanbanSquare,
   "multi-instance": Layers,
+  "multi-agent": Users,
 };
 
 const PANEL_LABELS: Record<PanelId, string> = {
@@ -118,6 +119,7 @@ const PANEL_LABELS: Record<PanelId, string> = {
   "document-editor": "文档编辑",
   taskboard: "任务看板",
   "multi-instance": "多实例",
+  "multi-agent": "多智能体",
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -152,7 +154,7 @@ interface CommandPaletteProps {
   onNavigateHome: () => void;
   onViewModeChange: (mode: "default" | "preview" | "code") => void;
   onSearchToggle: () => void;
-  onTerminalToggle: () => void;
+  onTerminalToggle?: () => void;
 }
 
 export default function CommandPalette({
@@ -287,7 +289,7 @@ export default function CommandPalette({
       category: "action",
       shortcut: "Ctrl+`",
       action: () => {
-        onTerminalToggle();
+        onTerminalToggle?.();
         onClose();
       },
     });

@@ -1,14 +1,14 @@
 /**
- * @file NotFoundPage.tsx
- * @description 404 页面，未匹配路由时展示，已完成 isCyber → useThemeTokens 迁移
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-06
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags 404,not-found,routing,token-migrated
+ * @file: NotFoundPage.tsx
+ * @description: 404 页面，未匹配路由时展示，已完成 isCyber → useThemeTokens 迁移
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-15
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: 404,not-found,routing,token-migrated
  */
 
 import { useNavigate } from "react-router";

@@ -1,15 +1,15 @@
 /**
- * @file adapters/TauriBridge.ts
- * @description Tauri 宿主机桥接层 — 对齐 P0-架构-宿主机桥接.md，封装原生 API 调用，
+ * @file: adapters/TauriBridge.ts
+ * @description: Tauri 宿主机桥接层 — 对齐 P0-架构-宿主机桥接.md，封装原生 API 调用，
  *              Web 环境自动降级为浏览器 API 兼容模式
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags adapters,tauri,bridge,native,filesystem
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: adapters,tauri,bridge,native,filesystem
  */
 
 // ================================================================

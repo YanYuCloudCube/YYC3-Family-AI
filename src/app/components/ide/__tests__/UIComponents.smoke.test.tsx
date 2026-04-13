@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file UIComponents.smoke.test.tsx
- * @description UI组件冒烟测试 - 最基本的渲染测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status test
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,ui,smoke
+ * @file: UIComponents.smoke.test.tsx
+ * @description: UI组件冒烟测试 - 最基本的渲染测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: test
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,ui,smoke
  */
 
 import { describe, it, expect, vi } from "vitest";

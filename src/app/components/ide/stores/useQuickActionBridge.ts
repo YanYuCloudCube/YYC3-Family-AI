@@ -1,15 +1,15 @@
 /**
- * @file stores/useQuickActionBridge.ts
- * @description QuickActions → LeftPanel 对话桥接 Store — 将一键操作（AI 重构/优化/解释等）
+ * @file: stores/useQuickActionBridge.ts
+ * @description: QuickActions → LeftPanel 对话桥接 Store — 将一键操作（AI 重构/优化/解释等）
  *              转化为预构建的 AI 提示词，注入 LeftPanel 对话流，实现选中代码一键 AI 处理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,quick-actions,bridge,ai-chat
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,quick-actions,bridge,ai-chat
  */
 
 import { create } from "zustand";

@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file stores/optimizedHooks.ts
- * @description Zustand Store 优化 Hooks，提供细粒度订阅，减少重渲染
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,hooks,performance,optimization
+ * @file: stores/optimizedHooks.ts
+ * @description: Zustand Store 优化 Hooks，提供细粒度订阅，减少重渲染
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,hooks,performance,optimization
  */
 
 import { useCallback, useMemo } from "react";

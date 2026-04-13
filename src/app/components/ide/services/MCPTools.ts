@@ -1,14 +1,14 @@
 /**
- * @file MCPTools.ts
- * @description MCP 工具集成 - 封装常用 MCP 工具调用
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags mcp,tools,integration
+ * @file: MCPTools.ts
+ * @description: MCP 工具集成 - 封装常用 MCP 工具调用
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: mcp,tools,integration
  */
 
 import type { MCPClient } from "./MCPClient";

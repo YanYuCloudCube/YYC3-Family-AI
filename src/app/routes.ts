@@ -1,15 +1,15 @@
 /**
- * @file routes.ts
- * @description 应用路由配置，基于 react-router 数据模式，支持懒加载，
+ * @file: routes.ts
+ * @description: 应用路由配置，基于 react-router 数据模式，支持懒加载，
  *              自动检测 iframe 环境选择 Hash/Browser 路由
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.3.0
- * @created 2026-03-06
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags routes,navigation,lazy-loading,iframe-detection
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.3.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: routes,navigation,lazy-loading,iframe-detection
  */
 
 import { createHashRouter, type RouteObject } from "react-router";

@@ -1,14 +1,14 @@
 /**
- * @file ThemeSwitcher.tsx
- * @description 主题快速切换按钮组件，支持深海军蓝/赛博朋克切换及打开自定义主题编辑器
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.2.0
- * @created 2026-03-06
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,switcher,ui,button,tokens
+ * @file: ThemeSwitcher.tsx
+ * @description: 主题快速切换按钮组件，支持深海军蓝/赛博朋克切换及打开自定义主题编辑器
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.2.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,switcher,ui,button,tokens
  */
 
 import { useThemeStore } from "./stores/useThemeStore";

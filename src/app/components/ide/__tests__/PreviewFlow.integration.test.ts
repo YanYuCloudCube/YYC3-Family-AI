@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file PreviewFlow.integration.test.ts
- * @description 完整预览流程集成测试 - 测试编辑器到预览的完整工作流程
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status test
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,integration,preview-flow,full-workflow
+ * @file: PreviewFlow.integration.test.ts
+ * @description: 完整预览流程集成测试 - 测试编辑器到预览的完整工作流程
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: test
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,integration,preview-flow,full-workflow
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";

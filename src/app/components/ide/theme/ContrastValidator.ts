@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ContrastValidator.ts
- * @description 高级对比度验证系统，集成WCAG标准和可访问性检查
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,accessibility,wcag,contrast,validation
+ * @file: ContrastValidator.ts
+ * @description: 高级对比度验证系统，集成WCAG标准和可访问性检查
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,accessibility,wcag,contrast,validation
  */
 
 // ================================================================

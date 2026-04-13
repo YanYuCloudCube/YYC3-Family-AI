@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file plugins/QuickFixPlugin.ts
- * @description 快速修复插件示例 - 提供常见代码问题的快速修复建议
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,quick-fix,code-quality
+ * @file: plugins/QuickFixPlugin.ts
+ * @description: 快速修复插件示例 - 提供常见代码问题的快速修复建议
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,quick-fix,code-quality
  */
 
 import type { PluginManifest, PluginContext } from "../types";
@@ -22,7 +22,7 @@ export const QuickFixPlugin: PluginManifest = {
   description: "检测并修复常见代码问题，如 console.log、TODO 注释、未使用变量等",
   descriptionEn: "Detect and fix common code issues like console.log, TODO comments, unused variables",
   author: "YYC3 Team <admin@0379.email>",
-  homepage: "https://github.com/YYC-Cube/yyc3-family-ai",
+  homepage: "https://github.com/YanYuCloudCube/yyc3-family-ai",
   license: "MIT",
   tags: ["fix", "code-quality", "productivity"],
   icon: "Wand2",

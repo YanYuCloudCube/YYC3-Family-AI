@@ -1,19 +1,19 @@
 /**
- * @file stores/useFloatingPanelStore.ts
- * @description 浮动面板窗口 Store，支持将面板从布局中分离为独立浮动窗口，
+ * @file: stores/useFloatingPanelStore.ts
+ * @description: 浮动面板窗口 Store，支持将面板从布局中分离为独立浮动窗口，
  *              自由拖拽位置、调整大小、最小化/还原、Z-index 管理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,floating,panels,windows,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,floating,panels,windows,wave3
  */
 
 import { create } from "zustand";
-import type { PanelId } from "../PanelManager";
+import type { PanelId } from "../types/index";
 
 // ── Types ──
 

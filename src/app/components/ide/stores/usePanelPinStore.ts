@@ -1,15 +1,15 @@
 /**
- * @file stores/usePanelPinStore.ts
- * @description 面板固定/锁定 Store，支持固定面板防止拖拽移动/关闭，
+ * @file: stores/usePanelPinStore.ts
+ * @description: 面板固定/锁定 Store，支持固定面板防止拖拽移动/关闭，
  *              锁定面板防止内容变更，持久化配置
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,pin,lock,panels,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,pin,lock,panels,wave3
  */
 
 import { create } from "zustand";

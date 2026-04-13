@@ -1,14 +1,14 @@
 /**
- * @file LoadingSpinner.tsx
- * @description 统一加载指示器组件，提供统一视觉风格，支持多尺寸和文字说明
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ui,loading,spinner,component
+ * @file: LoadingSpinner.tsx
+ * @description: 统一加载指示器组件，提供统一视觉风格，支持多尺寸和文字说明
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ui,loading,spinner,component
  */
 
 // ================================================================

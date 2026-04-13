@@ -1,21 +1,22 @@
 /**
- * @file LLMService.ts
- * @description 真实 LLM API 调用层，统一支持 Ollama / OpenAI / 智谱 GLM / 通义千问 / DeepSeek / 自定义，
+ * @file: LLMService.ts
+ * @description: 真实 LLM API 调用层，统一支持 Ollama / OpenAI / 智谱 GLM / 通义千问 / DeepSeek / 自定义，
  *              采用 OpenAI-compatible chat/completions 接口 + Ollama 原生接口，支持 SSE 流式响应
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.5.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,api,streaming,sse,providers,openai,ollama
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.5.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,api,streaming,sse,providers,openai,ollama
  */
 
 export type ProviderId =
   | "ollama"
   | "openai"
   | "zhipu"
+  | "zai-coding"
   | "dashscope"
   | "deepseek"
   | "custom";
@@ -81,6 +82,30 @@ export const PROVIDER_CONFIGS: ProviderConfig[] = [
     docsUrl: "https://open.bigmodel.cn",
     models: [
       {
+        id: "glm-5",
+        name: "GLM-5",
+        type: "llm",
+        maxTokens: 8192,
+        contextWindow: 128000,
+        description: "最新旗舰推理模型",
+      },
+      {
+        id: "glm-5.1",
+        name: "GLM-5.1",
+        type: "llm",
+        maxTokens: 8192,
+        contextWindow: 128000,
+        description: "增强版旗舰模型",
+      },
+      {
+        id: "glm-5-turbo",
+        name: "GLM-5-Turbo",
+        type: "llm",
+        maxTokens: 8192,
+        contextWindow: 128000,
+        description: "高速推理模型",
+      },
+      {
         id: "glm-4-plus",
         name: "GLM-4.7 (Plus)",
         type: "llm",
@@ -119,6 +144,51 @@ export const PROVIDER_CONFIGS: ProviderConfig[] = [
         maxTokens: 8192,
         contextWindow: 128000,
         description: "代码生成专用",
+      },
+    ],
+  },
+  {
+    id: "zai-coding",
+    name: "Z.ai Coding Plan",
+    nameEn: "Z.ai Coding",
+    baseUrl: "https://open.bigmodel.cn/api/paas/v4",
+    authType: "bearer",
+    isLocal: false,
+    detected: false,
+    description: "Z.ai 编程专精版 — GLM-5 系列",
+    docsUrl: "https://open.bigmodel.cn",
+    models: [
+      {
+        id: "glm-5",
+        name: "GLM-5",
+        type: "llm",
+        maxTokens: 8192,
+        contextWindow: 128000,
+        description: "最新旗舰推理模型",
+      },
+      {
+        id: "glm-5.1",
+        name: "GLM-5.1",
+        type: "llm",
+        maxTokens: 8192,
+        contextWindow: 128000,
+        description: "增强版旗舰模型",
+      },
+      {
+        id: "glm-5-turbo",
+        name: "GLM-5-Turbo",
+        type: "llm",
+        maxTokens: 8192,
+        contextWindow: 128000,
+        description: "高速推理模型",
+      },
+      {
+        id: "glm-4-plus",
+        name: "GLM-4.7",
+        type: "llm",
+        maxTokens: 4096,
+        contextWindow: 128000,
+        description: "高性能通用模型",
       },
     ],
   },
@@ -217,11 +287,11 @@ export const PROVIDER_CONFIGS: ProviderConfig[] = [
     models: [
       {
         id: "deepseek-chat",
-        name: "DeepSeek-V3",
+        name: "DeepSeek V3.2",
         type: "llm",
         maxTokens: 8192,
         contextWindow: 65536,
-        description: "通用对话",
+        description: "最新旗舰对话模型",
       },
       {
         id: "deepseek-coder",
@@ -279,6 +349,24 @@ export function setApiKey(providerId: ProviderId, key: string): void {
 
 export function hasApiKey(providerId: ProviderId): boolean {
   return !!getApiKey(providerId);
+}
+
+export function initializeApiKeysFromEnv(): void {
+  const envMappings: Array<{ providerId: ProviderId; envKey: string }> = [
+    { providerId: "zhipu", envKey: "VITE_ZHIPU_API_KEY" },
+    { providerId: "zai-coding", envKey: "VITE_ZHIPU_API_KEY" },
+    { providerId: "deepseek", envKey: "VITE_DEEPSEEK_API_KEY" },
+    { providerId: "openai", envKey: "VITE_OPENAI_API_KEY" },
+    { providerId: "dashscope", envKey: "VITE_DASHSCOPE_API_KEY" },
+  ];
+
+  for (const { providerId, envKey } of envMappings) {
+    const envValue = (import.meta as any).env?.[envKey];
+    if (envValue && !hasApiKey(providerId)) {
+      setApiKey(providerId, envValue);
+      console.log(`[LLMService] Initialized API key for ${providerId} from env ${envKey}`);
+    }
+  }
 }
 
 // ── Ollama 本地探测 ──
@@ -494,7 +582,7 @@ function getChatEndpoint(provider: ProviderConfig): string {
     return `${provider.baseUrl}/api/chat`;
   }
   // 使用代理 URL 避免跨域问题
-  if (provider.id === "zhipu") {
+  if (provider.id === "zhipu" || provider.id === "zai-coding") {
     return `/api/zhipu/chat/completions`;
   }
   if (provider.id === "deepseek") {

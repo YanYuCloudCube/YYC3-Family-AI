@@ -1,15 +1,15 @@
 /**
- * @file stores/useModelStoreZustand.ts
- * @description Zustand + Immer AI 模型管理 Store，替代 ModelRegistry Context，
+ * @file: stores/useModelStoreZustand.ts
+ * @description: Zustand + Immer AI 模型管理 Store，替代 ModelRegistry Context，
  *              管理模型注册、连通性状态、心跳配置、延迟历史
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,zustand,immer,models,ai,connectivity
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,zustand,immer,models,ai,connectivity
  */
 
 import { create } from "zustand";

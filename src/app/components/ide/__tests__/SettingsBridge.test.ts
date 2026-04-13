@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/SettingsBridge.test.ts
- * @description SettingsBridge 单元测试 — 覆盖快捷键映射、规则注入、MCP 注入、
+ * @file: __tests__/SettingsBridge.test.ts
+ * @description: SettingsBridge 单元测试 — 覆盖快捷键映射、规则注入、MCP 注入、
  *              模型同步、技能注入、API Key 验证、主题/语言同步等
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,settings,bridge,integration
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,settings,bridge,integration
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";

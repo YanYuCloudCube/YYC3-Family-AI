@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file stores/__tests__/useSettingsStore.test.ts
- * @description Settings Store 单元测试 — 覆盖 CRUD、深层搜索、导入导出、重置等核心功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,settings,store,unit
+ * @file: stores/__tests__/useSettingsStore.test.ts
+ * @description: Settings Store 单元测试 — 覆盖 CRUD、深层搜索、导入导出、重置等核心功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,settings,store,unit
  */
 
 import { describe, it, expect, beforeEach } from "vitest";

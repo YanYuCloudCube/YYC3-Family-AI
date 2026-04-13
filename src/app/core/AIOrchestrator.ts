@@ -1,15 +1,15 @@
 /**
- * @file core/AIOrchestrator.ts
- * @description AI 编排器 - 统一管理 AI 流水线、上下文收集、代码应用
+ * @file: core/AIOrchestrator.ts
+ * @description: AI 编排器 - 统一管理 AI 流水线、上下文收集、代码应用
  *              提供可操作的高级 API 和扩展点
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,orchestrator,pipeline,extensibility
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,orchestrator,pipeline,extensibility
  */
 
 import type { PipelineInput, PipelineStreamCallbacks, PipelineOptions } from '../components/ide/ai/AIPipeline';

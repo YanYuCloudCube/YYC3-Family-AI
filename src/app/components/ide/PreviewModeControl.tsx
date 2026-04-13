@@ -1,14 +1,14 @@
 /**
- * @file PreviewModeControl.tsx
- * @description 预览模式控制组件，提供模式切换、延迟设置、手动触发等功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ui,preview,mode-control,settings
+ * @file: PreviewModeControl.tsx
+ * @description: 预览模式控制组件，提供模式切换、延迟设置、手动触发等功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ui,preview,mode-control,settings
  */
 
 import React, { useState } from "react";

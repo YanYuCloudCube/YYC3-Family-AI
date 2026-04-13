@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file __tests__/CollabPanel.test.tsx
- * @description 实时协作面板组件测试 - 简化版，测试核心功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.2.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,collaboration,panel,ui
+ * @file: __tests__/CollabPanel.test.tsx
+ * @description: 实时协作面板组件测试 - 简化版，测试核心功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.2.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,collaboration,panel,ui
  */
 
 import { describe, it, expect, vi } from "vitest";

@@ -1,15 +1,15 @@
 /**
- * @file PerformancePanel.tsx
- * @description F2.3 智能性能优化建议面板，可视化展示 PerformanceOptimizer 的分析结果，
+ * @file: PerformancePanel.tsx
+ * @description: F2.3 智能性能优化建议面板，可视化展示 PerformanceOptimizer 的分析结果，
  *              支持按影响度过滤、分类统计、代码示例、文档链接
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags performance,optimization,panel,react,analysis
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: performance,optimization,panel,react,analysis
  */
 
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
@@ -106,7 +106,7 @@ export default function PerformancePanel({ nodeId }: { nodeId: string }) {
   useEffect(() => {
     analysisTimer.current = setTimeout(runAnalysis, 800);
     return () => clearTimeout(analysisTimer.current);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);  
 
   // Filtered suggestions
   const filteredSuggestions = useMemo(() => {

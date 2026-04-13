@@ -1,3 +1,24 @@
+---
+file: CDN-ACCELERATION.md
+description: CDN 加速配置指南 - 多CDN支持、自动回退、环境变量控制
+author: YanYuCloudCube Team <admin@0379.email>
+version: v1.0.0
+created: 2026-03-21
+updated: 2026-04-09
+status: stable
+tags: cdn,acceleration,performance,configuration
+category: devops
+language: zh-CN
+---
+
+> ***YanYuCloudCube***
+> *言启象限 | 语枢未来*
+> ***Words Initiate Quadrants, Language Serves as Core for Future***
+> *万象归元于云枢 | 深栈智启新纪元***
+> ***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***
+
+---
+
 # CDN 加速配置指南
 
 ## 概述

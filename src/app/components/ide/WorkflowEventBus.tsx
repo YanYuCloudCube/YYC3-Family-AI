@@ -1,15 +1,15 @@
 /**
- * @file WorkflowEventBus.tsx
- * @description 跨面板工作流事件总线，IDE 各操作面板发射事件，
+ * @file: WorkflowEventBus.tsx
+ * @description: 跨面板工作流事件总线，IDE 各操作面板发射事件，
  *              WorkflowPipeline 订阅并驱动阶段状态，支持 50+ 事件类型
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.3.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags event-bus,workflow,cross-panel,communication
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.3.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: event-bus,workflow,cross-panel,communication
  */
 
 import React, { createContext, useContext, useCallback, useRef } from "react";
@@ -66,6 +66,7 @@ export type WorkflowEventType =
   | "file-created" // 文件创建
   | "file-deleted" // 文件删除
   | "terminal-command" // 终端命令
+  | "terminal-status" // 终端状态变更
   | "git-operation" // Git 操作
   | "model-switched" // 模型切换
   | "connectivity-ping" // 连通性 Ping
@@ -203,6 +204,7 @@ export const EVENT_STAGE_MAP: Record<
   "git-operation": { workflowId: "collab", stageId: "co-1" },
   "model-switched": { workflowId: "ai-assist", stageId: "ai-1" },
   "connectivity-ping": { workflowId: "ai-assist", stageId: "ai-1" },
+  "terminal-status": { workflowId: "code-gen", stageId: "cg-8" },
   // Diagnostics
   "diagnostics-run": { workflowId: "code-gen", stageId: "cg-8" },
   "diagnostics-found": { workflowId: "code-gen", stageId: "cg-8" },

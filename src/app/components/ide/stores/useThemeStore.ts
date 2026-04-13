@@ -1,14 +1,14 @@
 /**
- * @file stores/useThemeStore.ts
- * @description 主题状态管理 Store - 管理主题切换、自定义颜色、系统主题同步
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-31
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,zustand,state-management
+ * @file: stores/useThemeStore.ts
+ * @description: 主题状态管理 Store - 管理主题切换、自定义颜色、系统主题同步
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-31
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,zustand,state-management
  */
 
 import { create } from "zustand";

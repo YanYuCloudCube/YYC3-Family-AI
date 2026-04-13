@@ -1,15 +1,15 @@
 /**
- * @file TestGeneratorPanel.tsx
- * @description F2.5 智能测试用例生成面板，展示 TestGenerator 生成的测试用例，
+ * @file: TestGeneratorPanel.tsx
+ * @description: F2.5 智能测试用例生成面板，展示 TestGenerator 生成的测试用例，
  *              支持单文件/全项目生成、分类筛选、代码复制、测试覆盖率预估
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,generation,vitest,panel,coverage
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,generation,vitest,panel,coverage
  */
 
 // ===================================================================
@@ -106,7 +106,7 @@ export default function TestGeneratorPanel({ nodeId }: { nodeId: string }) {
   useEffect(() => {
     const t = setTimeout(generatePlan, 800);
     return () => clearTimeout(t);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);  
 
   // Filter
   const filteredSuites = useMemo(() => {

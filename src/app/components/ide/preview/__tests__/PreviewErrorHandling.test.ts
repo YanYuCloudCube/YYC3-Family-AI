@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file PreviewErrorHandling.test.ts
- * @description 预览错误处理增强系统测试套件
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,error,console,filter,preview
+ * @file: PreviewErrorHandling.test.ts
+ * @description: 预览错误处理增强系统测试套件
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,error,console,filter,preview
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

@@ -1,14 +1,14 @@
 // @ts-nocheck
 /**
- * @file LazySandpack.tsx
- * @description Sandpack 预览懒加载包装器，减少首屏 bundle 大小
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags lazy-loading,sandpack,performance,code-split
+ * @file: LazySandpack.tsx
+ * @description: Sandpack 预览懒加载包装器，减少首屏 bundle 大小
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: lazy-loading,sandpack,performance,code-split
  */
 
 import { lazy, Suspense } from "react";

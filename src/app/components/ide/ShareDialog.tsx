@@ -1,15 +1,15 @@
 /**
- * @file ShareDialog.tsx
- * @description 项目分享对话框组件，支持链接分享、邮件邀请、权限设置、
+ * @file: ShareDialog.tsx
+ * @description: 项目分享对话框组件，支持链接分享、邮件邀请、权限设置、
  *              协作邀请等功能。已完成 isCyber → useThemeTokens 迁移
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags share,dialog,collaboration,permissions
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: share,dialog,collaboration,permissions
  */
 
 import { useState } from "react";

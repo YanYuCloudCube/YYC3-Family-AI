@@ -1,12 +1,12 @@
 // @ts-nocheck
 /**
- * @file IndexedDBAdapter.integration.test.ts
- * @description IndexedDB优化版本集成测试 - 验证向后兼容性和系统稳定性
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @license MIT
+ * @file: IndexedDBAdapter.integration.test.ts
+ * @description: IndexedDB优化版本集成测试 - 验证向后兼容性和系统稳定性
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @license: MIT
  */
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";

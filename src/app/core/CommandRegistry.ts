@@ -1,15 +1,15 @@
 /**
- * @file core/CommandRegistry.ts
- * @description 命令注册表 - 统一管理应用命令、快捷键、菜单项
+ * @file: core/CommandRegistry.ts
+ * @description: 命令注册表 - 统一管理应用命令、快捷键、菜单项
  *              提供类型安全的命令注册和执行机制
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags commands,registry,shortcuts,keyboard
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: commands,registry,shortcuts,keyboard
  */
 
 export interface CommandDefinition {

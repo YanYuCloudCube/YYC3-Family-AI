@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file plugins/AIAssistantPlugin.ts
- * @description AI 助手插件示例 - 集成 AI 对话、代码解释、智能建议
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,ai,assistant
+ * @file: plugins/AIAssistantPlugin.ts
+ * @description: AI 助手插件示例 - 集成 AI 对话、代码解释、智能建议
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,ai,assistant
  */
 
 import type { PluginManifest, PluginContext } from "../types";
@@ -22,7 +22,7 @@ export const AIAssistantPlugin: PluginManifest = {
   description: "集成 AI 对话、代码解释、智能建议等功能",
   descriptionEn: "AI chat, code explanation, intelligent suggestions and more",
   author: "YYC3 Team <admin@0379.email>",
-  homepage: "https://github.com/YYC-Cube/yyc3-family-ai",
+  homepage: "https://github.com/YanYuCloudCube/yyc3-family-ai",
   license: "MIT",
   tags: ["ai", "assistant", "productivity"],
   icon: "Sparkles",

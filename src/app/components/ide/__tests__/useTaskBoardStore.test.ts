@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/useTaskBoardStore.test.ts
- * @description TaskBoardStore 单元测试 — 覆盖任务 CRUD、状态流转、子任务、
+ * @file: __tests__/useTaskBoardStore.test.ts
+ * @description: TaskBoardStore 单元测试 — 覆盖任务 CRUD、状态流转、子任务、
  *              AI Inference 接受/拒绝/清空、优先级、筛选排序、提醒系统
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,zustand,task-board,kanban
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,zustand,task-board,kanban
  */
 
 import { describe, it, expect, beforeEach } from "vitest";

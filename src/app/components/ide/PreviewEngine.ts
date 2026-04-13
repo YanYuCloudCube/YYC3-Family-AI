@@ -1,16 +1,16 @@
 /**
- * @file PreviewEngine.ts
- * @description 实时预览核心引擎，支持 HTML/CSS/JS/JSX/TSX/Markdown/SVG/JSON 等
+ * @file: PreviewEngine.ts
+ * @description: 实时预览核心引擎，支持 HTML/CSS/JS/JSX/TSX/Markdown/SVG/JSON 等
  *              多语言检测与沙箱 iframe 渲染，含 Babel 转译、console 捕获、错误边界、
  *              滚动同步注入脚本
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags preview,engine,iframe,babel,sandbox,scroll-sync
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: preview,engine,iframe,babel,sandbox,scroll-sync
  */
 
 // ================================================================

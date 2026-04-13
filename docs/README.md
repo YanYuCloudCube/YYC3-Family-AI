@@ -1,3 +1,24 @@
+---
+file: README.md
+description: YYC³ Family AI 项目文档中心 - 统一文档索引、快速导航、标准规范
+author: YanYuCloudCube Team <admin@0379.email>
+version: v1.0.0
+created: 2026-03-21
+updated: 2026-04-09
+status: stable
+tags: documentation,index,navigation
+category: overview
+language: zh-CN
+---
+
+> ***YanYuCloudCube***
+> *言启象限 | 语枢未来*
+> ***Words Initiate Quadrants, Language Serves as Core for Future***
+> *万象归元于云枢 | 深栈智启新纪元*
+> ***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***
+
+---
+
 # YYC³ Family AI - 项目文档中心
 
 > **统一文档索引 | 快速导航 | 标准规范**
@@ -214,7 +235,7 @@ docs/
 ## 📞 联系方式
 
 如有文档相关问题，请：
-- 提交 [Issue](https://github.com/YYC-Cube/YYC3-Family-AI/issues)
+- 提交 [Issue](https://github.com/YanYuCloudCube/YYC3-Family-AI/issues)
 - 发送邮件至：admin@0379.email
 
 ---

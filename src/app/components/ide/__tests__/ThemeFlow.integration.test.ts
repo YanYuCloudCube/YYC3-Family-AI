@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ThemeFlow.integration.test.ts
- * @description 主题流程集成测试 - 测试主题切换、自定义颜色、验证和系统主题同步
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status test
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,integration,theme-flow,color-validation
+ * @file: ThemeFlow.integration.test.ts
+ * @description: 主题流程集成测试 - 测试主题切换、自定义颜色、验证和系统主题同步
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: test
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,integration,theme-flow,color-validation
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";

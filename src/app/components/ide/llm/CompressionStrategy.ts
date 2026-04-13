@@ -1,14 +1,14 @@
 /**
- * @file llm/CompressionStrategy.ts
- * @description 压缩策略设计 - 识别关键代码段、注释、测试、配置
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,compression,strategy,analysis
+ * @file: llm/CompressionStrategy.ts
+ * @description: 压缩策略设计 - 识别关键代码段、注释、测试、配置
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,compression,strategy,analysis
  */
 
 import {

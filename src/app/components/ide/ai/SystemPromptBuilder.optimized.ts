@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file ai/SystemPromptBuilder.optimized.ts
- * @description 构建上下文感知的 System Prompt（性能优化版）
+ * @file: ai/SystemPromptBuilder.optimized.ts
+ * @description: 构建上下文感知的 System Prompt（性能优化版）
  *              优化点：Token估算优化、上下文压缩、缓存机制
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,prompt,optimized,performance,caching
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,prompt,optimized,performance,caching
  */
 
 import { type ProjectContext } from "./ContextCollector";

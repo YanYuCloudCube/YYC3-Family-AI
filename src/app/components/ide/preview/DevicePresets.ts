@@ -1,14 +1,14 @@
 /**
- * @file DevicePresets.ts
- * @description 设备预设库，包含20+种常见移动设备、平板、桌面设备的完整规格数据
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags device,preset,mobile,tablet,desktop,responsive
+ * @file: DevicePresets.ts
+ * @description: 设备预设库，包含20+种常见移动设备、平板、桌面设备的完整规格数据
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: device,preset,mobile,tablet,desktop,responsive
  */
 
 // ================================================================

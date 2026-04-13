@@ -1,13 +1,13 @@
 /**
- * @file SnapshotViewController.ts
- * @description 快照视图控制器 - 管理快照视图的缩放同步、滚动同步、视图比较
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags snapshot,view,controller,comparison
+ * @file: SnapshotViewController.ts
+ * @description: 快照视图控制器 - 管理快照视图的缩放同步、滚动同步、视图比较
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: snapshot,view,controller,comparison
  */
 
 // ================================================================

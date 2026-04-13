@@ -1,15 +1,15 @@
 /**
- * @file SnapshotDiffModal.tsx
- * @description 预览快照差异对比视图组件，支持 side-by-side 并列模式与统一模式，
+ * @file: SnapshotDiffModal.tsx
+ * @description: 预览快照差异对比视图组件，支持 side-by-side 并列模式与统一模式，
  *              内置 LCS 行级 diff 算法，含差异统计、快照选择器、左右交换等功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags preview,diff,snapshot,comparison,lcs
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: preview,diff,snapshot,comparison,lcs
  */
 
 import { useState, useMemo, memo } from "react";

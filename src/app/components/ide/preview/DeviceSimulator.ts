@@ -1,14 +1,14 @@
 /**
- * @file DeviceSimulator.ts
- * @description 设备模拟引擎核心，提供设备切换、旋转、DPR设置、User-Agent注入等功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags device,simulator,emulator,preview,responsive
+ * @file: DeviceSimulator.ts
+ * @description: 设备模拟引擎核心，提供设备切换、旋转、DPR设置、User-Agent注入等功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: device,simulator,emulator,preview,responsive
  */
 
 // ================================================================

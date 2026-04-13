@@ -677,7 +677,7 @@ export const useAICodeCompletion = () => {
 
 - **维护团队**: YanYuCloudCube Team
 - **联系邮箱**: admin@0379.email
-- **项目地址**: https://github.com/YYC-Cube/
+- **项目地址**: https://github.com/YanYuCloudCube/
 
 ---
 

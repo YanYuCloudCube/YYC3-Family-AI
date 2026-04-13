@@ -1,14 +1,14 @@
 /**
- * @file PerformanceMonitor.tsx
- * @description 性能监控组件 - 监控 FCP、TTI、内存使用、渲染性能等指标
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags performance,monitoring,metrics,web-vitals
+ * @file: PerformanceMonitor.tsx
+ * @description: 性能监控组件 - 监控 FCP、TTI、内存使用、渲染性能等指标
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: performance,monitoring,metrics,web-vitals
  */
 
 import { useEffect, useState, useCallback } from "react"

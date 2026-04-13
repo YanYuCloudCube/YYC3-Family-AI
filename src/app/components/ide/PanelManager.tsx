@@ -1,16 +1,16 @@
 /**
- * @file PanelManager.tsx
- * @description 多联式可拖拽合并布局系统核心，支持面板拆分、合并、拖拽、
+ * @file: PanelManager.tsx
+ * @description: 多联式可拖拽合并布局系统核心，支持面板拆分、合并、拖拽、
  *              最大化、布局持久化、预设布局切换、面板交换、面板替换，
  *              面板固定/锁定、浮动面板窗口，管理 18 个功能面板
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v3.1.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags panels,layout,dnd,split,merge,persistence,swap,replace,pin,lock,float,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v3.1.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: panels,layout,dnd,split,merge,persistence,swap,replace,pin,lock,float,wave3
  */
 
 import React, {
@@ -41,30 +41,12 @@ import { SK_PANEL_LAYOUT } from "./constants/storage-keys";
 import { usePanelPinStore } from "./stores/usePanelPinStore";
 import { useFloatingPanelStore } from "./stores/useFloatingPanelStore";
 import { errorReporting } from "./services/ErrorReportingService";
+import type { PanelId } from "./types/index";
+
+// Re-export PanelId for backward compatibility
+export type { PanelId } from "./types/index";
 
 // ===== Types =====
-export type PanelId =
-  | "ai"
-  | "files"
-  | "code"
-  | "preview"
-  | "terminal"
-  | "git"
-  | "agents"
-  | "market"
-  | "knowledge"
-  | "rag"
-  | "collab"
-  | "ops"
-  | "workflow"
-  | "diagnostics"
-  | "performance"
-  | "security"
-  | "test-gen"
-  | "quality"
-  | "document-editor"
-  | "taskboard"
-  | "multi-instance";
 export type SplitDirection = "horizontal" | "vertical";
 
 export interface LayoutNode {
@@ -253,6 +235,7 @@ const PANEL_TITLES: Record<PanelId, string> = {
   "document-editor": "文档编辑器",
   taskboard: "任务看板",
   "multi-instance": "应用多开",
+  "multi-agent": "多智能体",
 };
 
 export function PanelHeader({
@@ -582,7 +565,7 @@ function SplitContainer({ node, renderPanel }: SplitContainerProps) {
   const childIds = children.map((c) => c.id).join(",");
   useEffect(() => {
     setSizes(children.map((c) => c.size || 100 / children.length));
-  }, [childIds]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [childIds]);  
 
   const handleResizeStart = useCallback(
     (index: number, e: React.MouseEvent) => {

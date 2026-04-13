@@ -1,14 +1,14 @@
 /**
- * @file constants/config.ts
- * @description 应用配置参数常量 — 对齐 YYC3-变量-配置参数.md，集中管理运行时配置
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags constants,config,parameters,design-prompt
+ * @file: constants/config.ts
+ * @description: 应用配置参数常量 — 对齐 YYC3-变量-配置参数.md，集中管理运行时配置
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: constants,config,parameters,design-prompt
  */
 
 // ================================================================

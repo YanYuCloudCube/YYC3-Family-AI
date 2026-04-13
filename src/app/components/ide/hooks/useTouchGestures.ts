@@ -1,14 +1,14 @@
 /**
- * @file useTouchGestures.ts
- * @description 移动端触摸手势 Hook - 支持滑动返回、右滑打开菜单等手势
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags touch,gestures,mobile,hooks
+ * @file: useTouchGestures.ts
+ * @description: 移动端触摸手势 Hook - 支持滑动返回、右滑打开菜单等手势
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: touch,gestures,mobile,hooks
  */
 
 import { useEffect, useState, useCallback } from "react";

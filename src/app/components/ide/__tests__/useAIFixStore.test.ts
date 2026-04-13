@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/useAIFixStore.test.ts
- * @description AIFixStore 单元测试 — 覆盖 requestFix/consumeRequest/clearRequest
+ * @file: __tests__/useAIFixStore.test.ts
+ * @description: AIFixStore 单元测试 — 覆盖 requestFix/consumeRequest/clearRequest
  *              生命周期、幂等性、并发请求覆盖行为
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,zustand,ai-fix,cross-panel
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,zustand,ai-fix,cross-panel
  */
 
 import { describe, it, expect, beforeEach } from "vitest";

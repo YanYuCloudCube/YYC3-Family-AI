@@ -1,15 +1,15 @@
 /**
- * @file AgentOrchestrator.tsx
- * @description Agent 编排面板，支持可视化编排多 Agent 工作流，
+ * @file: AgentOrchestrator.tsx
+ * @description: Agent 编排面板，支持可视化编排多 Agent 工作流，
  *              包括节点连接、条件分支、并行执行、调试运行
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-08
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags agent,orchestrator,workflow,visual-programming
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-08
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: agent,orchestrator,workflow,visual-programming
  */
 
 import { useState, useCallback } from "react";

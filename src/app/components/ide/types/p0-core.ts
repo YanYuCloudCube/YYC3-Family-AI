@@ -1,14 +1,14 @@
 /**
- * @file types/p0-core.ts
- * @description P0核心功能类型定义 - 预览模式、快照管理、代码验证、系统提示词构建
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags types,p0,preview,snapshot,validator,prompt-builder
+ * @file: types/p0-core.ts
+ * @description: P0核心功能类型定义 - 预览模式、快照管理、代码验证、系统提示词构建
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: types,p0,preview,snapshot,validator,prompt-builder
  */
 
 // ================================================================

@@ -1,14 +1,14 @@
 /**
- * @file TestingTypes.ts
- * @description 大规模测试类型定义 - 性能测试、边界测试、兼容性测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags testing,performance,boundary,compatibility,report
+ * @file: TestingTypes.ts
+ * @description: 大规模测试类型定义 - 性能测试、边界测试、兼容性测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: testing,performance,boundary,compatibility,report
  */
 
 // ================================================================

@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file settings/MCPModelSection.tsx
- * @description MCP 连接管理与模型配置设置面板 — CRUD 操作、启用/禁用、端点配置、
+ * @file: settings/MCPModelSection.tsx
+ * @description: MCP 连接管理与模型配置设置面板 — CRUD 操作、启用/禁用、端点配置、
  *              集成真实 API Key 验证和 MCP 连接测试，全面 i18n 国际化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v2.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,mcp,models,management,validation,i18n
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v2.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,mcp,models,management,validation,i18n
  */
 
 import { useState, useCallback, useMemo, useEffect } from "react";
@@ -392,23 +392,56 @@ export function MCPSection() {
 
           {/* 示例配置说明 */}
           <div className={`px-3 py-2 rounded-lg border ${th.page.inputBg} ${th.page.inputBorder}`}>
-            <div className={`text-[0.72rem] ${th.text.caption} mb-2`}>
-              请从 MCP Servers 的介绍页面复制配置 JSON(优先使用 NPX或 UVX 配置)，并粘贴到输入框中
+            <div className="flex items-center justify-between mb-2">
+              <div className={`text-[0.72rem] ${th.text.caption}`}>
+                请从 MCP Servers 的介绍页面复制配置 JSON(优先使用 NPX或 UVX 配置)，并粘贴到输入框中
+              </div>
+              <button
+                onClick={() => {
+                  const exampleConfig = {
+                    mcpServers: {
+                      "example-server": {
+                        command: "npx",
+                        args: ["-y", "mcp-server-example"],
+                        env: {
+                          API_KEY: "your-api-key-here"
+                        }
+                      },
+                      "filesystem-server": {
+                        command: "npx",
+                        args: ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
+                      },
+                      "github-server": {
+                        command: "npx",
+                        args: ["-y", "@modelcontextprotocol/server-github"],
+                        env: {
+                          GITHUB_TOKEN: "your-github-token"
+                        }
+                      }
+                    }
+                  };
+                  setDraft({ ...draft, config: JSON.stringify(exampleConfig, null, 2) });
+                }}
+                className={`px-2 py-1 rounded text-[0.68rem] ${th.btn.ghost} ${th.btn.ghostHover}`}
+              >
+                加载示例
+              </button>
             </div>
-            <pre className={`text-[0.68rem] font-mono ${th.text.muted} whitespace-pre-wrap`}>
-{`// 示例:
+            <textarea
+              value={draft.config || ""}
+              onChange={(e) => setDraft({ ...draft, config: e.target.value })}
+              placeholder={`// 示例配置:
 // {
 //   "mcpServers": {
 //     "example-server": {
 //       "command": "npx",
-//       "args": [
-//         "-y",
-//         "mcp-server-example"
-//       ]
+//       "args": ["-y", "mcp-server-example"]
 //     }
 //   }
 // }`}
-            </pre>
+              rows={8}
+              className={`w-full px-3 py-2 rounded-lg border text-[0.68rem] font-mono resize-none ${th.page.inputBg} ${th.page.inputBorder} ${th.page.inputText} ${th.page.inputFocus} focus:outline-none`}
+            />
           </div>
 
           <input
@@ -653,16 +686,36 @@ export function ModelSection() {
     Record<string, APIKeyValidationResult>
   >({});
 
-  const providerOptions = [
-    "OpenAI",
-    "Anthropic",
-    "Google",
-    "Zhipu",
-    "Baidu",
-    "Alibaba",
-    "DeepSeek",
-    "Custom",
-  ];
+  const [customProviderList, setCustomProviderList] = useState<string[]>(() =>
+    loadJSON("yyc3-custom-provider-list", ["OpenAI", "Anthropic", "Google", "Zhipu", "Baidu", "Alibaba", "DeepSeek", "Custom"])
+  );
+
+  const providerOptions = customProviderList;
+
+  const addProvider = useCallback((providerName: string) => {
+    setCustomProviderList(prev => {
+      if (prev.includes(providerName)) return prev;
+      const newList = [...prev.slice(0, -1), providerName, "Custom"];
+      saveJSON("yyc3-custom-provider-list", newList);
+      return newList;
+    });
+  }, []);
+
+  const removeProvider = useCallback((providerName: string) => {
+    setCustomProviderList(prev => {
+      const newList = prev.filter(p => p !== providerName);
+      saveJSON("yyc3-custom-provider-list", newList);
+      return newList;
+    });
+  }, []);
+
+  const updateProvider = useCallback((oldName: string, newName: string) => {
+    setCustomProviderList(prev => {
+      const newList = prev.map(p => p === oldName ? newName : p);
+      saveJSON("yyc3-custom-provider-list", newList);
+      return newList;
+    });
+  }, []);
 
   // API Key获取URL映射
   const API_KEY_URLS: Record<string, string> = {
@@ -1255,17 +1308,26 @@ export function ModelSection() {
                 {isEditing ? t("settings.edit") : t("settings.addNew")} {t("settings.models")}
               </div>
               <div className="flex gap-2">
-                <select
-                  value={draft.provider || "Custom"}
-                  onChange={(e) => setDraft({ ...draft, provider: e.target.value })}
-                  className={`px-3 py-2 rounded-lg border text-[0.82rem] ${th.page.inputBg} ${th.page.inputBorder} ${th.page.inputText}`}
-                >
-                  {providerOptions.map((p) => (
-                    <option key={p} value={p}>
-                      {p}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex-1 flex gap-2">
+                  <select
+                    value={draft.provider || "Custom"}
+                    onChange={(e) => setDraft({ ...draft, provider: e.target.value })}
+                    className={`flex-1 px-3 py-2 rounded-lg border text-[0.82rem] ${th.page.inputBg} ${th.page.inputBorder} ${th.page.inputText}`}
+                  >
+                    {providerOptions.map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => setAddingProvider(true)}
+                    className={`px-3 py-2 rounded-lg text-[0.78rem] ${th.btn.ghost} ${th.btn.ghostHover}`}
+                    title="管理服务商"
+                  >
+                    <Settings className="w-3.5 h-3.5" />
+                  </button>
+                </div>
                 <input
                   placeholder="模型名称"
                   value={draft.name || ""}
@@ -1552,7 +1614,9 @@ export function ModelSection() {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('[MCPModelSection] 重新检测按钮点击, 当前状态:', ollamaStatus);
                 if (ollamaStatus !== "checking") {
+                  console.log('[MCPModelSection] 调用 recheckOllama');
                   recheckOllama();
                 }
               }}
@@ -2044,13 +2108,13 @@ export function ModelSection() {
                   <button
                     onClick={() => {
                       if (testingProviders.has(provider.id)) return;
-                      
+
                       setTestingProviders(prev => new Set([...prev, provider.id]));
-                      
-                      const testPromises = provider.models.map(model => 
+
+                      const testPromises = provider.models.map(model =>
                         handleTestConnection(provider.id, model.id)
                       );
-                      
+
                       Promise.allSettled(testPromises).finally(() => {
                         setTestingProviders(prev => {
                           const next = new Set(prev);
@@ -2334,6 +2398,62 @@ export function ModelSection() {
                     代理服务器可以帮助您绕过网络限制，确保服务的正常访问。
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Provider Management Modal */}
+      {addingProvider && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className={`w-[500px] max-h-[80vh] rounded-2xl border ${th.page.cardBg} ${th.page.cardBorder} overflow-hidden flex flex-col`}>
+            <div className={`flex items-center justify-between px-5 py-3 border-b ${th.page.cardBorder}`}>
+              <div className={`text-[0.88rem] ${th.text.primary}`}>管理服务商</div>
+              <button onClick={() => setAddingProvider(false)} className={`p-1.5 rounded-lg ${th.text.muted} hover:${th.text.secondary}`}>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-2">
+              {customProviderList.filter(p => p !== "Custom").map((provider) => (
+                <div key={provider} className={`flex items-center gap-2 p-3 rounded-lg border ${th.page.cardBg} ${th.page.cardBorder}`}>
+                  <div className={`flex-1 text-[0.82rem] ${th.text.primary}`}>{provider}</div>
+                  <button
+                    onClick={() => removeProvider(provider)}
+                    className={`p-1.5 rounded-lg ${th.text.muted} hover:${th.status.error}`}
+                    title="删除"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className={`p-4 border-t ${th.page.cardBorder}`}>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="新服务商名称"
+                  value={newProvider.name}
+                  onChange={(e) => setNewProvider({ ...newProvider, name: e.target.value })}
+                  className={`flex-1 px-3 py-2 rounded-lg border text-[0.82rem] ${th.page.inputBg} ${th.page.inputBorder} ${th.page.inputText} ${th.page.inputFocus} focus:outline-none`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && newProvider.name.trim()) {
+                      addProvider(newProvider.name.trim());
+                      setNewProvider({ name: "", baseURL: "", apiKeyUrl: "" });
+                    }
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    if (newProvider.name.trim()) {
+                      addProvider(newProvider.name.trim());
+                      setNewProvider({ name: "", baseURL: "", apiKeyUrl: "" });
+                    }
+                  }}
+                  className={`px-3 py-2 rounded-lg text-[0.78rem] ${th.btn.accent} ${th.btn.accentHover}`}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           </div>

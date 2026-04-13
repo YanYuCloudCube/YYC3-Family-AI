@@ -1,15 +1,15 @@
 /**
- * @file CryptoService.ts
- * @description 加密服务 — 对齐 P3-安全-数据加密.md，基于 Web Crypto API 的 AES-GCM 加解密，
+ * @file: CryptoService.ts
+ * @description: 加密服务 — 对齐 P3-安全-数据加密.md，基于 Web Crypto API 的 AES-GCM 加解密，
  *              支持 PBKDF2 密钥派生、安全存储、数据脱敏
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags crypto,encryption,aes-gcm,pbkdf2,security
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: crypto,encryption,aes-gcm,pbkdf2,security
  */
 
 // ================================================================

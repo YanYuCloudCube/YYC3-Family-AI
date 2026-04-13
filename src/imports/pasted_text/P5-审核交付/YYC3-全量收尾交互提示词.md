@@ -41,4 +41,4 @@
 - 文档完整性评分: ≥ 95
 - 兼容性评分: ≥ 90
 
-原始文件（含完整提示词）: https://github.com/YYC-Cube/YanYuCloud/blob/main/YYC3-Design-Prompt/P5-审核交付/YYC3-全量收尾交互提示词.md
+原始文件（含完整提示词）: https://github.com/YanYuCloudCube/YanYuCloud/blob/main/YYC3-Design-Prompt/P5-审核交付/YYC3-全量收尾交互提示词.md

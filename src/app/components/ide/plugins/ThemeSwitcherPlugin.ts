@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file plugins/ThemeSwitcherPlugin.ts
- * @description 主题切换插件示例 - 快速切换预设主题
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,theme,ui
+ * @file: plugins/ThemeSwitcherPlugin.ts
+ * @description: 主题切换插件示例 - 快速切换预设主题
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,theme,ui
  */
 
 import type { PluginManifest, PluginContext } from "../types";
@@ -96,7 +96,7 @@ export const ThemeSwitcherPlugin: PluginManifest = {
   description: "快速切换预设主题，支持自定义主题颜色",
   descriptionEn: "Quick switch between preset themes, support custom theme colors",
   author: "YYC3 Team <admin@0379.email>",
-  homepage: "https://github.com/YYC-Cube/yyc3-family-ai",
+  homepage: "https://github.com/YanYuCloudCube/yyc3-family-ai",
   license: "MIT",
   tags: ["theme", "ui", "customization"],
   icon: "Palette",

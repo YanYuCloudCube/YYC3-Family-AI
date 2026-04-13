@@ -1,14 +1,14 @@
 /**
- * @file settings/ConversationContextSection.tsx
- * @description 对话流设置与上下文管理面板 — 待办清单、代码审查、命令执行、通知、文档集等，全面 i18n 国际化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags settings,conversation,context,management,i18n
+ * @file: settings/ConversationContextSection.tsx
+ * @description: 对话流设置与上下文管理面板 — 待办清单、代码审查、命令执行、通知、文档集等，全面 i18n 国际化
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: settings,conversation,context,management,i18n
  */
 
 import { useState } from "react";

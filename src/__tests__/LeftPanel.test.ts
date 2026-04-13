@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file LeftPanel.test.ts
- * @description LeftPanel 组件逻辑单元测试——
+ * @file: LeftPanel.test.ts
+ * @description: LeftPanel 组件逻辑单元测试——
  *              AI 上下文增强、会话历史、消息处理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,leftpanel,ai,chat
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,leftpanel,ai,chat
  */
 
 import { describe, it, expect } from "vitest";

@@ -1,13 +1,13 @@
 /**
- * @file WorkflowEventBus.test.ts
- * @description 工作流事件总线测试 - 测试面板间通信和事件订阅
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: WorkflowEventBus.test.ts
+ * @description: 工作流事件总线测试 - 测试面板间通信和事件订阅
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck
@@ -73,6 +73,7 @@ const ALL_EVENT_TYPES: WorkflowEventType[] = [
   "file-created",
   "file-deleted",
   "terminal-command",
+  "terminal-status",
   "git-operation",
   "model-switched",
   "connectivity-ping",

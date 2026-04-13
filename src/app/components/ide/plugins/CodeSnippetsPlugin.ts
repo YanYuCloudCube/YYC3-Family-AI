@@ -1,15 +1,15 @@
 /**
- * @file plugins/CodeSnippetsPlugin.ts
- * @description 示例插件 #2 — 代码片段管理器，支持片段 CRUD、分类、搜索、
+ * @file: plugins/CodeSnippetsPlugin.ts
+ * @description: 示例插件 #2 — 代码片段管理器，支持片段 CRUD、分类、搜索、
  *              快速插入到编辑器，注册命令 "snippets.insert" / "snippets.create"
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,snippets,code,productivity
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,snippets,code,productivity
  */
 
 import type { PluginManifest } from "../types";
@@ -204,16 +204,16 @@ describe("\${1:Module}", () => {
     language: "ts",
     category: "patterns",
     code: `/**
- * @file \${1:filename}
- * @description \${2:description}
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created \${3:${new Date().toISOString().split("T")[0]}}
- * @updated \${3:${new Date().toISOString().split("T")[0]}}
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags \${4:tags}
+ * @file: \${1:filename}
+ * @description: \${2:description}
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: \${3:${new Date().toISOString().split("T")[0]}}
+ * @updated: \${3:${new Date().toISOString().split("T")[0]}}
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: \${4:tags}
  */`,
     tags: ["header", "jsdoc", "standard"],
     createdAt: Date.now(),

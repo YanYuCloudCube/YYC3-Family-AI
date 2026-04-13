@@ -1,14 +1,14 @@
 /**
- * @file performanceBenchmark.ts
- * @description 性能基准测试工具 - 测试渲染性能、内存使用、加载时间等指标
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags performance,benchmark,testing,metrics
+ * @file: performanceBenchmark.ts
+ * @description: 性能基准测试工具 - 测试渲染性能、内存使用、加载时间等指标
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: performance,benchmark,testing,metrics
  */
 
 export interface BenchmarkResult {

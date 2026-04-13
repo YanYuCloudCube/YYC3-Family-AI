@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file testing/__tests__/PerformanceBenchmark.test.ts
- * @description 性能基准测试文件（简化版本）
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,performance,benchmark
+ * @file: testing/__tests__/PerformanceBenchmark.test.ts
+ * @description: 性能基准测试文件（简化版本）
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,performance,benchmark
  */
 
 import { describe, it, expect, beforeAll } from 'vitest';

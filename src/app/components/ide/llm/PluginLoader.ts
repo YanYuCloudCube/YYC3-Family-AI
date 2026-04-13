@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file PluginLoader.ts
- * @description 插件加载器 - 动态加载、签名验证、环境隔离、错误处理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,loader,sandbox,signature,validation
+ * @file: PluginLoader.ts
+ * @description: 插件加载器 - 动态加载、签名验证、环境隔离、错误处理
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,loader,sandbox,signature,validation
  */
 
 import type {

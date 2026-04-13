@@ -31,7 +31,7 @@
 | 联系邮箱 | admin@0379.email |
 | 当前版本 | v0.0.1 |
 | 开源协议 | MIT |
-| 仓库地址 | https://github.com/YYC-Cube/YYC3-Family-AI.git |
+| 仓库地址 | https://github.com/YanYuCloudCube/YYC3-Family-AI.git |
 
 ### 1.2 项目愿景与核心理念
 
@@ -862,7 +862,7 @@ App.tsx
 
 ```bash
 # 克隆仓库
-git clone https://github.com/YYC-Cube/YYC3-Family-AI.git
+git clone https://github.com/YanYuCloudCube/YYC3-Family-AI.git
 cd YYC3-Family-AI
 
 # 安装依赖
@@ -910,7 +910,7 @@ pnpm test:e2e        # E2E 测试
 - **团队**: YanYuCloudCube Team
 - **邮箱**: admin@0379.email
 - **项目**: YYC3 Family AI
-- **仓库**: https://github.com/YYC-Cube/YYC3-Family-AI
+- **仓库**: https://github.com/YanYuCloudCube/YYC3-Family-AI
 
 ---
 

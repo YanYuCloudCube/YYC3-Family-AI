@@ -1,14 +1,14 @@
 /**
- * @file PerformanceTestSuite.ts
- * @description 性能压力测试工具 - 快照管理、控制台日志、并发操作、长时间运行测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags testing,performance,stress,snapshot,console,concurrency
+ * @file: PerformanceTestSuite.ts
+ * @description: 性能压力测试工具 - 快照管理、控制台日志、并发操作、长时间运行测试
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: testing,performance,stress,snapshot,console,concurrency
  */
 
 import type {

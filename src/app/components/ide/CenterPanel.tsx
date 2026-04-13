@@ -1,15 +1,15 @@
 /**
- * @file CenterPanel.tsx
- * @description 项目文件管理面板，包含文件树、搜索过滤、Monaco 编辑器集成、
+ * @file: CenterPanel.tsx
+ * @description: 项目文件管理面板，包含文件树、搜索过滤、Monaco 编辑器集成、
  *              多标签页编辑、文件 CRUD 操作、右键菜单
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.5.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags files,file-tree,editor,tabs,monaco
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.5.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: files,file-tree,editor,tabs,monaco
  */
 
 import { useState, useCallback, lazy, Suspense, useRef, useEffect } from "react";

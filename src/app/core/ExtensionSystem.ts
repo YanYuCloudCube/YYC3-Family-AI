@@ -1,15 +1,15 @@
 /**
- * @file core/ExtensionSystem.ts
- * @description 扩展系统 - 提供应用级别的扩展点和钩子
+ * @file: core/ExtensionSystem.ts
+ * @description: 扩展系统 - 提供应用级别的扩展点和钩子
  *              支持动态加载、依赖管理、生命周期控制
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags extension,system,hooks,lifecycle
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: extension,system,hooks,lifecycle
  */
 
 export interface ExtensionPoint<T = unknown> {

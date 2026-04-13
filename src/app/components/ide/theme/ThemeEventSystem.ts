@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ThemeEventSystem.ts
- * @description 主题事件系统，支持主题变化监听、颜色变化监听
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags theme,events,listener,observer
+ * @file: ThemeEventSystem.ts
+ * @description: 主题事件系统，支持主题变化监听、颜色变化监听
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: theme,events,listener,observer
  */
 
 // ================================================================

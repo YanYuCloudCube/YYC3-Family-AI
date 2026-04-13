@@ -28,4 +28,4 @@
 
 完整内容含 13 大分类 60+ 配置变量、代码使用示例、.env 模板。
 
-原始文件: https://github.com/YYC-Cube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-配置参数.md
+原始文件: https://github.com/YanYuCloudCube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-配置参数.md

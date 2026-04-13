@@ -1,15 +1,15 @@
 /**
- * @file plugins/GitStatsPlugin.ts
- * @description 示例插件 #1 — Git 统计插件，注册面板展示提交统计、文件变更频率、
+ * @file: plugins/GitStatsPlugin.ts
+ * @description: 示例插件 #1 — Git 统计插件，注册面板展示提交统计、文件变更频率、
  *              代码行数趋势，注册命令 "git-stats.show" / "git-stats.refresh"
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,git,statistics,commits
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,git,statistics,commits
  */
 
 import type { PluginManifest } from "../types";

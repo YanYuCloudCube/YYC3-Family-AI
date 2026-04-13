@@ -1,14 +1,14 @@
 /**
- * @file types/index.ts
- * @description 核心类型定义 — 对齐 P0-架构-类型定义.md，集中管理 Design JSON、面板、组件等接口
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags types,interfaces,design-json,panel,component
+ * @file: types/index.ts
+ * @description: 核心类型定义 — 对齐 P0-架构-类型定义.md，集中管理 Design JSON、面板、组件等接口
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: types,interfaces,design-json,panel,component
  */
 
 // ================================================================
@@ -113,12 +113,13 @@ export interface PanelStyle {
 }
 
 // ── 面板 ID 注册表 ──
-// NOTE: 权威定义在 PanelManager.tsx，此处为类型参考
-// 直接使用 PanelManager.tsx 导出的 PanelId 即可
+// NOTE: 权威定义在此文件，PanelManager.tsx 从此处导入并重新导出
 export type PanelId =
   | "ai"
   | "files"
   | "code"
+  | "preview"
+  | "terminal"
   | "git"
   | "agents"
   | "market"
@@ -127,13 +128,15 @@ export type PanelId =
   | "collab"
   | "ops"
   | "workflow"
-  | "preview"
   | "diagnostics"
   | "performance"
   | "security"
   | "test-gen"
   | "quality"
-  | "terminal";
+  | "document-editor"
+  | "taskboard"
+  | "multi-instance"
+  | "multi-agent";
 
 // ── 组件规范 ──
 

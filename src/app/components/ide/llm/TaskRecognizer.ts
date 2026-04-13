@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file llm/TaskRecognizer.ts
- * @description 任务识别算法 — 支持多种格式的任务提取
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,task-extraction,recognition
+ * @file: llm/TaskRecognizer.ts
+ * @description: 任务识别算法 — 支持多种格式的任务提取
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,task-extraction,recognition
  */
 
 import {

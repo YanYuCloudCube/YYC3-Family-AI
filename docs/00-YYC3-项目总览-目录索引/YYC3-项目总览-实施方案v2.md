@@ -4158,7 +4158,7 @@ export class SecurityAudit {
 
 - **团队**：YanYuCloudCube Team
 - **邮箱**：admin@0379.email
-- **GitHub**：https://github.com/YYC-Cube/YYC3-Family-AI
+- **GitHub**：https://github.com/YanYuCloudCube/YYC3-Family-AI
 - **官网**：https://yyc3.io（待上线）
 
 ---

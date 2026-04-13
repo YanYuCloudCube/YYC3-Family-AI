@@ -19,4 +19,4 @@
 
 ## 总大小: ~197.4 KB
 
-原始目录: https://github.com/YYC-Cube/YanYuCloud/tree/main/YYC3-Design-Prompt/P1-核心功能
+原始目录: https://github.com/YanYuCloudCube/YanYuCloud/tree/main/YYC3-Design-Prompt/P1-核心功能

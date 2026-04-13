@@ -1,15 +1,15 @@
 /**
- * @file ai/TestGenerator.ts
- * @description F2.5 智能测试用例生成模块，分析 React 组件/函数/Hook 代码自动生成 Vitest 测试用例，
+ * @file: ai/TestGenerator.ts
+ * @description: F2.5 智能测试用例生成模块，分析 React 组件/函数/Hook 代码自动生成 Vitest 测试用例，
  *              覆盖快乐路径 / 边界值 / 错误处理 / 异步行为 / 组件渲染 / Hook 测试 / 集成测试
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-10
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,test-generation,vitest,react,automation
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-10
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,test-generation,vitest,react,automation
  */
 
 // ===================================================================

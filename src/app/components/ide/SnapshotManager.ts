@@ -1,21 +1,21 @@
 /**
- * @file SnapshotManager.ts
- * @description 快照管理器，负责创建、存储、恢复、比较预览快照，支持localStorage持久化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags snapshot,manager,restore,compare,persistence
+ * @file: SnapshotManager.ts
+ * @description: 快照管理器，负责创建、存储、恢复、比较预览快照，支持localStorage持久化
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: snapshot,manager,restore,compare,persistence
  */
 
 // ================================================================
 // SnapshotManager — Preview snapshot management system
 // ================================================================
 
-import type { DevicePreset } from "./stores/usePreviewStore";
+import type { DevicePreset } from "./types/previewTypes";
 
 /**
  * 快照文件数据结构

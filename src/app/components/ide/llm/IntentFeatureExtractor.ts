@@ -1,14 +1,14 @@
 /**
- * @file IntentFeatureExtractor.ts
- * @description 意图特征提取器 - 提取关键词、上下文、代码片段、参数和实体
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags intent,feature,extraction,llm
+ * @file: IntentFeatureExtractor.ts
+ * @description: 意图特征提取器 - 提取关键词、上下文、代码片段、参数和实体
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: intent,feature,extraction,llm
  */
 
 import {

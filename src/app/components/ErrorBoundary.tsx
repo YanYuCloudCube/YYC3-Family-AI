@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ErrorBoundary.tsx
- * @description 增强版 React 错误边界组件，支持错误分类、自动恢复、错误上报
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v2.0.0
- * @created 2026-03-06
- * @updated 2026-03-19
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags error-boundary,react,fallback,recovery,classification
+ * @file: ErrorBoundary.tsx
+ * @description: 增强版 React 错误边界组件，支持错误分类、自动恢复、错误上报
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v2.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-19
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: error-boundary,react,fallback,recovery,classification
  */
 
 import React, { useState } from "react";

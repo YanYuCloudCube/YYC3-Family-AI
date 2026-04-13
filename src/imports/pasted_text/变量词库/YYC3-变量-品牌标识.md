@@ -27,7 +27,7 @@
 > - `{{BRAND_COLOR_SECONDARY}}` = #764ba2
 > - `{{BRAND_COLOR_ACCENT}}` = #00d4ff
 > - `{{BRAND_EMAIL}}` = admin@0379.email
-> - `{{BRAND_GITHUB}}` = https://github.com/YYC-Cube
+> - `{{BRAND_GITHUB}}` = https://github.com/YanYuCloudCube
 > - `{{BRAND_LICENSE}}` = MIT
 > 
-> 原始文件: https://github.com/YYC-Cube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-品牌标识.md
+> 原始文件: https://github.com/YanYuCloudCube/YanYuCloud/blob/main/YYC3-Design-Prompt/变量词库/YYC3-变量-品牌标识.md

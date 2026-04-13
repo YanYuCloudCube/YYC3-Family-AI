@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file BoundaryHandler.ts
- * @description 边界情况处理器，处理空文件、超大文件、并发操作等边界情况
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags boundary,handler,edge-case,stability
+ * @file: BoundaryHandler.ts
+ * @description: 边界情况处理器，处理空文件、超大文件、并发操作等边界情况
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: boundary,handler,edge-case,stability
  */
 
 import { ErrorType, ErrorSeverity, handleError } from "./ErrorHandler";

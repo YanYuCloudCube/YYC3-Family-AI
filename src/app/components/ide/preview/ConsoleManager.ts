@@ -1,14 +1,14 @@
 /**
- * @file ConsoleManager.ts
- * @description 控制台管理器 - 管理预览窗口的控制台日志
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags console,log,management,preview
+ * @file: ConsoleManager.ts
+ * @description: 控制台管理器 - 管理预览窗口的控制台日志
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: console,log,management,preview
  */
 
 import { generateId } from '../utils/generateId';

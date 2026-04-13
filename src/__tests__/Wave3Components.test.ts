@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file Wave3Components.test.ts
- * @description Wave 3 组件与 Store 单元测试——
+ * @file: Wave3Components.test.ts
+ * @description: Wave 3 组件与 Store 单元测试——
  *              PanelTabGroupStore、PanelPinStore、FloatingPanelStore
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,wave3,stores,tab-groups,pin,floating
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,wave3,stores,tab-groups,pin,floating
  */
 
 import { describe, it, expect, beforeEach } from "vitest";

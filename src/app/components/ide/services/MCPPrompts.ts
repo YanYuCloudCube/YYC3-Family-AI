@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file MCPPrompts.ts
- * @description MCP 提示词模板 - 管理 MCP 提示词模板和调用
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags mcp,prompts,templates
+ * @file: MCPPrompts.ts
+ * @description: MCP 提示词模板 - 管理 MCP 提示词模板和调用
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: mcp,prompts,templates
  */
 
 import type { MCPClient, MCPPrompt } from "./MCPClient";

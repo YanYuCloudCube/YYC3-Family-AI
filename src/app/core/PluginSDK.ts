@@ -1,15 +1,15 @@
 /**
- * @file core/PluginSDK.ts
- * @description 插件开发 SDK - 提供类型安全的插件开发 API
+ * @file: core/PluginSDK.ts
+ * @description: 插件开发 SDK - 提供类型安全的插件开发 API
  *              简化插件开发流程，提升开发体验
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @updated 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,sdk,development,typescript
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @updated: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,sdk,development,typescript
  */
 
 export interface PluginManifest {

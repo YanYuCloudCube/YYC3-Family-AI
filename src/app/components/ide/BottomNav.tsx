@@ -1,14 +1,14 @@
 /**
- * @file BottomNav.tsx
- * @description 移动端底部导航栏 - 支持 5 个主要导航项、触摸反馈、角标提示
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags mobile,bottom-nav,navigation,responsive
+ * @file: BottomNav.tsx
+ * @description: 移动端底部导航栏 - 支持 5 个主要导航项、触摸反馈、角标提示
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: mobile,bottom-nav,navigation,responsive
  */
 
 import { useState } from "react";

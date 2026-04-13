@@ -1,15 +1,15 @@
 /**
- * @file MonacoWrapper.tsx
- * @description Monaco Editor 封装组件，集成深海军蓝/赛博朋克双主题、
+ * @file: MonacoWrapper.tsx
+ * @description: Monaco Editor 封装组件，集成深海军蓝/赛博朋克双主题、
  *              编辑器-预览滚动同步、语法高亮、智能提示等功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags editor,monaco,scroll-sync,theme,typescript
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: editor,monaco,scroll-sync,theme,typescript
  */
 
 import { useRef, useCallback, useEffect } from "react";

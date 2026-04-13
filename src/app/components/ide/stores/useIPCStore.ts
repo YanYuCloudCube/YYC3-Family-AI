@@ -1,16 +1,16 @@
 /**
- * @file stores/useIPCStore.ts
- * @description IPC 通信管理 Zustand Store — 基于 BroadcastChannel API 实现
+ * @file: stores/useIPCStore.ts
+ * @description: IPC 通信管理 Zustand Store — 基于 BroadcastChannel API 实现
  *              跨标签页/跨窗口的消息广播、点对点通信、消息订阅，
  *              替代 Tauri IPC 在 Web 环境下的等效方案
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,multi-instance,ipc,broadcast-channel,zustand
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,multi-instance,ipc,broadcast-channel,zustand
  */
 
 import { create } from "zustand";

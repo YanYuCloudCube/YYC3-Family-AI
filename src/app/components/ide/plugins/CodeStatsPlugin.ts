@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file plugins/CodeStatsPlugin.ts
- * @description 代码统计插件示例 - 统计代码行数、字符数、复杂度等指标
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,example,code-stats,analytics
+ * @file: plugins/CodeStatsPlugin.ts
+ * @description: 代码统计插件示例 - 统计代码行数、字符数、复杂度等指标
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,example,code-stats,analytics
  */
 
 import type { PluginManifest, PluginContext } from "../types";
@@ -22,7 +22,7 @@ export const CodeStatsPlugin: PluginManifest = {
   description: "统计代码行数、字符数、函数数量等指标",
   descriptionEn: "Count lines of code, characters, functions and more metrics",
   author: "YYC3 Team <admin@0379.email>",
-  homepage: "https://github.com/YYC-Cube/yyc3-family-ai",
+  homepage: "https://github.com/YanYuCloudCube/yyc3-family-ai",
   license: "MIT",
   tags: ["analytics", "code-quality", "productivity"],
   icon: "BarChart3",

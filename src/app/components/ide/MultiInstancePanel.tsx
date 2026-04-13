@@ -1,15 +1,15 @@
 /**
- * @file MultiInstancePanel.tsx
- * @description 应用多开管理面板 — 提供窗口实例管理、工作区管理、会话管理、
+ * @file: MultiInstancePanel.tsx
+ * @description: 应用多开管理面板 — 提供窗口实例管理、工作区管理、会话管理、
  *              IPC 消息日志四大标签页，支持创建/切换/删除/导出等完整操作
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,multi-instance,panel,window,workspace,session,ipc
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,multi-instance,panel,window,workspace,session,ipc
  */
 
 import React, { useState, useEffect, useMemo } from "react";

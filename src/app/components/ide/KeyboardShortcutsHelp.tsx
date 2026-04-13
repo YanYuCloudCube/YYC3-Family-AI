@@ -1,15 +1,15 @@
 /**
- * @file KeyboardShortcutsHelp.tsx
- * @description 快捷键帮助面板，Ctrl+/ 打开，展示所有可用快捷键，
+ * @file: KeyboardShortcutsHelp.tsx
+ * @description: 快捷键帮助面板，Ctrl+/ 打开，展示所有可用快捷键，
  *              按分类分组、支持搜索过滤
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags keyboard,shortcuts,help,accessibility,wave3
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: keyboard,shortcuts,help,accessibility,wave3
  */
 
 import { useState, useMemo } from "react";

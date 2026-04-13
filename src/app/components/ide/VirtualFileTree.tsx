@@ -1,14 +1,14 @@
 /**
- * @file VirtualFileTree.tsx
- * @description 虚拟滚动文件树组件，支持10,000+文件流畅渲染
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-30
- * @updated 2026-03-30
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags virtual-scroll,file-tree,performance,react-window
+ * @file: VirtualFileTree.tsx
+ * @description: 虚拟滚动文件树组件，支持10,000+文件流畅渲染
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-30
+ * @updated: 2026-03-30
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: virtual-scroll,file-tree,performance,react-window
  */
 
 import React, { useMemo, useCallback, useState } from "react";

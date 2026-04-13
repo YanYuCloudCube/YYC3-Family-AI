@@ -1,14 +1,14 @@
 /**
- * @file MyersDiff.ts
- * @description Myers Diff算法实现，提供高效的文本差异计算，支持行级和字符级差异检测
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags diff,myers,algorithm,text-comparison
+ * @file: MyersDiff.ts
+ * @description: Myers Diff算法实现，提供高效的文本差异计算，支持行级和字符级差异检测
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: diff,myers,algorithm,text-comparison
  */
 
 // ================================================================

@@ -452,7 +452,7 @@ git push origin main --tags
 
 如果在升级过程中遇到问题，可以通过以下方式获取帮助：
 
-- **GitHub Issues**: [https://github.com/YYC-Cube/YYC3-Family-AI/issues](https://github.com/YYC-Cube/YYC3-Family-AI/issues)
+- **GitHub Issues**: [https://github.com/YanYuCloudCube/YYC3-Family-AI/issues](https://github.com/YanYuCloudCube/YYC3-Family-AI/issues)
 - **文档**: [docs/](../docs/)
 - **示例**: [examples/](../examples/)
 

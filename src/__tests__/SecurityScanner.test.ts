@@ -1,13 +1,13 @@
 /**
- * @file SecurityScanner.test.ts
- * @description 安全扫描器测试 - 测试代码安全检测、漏洞识别和最佳实践建议
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-04-01
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,unit-test
+ * @file: SecurityScanner.test.ts
+ * @description: 安全扫描器测试 - 测试代码安全检测、漏洞识别和最佳实践建议
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-04-01
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,unit-test
  */
 
 // @ts-nocheck

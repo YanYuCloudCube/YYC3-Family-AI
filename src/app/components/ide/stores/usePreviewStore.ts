@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file stores/usePreviewStore.ts
- * @description 实时预览系统 Zustand Store，管理预览模式、设备模拟、控制台日志、
+ * @file: stores/usePreviewStore.ts
+ * @description: 实时预览系统 Zustand Store，管理预览模式、设备模拟、控制台日志、
  *              历史快照、缩放、滚动同步、预览引擎切换等状态，支持 localStorage 持久化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.1.0
- * @created 2026-03-14
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags stores,preview,zustand,device-simulation,console,history
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.1.0
+ * @created: 2026-03-14
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: stores,preview,zustand,device-simulation,console,history
  */
 
 // ================================================================
@@ -19,29 +19,16 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { PreviewMode, DeviceType, PreviewEngineType, DevicePreset, ConsoleLog, PreviewSnapshot } from "../types/previewTypes";
 import { PreviewModeController } from "../PreviewModeController";
 import { SnapshotManager, type Snapshot, type SnapshotComparison } from "../SnapshotManager";
 import { ZoomController } from "../preview/ZoomController";
 import { useFileStoreZustand } from "./useFileStoreZustand";
 
+// Re-export types for backward compatibility
+export type { PreviewMode, DeviceType, PreviewEngineType, DevicePreset, ConsoleLog, PreviewSnapshot };
+
 // ── Types ──
-
-export type PreviewMode = "realtime" | "manual" | "delayed" | "smart";
-export type DeviceType = "desktop" | "tablet" | "mobile" | "custom";
-export type PreviewEngineType = "iframe" | "sandpack";
-
-export interface DevicePreset {
-  id: string;
-  name: string;
-  type: DeviceType;
-  width: number;
-  height: number;
-  userAgent?: string;
-  pixelRatio?: number;
-  deviceScaleFactor?: number;
-  isMobile?: boolean;
-  hasTouch?: boolean;
-}
 
 export interface PreviewSnapshot {
   id: string;
@@ -517,14 +504,6 @@ export const usePreviewStore = create<PreviewState>()(
           return null;
         }
         return manager.getSnapshot(id);
-      },
-      deleteProjectSnapshot: (id) => {
-        const manager = get().snapshotManager;
-        if (!manager) {
-          console.warn("[usePreviewStore] snapshotManager not initialized");
-          return false;
-        }
-        return manager.deleteSnapshot(id);
       },
       compareProjectSnapshots: (id1, id2) => {
         const manager = get().snapshotManager;

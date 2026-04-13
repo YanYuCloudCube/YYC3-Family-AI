@@ -1,15 +1,15 @@
 /**
- * @file PluginSystem.ts
- * @description 插件系统架构 — 对齐 P2-插件-插件系统.md / P2-插件-插件开发.md，
- *              提供插件注册、生命周期管理、沙箱隔离、事件通信
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags plugin,system,registry,lifecycle,sandbox
+ * @file: PluginSystem.ts
+ * @description: 插件系统架构 — 对齐 P2-插件-插件系统.md / P2-插件-插件开发.md，
+ *              提供插件注册、生命周期管理、沙箱隔离、事件通信、插件市场
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v2.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-04-05
+ * @status: production
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: plugin,system,registry,lifecycle,sandbox,marketplace
  */
 
 // ================================================================
@@ -41,6 +41,30 @@
 // ================================================================
 
 import type { PluginManifest, PluginInstance } from "./types";
+
+// ── Plugin Market Types ──
+
+export interface PluginMarketItem {
+  manifest: PluginManifest;
+  downloads: number;
+  rating: number;
+  reviews: number;
+  publishedAt: string;
+  updatedAt: string;
+  installed?: boolean;
+  updateAvailable?: boolean;
+}
+
+export interface PluginMarketConfig {
+  registryUrl: string;
+  cacheTimeout?: number;
+}
+
+export interface PluginInstallResult {
+  success: boolean;
+  plugin?: PluginInstance;
+  error?: string;
+}
 
 // ── Plugin Event System ──
 
@@ -163,6 +187,16 @@ export class PluginManager {
     onClick?: () => void;
   }> = [];
   private pluginStorage = new Map<string, Map<string, unknown>>();
+
+  // ── Plugin Market ──
+  private marketConfig: PluginMarketConfig | null = null;
+  private marketCache: Map<string, PluginMarketItem> = new Map();
+  private cacheTimestamp: number = 0;
+  private installedPlugins: Map<string, { version: string; installedAt: number }> = new Map();
+
+  constructor() {
+    this.loadInstalledPlugins();
+  }
 
   // ── Registration ──
 
@@ -377,6 +411,275 @@ export class PluginManager {
         remove: (key) => pluginSystem.pluginStorage.get(pluginId)?.delete(key),
       },
     };
+  }
+
+  // ── Plugin Market ──
+
+  configureMarket(config: PluginMarketConfig): void {
+    this.marketConfig = config;
+    console.warn('[PluginMarket] Configured:', config.registryUrl);
+  }
+
+  async fetchMarketPlugins(forceRefresh = false): Promise<PluginMarketItem[]> {
+    if (!this.marketConfig) {
+      console.warn('[PluginMarket] Not configured');
+      return [];
+    }
+
+    const { registryUrl, cacheTimeout = 300000 } = this.marketConfig;
+    const now = Date.now();
+
+    if (!forceRefresh && this.marketCache.size > 0 && now - this.cacheTimestamp < cacheTimeout) {
+      return Array.from(this.marketCache.values());
+    }
+
+    try {
+      const response = await fetch(`${registryUrl}/plugins.json`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch plugins: ${response.status}`);
+      }
+
+      const plugins: PluginMarketItem[] = await response.json();
+
+      this.marketCache.clear();
+      plugins.forEach(plugin => {
+        plugin.installed = this.installedPlugins.has(plugin.manifest.id);
+        if (plugin.installed) {
+          const installed = this.installedPlugins.get(plugin.manifest.id)!;
+          plugin.updateAvailable = this.compareVersions(plugin.manifest.version, installed.version) > 0;
+        }
+        this.marketCache.set(plugin.manifest.id, plugin);
+      });
+
+      this.cacheTimestamp = now;
+      this.eventBus.emit('market:refreshed', plugins);
+
+      return plugins;
+    } catch (error) {
+      console.error('[PluginMarket] Failed to fetch plugins:', error);
+      this.eventBus.emit('market:error', error);
+      return Array.from(this.marketCache.values());
+    }
+  }
+
+  async searchPlugins(query: string): Promise<PluginMarketItem[]> {
+    const plugins = await this.fetchMarketPlugins();
+    const lowerQuery = query.toLowerCase();
+
+    return plugins.filter(plugin => 
+      plugin.manifest.name.toLowerCase().includes(lowerQuery) ||
+      plugin.manifest.description.toLowerCase().includes(lowerQuery) ||
+      plugin.manifest.author.toLowerCase().includes(lowerQuery) ||
+      plugin.manifest.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+    );
+  }
+
+  async getPluginDetails(pluginId: string): Promise<PluginMarketItem | null> {
+    if (this.marketCache.has(pluginId)) {
+      return this.marketCache.get(pluginId) || null;
+    }
+
+    if (!this.marketConfig) return null;
+
+    try {
+      const response = await fetch(`${this.marketConfig.registryUrl}/plugins/${pluginId}.json`);
+      if (!response.ok) return null;
+
+      const plugin: PluginMarketItem = await response.json();
+      plugin.installed = this.installedPlugins.has(pluginId);
+      if (plugin.installed) {
+        const installed = this.installedPlugins.get(pluginId)!;
+        plugin.updateAvailable = this.compareVersions(plugin.manifest.version, installed.version) > 0;
+      }
+
+      this.marketCache.set(pluginId, plugin);
+      return plugin;
+    } catch (error) {
+      console.error('[PluginMarket] Failed to get plugin details:', error);
+      return null;
+    }
+  }
+
+  async installPlugin(pluginId: string): Promise<PluginInstallResult> {
+    const marketItem = await this.getPluginDetails(pluginId);
+    if (!marketItem) {
+      return { success: false, error: 'Plugin not found in market' };
+    }
+
+    if (this.installedPlugins.has(pluginId)) {
+      return { success: false, error: 'Plugin already installed' };
+    }
+
+    try {
+      const manifest = marketItem.manifest;
+
+      if (manifest.dependencies) {
+        for (const [depId, depVersion] of Object.entries(manifest.dependencies)) {
+          if (!this.installedPlugins.has(depId)) {
+            console.warn(`[PluginMarket] Installing dependency: ${depId}@${depVersion}`);
+            const depResult = await this.installPlugin(depId);
+            if (!depResult.success) {
+              return { success: false, error: `Failed to install dependency: ${depId}` };
+            }
+          }
+        }
+      }
+
+      this.register(manifest);
+      this.installedPlugins.set(pluginId, {
+        version: manifest.version,
+        installedAt: Date.now(),
+      });
+
+      await this.saveInstalledPlugins();
+
+      this.eventBus.emit('plugin:installed', { pluginId, version: manifest.version });
+
+      const plugin = this.plugins.get(pluginId);
+      return { success: true, plugin };
+    } catch (error) {
+      console.error('[PluginMarket] Failed to install plugin:', error);
+      return { success: false, error: String(error) };
+    }
+  }
+
+  async uninstallPlugin(pluginId: string): Promise<boolean> {
+    if (!this.installedPlugins.has(pluginId)) {
+      console.warn('[PluginMarket] Plugin not installed:', pluginId);
+      return false;
+    }
+
+    const dependents = this.findDependents(pluginId);
+    if (dependents.length > 0) {
+      console.error('[PluginMarket] Cannot uninstall: other plugins depend on it:', dependents);
+      return false;
+    }
+
+    try {
+      this.unregister(pluginId);
+      this.installedPlugins.delete(pluginId);
+      await this.saveInstalledPlugins();
+
+      this.eventBus.emit('plugin:uninstalled', pluginId);
+      return true;
+    } catch (error) {
+      console.error('[PluginMarket] Failed to uninstall plugin:', error);
+      return false;
+    }
+  }
+
+  async updatePlugin(pluginId: string): Promise<PluginInstallResult> {
+    const marketItem = await this.getPluginDetails(pluginId);
+    if (!marketItem) {
+      return { success: false, error: 'Plugin not found in market' };
+    }
+
+    const installed = this.installedPlugins.get(pluginId);
+    if (!installed) {
+      return { success: false, error: 'Plugin not installed' };
+    }
+
+    if (this.compareVersions(marketItem.manifest.version, installed.version) <= 0) {
+      return { success: false, error: 'Already up to date' };
+    }
+
+    try {
+      this.deactivate(pluginId);
+      this.plugins.delete(pluginId);
+
+      const manifest = marketItem.manifest;
+      this.register(manifest);
+      this.installedPlugins.set(pluginId, {
+        version: manifest.version,
+        installedAt: Date.now(),
+      });
+
+      await this.saveInstalledPlugins();
+
+      this.eventBus.emit('plugin:updated', { pluginId, version: manifest.version });
+
+      const plugin = this.plugins.get(pluginId);
+      return { success: true, plugin };
+    } catch (error) {
+      console.error('[PluginMarket] Failed to update plugin:', error);
+      return { success: false, error: String(error) };
+    }
+  }
+
+  getInstalledPlugins(): Array<{ id: string; version: string; installedAt: number }> {
+    return Array.from(this.installedPlugins.entries()).map(([id, data]) => ({
+      id,
+      ...data,
+    }));
+  }
+
+  getAvailableUpdates(): Array<{ id: string; currentVersion: string; latestVersion: string }> {
+    const updates: Array<{ id: string; currentVersion: string; latestVersion: string }> = [];
+
+    for (const [id, installed] of this.installedPlugins) {
+      const marketItem = this.marketCache.get(id);
+      if (marketItem && this.compareVersions(marketItem.manifest.version, installed.version) > 0) {
+        updates.push({
+          id,
+          currentVersion: installed.version,
+          latestVersion: marketItem.manifest.version,
+        });
+      }
+    }
+
+    return updates;
+  }
+
+  // ── Private Market Helpers ──
+
+  private findDependents(pluginId: string): string[] {
+    const dependents: string[] = [];
+
+    for (const [id, installed] of this.installedPlugins) {
+      const plugin = this.plugins.get(id);
+      if (plugin?.manifest.dependencies?.[pluginId]) {
+        dependents.push(id);
+      }
+    }
+
+    return dependents;
+  }
+
+  private compareVersions(a: string, b: string): number {
+    const partsA = a.split('.').map(Number);
+    const partsB = b.split('.').map(Number);
+
+    for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+      const partA = partsA[i] || 0;
+      const partB = partsB[i] || 0;
+      if (partA > partB) return 1;
+      if (partA < partB) return -1;
+    }
+
+    return 0;
+  }
+
+  private async saveInstalledPlugins(): Promise<void> {
+    try {
+      const data = Object.fromEntries(this.installedPlugins);
+      localStorage.setItem('yyc3-installed-plugins', JSON.stringify(data));
+    } catch (error) {
+      console.error('[PluginMarket] Failed to save installed plugins:', error);
+    }
+  }
+
+  private loadInstalledPlugins(): void {
+    try {
+      const data = localStorage.getItem('yyc3-installed-plugins');
+      if (data) {
+        const parsed = JSON.parse(data);
+        for (const [id, info] of Object.entries(parsed)) {
+          this.installedPlugins.set(id, info as { version: string; installedAt: number });
+        }
+      }
+    } catch (error) {
+      console.error('[PluginMarket] Failed to load installed plugins:', error);
+    }
   }
 
   private cleanupPlugin(pluginId: string): void {

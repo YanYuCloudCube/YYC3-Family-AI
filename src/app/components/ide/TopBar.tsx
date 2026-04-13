@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file TopBar.tsx
- * @description IDE 顶部导航栏，包含 Logo、项目标题编辑、工具栏图标组、
+ * @file: TopBar.tsx
+ * @description: IDE 顶部导航栏，包含 Logo、项目标题编辑、工具栏图标组、
  *              主题切换、通知中心、分享对话框、项目导出（ZIP/JSON）
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.4.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags topbar,navigation,toolbar,export,theme
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.4.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: topbar,navigation,toolbar,export,theme
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";

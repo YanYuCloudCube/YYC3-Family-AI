@@ -1,14 +1,14 @@
 /**
- * @file AIAgentWorkflow.ts
- * @description AI Agent 工作流执行器 - 2026 MVP 功能，支持自主执行多步骤任务
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status mvp
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,agent,workflow,automation,mvp
+ * @file: AIAgentWorkflow.ts
+ * @description: AI Agent 工作流执行器 - 2026 MVP 功能，支持自主执行多步骤任务
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: mvp
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,agent,workflow,automation,mvp
  */
 
 export interface WorkflowStep {

@@ -1,15 +1,15 @@
 /**
- * @file ProjectCreateWizard.tsx
- * @description 项目创建向导弹窗，支持模板选择、项目配置、技术栈选择、
+ * @file: ProjectCreateWizard.tsx
+ * @description: 项目创建向导弹窗，支持模板选择、项目配置、技术栈选择、
  *              多步骤表单流程。已完成 isCyber → useThemeTokens 迁移
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.2.0
- * @created 2026-03-06
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags wizard,project-creation,templates,forms,token-migrated
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.2.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: wizard,project-creation,templates,forms,token-migrated
  */
 
 import { useState, useCallback } from "react";

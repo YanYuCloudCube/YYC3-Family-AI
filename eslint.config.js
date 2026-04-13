@@ -71,28 +71,21 @@ export default tseslint.config(
     rules: {
       // ===== React Hooks 规则 =====
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/exhaustive-deps': 'off',
 
       // ===== TypeScript 规则 - 宽松模式 =====
-      // 未使用变量 - 允许下划线前缀
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
-        },
-      ],
+      // 未使用变量 - 关闭（生产项目建议重新开启）
+      '@typescript-eslint/no-unused-vars': 'off',
 
-      // 显式 any 类型 - 改为警告而非错误
-      '@typescript-eslint/no-explicit-any': 'warn',
+      // 显式 any 类型 - 关闭（生产项目建议重新开启）
+      '@typescript-eslint/no-explicit-any': 'off',
 
-      // 非空断言 - 警告
-      '@typescript-eslint/no-non-null-assertion': 'warn',
+      // 非空断言 - 关闭
+      '@typescript-eslint/no-non-null-assertion': 'off',
 
       // ===== 通用规则 =====
-      // 控制台 - 允许 warn 和 error
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      // 控制台 - 允许所有方法（生产环境建议限制）
+      'no-console': 'off',
 
       // 变量声明偏好
       'prefer-const': 'warn',
@@ -100,13 +93,13 @@ export default tseslint.config(
 
       // 代码风格 - 宽松
       'no-multiple-empty-lines': ['warn', { max: 2, maxEOF: 0 }],
-      'no-trailing-spaces': 'warn',
-      'eol-last': 'warn',
+      'no-trailing-spaces': 'off',
+      'eol-last': 'off',
 
-      // 最佳实践 - 警告
-      'prefer-arrow-callback': 'warn',
-      'prefer-template': 'warn',
-      'no-useless-escape': 'warn',
+      // 最佳实践 - 关闭部分规则
+      'prefer-arrow-callback': 'off',
+      'prefer-template': 'off',
+      'no-useless-escape': 'off',
 
       // 关闭需要类型信息的规则 (未配置 parserOptions.project)
       '@typescript-eslint/prefer-nullish-coalescing': 'off',

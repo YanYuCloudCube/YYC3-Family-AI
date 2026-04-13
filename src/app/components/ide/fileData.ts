@@ -1,14 +1,14 @@
 /**
- * @file fileData.ts
- * @description 共享文件内容数据，供 CenterPanel 编辑器和 RightPanel 代码详情使用
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags data,files,mock,editor
+ * @file: fileData.ts
+ * @description: 共享文件内容数据，供 CenterPanel 编辑器和 RightPanel 代码详情使用
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: data,files,mock,editor
  */
 
 // Shared file contents used by CenterPanel editor and RightPanel code detail

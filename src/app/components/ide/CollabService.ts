@@ -1,19 +1,45 @@
 /**
- * @file CollabService.ts
- * @description Yjs 实时协作服务 — 基于 CRDT 的文档同步引擎，
+ * @file: CollabService.ts
+ * @description: Yjs 实时协作服务 — 基于 CRDT 的文档同步引擎，
  *              支持离线优先、自动重连、感知光标、冲突解决、
  *              可接入 y-websocket / y-indexeddb / y-webrtc 传输层
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-15
- * @updated 2026-03-15
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags collaboration,yjs,crdt,realtime,sync,awareness
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-15
+ * @updated: 2026-03-15
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: collaboration,yjs,crdt,realtime,sync,awareness
  */
 
 import * as Y from "yjs";
+
+// ── WebSocket Message Types ──
+
+interface WSMessage {
+  type: 'sync' | 'sync-step-1' | 'sync-step-2' | 'update' | 'awareness' | 'query-awareness' | 'heartbeat';
+  payload?: unknown;
+}
+
+// ── Conflict Resolution Types ──
+
+export interface ConflictInfo {
+  id: string;
+  filePath: string;
+  localVersion: string;
+  remoteVersion: string;
+  localUserId: string;
+  remoteUserId: string;
+  timestamp: number;
+  resolved: boolean;
+}
+
+export interface ConflictResolution {
+  conflictId: string;
+  strategy: 'keep-local' | 'keep-remote' | 'merge';
+  mergedContent?: string;
+}
 
 // ================================================================
 // CollabService — Yjs 实时协作服务
@@ -135,6 +161,11 @@ export class CollabService {
   private reconnectAttempts = 0;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   private updateCallbacks = new Set<(update: Uint8Array) => void>();
+  private ws: WebSocket | null = null;
+  private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
+  private offlineQueue: WSMessage[] = [];
+  private conflicts: Map<string, ConflictInfo> = new Map();
+  private awarenessState: Map<string, unknown> = new Map();
 
   // ── Static factory ──
 
@@ -175,34 +206,138 @@ export class CollabService {
   // ── Connection Management ──
 
   connect(): void {
-    if (this.connectionStatus === "connected") return;
+    if (this.connectionStatus === "connected" || this.connectionStatus === "connecting") return;
 
     this.setConnectionStatus("connecting");
 
-    // NOTE: In a real implementation, this would create a WebSocketProvider:
-    //   import { WebsocketProvider } from "y-websocket"
-    //   this.wsProvider = new WebsocketProvider(
-    //     this.options.serverUrl,
-    //     this.documentId,
-    //     this.doc
-    //   )
-    //
-    // For now, we simulate the connection:
-    setTimeout(() => {
-      this.setConnectionStatus("connected");
-      this.emitEvent({
-        type: "connection-status",
-        payload: { status: "connected" },
-      });
-      this.emitEvent({
-        type: "sync-complete",
-        payload: { documentId: this.documentId },
-      });
-      this.reconnectAttempts = 0;
-    }, 500);
+    try {
+      const wsUrl = `${this.options.serverUrl.replace(/^http/, 'ws')}/collab/${this.documentId}`;
+      this.ws = new WebSocket(wsUrl);
+
+      this.ws.onopen = () => {
+        this.setConnectionStatus("connected");
+        this.reconnectAttempts = 0;
+        this.startHeartbeat();
+        this.flushOfflineQueue();
+        
+        this.emitEvent({
+          type: "connection-status",
+          payload: { status: "connected" },
+        });
+
+        const state = Y.encodeStateAsUpdate(this.doc);
+        this.sendWSMessage({ type: 'sync-step-1', payload: Array.from(state) });
+      };
+
+      this.ws.onmessage = (event) => {
+        try {
+          const message: WSMessage = JSON.parse(event.data);
+          this.handleWSMessage(message);
+        } catch (e) {
+          console.error("[CollabService] Failed to parse WS message:", e);
+        }
+      };
+
+      this.ws.onclose = () => {
+        this.stopHeartbeat();
+        this.attemptReconnect();
+      };
+
+      this.ws.onerror = (error) => {
+        console.error("[CollabService] WebSocket error:", error);
+        this.setConnectionStatus("error");
+        this.emitEvent({
+          type: "connection-status",
+          payload: { status: "error" },
+        });
+      };
+    } catch (error) {
+      console.error("[CollabService] Failed to create WebSocket:", error);
+      this.setConnectionStatus("error");
+      setTimeout(() => this.attemptReconnect(), this.options.reconnectInterval);
+    }
+  }
+
+  private startHeartbeat(): void {
+    this.heartbeatInterval = setInterval(() => {
+      if (this.ws?.readyState === WebSocket.OPEN) {
+        this.sendWSMessage({ type: 'heartbeat' });
+      }
+    }, 30000);
+  }
+
+  private stopHeartbeat(): void {
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+      this.heartbeatInterval = null;
+    }
+  }
+
+  private sendWSMessage(message: WSMessage): void {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify(message));
+    } else {
+      this.offlineQueue.push(message);
+    }
+  }
+
+  private flushOfflineQueue(): void {
+    while (this.offlineQueue.length > 0 && this.ws?.readyState === WebSocket.OPEN) {
+      const message = this.offlineQueue.shift();
+      if (message) {
+        this.ws.send(JSON.stringify(message));
+      }
+    }
+  }
+
+  private handleWSMessage(message: WSMessage): void {
+    switch (message.type) {
+      case 'sync':
+      case 'sync-step-2': {
+        if (!message.payload) break;
+        const update = new Uint8Array(message.payload as number[]);
+        Y.applyUpdate(this.doc, update);
+        this.emitEvent({ type: 'sync-complete', payload: { documentId: this.documentId } });
+        break;
+      }
+      case 'update': {
+        if (!message.payload) break;
+        const update = new Uint8Array(message.payload as number[]);
+        Y.applyUpdate(this.doc, update);
+        break;
+      }
+      case 'awareness': {
+        if (!message.payload) break;
+        const awareness = message.payload as { userId: string; user: CollabUser };
+        if (awareness.userId !== this.localUser.id) {
+          this.remoteUsers.set(awareness.userId, awareness.user);
+          this.emitEvent({ type: 'user-cursor-moved', payload: awareness.user });
+        }
+        break;
+      }
+      case 'query-awareness': {
+        this.broadcastAwareness();
+        break;
+      }
+      case 'sync-step-1':
+      case 'heartbeat':
+        break;
+    }
+  }
+
+  private broadcastAwareness(): void {
+    this.sendWSMessage({
+      type: 'awareness',
+      payload: { userId: this.localUser.id, user: this.localUser },
+    });
   }
 
   disconnect(): void {
+    this.stopHeartbeat();
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
+    }
     this.setConnectionStatus("disconnected");
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer);
@@ -212,6 +347,102 @@ export class CollabService {
       type: "connection-status",
       payload: { status: "disconnected" },
     });
+  }
+
+  // ── Conflict Detection & Resolution ──
+
+  detectConflict(filePath: string, localContent: string, remoteContent: string, remoteUserId: string): ConflictInfo | null {
+    if (localContent === remoteContent) return null;
+
+    const conflict: ConflictInfo = {
+      id: `conflict-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      filePath,
+      localVersion: localContent,
+      remoteVersion: remoteContent,
+      localUserId: this.localUser.id,
+      remoteUserId,
+      timestamp: Date.now(),
+      resolved: false,
+    };
+
+    this.conflicts.set(conflict.id, conflict);
+    this.emitEvent({
+      type: "conflict-detected",
+      payload: conflict,
+    });
+
+    return conflict;
+  }
+
+  resolveConflict(resolution: ConflictResolution): boolean {
+    const conflict = this.conflicts.get(resolution.conflictId);
+    if (!conflict || conflict.resolved) return false;
+
+    let finalContent: string;
+
+    switch (resolution.strategy) {
+      case 'keep-local':
+        finalContent = conflict.localVersion;
+        break;
+      case 'keep-remote':
+        finalContent = conflict.remoteVersion;
+        break;
+      case 'merge':
+        finalContent = resolution.mergedContent || this.autoMerge(conflict.localVersion, conflict.remoteVersion);
+        break;
+      default:
+        return false;
+    }
+
+    this.setFileContent(conflict.filePath, finalContent);
+    conflict.resolved = true;
+    this.conflicts.set(conflict.id, conflict);
+
+    return true;
+  }
+
+  private autoMerge(local: string, remote: string): string {
+    const localLines = local.split('\n');
+    const remoteLines = remote.split('\n');
+    const merged: string[] = [];
+    const maxLen = Math.max(localLines.length, remoteLines.length);
+
+    for (let i = 0; i < maxLen; i++) {
+      const localLine = localLines[i] || '';
+      const remoteLine = remoteLines[i] || '';
+
+      if (localLine === remoteLine) {
+        merged.push(localLine);
+      } else if (localLine && !remoteLine) {
+        merged.push(localLine);
+      } else if (!localLine && remoteLine) {
+        merged.push(remoteLine);
+      } else {
+        merged.push(`<<<<<<< LOCAL`);
+        merged.push(localLine);
+        merged.push(`=======`);
+        merged.push(remoteLine);
+        merged.push(`>>>>>>> REMOTE`);
+      }
+    }
+
+    return merged.join('\n');
+  }
+
+  getConflicts(): ConflictInfo[] {
+    return Array.from(this.conflicts.values()).filter(c => !c.resolved);
+  }
+
+  getAllConflicts(): ConflictInfo[] {
+    return Array.from(this.conflicts.values());
+  }
+
+  clearConflict(conflictId: string): void {
+    this.conflicts.delete(conflictId);
+  }
+
+  clearAllConflicts(): void {
+    this.conflicts.clear();
   }
 
   private attemptReconnect(): void {
@@ -447,11 +678,15 @@ export class CollabService {
 
   destroy(): void {
     this.disconnect();
+    this.stopHeartbeat();
     this.undoManager?.destroy();
     this.doc.destroy();
     this.eventHandlers.clear();
     this.updateCallbacks.clear();
     this.remoteUsers.clear();
+    this.conflicts.clear();
+    this.offlineQueue = [];
+    this.awarenessState.clear();
   }
 }
 

@@ -1,16 +1,16 @@
 // @ts-nocheck
 /**
- * @file __tests__/TaskInferenceEngine.test.ts
- * @description TaskInferenceEngine 单元测试 — 覆盖 6 种模式匹配、边界条件、
+ * @file: __tests__/TaskInferenceEngine.test.ts
+ * @description: TaskInferenceEngine 单元测试 — 覆盖 6 种模式匹配、边界条件、
  *              代码行过滤、去重、上限控制、空输入处理
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,task-inference,ai,pattern-matching
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,task-inference,ai,pattern-matching
  */
 
 import { describe, it, expect } from "vitest";

@@ -1,15 +1,15 @@
 /**
- * @file hooks/useSettingsSync.ts
- * @description 设置同步 Hook — 在 IDE 页面挂载时启动全局设置同步、
+ * @file: hooks/useSettingsSync.ts
+ * @description: 设置同步 Hook — 在 IDE 页面挂载时启动全局设置同步、
  *              快捷键绑定安装、模型配置同步、MCP 注入、CSS 变量同步
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-17
- * @updated 2026-03-17
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags hooks,settings,sync,keybindings,lifecycle
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-17
+ * @updated: 2026-03-17
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: hooks,settings,sync,keybindings,lifecycle
  */
 
 import { useEffect, useRef } from "react";

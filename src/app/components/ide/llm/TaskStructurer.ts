@@ -1,14 +1,14 @@
 /**
- * @file llm/TaskStructurer.ts
- * @description 任务结构化 — 解析任务的各个属性
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status stable
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags llm,task-extraction,structuring
+ * @file: llm/TaskStructurer.ts
+ * @description: 任务结构化 — 解析任务的各个属性
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: stable
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: llm,task-extraction,structuring
  */
 
 import {

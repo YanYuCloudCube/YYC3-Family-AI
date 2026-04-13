@@ -1,15 +1,15 @@
 /**
- * @file ModelRegistry.tsx
- * @description AI 模型注册中心 Context Provider，基于真实 Provider 动态注册模型，
+ * @file: ModelRegistry.tsx
+ * @description: AI 模型注册中心 Context Provider，基于真实 Provider 动态注册模型，
  *              管理模型选择、连通性检测、心跳监控、延迟历史
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.5.0
- * @created 2026-03-06
- * @updated 2026-03-14
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ai,models,registry,context,provider,connectivity
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.5.0
+ * @created: 2026-03-06
+ * @updated: 2026-03-14
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ai,models,registry,context,provider,connectivity
  */
 
 import React, {

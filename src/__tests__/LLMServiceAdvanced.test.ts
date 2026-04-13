@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file LLMServiceAdvanced.test.ts
- * @description LLM Service 核心功能高级测试 - 覆盖流式响应、错误处理、边界情况
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,llm,streaming,error-handling
+ * @file: LLMServiceAdvanced.test.ts
+ * @description: LLM Service 核心功能高级测试 - 覆盖流式响应、错误处理、边界情况
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,llm,streaming,error-handling
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";

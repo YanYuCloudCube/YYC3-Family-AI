@@ -1,17 +1,17 @@
 /**
- * @file hooks/useChatSessionSync.ts
- * @description AI 对话历史与 Session Store 双向同步 Hook —
+ * @file: hooks/useChatSessionSync.ts
+ * @description: AI 对话历史与 Session Store 双向同步 Hook —
  *              1. ChatHistoryStore 保存时自动在 SessionStore 创建/更新对应 Session
  *              2. SessionStore 中 AI 会话激活时自动加载对应 ChatHistory
  *              3. 删除操作双向联动
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,chat,session,sync,bidirectional
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,chat,session,sync,bidirectional
  */
 
 import { useEffect, useRef } from "react";
@@ -136,6 +136,6 @@ export function useChatSessionSync(
       }
     }
     // Only run on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 }

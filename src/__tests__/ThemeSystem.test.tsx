@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file ThemeSystem.test.tsx
- * @description 主题系统测试 - 覆盖主题切换、自定义、持久化
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags test,vitest,theme,customization,persistence
+ * @file: ThemeSystem.test.tsx
+ * @description: 主题系统测试 - 覆盖主题切换、自定义、持久化
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: test,vitest,theme,customization,persistence
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";

@@ -1,24 +1,36 @@
 // @ts-nocheck
 /**
- * @file CloudSyncService.ts
- * @description 云端同步服务 - 支持跨设备数据同步、冲突解决、离线队列
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-19
- * @updated 2026-03-19
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags sync,cloud,offline,cross-device
+ * @file: CloudSyncService.ts
+ * @description: 云端同步服务 - 支持跨设备数据同步、冲突解决、离线队列
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v2.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-04-05
+ * @status: production
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: sync,cloud,offline,cross-device
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";
+
+// ── API Configuration ──
+
+export interface CloudAPIConfig {
+  baseUrl: string;
+  apiKey: string;
+  timeout?: number;
+  retryAttempts?: number;
+  retryDelay?: number;
+}
 
 export interface SyncStatus {
   lastSyncTime: number | null;
   pendingChanges: number;
   syncing: boolean;
   error: string | null;
+  connectionStatus: 'connected' | 'disconnected' | 'error' | 'syncing';
+  progress?: { current: number; total: number };
 }
 
 export interface SyncConflict {
@@ -36,7 +48,20 @@ export interface SyncOptions {
   autoSync?: boolean;
   syncInterval?: number;
   resolveConflict?: (conflict: SyncConflict) => Promise<"local" | "remote" | "merge">;
+  onProgress?: (progress: { current: number; total: number }) => void;
+  onStatusChange?: (status: SyncStatus) => void;
 }
+
+// ── Sync Event Types ──
+
+type SyncEventType = 'sync-start' | 'sync-progress' | 'sync-complete' | 'sync-error' | 'conflict-detected';
+
+interface SyncEvent {
+  type: SyncEventType;
+  payload?: unknown;
+}
+
+type SyncEventHandler = (event: SyncEvent) => void;
 
 /**
  * 云端同步服务
@@ -47,6 +72,10 @@ export class CloudSyncService {
   private options: SyncOptions | null = null;
   private pendingQueue: Array<{ path: string; content: string; timestamp: number }> = [];
   private conflicts: SyncConflict[] = [];
+  private eventHandlers = new Map<SyncEventType, Set<SyncEventHandler>>();
+  private abortController: AbortController | null = null;
+  private syncInProgress = false;
+  private apiConfig: CloudAPIConfig | null = null;
 
   private constructor() {}
 
@@ -57,17 +86,147 @@ export class CloudSyncService {
     return CloudSyncService.instance;
   }
 
+  // ── Event System ──
+
+  on(event: SyncEventType, handler: SyncEventHandler): () => void {
+    if (!this.eventHandlers.has(event)) {
+      this.eventHandlers.set(event, new Set());
+    }
+    this.eventHandlers.get(event)!.add(handler);
+    return () => this.eventHandlers.get(event)?.delete(handler);
+  }
+
+  private emit(event: SyncEvent): void {
+    this.eventHandlers.get(event.type)?.forEach(handler => {
+      try {
+        handler(event);
+      } catch (e) {
+        console.error('[CloudSync] Event handler error:', e);
+      }
+    });
+  }
+
+  // ── API Request Helper ──
+
+  private async apiRequest<T>(
+    endpoint: string,
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+    body?: unknown,
+    retryCount = 0
+  ): Promise<T | null> {
+    if (!this.apiConfig) {
+      throw new Error('CloudSync not configured');
+    }
+
+    const { baseUrl, apiKey, timeout = 30000, retryAttempts = 3, retryDelay = 1000 } = this.apiConfig;
+
+    const controller = new AbortController();
+    this.abortController = controller;
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      const response = await fetch(`${baseUrl}${endpoint}`, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'X-Client-Version': '2.0.0',
+          'X-Request-ID': `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('Authentication failed. Please check your API key.');
+        }
+        if (response.status === 429) {
+          throw new Error('Rate limit exceeded. Please try again later.');
+        }
+        if (response.status >= 500 && retryCount < retryAttempts) {
+          await new Promise(resolve => setTimeout(resolve, retryDelay * (retryCount + 1)));
+          return this.apiRequest<T>(endpoint, method, body, retryCount + 1);
+        }
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error: any) {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        throw new Error('Request timeout');
+      }
+      if (retryCount < retryAttempts && !error.message.includes('Authentication')) {
+        await new Promise(resolve => setTimeout(resolve, retryDelay * (retryCount + 1)));
+        return this.apiRequest<T>(endpoint, method, body, retryCount + 1);
+      }
+      throw error;
+    }
+  }
+
+  // ── Authentication ──
+
+  async authenticate(): Promise<boolean> {
+    if (!this.options) {
+      throw new Error('CloudSync not initialized');
+    }
+
+    try {
+      const result = await this.apiRequest<{ success: boolean; userId: string }>('/api/auth/verify');
+      return result?.success ?? false;
+    } catch (error) {
+      console.error('[CloudSync] Authentication failed:', error);
+      return false;
+    }
+  }
+
+  async refreshToken(): Promise<boolean> {
+    if (!this.options) return false;
+
+    try {
+      const result = await this.apiRequest<{ success: boolean; newKey: string }>('/api/auth/refresh');
+      if (result?.success && result.newKey) {
+        this.options.apiKey = result.newKey;
+        this.apiConfig!.apiKey = result.newKey;
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('[CloudSync] Token refresh failed:', error);
+      return false;
+    }
+  }
+
   /**
    * 初始化同步服务
    */
-  init(options: SyncOptions): void {
+  async init(options: SyncOptions): Promise<boolean> {
     this.options = options;
+    this.apiConfig = {
+      baseUrl: options.serverUrl,
+      apiKey: options.apiKey,
+      timeout: 30000,
+      retryAttempts: 3,
+      retryDelay: 1000,
+    };
 
-    if (options.autoSync) {
-      this.startAutoSync(options.syncInterval || 300000); // 5 分钟
+    const authSuccess = await this.authenticate();
+    if (!authSuccess) {
+      console.error('[CloudSync] Authentication failed during init');
+      this.emit({ type: 'sync-error', payload: { error: 'Authentication failed' } });
+      return false;
     }
 
-    console.warn("[CloudSync] Initialized with autoSync:", options.autoSync);
+    if (options.autoSync) {
+      this.startAutoSync(options.syncInterval || 300000);
+    }
+
+    console.warn("[CloudSync] Initialized successfully");
+    this.emit({ type: 'sync-complete', payload: { initialized: true } });
+    return true;
   }
 
   /**
@@ -97,12 +256,31 @@ export class CloudSyncService {
   }
 
   /**
+   * 取消当前同步
+   */
+  cancelSync(): void {
+    if (this.abortController) {
+      this.abortController.abort();
+      this.abortController = null;
+    }
+    this.syncInProgress = false;
+  }
+
+  /**
    * 同步到云端
    */
   async syncToCloud(): Promise<{ success: boolean; synced: number; conflicts: number }> {
+    if (this.syncInProgress) {
+      console.warn('[CloudSync] Sync already in progress');
+      return { success: false, synced: 0, conflicts: 0 };
+    }
+
     if (!this.options) {
       throw new Error("CloudSync not initialized");
     }
+
+    this.syncInProgress = true;
+    this.emit({ type: 'sync-start' });
 
     const result = {
       success: false,
@@ -113,23 +291,22 @@ export class CloudSyncService {
     try {
       const db = await getDB();
 
-      // 获取所有本地文件
       const localFiles = await db.getAll("files");
+      const total = localFiles.length;
 
-      // 获取云端文件列表
       const remoteFiles = await this.fetchRemoteFiles();
 
-      // 检测冲突
       this.conflicts = [];
-      for (const localFile of localFiles) {
+      for (let i = 0; i < localFiles.length; i++) {
+        const localFile = localFiles[i];
         const remoteFile = remoteFiles.find((f: any) => f.path === localFile.path);
 
+        this.options.onProgress?.({ current: i + 1, total });
+        this.emit({ type: 'sync-progress', payload: { current: i + 1, total } });
+
         if (remoteFile) {
-          // 文件在云端存在，检查是否冲突
           if (remoteFile.modifiedAt > localFile.updatedAt) {
-            // 云端版本更新
             if (localFile.content !== remoteFile.content) {
-              // 内容不同，存在冲突
               this.conflicts.push({
                 path: localFile.path,
                 localContent: localFile.content,
@@ -144,28 +321,24 @@ export class CloudSyncService {
         }
       }
 
-      // 如果有冲突，等待解决
       if (result.conflicts > 0 && this.options.resolveConflict) {
         await this.resolveConflicts();
+        this.emit({ type: 'conflict-detected', payload: { conflicts: this.conflicts } });
       }
 
-      // 上传本地变更
       for (const localFile of localFiles) {
         const remoteFile = remoteFiles.find((f: any) => f.path === localFile.path);
 
         if (!remoteFile || localFile.updatedAt > remoteFile.modifiedAt) {
-          // 本地文件更新或新文件，上传到云端
           await this.uploadFile(localFile.path, localFile.content);
           result.synced++;
         }
       }
 
-      // 下载云端新文件
       for (const remoteFile of remoteFiles) {
         const localFile = localFiles.find((f: any) => f.path === remoteFile.path);
 
         if (!localFile) {
-          // 云端新文件，下载到本地
           await db.put("files", {
             path: remoteFile.path,
             content: remoteFile.content,
@@ -177,18 +350,21 @@ export class CloudSyncService {
         }
       }
 
-      // 更新最后同步时间
       await db.put("settings", {
         key: "lastSyncTime",
         value: Date.now(),
       });
 
       result.success = true;
+      this.emit({ type: 'sync-complete', payload: result });
       console.warn("[CloudSync] Sync completed:", result);
 
     } catch (error) {
       console.error("[CloudSync] Sync failed:", error);
+      this.emit({ type: 'sync-error', payload: { error } });
       result.success = false;
+    } finally {
+      this.syncInProgress = false;
     }
 
     return result;

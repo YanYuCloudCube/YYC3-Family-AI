@@ -1,15 +1,15 @@
 // @ts-nocheck
 /**
- * @file SnapshotManagerPanel.tsx
- * @description 快照管理面板组件，提供创建、恢复、删除、比较快照等功能
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-31
- * @updated 2026-03-31
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags ui,snapshot,manager,panel
+ * @file: SnapshotManagerPanel.tsx
+ * @description: 快照管理面板组件，提供创建、恢复、删除、比较快照等功能
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-31
+ * @updated: 2026-03-31
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: ui,snapshot,manager,panel
  */
 
 import React, { useState, useEffect } from "react";

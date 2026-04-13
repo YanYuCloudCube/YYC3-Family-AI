@@ -1,16 +1,16 @@
 /**
- * @file hooks/useWorkspaceFileSync.ts
- * @description 工作区与 FileStore 联动 Hook — 当切换活跃工作区时，
+ * @file: hooks/useWorkspaceFileSync.ts
+ * @description: 工作区与 FileStore 联动 Hook — 当切换活跃工作区时，
  *              自动同步 FileStore 的 projectId，保存/恢复工作区对应的
  *              打开标签页和活跃文件状态
- * @author YanYuCloudCube Team <admin@0379.email>
- * @version v1.0.0
- * @created 2026-03-18
- * @updated 2026-03-18
- * @status dev
- * @license MIT
- * @copyright Copyright (c) 2026 YanYuCloudCube Team
- * @tags P2,workspace,filestore,sync,linkage
+ * @author: YanYuCloudCube Team <admin@0379.email>
+ * @version: v1.0.0
+ * @created: 2026-03-18
+ * @updated: 2026-03-18
+ * @status: dev
+ * @license: MIT
+ * @copyright: Copyright (c) 2026 YanYuCloudCube Team
+ * @tags: P2,workspace,filestore,sync,linkage
  */
 
 import { useEffect, useRef } from "react";
