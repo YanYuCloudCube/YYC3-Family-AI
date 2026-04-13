@@ -34,7 +34,7 @@ vi.mock('idb', () => ({
 }))
 
 describe('BackupService', () => {
-  let backupService: BackupService
+  let backupService: ReturnType<typeof BackupService.getInstance>
 
   beforeEach(() => {
     localStorage.clear()

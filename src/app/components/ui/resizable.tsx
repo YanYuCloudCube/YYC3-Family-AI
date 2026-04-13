@@ -4,7 +4,7 @@
  * @author: YanYuCloudCube Team <admin@0379.email>
  * @version: v1.0.0
  * @created: 2026-04-01
- * @updated: 2026-04-01
+ * @updated: 2026-04-14
  * @status: stable
  * @license: MIT
  * @copyright: Copyright (c) 2026 YanYuCloudCube Team
@@ -13,11 +13,11 @@
 
 /**
  * file: ui/resizable.tsx
- * description: 可调整大小面板组件 - 基于 react-resizable-panels，支持面板组、面板、手柄
+ * description: 可调整大小面板组件 - 基于 react-resizable-panels v4.x，支持面板组、面板、分隔符
  * author: YanYuCloudCube Team <admin@0379.email>
  * version: v1.0.0
  * created: 2026-03-19
- * updated: 2026-03-19
+ * updated: 2026-04-14
  * status: stable
  * license: MIT
  * copyright: Copyright (c) 2026 YanYuCloudCube Team
@@ -35,9 +35,9 @@ import { cn } from "./utils";
 function ResizablePanelGroup({
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) {
+}: React.ComponentProps<typeof ResizablePrimitive.Group>) {
   return (
-    <ResizablePrimitive.PanelGroup
+    <ResizablePrimitive.Group
       data-slot="resizable-panel-group"
       className={cn(
         "flex h-full w-full data-[panel-group-direction=vertical]:flex-col",
@@ -58,11 +58,11 @@ function ResizableHandle({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & {
+}: React.ComponentProps<typeof ResizablePrimitive.Separator> & {
   withHandle?: boolean;
 }) {
   return (
-    <ResizablePrimitive.PanelResizeHandle
+    <ResizablePrimitive.Separator
       data-slot="resizable-handle"
       className={cn(
         "bg-border focus-visible:ring-ring relative flex w-px items-center justify-center after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-offset-1 focus-visible:outline-hidden data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-1 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:-translate-y-1/2 data-[panel-group-direction=vertical]:after:translate-x-0 [&[data-panel-group-direction=vertical]>div]:rotate-90",
@@ -75,7 +75,7 @@ function ResizableHandle({
           <GripVerticalIcon className="size-2.5" />
         </div>
       )}
-    </ResizablePrimitive.PanelResizeHandle>
+    </ResizablePrimitive.Separator>
   );
 }
 

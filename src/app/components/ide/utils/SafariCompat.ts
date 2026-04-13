@@ -161,7 +161,8 @@ export function applySafariPolyfills(): void {
             time: Date.now(),
           } as IntersectionObserverEntry);
         });
-        this.callback(entries, self);
+        // @ts-expect-error IntersectionObserver polyfill type compatibility
+        this.callback(entries, self as unknown as IntersectionObserver);
       }
     };
   }

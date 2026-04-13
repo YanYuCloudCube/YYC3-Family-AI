@@ -41,10 +41,10 @@ vi.mock('idb', () => ({
 }))
 
 describe('Storage Management Integration Tests', () => {
-  let backupService: BackupService
-  let encryptionService: EncryptionService
-  let migrationService: MigrationService
-  let monitor: PerformanceMonitor
+  let backupService: ReturnType<typeof BackupService.getInstance>
+  let encryptionService: ReturnType<typeof EncryptionService.getInstance>
+  let migrationService: ReturnType<typeof MigrationService.getInstance>
+  let monitor: ReturnType<typeof PerformanceMonitor.getInstance>
 
   beforeEach(() => {
     localStorage.clear()
@@ -236,7 +236,7 @@ describe('Storage Management Integration Tests', () => {
       }
 
       const alerts = monitor.getAlerts()
-      expect(alerts.some((a) => a.type === 'performance')).toBe(true)
+      expect(alerts.some((a: { type: string }) => a.type === 'performance')).toBe(true)
     })
   })
 

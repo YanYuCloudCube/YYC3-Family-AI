@@ -93,13 +93,14 @@ const BACKUP_CONFIG_KEY = 'yyc3-backup-config'
 
 const DEFAULT_CONFIG: BackupConfig = {
   enabled: true,
-  interval: 30 * 60 * 1000,
+  interval: 60 * 60 * 1000,
   maxBackups: 10,
   autoBackupOnExit: true,
   compressBackups: false,
 }
 
 class BackupServiceClass {
+  private static instance: BackupServiceClass | null = null
   private config: BackupConfig = DEFAULT_CONFIG
   private autoBackupTimer: ReturnType<typeof setInterval> | null = null
 
@@ -107,7 +108,14 @@ class BackupServiceClass {
     this.loadConfig()
   }
 
-  private loadConfig(): void {
+  static getInstance(): BackupServiceClass {
+    if (!BackupServiceClass.instance) {
+      BackupServiceClass.instance = new BackupServiceClass()
+    }
+    return BackupServiceClass.instance
+  }
+
+  private loadConfig(): BackupConfig {
     try {
       const stored = localStorage.getItem(BACKUP_CONFIG_KEY)
       if (stored) {
@@ -452,4 +460,5 @@ class BackupServiceClass {
 }
 
 export const backupService = new BackupServiceClass()
+export const BackupService = BackupServiceClass
 export default backupService

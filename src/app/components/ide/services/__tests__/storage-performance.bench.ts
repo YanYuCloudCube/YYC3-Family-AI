@@ -18,10 +18,10 @@ import { MigrationService } from '../MigrationService'
 import { PerformanceMonitor } from '../PerformanceMonitor'
 
 describe('Storage Performance Benchmarks', () => {
-  let backupService: BackupService
-  let encryptionService: EncryptionService
-  let migrationService: MigrationService
-  let monitor: PerformanceMonitor
+  let backupService: ReturnType<typeof BackupService.getInstance>
+  let encryptionService: ReturnType<typeof EncryptionService.getInstance>
+  let migrationService: ReturnType<typeof MigrationService.getInstance>
+  let monitor: ReturnType<typeof PerformanceMonitor.getInstance>
 
   beforeAll(() => {
     localStorage.clear()

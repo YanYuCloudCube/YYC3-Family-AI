@@ -27,7 +27,7 @@ import {
   Calendar,
   HardDrive,
 } from 'lucide-react'
-import BackupService, {
+import backupService, {
   type BackupInfo,
   type BackupConfig,
   type BackupData,
@@ -69,8 +69,6 @@ export function BackupManager() {
   const [selectedBackup, setSelectedBackup] = useState<string | null>(null)
   const [backupDetail, setBackupDetail] = useState<BackupData | null>(null)
 
-  const backupService = BackupService.getInstance()
-
   const loadData = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -81,7 +79,7 @@ export function BackupManager() {
       ])
       setBackups(backupList)
       setConfig(currentConfig)
-      setStats(backupStats)
+      setStats(backupStats as unknown as typeof stats)
     } catch (e) {
       console.error('[BackupManager] Failed to load data:', e)
     } finally {

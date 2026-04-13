@@ -1037,7 +1037,7 @@ function LatencyTrendChart({ diagnostics }: { diagnostics: Record<string, Diagno
                 color: 'rgba(255,255,255,0.7)',
               }}
               labelStyle={{ color: 'rgba(255,255,255,0.4)', fontSize: '9px' }}
-              formatter={(value: number) => [`${value  }ms`, '延迟']}
+              formatter={(value: unknown) => [`${value}ms`, '延迟']}
             />
             <Area
               type="monotone"

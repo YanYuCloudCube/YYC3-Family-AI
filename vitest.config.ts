@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      "react-window": path.resolve(__dirname, "./src/__mocks__/react-window.ts"),
       "pg": path.resolve(__dirname, "./src/__tests__/mocks/empty-module.ts"),
       "mysql2": path.resolve(__dirname, "./src/__tests__/mocks/empty-module.ts"),
       "mysql2/promise": path.resolve(__dirname, "./src/__tests__/mocks/empty-module.ts"),

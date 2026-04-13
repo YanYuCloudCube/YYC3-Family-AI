@@ -69,8 +69,8 @@ function base64ToArrayBuffer(base64: string): ArrayBuffer {
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-function textToBuffer(text: string): Uint8Array {
-  return encoder.encode(text);
+function textToBuffer(text: string): ArrayBuffer {
+  return encoder.encode(text).buffer;
 }
 
 function bufferToText(buffer: ArrayBuffer): string {
@@ -103,7 +103,7 @@ export async function deriveKey(
   return crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
-      salt,
+      salt: salt.buffer as ArrayBuffer,
       iterations,
       hash: "SHA-256",
     },
@@ -127,14 +127,14 @@ export async function encrypt(
   const key = await deriveKey(password, salt);
 
   const ciphertext = await crypto.subtle.encrypt(
-    { name: SECURITY_ENCRYPTION_ALGORITHM, iv },
+    { name: SECURITY_ENCRYPTION_ALGORITHM, iv: iv.buffer as ArrayBuffer },
     key,
     textToBuffer(plaintext),
   );
 
   return {
-    iv: arrayBufferToBase64(iv),
-    salt: arrayBufferToBase64(salt),
+    iv: arrayBufferToBase64(iv.buffer as ArrayBuffer),
+    salt: arrayBufferToBase64(salt.buffer as ArrayBuffer),
     ciphertext: arrayBufferToBase64(ciphertext),
     algorithm: SECURITY_ENCRYPTION_ALGORITHM,
     version: 1,
@@ -153,9 +153,9 @@ export async function decrypt(
   const key = await deriveKey(password, salt);
 
   const plaintext = await crypto.subtle.decrypt(
-    { name: SECURITY_ENCRYPTION_ALGORITHM, iv },
+    { name: SECURITY_ENCRYPTION_ALGORITHM, iv: iv.buffer as ArrayBuffer },
     key,
-    ciphertext,
+    ciphertext.buffer as ArrayBuffer,
   );
 
   return bufferToText(plaintext);

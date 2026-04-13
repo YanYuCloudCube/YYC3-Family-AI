@@ -180,10 +180,10 @@ export class EncryptionService {
     const encryptedBuffer = await crypto.subtle.encrypt(
       {
         name: this.getAlgorithm(),
-        iv,
+        iv: iv.buffer as ArrayBuffer,
       },
       derivedKey,
-      encodedData,
+      encodedData.buffer as ArrayBuffer,
     )
 
     return {
@@ -218,10 +218,10 @@ export class EncryptionService {
     const decryptedBuffer = await crypto.subtle.decrypt(
       {
         name: this.getAlgorithm(),
-        iv,
+        iv: iv.buffer as ArrayBuffer,
       },
       derivedKey,
-      data,
+      data.buffer as ArrayBuffer,
     )
 
     const decoder = new TextDecoder()
@@ -297,7 +297,7 @@ export class EncryptionService {
 
     const keyMaterial = await crypto.subtle.importKey(
       'raw',
-      password,
+      password.buffer as ArrayBuffer,
       'PBKDF2',
       false,
       ['deriveBits', 'deriveKey'],
@@ -306,7 +306,7 @@ export class EncryptionService {
     return crypto.subtle.deriveKey(
       {
         name: 'PBKDF2',
-        salt,
+        salt: salt.buffer as ArrayBuffer,
         iterations,
         hash: 'SHA-256',
       },

@@ -1021,7 +1021,7 @@ function HeartbeatTab() {
                           padding: "4px 8px",
                         }}
                         labelStyle={{ color: "#64748b", fontSize: "0.55rem" }}
-                        formatter={(value: number, name: string) => [
+                        formatter={(value: unknown, name: unknown) => [
                           `${value}ms`,
                           "延迟",
                         ]}

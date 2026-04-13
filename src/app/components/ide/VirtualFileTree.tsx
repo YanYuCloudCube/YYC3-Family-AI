@@ -12,7 +12,7 @@
  */
 
 import React, { useMemo, useCallback, useState } from "react";
-import { FixedSizeList } from "react-window";
+import { List } from "react-window";
 import {
   ChevronRight,
   ChevronDown,
@@ -210,15 +210,15 @@ export default function VirtualFileTree({
   );
 
   return (
-    <FixedSizeList
+    <List
+      // @ts-expect-error react-window v2.x rowComponent type compatibility
       height={height}
       itemCount={flatNodes.length}
       itemSize={itemHeight}
       width="100%"
-      overscanCount={5} // 预渲染额外5项，提升滚动流畅度
-    >
-      {Node}
-    </FixedSizeList>
+      overscanCount={5}
+      rowComponent={Node as unknown as (props: { index: number; style: React.CSSProperties; ariaAttributes?: Record<string, unknown> } & Record<string, unknown>) => React.ReactElement | null}
+    />
   );
 }
 

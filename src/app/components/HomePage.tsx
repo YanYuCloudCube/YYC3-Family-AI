@@ -24,8 +24,8 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   Upload,
   FolderOpen,
-  Github,
-  Figma,
+  GitFork,
+  PenTool,
   Code2,
   Clipboard,
   Home,
@@ -540,8 +540,8 @@ const RECENT_PROJECTS = [
 const QUICK_ACTIONS = [
   { icon: Upload, label: "图片上传", shortcut: "PNG, JPG, SVG", action: "upload-image" },
   { icon: FolderOpen, label: "文件导入", shortcut: "多文件", action: "upload-file" },
-  { icon: Github, label: "GitHub 链接", shortcut: "仓库 URL", action: "github-url" },
-  { icon: Figma, label: "Figma 文件", shortcut: ".fig", action: "figma-file" },
+  { icon: GitFork, label: "GitHub 链接", shortcut: "仓库 URL", action: "github-url" },
+  { icon: PenTool, label: "Figma 文件", shortcut: ".fig", action: "figma-file" },
   { icon: Code2, label: "代码片段", shortcut: "多语言", action: "code-snippet" },
   { icon: Clipboard, label: "剪贴板", shortcut: "Ctrl+V", action: "clipboard" },
 ];

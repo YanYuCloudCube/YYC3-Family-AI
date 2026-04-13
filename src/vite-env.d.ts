@@ -46,6 +46,11 @@ declare module "*.ico" {
   export default src;
 }
 
+declare module "*.css" {
+  const content: Record<string, string>;
+  export default content;
+}
+
 interface ImportMetaEnv {
   readonly MODE: string;
   readonly BASE_URL: string;

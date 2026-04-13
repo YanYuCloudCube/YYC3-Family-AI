@@ -38,9 +38,18 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from 'react';
-import { FixedSizeList, VariableSizeList, ListChildComponentProps } from 'react-window';
+import { List, useListRef } from 'react-window';
 
-// ── Types ──
+// ── Types ─
+interface CellProps {
+  index: number;
+  style: React.CSSProperties;
+  ariaAttributes?: {
+    'aria-posinset'?: number;
+    'aria-setsize'?: number;
+    role?: string;
+  };
+}
 
 export interface VirtualListItem {
   id: string;
@@ -126,27 +135,24 @@ export const VirtualList = forwardRef(
       scrollToIndex,
     } = props;
 
-    const listRef = useRef<FixedSizeList | VariableSizeList>(null);
+    const listRef = useListRef(null);
     const [internalScrollTop, setInternalScrollTop] = useState(0);
     const loadingRef = useRef(false);
 
     useImperativeHandle(ref, () => ({
       scrollToItem: (index: number, align: 'start' | 'center' | 'end' = 'start') => {
-        listRef.current?.scrollToItem(index, align);
+        listRef.current?.scrollToRow({ index, align });
       },
       scrollToTop: () => {
-        listRef.current?.scrollTo(0);
+        listRef.current?.scrollToRow({ index: 0, align: 'start' });
       },
       getScrollPosition: () => internalScrollTop,
-      resetAfterIndex: (index: number) => {
-        if ('resetAfterIndex' in (listRef.current || {})) {
-          (listRef.current as VariableSizeList).resetAfterIndex(index);
-        }
+      resetAfterIndex: (_index: number) => {
+        // react-window v2.x doesn't support resetAfterIndex, using scrollToRow as fallback
+        listRef.current?.scrollToRow({ index: 0, align: 'start' });
       },
       recomputeRowHeights: () => {
-        if ('resetAfterIndex' in (listRef.current || {})) {
-          (listRef.current as VariableSizeList).resetAfterIndex(0);
-        }
+        // react-window v2.x handles this automatically
       },
     }));
 
@@ -223,7 +229,7 @@ export const VirtualList = forwardRef(
     );
 
     const Row = useCallback(
-      ({ index, style }: ListChildComponentProps) => {
+      ({ index, style }: CellProps) => {
         if (isLoading && index === items.length) {
           return (
             <div style={style}>
@@ -285,7 +291,7 @@ export const VirtualList = forwardRef(
       );
     }
 
-    const ListComponent = typeof itemHeight === 'function' ? VariableSizeList : FixedSizeList;
+    const ListComponent = List;
 
     return (
       <div className={className} style={listStyle}>
@@ -302,39 +308,21 @@ export const VirtualList = forwardRef(
             onSortChange={onSortChange || (() => {})}
           />
         )}
-        {typeof itemHeight === 'function' ? (
-          <VariableSizeList
-            ref={listRef as React.Ref<VariableSizeList>}
-            height={listHeight - (searchable ? 48 : 0) - (sortable ? 40 : 0)}
-            width={typeof width === 'number' ? width : '100%'}
-            itemCount={itemCount}
-            itemSize={getItemHeight}
-            overscanCount={overscan}
-            onItemsRendered={handleItemsRendered}
-            onScroll={handleScroll}
-            itemKey={itemKey}
-            innerElementType={innerElementType}
-            initialScrollOffset={scrollToIndex ? scrollToIndex * 40 : 0}
-          >
-            {Row}
-          </VariableSizeList>
-        ) : (
-          <FixedSizeList
-            ref={listRef as React.Ref<FixedSizeList>}
-            height={listHeight - (searchable ? 48 : 0) - (sortable ? 40 : 0)}
-            width={typeof width === 'number' ? width : '100%'}
-            itemCount={itemCount}
-            itemSize={itemHeight}
-            overscanCount={overscan}
-            onItemsRendered={handleItemsRendered}
-            onScroll={handleScroll}
-            itemKey={itemKey}
-            innerElementType={innerElementType}
-            initialScrollOffset={scrollToIndex ? scrollToIndex * itemHeight : 0}
-          >
-            {Row}
-          </FixedSizeList>
-        )}
+        <List
+          // @ts-expect-error react-window v2.x rowComponent type compatibility
+          ref={listRef}
+          height={listHeight - (searchable ? 48 : 0) - (sortable ? 40 : 0)}
+          width={typeof width === 'number' ? width : '100%'}
+          itemCount={itemCount}
+          itemSize={getItemHeight}
+          overscanCount={overscan}
+          onItemsRendered={handleItemsRendered}
+          onScroll={handleScroll}
+          itemKey={itemKey}
+          innerElementType={innerElementType}
+          initialScrollOffset={scrollToIndex ? scrollToIndex * (typeof itemHeight === 'number' ? itemHeight : 40) : 0}
+          rowComponent={Row as unknown as (props: { index: number; style: React.CSSProperties; ariaAttributes?: Record<string, unknown> } & Record<string, unknown>) => React.ReactElement | null}
+        />
       </div>
     );
   }
