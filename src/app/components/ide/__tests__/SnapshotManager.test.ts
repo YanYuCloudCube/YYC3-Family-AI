@@ -408,23 +408,32 @@ describe("SnapshotManager", () => {
     });
 
     it("应该保留最新的快照", async () => {
-      // 创建51个快照，每个之间有延迟
+      // 创建51个快照，每个之间有延迟确保时间戳不同
       for (let i = 0; i < 51; i++) {
         manager.createSnapshot(`快照${i}`, [
           { path: `file${i}.ts`, content: `content${i}` }
         ]);
-        // 等待1ms确保时间戳不同
-        await new Promise(resolve => setTimeout(resolve, 1));
+        await new Promise(resolve => setTimeout(resolve, 2));
       }
       
       const snapshots = manager.listSnapshots();
       
-      // 第一个应该是快照50或快照49（取决于实现细节）
-      expect(snapshots[0].label).toMatch(/^快照(49|50)$/);
+      // 应该只有50个快照（限制是50）
+      expect(snapshots.length).toBe(50);
       
-      // 快照0应该被删除
-      const hasSnapshot0 = snapshots.some(s => s.label === "快照0");
-      expect(hasSnapshot0).toBe(false);
+      // 最新的快照应该是最后创建的（快照50）
+      expect(snapshots[0].label).toBe("快照50");
+      
+      // 获取所有快照标签
+      const labels = snapshots.map(s => s.label);
+      
+      // 快照0应该被删除（最旧的）
+      expect(labels).not.toContain("快照0");
+      
+      // 验证保留的都是较新的快照（快照1-50）
+      for (let i = 1; i <= 50; i++) {
+        expect(labels).toContain(`快照${i}`);
+      }
     });
   });
 

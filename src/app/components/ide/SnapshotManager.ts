@@ -200,7 +200,11 @@ export class SnapshotManager {
    */
   listSnapshots(): Snapshot[] {
     return Array.from(this.snapshots.values())
-      .sort((a, b) => b.timestamp - a.timestamp || b.id.localeCompare(a.id));
+      .sort((a, b) => {
+        const timeDiff = b.timestamp - a.timestamp;
+        if (timeDiff !== 0) return timeDiff;
+        return a.id.localeCompare(b.id);
+      });
   }
 
   /**
