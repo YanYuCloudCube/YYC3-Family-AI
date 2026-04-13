@@ -129,7 +129,7 @@ jobs:
           name: reports
 
       - name: Comment Quality Report on PR
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           path: reports/quality-report.md
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

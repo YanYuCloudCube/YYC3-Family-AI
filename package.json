@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.32.1",
   "pnpm": {
     "overrides": {
       "ws": ">=8.17.1",
@@ -118,7 +119,7 @@
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
-    "@tailwindcss/vite": "4.1.12",
+    "@tailwindcss/vite": "4.2.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/node": "^25.5.0",
     "@types/ws": "^8.18.1",
@@ -127,12 +128,12 @@
     "@vitejs/plugin-react": "6.0.1",
     "@vitest/coverage-v8": "^4.1.0",
     "eslint": "^9.18.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "fake-indexeddb": "^6.2.5",
     "globals": "^17.4.0",
     "lighthouse": "^13.0.3",
     "prettier": "^3.8.1",
-    "tailwindcss": "4.1.12",
+    "tailwindcss": "4.2.2",
     "terser": "^5.46.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.57.1",
