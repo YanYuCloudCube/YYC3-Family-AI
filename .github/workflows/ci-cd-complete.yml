@@ -71,8 +71,8 @@ jobs:
         id: eslint
         run: |
           pnpm lint 2>&1 | tee eslint-output.txt
-          WARNINGS=$(grep -c 'warning' eslint-output.txt 2>/dev/null || echo "0")
-          ERRORS=$(grep -c 'error' eslint-output.txt 2>/dev/null || echo "0")
+          WARNINGS=$(grep -c 'warning' eslint-output.txt 2>/dev/null) || WARNINGS=0
+          ERRORS=$(grep -c 'error' eslint-output.txt 2>/dev/null) || ERRORS=0
           echo "eslint_warnings=$WARNINGS" >> $GITHUB_OUTPUT
           echo "eslint_errors=$ERRORS" >> $GITHUB_OUTPUT
 
