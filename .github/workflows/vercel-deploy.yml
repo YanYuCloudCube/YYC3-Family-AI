@@ -5,6 +5,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -32,7 +37,7 @@ jobs:
         env:
           VITE_APP_URL: https://family-ai.yyccube.com
 
-      - name: Install Vercel CLI and Deploy
+      - name: Install Vercel CLI
         run: |
           pnpm setup
           echo "PNPM_HOME=$HOME/.local/share/pnpm" >> $GITHUB_ENV
@@ -41,21 +46,18 @@ jobs:
           export PATH="$PNPM_HOME:$PATH"
           pnpm add -g vercel
 
-          vercel --yes --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
 
       - name: Deployment Summary
         if: success()
         run: |
           echo "✅ Deployment to Vercel successful!"
-          echo "🌐 Check your Vercel Dashboard for the deployment URL"
+          echo "🌐 Site URL: https://family-ai.yyccube.com"
           echo "📅 Deployed at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-          echo ""
-          echo "💡 After first deployment, you can find the Project URL in:"
-          echo "   https://vercel.com/dashboard"
-          echo ""
-          echo "📝 To enable faster future deploys (optional):"
-          echo "   1. Go to your project on Vercel dashboard"
-          echo "   2. Copy the Org ID and Project ID from Settings"
-          echo "   3. Add them as GitHub Secrets:"
-          echo "      - VERCEL_ORG_ID"
-          echo "      - VERCEL_PROJECT_ID"
