@@ -20,6 +20,7 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./src/__tests__/setup.ts"],
+    globalSetup: ["./src/__tests__/global-setup.ts"],
     deps: {
       interopDefault: true,
     },
