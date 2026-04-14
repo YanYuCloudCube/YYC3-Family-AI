@@ -47,14 +47,17 @@ if (!AbortSignal.timeout) {
 }
 
 // ── Ensure Web Crypto API is available in test environment ──
-if (typeof globalThis.crypto === 'undefined' || !(globalThis.crypto as any).subtle) {
+const setupWebCrypto = async () => {
   try {
     const { webcrypto } = await import('node:crypto');
-    (globalThis as any).crypto = webcrypto;
+    if (typeof globalThis.crypto === 'undefined' || !(globalThis as any).crypto?.subtle) {
+      (globalThis as any).crypto = webcrypto;
+    }
   } catch {
     console.warn('Web Crypto API not available in test environment');
   }
-}
+};
+await setupWebCrypto();
 
 // ── Clear mocks between tests ──
 beforeEach(() => {
