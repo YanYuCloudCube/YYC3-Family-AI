@@ -32,35 +32,13 @@ jobs:
         env:
           VITE_APP_URL: https://family-ai.yyccube.com
 
-      - name: Install Vercel CLI
-        run: |
-          pnpm setup
-          echo "PNPM_HOME=$HOME/.local/share/pnpm" >> $GITHUB_ENV
-          echo "$HOME/.local/share/pnpm" >> $GITHUB_PATH
-          export PNPM_HOME="$HOME/.local/share/pnpm"
-          export PATH="$PNPM_HOME:$PATH"
-          pnpm add -g vercel
-
-      - name: Pull Vercel Environment Information
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          echo "DEBUG: VERCEL_TOKEN length=${#VERCEL_TOKEN}"
-          echo "DEBUG: VERCEL_ORG_ID=${VERCEL_ORG_ID}"
-          echo "DEBUG: VERCEL_PROJECT_ID=${VERCEL_PROJECT_ID}"
-          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
-
-      - name: Build Project Artifacts
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel build --prod --token="$VERCEL_TOKEN"
-
-      - name: Deploy Project Artifacts to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          org-id: ${{ secrets.VERCEL_ORG_ID }}
+          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
 
       - name: Deployment Summary
         if: success()
