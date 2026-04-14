@@ -61,6 +61,10 @@ import ShareDialog from "./ide/ShareDialog";
 import ProjectCreateWizard from "./ProjectCreateWizard";
 import { analyzeIntentAI } from "./ide/LLMService";
 import { getActiveTheme } from "./ide/CustomThemeStore";
+import TemplatePreviewModal, {
+  type TemplateWithPreview,
+} from "./TemplatePreviewModal";
+import { APP_TEMPLATES } from "./AppTemplates";
 import yyc3Logo from "/macOS/512.png";
 
 // ===================================================================
@@ -780,6 +784,7 @@ export default function HomePage() {
     x: number;
     y: number;
   } | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateWithPreview | null>(null);
 
   const t = useThemeTokens();
 
@@ -1333,6 +1338,79 @@ export default function HomePage() {
             </div>
           </motion.div>
 
+          {/* Featured App Templates Carousel */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="w-full max-w-3xl mt-10"
+          >
+            <div className="flex items-center justify-between mb-4 px-1">
+              <div className="flex items-center gap-2">
+                <Sparkles className={`w-4 h-4 ${t.text.accent}`} />
+                <span className={`text-[0.85rem] ${t.text.primary}`}>
+                  轻量应用模板
+                </span>
+              </div>
+              <button
+                onClick={() => navigate("/templates")}
+                className={`flex items-center gap-1.5 text-[0.8rem] transition-colors ${t.text.accent}`}
+              >
+                <span>查看全部</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin snap-x snap-mandatory">
+              {APP_TEMPLATES.slice(0, 6).map((tpl, i) => (
+                <motion.div
+                  key={tpl.id}
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setSelectedTemplate(tpl)}
+                  className={`flex-shrink-0 w-44 rounded-xl overflow-hidden cursor-pointer group home-project-card ${t.page.cardBgAlt} border ${t.page.cardBorder} snap-start`}
+                >
+                  <div
+                    className={`h-20 bg-gradient-to-br ${tpl.gradient} flex items-center justify-center relative`}
+                  >
+                    <tpl.icon className="w-7 h-7 text-white/50" />
+                    {tpl.previewCode && (
+                      <span className="absolute top-1.5 right-1.5 text-[0.55rem] px-1 py-px rounded bg-white/20 text-white/90 backdrop-blur-sm font-medium">
+                        LIVE
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <h3
+                      className={`text-[0.75rem] truncate font-medium ${t.text.primary}`}
+                    >
+                      {tpl.name}
+                    </h3>
+                    <p
+                      className={`text-[0.65rem] truncate mt-0.5 ${t.text.muted}`}
+                    >
+                      {tpl.description.slice(0, 18)}...
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      {tpl.difficulty && (
+                        <span className={`text-[0.55rem] px-1.5 py-px rounded-full ${
+                          tpl.difficulty === "beginner" ? "bg-emerald-400/15 text-emerald-400" :
+                          tpl.difficulty === "intermediate" ? "bg-amber-400/15 text-amber-400" :
+                          "bg-rose-400/15 text-rose-400"
+                        }`}>
+                          {tpl.difficulty === "beginner" ? "入门" : tpl.difficulty === "intermediate" ? "中级" : "高级"}
+                        </span>
+                      )}
+                      <span className={`text-[0.6rem] ${t.text.muted}`}>
+                        ⏱️ {tpl.estimatedTime}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
           {/* Recent Projects */}
           <motion.div
             id="recent-projects"
@@ -1515,6 +1593,20 @@ export default function HomePage() {
         open={wizardOpen}
         onClose={() => setWizardOpen(false)}
       />
+
+      {/* Template Preview Modal */}
+      {selectedTemplate && (
+        <TemplatePreviewModal
+          template={selectedTemplate}
+          onClose={() => setSelectedTemplate(null)}
+          onUse={(tpl) => {
+            navigate("/ide/new", {
+              state: { template: tpl.id, templateName: tpl.name },
+            });
+            setSelectedTemplate(null);
+          }}
+        />
+      )}
     </div>
   );
 }

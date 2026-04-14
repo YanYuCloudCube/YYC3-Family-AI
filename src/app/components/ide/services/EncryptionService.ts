@@ -26,6 +26,7 @@ export interface EncryptedData {
   data: string
   strength: EncryptionStrength
   version: string
+  keyId: string
 }
 
 const ENCRYPTION_CONFIG_KEY = 'yyc3-encryption-config'
@@ -211,6 +212,7 @@ export class EncryptionService {
       data: this.arrayBufferToBase64(new Uint8Array(encryptedBuffer)),
       strength: this.config.strength,
       version: '1.0',
+      keyId: this.config.keyId,
     }
   }
 
@@ -277,6 +279,12 @@ export class EncryptionService {
   }
 
   private findKeyByData(encryptedData: EncryptedData): string | null {
+    if (encryptedData.keyId) {
+      const keyData = localStorage.getItem(encryptedData.keyId)
+      if (keyData) {
+        return encryptedData.keyId
+      }
+    }
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
       if (key?.startsWith(KEY_STORAGE_PREFIX)) {

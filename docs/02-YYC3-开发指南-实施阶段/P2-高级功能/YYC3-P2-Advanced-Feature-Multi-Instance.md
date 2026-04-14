@@ -1,12 +1,12 @@
 ---
-@file: YYC3-P2-高级功能-应用多开.md
-@description: 应用多开功能设计和实现，支持多窗口、多工作区、多会话并行管理
-@author: YanYuCloudCube Team <admin@0379.email>
-@version: v1.0.0
-@created: 2026-03-17
-@updated: 2026-03-17
-@status: stable
-@tags: P2,multi-instance,workspace,window-management
+file: YYC3-P2-高级功能-应用多开.md
+description: 应用多开功能设计和实现，支持多窗口、多工作区、多会话并行管理
+author: YanYuCloudCube Team <admin0379.email>
+version: v1.0.0
+created: 2026-03-17
+updated: 2026-03-17
+status: stable
+tags: P2,multi-instance,workspace,window-management
 ---
 
 # YYC³ P2-高级功能 - 应用多开
