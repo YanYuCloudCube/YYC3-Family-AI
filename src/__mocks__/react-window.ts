@@ -26,14 +26,14 @@ const List = React.forwardRef((props: any, ref: any) => {
     element: null,
   }));
 
-  if (onRowsRendered && items.length > 0) {
-    React.useEffect(() => {
+  React.useEffect(() => {
+    if (onRowsRendered && items.length > 0) {
       onRowsRendered({
         startIndex: 0,
         stopIndex: Math.min(items.length - 1, 19),
       });
-    }, [items.length]);
-  }
+    }
+  }, [items.length, onRowsRendered]);
 
   return React.createElement('div', { style: { ...style, overflow: 'auto' } },
     items.map((index: number) => {
