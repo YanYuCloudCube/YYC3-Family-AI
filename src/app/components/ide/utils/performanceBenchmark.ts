@@ -11,6 +11,8 @@
  * @tags: performance,benchmark,testing,metrics
  */
 
+import { logger } from '../services/Logger';
+
 export interface BenchmarkResult {
   name: string;
   duration: number;
@@ -38,7 +40,7 @@ class PerformanceBenchmark {
    * 开始测试
    */
   async start(): Promise<PerformanceMetrics> {
-    console.warn("[Benchmark] Starting performance test...");
+    logger.warn('Starting performance test...');
 
     // 收集 Web Vitals
     const metrics = await this.collectWebVitals();
@@ -139,7 +141,7 @@ class PerformanceBenchmark {
       metrics: { duration },
     });
 
-    console.warn(`[Benchmark] Render performance: ${duration.toFixed(2)}ms`);
+    logger.warn('Render performance: ${duration.toFixed(2)}ms');
   }
 
   /**
@@ -162,7 +164,7 @@ class PerformanceBenchmark {
         },
       });
 
-      console.warn(`[Benchmark] Memory usage: ${Math.round(usage * 100)}%`);
+      logger.warn('Memory usage: ${Math.round(usage * 100)}%');
     }
   }
 
@@ -184,7 +186,7 @@ class PerformanceBenchmark {
       metrics: { duration },
     });
 
-    console.warn(`[Benchmark] Event response: ${duration.toFixed(2)}ms`);
+    logger.warn('Event response: ${duration.toFixed(2)}ms');
   }
 
   /**

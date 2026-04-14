@@ -15,6 +15,7 @@
 import { useEffect, useCallback } from "react";
 import * as Sentry from "@sentry/react";
 import { sentryService, type SentryConfig } from "./SentryService";
+import { logger } from "../services/Logger";
 
 interface UseSentryOptions extends Partial<SentryConfig> {
   enabled?: boolean;
@@ -45,7 +46,7 @@ export function useSentry(options: UseSentryOptions = {}) {
     const dsn = config.dsn || import.meta.env.VITE_SENTRY_DSN;
 
     if (!dsn) {
-      console.warn("[Sentry] DSN not configured");
+      logger.warn('DSN not configured');
       return;
     }
 

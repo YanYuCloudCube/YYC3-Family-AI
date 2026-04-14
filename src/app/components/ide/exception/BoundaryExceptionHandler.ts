@@ -81,6 +81,9 @@ export interface ExceptionHandlerConfig {
  *
  * 统一捕获、记录、处理各种边界异常
  */
+
+import { logger } from '../services/Logger';
+
 export class BoundaryExceptionHandler {
   private config: ExceptionHandlerConfig;
   private records: Map<string, ExceptionRecord>;
@@ -433,28 +436,28 @@ export class BoundaryExceptionHandler {
     switch (record.severity) {
       case "critical":
       case "high":
-        console.error(prefix, record.message);
+        logger.error(prefix, record.message);
         if (record.error) {
-          console.error(record.error);
+          logger.error('record.error');
         }
         break;
       case "medium":
-        console.warn(prefix, record.message);
+        logger.warn(prefix, record.message);
         break;
       case "low":
       default:
-        console.warn(prefix, record.message);
+        logger.warn(prefix, record.message);
         break;
     }
 
     // 记录上下文
     if (record.context && Object.keys(record.context).length > 0) {
-      console.warn("  Context:", record.context);
+      logger.warn("  Context:", record.context);
     }
 
     // 记录堆栈
     if (record.stack) {
-      console.warn("  Stack:", record.stack);
+      logger.warn("  Stack:", record.stack);
     }
   }
 

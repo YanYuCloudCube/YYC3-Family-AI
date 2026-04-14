@@ -12,6 +12,7 @@
  */
 
 import { ScrollPosition } from './ScrollSyncEngine';
+import { logger } from "../services/Logger";
 
 /**
  * 视图状态接口
@@ -72,7 +73,7 @@ export class ViewStatePersistence {
         });
       }
     } catch (error) {
-      console.error('Failed to load view states from storage:', error);
+      logger.error('Failed to load view states from storage:', error);
       // 清除损坏的数据
       localStorage.removeItem(this.config.storageKey);
     }
@@ -86,7 +87,7 @@ export class ViewStatePersistence {
       const states = Array.from(this.states.values());
       localStorage.setItem(this.config.storageKey, JSON.stringify(states));
     } catch (error) {
-      console.error('Failed to save view states to storage:', error);
+      logger.error('Failed to save view states to storage:', error);
 
       // 如果存储失败，可能是配额超限，清理过期状态后重试
       this.cleanupExpiredStates();
@@ -95,7 +96,7 @@ export class ViewStatePersistence {
         const states = Array.from(this.states.values());
         localStorage.setItem(this.config.storageKey, JSON.stringify(states));
       } catch (retryError) {
-        console.error('Retry failed, storage quota exceeded:', retryError);
+        logger.error('Retry failed, storage quota exceeded:', retryError);
       }
     }
   }
@@ -335,7 +336,7 @@ export class ViewStatePersistence {
 
       return imported;
     } catch (error) {
-      console.error('Failed to import states:', error);
+      logger.error('Failed to import states:', error);
       return 0;
     }
   }
@@ -356,7 +357,7 @@ export class ViewStatePersistence {
       try {
         listener(state);
       } catch (e) {
-        console.error('Error in view state listener:', e);
+        logger.error('Error in view state listener:', e);
       }
     });
   }

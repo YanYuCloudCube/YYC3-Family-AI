@@ -15,6 +15,7 @@
 
 import { create } from 'zustand'
 import { openDB, type IDBPDatabase } from 'idb'
+import { logger } from "../services/Logger";
 
 // ── Types ──
 
@@ -218,7 +219,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>((set, get) => 
 
       set({ memories: items, initialized: true, loading: false })
     } catch (err) {
-      console.error('[MemoryStore] IndexedDB init failed:', err)
+      logger.error('[MemoryStore] IndexedDB init failed:', err);
       // Fallback to in-memory seeds
       set({ memories: [...SEED_MEMORIES], initialized: true, loading: false })
     }
@@ -239,7 +240,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>((set, get) => 
       const db = await getDB()
       await db.put(STORE_NAME, newItem)
     } catch (err) {
-      console.error('[MemoryStore] add failed:', err)
+      logger.error('[MemoryStore] add failed:', err);
     }
     set(state => ({ memories: [...state.memories, newItem] }))
   },
@@ -258,7 +259,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>((set, get) => 
       const db = await getDB()
       await db.put(STORE_NAME, updated)
     } catch (err) {
-      console.error('[MemoryStore] update failed:', err)
+      logger.error('[MemoryStore] update failed:', err);
     }
     set(state => ({
       memories: state.memories.map(m => m.id === id ? updated : m),
@@ -270,7 +271,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>((set, get) => 
       const db = await getDB()
       await db.delete(STORE_NAME, id)
     } catch (err) {
-      console.error('[MemoryStore] remove failed:', err)
+      logger.error('[MemoryStore] remove failed:', err);
     }
     set(state => ({ memories: state.memories.filter(m => m.id !== id) }))
   },
@@ -294,7 +295,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>((set, get) => 
       const db = await getDB()
       await db.clear(STORE_NAME)
     } catch (err) {
-      console.error('[MemoryStore] clear failed:', err)
+      logger.error('[MemoryStore] clear failed:', err);
     }
     set({ memories: [] })
   },
@@ -359,7 +360,7 @@ export const useMemoryStore = create<MemoryState & MemoryActions>((set, get) => 
       }
       await tx.done
     } catch (err) {
-      console.error('[MemoryStore] recomputeEmbeddings failed:', err)
+      logger.error('[MemoryStore] recomputeEmbeddings failed:', err);
     }
     set({ memories: updated })
   },

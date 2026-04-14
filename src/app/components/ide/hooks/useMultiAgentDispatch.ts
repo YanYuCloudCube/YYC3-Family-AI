@@ -23,6 +23,7 @@ import {
   type StreamCallbacks,
 } from '../LLMService'
 import { useMemoryStore } from '../stores/useMemoryStore'
+import { logger } from "../services/Logger";
 
 // ── Types ──
 
@@ -310,7 +311,7 @@ export function useMultiAgentDispatch() {
     const testResult = await runAgent('tester', testerMessages, provider, modelId)
     if (!testResult.success) {
       // Tester failure is non-blocking
-      console.warn('[MultiAgent] Tester failed:', testResult.error)
+      logger.warn('[MultiAgent] Tester failed:', testResult.error);
     }
 
     // ── Stage 4: Reviewer ──

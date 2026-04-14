@@ -20,6 +20,7 @@
 //   - 三种主题支持（Cyberpunk、Navy、Light）
 // ================================================================
 
+import { logger } from "../services/Logger";
 export type ThemeType = 'navy' | 'cyberpunk' | 'light';
 
 export interface CSSVariableChange {
@@ -273,7 +274,7 @@ export class CSSVariableInjector {
       const variables = JSON.parse(json);
       return this.batchUpdate(variables);
     } catch (error) {
-      console.error('Failed to import variables:', error);
+      logger.error('Failed to import variables:', error);
       return {
         applied: 0,
         skipped: 0,
@@ -304,7 +305,7 @@ export class CSSVariableInjector {
       try {
         listener(changes);
       } catch (error) {
-        console.error('Error in change listener:', error);
+        logger.error('Error in change listener:', error);
       }
     }
   }

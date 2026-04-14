@@ -55,6 +55,7 @@ import {
   testModelConnectivity,
   type ConnectivityTestResult,
 } from "./LLMService";
+import { logger } from "./services/Logger";
 
 interface OllamaDetectedModel {
   name: string;
@@ -196,7 +197,7 @@ export default function APIKeySettings() {
     setProviderApiKey,
   } = useModelRegistry();
 
-  console.warn('[APIKeySettingsUI] Component render, showSettings:', showSettings);
+  logger.warn('[APIKeySettingsUI] Component render, showSettings:', showSettings);
   const [tab, setTab] = useState<"models" | "ollama" | "perf" | "usage">(
     "models",
   );

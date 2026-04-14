@@ -23,6 +23,7 @@
 
 import { ThemeType } from './CSSVariableInjector';
 import { ThemeConfig } from '../CustomThemeStore';
+import { logger } from "../services/Logger";
 
 export type ThemeEventType = 'themeChange' | 'colorChange' | 'tokenChange';
 
@@ -202,7 +203,7 @@ export class ThemeEventSystem {
         try {
           listener.callback(event);
         } catch (error) {
-          console.error(`[ThemeEventSystem] 监听器执行错误 (${id}):`, error);
+          logger.error(`[ThemeEventSystem] 监听器执行错误 (${id}):`, error);
         }
 
         if (listener.once) {

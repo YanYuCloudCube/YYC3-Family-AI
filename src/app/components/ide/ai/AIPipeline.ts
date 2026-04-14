@@ -40,6 +40,7 @@ import {
   type ProviderConfig,
   type ChatMessage as LLMMessage,
 } from "../LLMService";
+import { logger } from "../services/Logger";
 
 // ── Pipeline Types ──
 
@@ -168,25 +169,25 @@ export function runPipeline(
 
             // Log validation results
             if (result.hasErrors) {
-              console.error("[AIPipeline] Code validation found errors:");
+              logger.error('Code validation found errors:');
               for (const [filepath, vResult] of result.validations) {
                 if (vResult.errors.length > 0) {
-                  console.error(`  ${filepath}:`, vResult.errors);
+                  logger.error(`  ${filepath}:`, vResult.errors);
                 }
               }
             }
 
             if (result.hasWarnings) {
-              console.warn("[AIPipeline] Code validation found warnings:");
+              logger.warn('Code validation found warnings:');
               for (const [filepath, vResult] of result.validations) {
                 if (vResult.warnings.length > 0) {
-                  console.warn(`  ${filepath}:`, vResult.warnings);
+                  logger.warn(`  ${filepath}:`, vResult.warnings);
                 }
               }
             }
           }
         } catch (err) {
-          console.error("[AIPipeline] Code parsing/validation failed:", err);
+          logger.error("[AIPipeline] Code parsing/validation failed:", err);
           // Code parsing failed — still return the text
         }
 

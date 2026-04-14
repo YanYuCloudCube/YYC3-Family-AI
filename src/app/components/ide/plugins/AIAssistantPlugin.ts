@@ -13,6 +13,7 @@
  */
 
 import type { PluginManifest, PluginContext } from "../types";
+import { logger } from "../services/Logger";
 
 export const AIAssistantPlugin: PluginManifest = {
   id: "yyc3-ai-assistant",
@@ -28,7 +29,7 @@ export const AIAssistantPlugin: PluginManifest = {
   icon: "Sparkles",
 
   activate: (context: PluginContext) => {
-    console.warn("[AIAssistant] 插件已激活");
+    logger.warn('插件已激活');
 
     // 注册状态栏项
     context.ui.registerStatusBarItem({
@@ -73,12 +74,12 @@ export const AIAssistantPlugin: PluginManifest = {
     });
 
     return () => {
-      console.warn("[AIAssistant] 插件已停用");
+      logger.warn('插件已停用');
     };
   },
 
   deactivate: () => {
-    console.warn("[AIAssistant] 插件正在停用");
+    logger.warn('插件正在停用');
   },
 };
 

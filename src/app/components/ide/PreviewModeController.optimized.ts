@@ -14,6 +14,7 @@
  */
 
 import type { PreviewMode } from "./stores/usePreviewStore";
+import { logger } from "./services/Logger";
 
 /**
  * 预览模式控制器（性能优化版）
@@ -159,7 +160,7 @@ export class PreviewModeControllerOptimized {
    */
   private handleManualMode(): void {
     this.pendingUpdate = true;
-    console.warn("[PreviewModeController] Pending update marked for manual mode");
+    logger.warn('Pending update marked for manual mode');
   }
 
   /**
@@ -176,7 +177,7 @@ export class PreviewModeControllerOptimized {
       this.triggerImmediateUpdate();
     }, this.delay);
 
-    console.warn(`[PreviewModeController] Scheduled delayed update in ${this.delay}ms`);
+    logger.warn('Scheduled delayed update in ${this.delay}ms');
   }
 
   /**
@@ -276,9 +277,9 @@ export class PreviewModeControllerOptimized {
     try {
       this.lastUpdateTime = Date.now();
       this.onTriggerUpdate();
-      console.warn("[PreviewModeController] Preview updated immediately");
+      logger.warn('Preview updated immediately');
     } catch (error) {
-      console.error("[PreviewModeController] Error triggering update:", error);
+      logger.error("[PreviewModeController] Error triggering update:", error);
     }
   }
 
@@ -323,7 +324,7 @@ export class PreviewModeControllerOptimized {
     this.clearAllTimers();
     this.pendingUpdate = false;
     this.batchQueue = [];
-    console.warn("[PreviewModeController] Controller destroyed");
+    logger.warn('Controller destroyed');
   }
 
   /**

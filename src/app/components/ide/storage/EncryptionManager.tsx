@@ -33,6 +33,7 @@ import EncryptionService, {
   type EncryptionStrength,
   type EncryptionConfig,
 } from '../services/EncryptionService'
+import { logger } from "../services/Logger";
 
 type TabId = 'overview' | 'keys' | 'settings'
 
@@ -76,7 +77,7 @@ export function EncryptionManager() {
       setConfig(currentConfig)
       setKeys(keyList)
     } catch (e) {
-      console.error('[EncryptionManager] Failed to load data:', e)
+      logger.error('[EncryptionManager] Failed to load data:', e);
     } finally {
       setIsLoading(false)
     }

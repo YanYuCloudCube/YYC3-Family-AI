@@ -992,7 +992,7 @@ describe('PluginAPIFactory', () => {
   it('日志 API 应该能够记录日志', () => {
     const api = factory.createAPI('test.plugin');
 
-    const consoleSpy = vi.spyOn(console, 'log');
+    const consoleSpy = vi.spyOn(console, 'info');
 
     api.logger.log('test message');
     api.logger.info('info message');

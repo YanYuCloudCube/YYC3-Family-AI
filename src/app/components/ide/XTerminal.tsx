@@ -20,6 +20,7 @@ import { SearchAddon } from '@xterm/addon-search'
 import { Unicode11Addon } from '@xterm/addon-unicode11'
 import type { ITheme } from '@xterm/xterm'
 import type { FitAddon as FitAddonType } from '@xterm/addon-fit'
+import { logger } from "./services/Logger";
 
 interface XTerminalProps {
   sessionId: string
@@ -56,7 +57,7 @@ export function XTerminal({
   useEffect(() => {
     if (!containerRef.current || terminalRef.current) return
 
-    console.log(`[XTerminal] 初始化实例 (Session: ${sessionId})`)
+    logger.info('初始化实例 (Session: ${sessionId})');
 
     // 创建 Terminal 实例
     const term = new Terminal({
@@ -95,9 +96,9 @@ export function XTerminal({
     setTimeout(() => {
       try {
         fitAddon.fit()
-        console.log(`[XTerminal] 尺寸适配完成: ${term.cols}x${term.rows}`)
+        logger.info('尺寸适配完成: ${term.cols}x${term.rows}');
       } catch (e) {
-        console.warn('[XTerminal] 尺寸适配失败:', e)
+        logger.warn('[XTerminal] 尺寸适配失败:', e);
       }
     }, 100)
 
@@ -131,7 +132,7 @@ export function XTerminal({
     // 清理函数
     return () => {
       if (terminalRef.current) {
-        console.log(`[XTerminal] 销毁实例 (Session: ${sessionId})`)
+        logger.info('销毁实例 (Session: ${sessionId})');
         terminalRef.current.dispose()
         terminalRef.current = null
         fitAddonRef.current = null

@@ -11,6 +11,7 @@
  * @tags: nlp,terminal,command,ai,natural-language
  */
 
+import { logger } from "./Logger";
 export interface CommandTemplate {
   id: string;
   name: string;
@@ -718,7 +719,7 @@ export class NLCommandService {
       examples: ["部署应用", "kubectl apply -f deployment.yaml", "k8s 部署"],
     });
 
-    console.warn(`[NLCommand] Loaded ${this.templates.size} command templates`);
+    logger.warn('Loaded ${this.templates.size} command templates');
   }
 
   /**
@@ -1005,7 +1006,7 @@ export class NLCommandService {
       }
       return count;
     } catch (error) {
-      console.error("[NLCommand] Import failed:", error);
+      logger.error("[NLCommand] Import failed:", error);
       return 0;
     }
   }

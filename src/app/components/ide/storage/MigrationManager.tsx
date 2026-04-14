@@ -25,6 +25,7 @@ import MigrationService, {
   type DataFormat,
   type MigrationResult,
 } from '../services/MigrationService'
+import { logger } from "../services/Logger";
 
 type StepId = 'select' | 'preview' | 'migrate' | 'complete'
 
@@ -64,7 +65,7 @@ export function MigrationManager() {
         setSelectedSource(format.source)
       }
     } catch (error) {
-      console.error('[MigrationManager] Failed to detect format:', error)
+      logger.error('[MigrationManager] Failed to detect format:', error);
     } finally {
       setIsLoading(false)
     }

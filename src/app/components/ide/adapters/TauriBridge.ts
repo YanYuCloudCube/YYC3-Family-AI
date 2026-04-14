@@ -26,6 +26,7 @@
 // ================================================================
 
 /** 检测当前是否在 Tauri 环境中运行 */
+import { logger } from "../services/Logger";
 export function isTauriEnvironment(): boolean {
   return typeof window !== "undefined" && "__TAURI__" in window;
 }
@@ -132,7 +133,7 @@ export async function saveFileDialog(
       }
       return null;
     } catch (e) {
-      console.warn("[TauriBridge] Native save failed, falling back to web:", e);
+      logger.warn("[TauriBridge] Native save failed, falling back to web:", e);
     }
   }
 
@@ -157,7 +158,7 @@ export async function writeClipboard(text: string): Promise<boolean> {
       await tauri.clipboard.writeText(text);
       return true;
     } catch (e) {
-      console.warn("[TauriBridge] Native clipboard write failed:", e);
+      logger.warn("[TauriBridge] Native clipboard write failed:", e);
     }
   }
 
@@ -173,7 +174,7 @@ export async function readClipboard(): Promise<string | null> {
       const tauri = (window as any).__TAURI__;
       return await tauri.clipboard.readText();
     } catch (e) {
-      console.warn("[TauriBridge] Native clipboard read failed:", e);
+      logger.warn("[TauriBridge] Native clipboard read failed:", e);
     }
   }
 
@@ -199,7 +200,7 @@ export async function sendNotification(
       });
       return true;
     } catch (e) {
-      console.warn("[TauriBridge] Native notification failed:", e);
+      logger.warn("[TauriBridge] Native notification failed:", e);
     }
   }
 

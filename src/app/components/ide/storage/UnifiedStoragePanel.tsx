@@ -63,6 +63,7 @@ import {
   type StoredProject,
   type StoredSnapshot,
 } from '../adapters/IndexedDBAdapter'
+import { logger } from "../services/Logger";
 
 type TabId = 'overview' | 'localstorage' | 'indexeddb' | 'import-export' | 'backup' | 'encryption' | 'migration' | 'monitoring' | 'batch' | 'isolation'
 
@@ -173,7 +174,7 @@ export default function UnifiedStoragePanel() {
           totalSize,
         })
       } catch (e) {
-        console.warn('[UnifiedStoragePanel] IndexedDB not available:', e)
+        logger.warn('[UnifiedStoragePanel] IndexedDB not available:', e);
       }
     } finally {
       setIsLoading(false)

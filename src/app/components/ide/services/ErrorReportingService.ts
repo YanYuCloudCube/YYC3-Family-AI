@@ -14,6 +14,8 @@
  * @tags: error-reporting,sentry,monitoring,observability
  */
 
+import { logger } from './Logger';
+
 // ── 类型定义 ──────────────────────────────────────────────
 
 /** 错误严重级别（与 Sentry 一致） */
@@ -445,7 +447,7 @@ class ErrorReportingService {
     if (this.config.deduplication) {
       const lastSeen = this.recentFingerprints.get(fingerprint);
       if (lastSeen && Date.now() - lastSeen < this.config.deduplicationWindow) {
-        console.warn(`[ErrorReporting] 去重跳过: ${fingerprint}`);
+        logger.warn('去重跳过: ${fingerprint}');
         return null;
       }
       this.recentFingerprints.set(fingerprint, Date.now());

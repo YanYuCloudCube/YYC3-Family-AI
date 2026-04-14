@@ -26,6 +26,7 @@ import {
   ExtensionPointType,
   PluginLifecycleStage,
 } from './PluginTypes';
+import { logger } from "../services/Logger";
 
 // ================================================================
 // 扩展点管理器
@@ -53,7 +54,7 @@ export class ExtensionPointManager {
     }
 
     this.extensionPoints.set(point.id, point);
-    console.warn(`[ExtensionPoints] Registered: ${point.id} (${point.type})`);
+    logger.warn('Registered: ${point.id} (${point.type})');
   }
 
   /**
@@ -70,7 +71,7 @@ export class ExtensionPointManager {
     this.extensionPointHandlers.delete(id);
     this.extensionPoints.delete(id);
 
-    console.warn(`[ExtensionPoints] Unregistered: ${id}`);
+    logger.warn('Unregistered: ${id}');
   }
 
   /**
@@ -233,7 +234,7 @@ export class ExtensionPointManager {
   clear(): void {
     this.extensionPoints.clear();
     this.extensionPointHandlers.clear();
-    console.warn('[ExtensionPoints] All extension points cleared');
+    logger.warn('All extension points cleared');
   }
 }
 
@@ -596,7 +597,7 @@ export class LifecycleManager {
       );
     }
 
-    console.warn(`[Lifecycle] ${state.id}: ${from} -> ${to}`);
+    logger.warn('${state.id}: ${from} -> ${to}');
 
     return {
       ...state,

@@ -13,6 +13,7 @@
  */
 
 import { getDB, type _StoredFile } from "../adapters/IndexedDBAdapter";
+import { logger } from "./Logger";
 
 export interface FileVersion {
   id: string;
@@ -64,7 +65,7 @@ export class VersioningService {
    * 初始化版本管理
    */
   init(options: VersioningOptions = {}): void {
-    console.warn("[Versioning] Initialized with options:", options);
+    logger.warn("[Versioning] Initialized with options:", options);
   }
 
   /**
@@ -80,7 +81,7 @@ export class VersioningService {
 
     // 确保版本存储存在
     if (!db.objectStoreNames.contains(this.DB_STORE)) {
-      console.warn("[Versioning] Version store not found, skipping");
+      logger.warn("[Versioning] Version store not found, skipping");
       throw new Error("Version store not initialized");
     }
 
@@ -108,7 +109,7 @@ export class VersioningService {
     // 清理旧版本
     await this.cleanupOldVersions(path);
 
-    console.warn(`[Versioning] Created version ${version.version} for ${path}`);
+    logger.warn('Created version ${version.version} for ${path}');
     return version;
   }
 
@@ -167,7 +168,7 @@ export class VersioningService {
       "System"
     );
 
-    console.warn(`[Versioning] Restored ${version.path} to version ${version.version}`);
+    logger.warn('Restored ${version.path} to version ${version.version}');
     return true;
   }
 
@@ -237,7 +238,7 @@ export class VersioningService {
     }, intervalMs);
 
     this.autoVersionTimers.set(path, timer);
-    console.warn(`[Versioning] Auto version enabled for ${path}`);
+    logger.warn('Auto version enabled for ${path}');
   }
 
   /**
@@ -248,7 +249,7 @@ export class VersioningService {
     if (timer) {
       clearInterval(timer);
       this.autoVersionTimers.delete(path);
-      console.warn(`[Versioning] Auto version disabled for ${path}`);
+      logger.warn('Auto version disabled for ${path}');
     }
   }
 
@@ -268,7 +269,7 @@ export class VersioningService {
         await db.delete(this.DB_STORE, version.id);
       }
 
-      console.warn(`[Versioning] Cleaned up ${toDelete.length} old versions for ${path}`);
+      logger.warn('Cleaned up ${toDelete.length} old versions for ${path}');
     }
   }
 

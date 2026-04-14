@@ -11,6 +11,7 @@
  * @tags: performance,monitor,metrics,analytics
  */
 
+import { logger } from "./Logger";
 export interface PerformanceMetric {
   timestamp: number
   operation: 'read' | 'write' | 'delete' | 'query'
@@ -126,7 +127,7 @@ export class PerformanceMonitor {
     try {
       localStorage.setItem('yyc3-monitor-config', JSON.stringify(this.config))
     } catch (e) {
-      console.error('[PerformanceMonitor] Failed to save config:', e)
+      logger.error('[PerformanceMonitor] Failed to save config:', e);
     }
   }
 
@@ -138,7 +139,7 @@ export class PerformanceMonitor {
         this.cleanOldMetrics()
       }
     } catch (e) {
-      console.error('[PerformanceMonitor] Failed to load metrics:', e)
+      logger.error('[PerformanceMonitor] Failed to load metrics:', e);
     }
   }
 
@@ -146,7 +147,7 @@ export class PerformanceMonitor {
     try {
       localStorage.setItem('yyc3-performance-metrics', JSON.stringify(this.metrics))
     } catch (e) {
-      console.error('[PerformanceMonitor] Failed to save metrics:', e)
+      logger.error('[PerformanceMonitor] Failed to save metrics:', e);
     }
   }
 
@@ -162,14 +163,14 @@ export class PerformanceMonitor {
       this.collectSample()
     }, this.config.sampleInterval)
 
-    console.log('[PerformanceMonitor] Monitoring started')
+    logger.info('Monitoring started');
   }
 
   stopMonitoring(): void {
     if (this.sampleTimer) {
       clearInterval(this.sampleTimer)
       this.sampleTimer = null
-      console.log('[PerformanceMonitor] Monitoring stopped')
+      logger.info('Monitoring stopped');
     }
   }
 
@@ -269,7 +270,7 @@ export class PerformanceMonitor {
 
     localStorage.setItem('yyc3-performance-alerts', JSON.stringify(this.alerts))
 
-    console.warn(`[PerformanceMonitor] Alert [${severity}]: ${message}`)
+    logger.warn('Alert [${severity}]: ${message}');
   }
 
   getStorageStats(): StorageStats {

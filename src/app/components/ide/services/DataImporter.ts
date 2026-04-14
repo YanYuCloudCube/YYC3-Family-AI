@@ -15,6 +15,7 @@
 import { getDB } from "../adapters/IndexedDBAdapter";
 import type { ExportData } from "./DataExporter";
 import { sanitizer } from "./Sanitizer";
+import { logger } from "./Logger";
 
 export interface ImportResult {
   success: boolean;
@@ -133,7 +134,7 @@ export class DataImporter {
       }
     }
 
-    console.warn(`[DataImporter] Imported ${count} localStorage items`);
+    logger.warn('Imported ${count} localStorage items');
     return count;
   }
 
@@ -185,7 +186,7 @@ export class DataImporter {
 
     await tx.done;
 
-    console.warn(`[DataImporter] Imported ${result.filesCount} files, ${result.projectsCount} projects, ${result.snapshotsCount} snapshots`);
+    logger.warn(`[DataImporter] Imported ${result.filesCount} files, ${result.projectsCount} projects, ${result.snapshotsCount} snapshots`);
   }
 
   /**

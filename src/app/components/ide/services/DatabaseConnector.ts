@@ -29,6 +29,7 @@
 //   - 超时和重试机制
 // ================================================================
 
+import { logger } from "./Logger";
 export type DatabaseType = 'postgresql' | 'mysql' | 'sqlite';
 
 export interface DatabaseConfig {
@@ -217,7 +218,7 @@ export class PostgreSQLConnector extends DatabaseConnector {
       return true;
     } catch (error) {
       this.lastError = String(error);
-      console.error('[PostgreSQL] Connection failed:', error);
+      logger.error('[PostgreSQL] Connection failed:', error);
       return false;
     }
   }
@@ -420,7 +421,7 @@ export class MySQLConnector extends DatabaseConnector {
       return true;
     } catch (error) {
       this.lastError = String(error);
-      console.error('[MySQL] Connection failed:', error);
+      logger.error('[MySQL] Connection failed:', error);
       return false;
     }
   }
@@ -590,7 +591,7 @@ export class SQLiteConnector extends DatabaseConnector {
       return true;
     } catch (error) {
       this.lastError = String(error);
-      console.error('[SQLite] Connection failed:', error);
+      logger.error('[SQLite] Connection failed:', error);
       return false;
     }
   }

@@ -11,6 +11,7 @@
  * @tags: mcp,client,protocol,ai
  */
 
+import { logger } from "./Logger";
 export interface MCPConfig {
   serverUrl: string;
   apiKey?: string;
@@ -103,10 +104,10 @@ export class MCPClient {
       const promptsResponse = await this.request("prompts/list", {});
       this.prompts = promptsResponse.prompts || [];
 
-      console.warn("[MCP] Connected to server:", response.serverInfo);
+      logger.warn("[MCP] Connected to server:", response.serverInfo);
       return true;
     } catch (error) {
-      console.error("[MCP] Connection failed:", error);
+      logger.error("[MCP] Connection failed:", error);
       this.connected = false;
       return false;
     }
@@ -122,9 +123,9 @@ export class MCPClient {
       this.tools = [];
       this.resources = [];
       this.prompts = [];
-      console.warn("[MCP] Disconnected");
+      logger.warn('Disconnected');
     } catch (error) {
-      console.error("[MCP] Disconnect failed:", error);
+      logger.error("[MCP] Disconnect failed:", error);
     }
   }
 

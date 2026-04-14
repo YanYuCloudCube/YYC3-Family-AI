@@ -22,6 +22,7 @@ import {
 } from "./constants/storage-keys";
 import { useI18nStore } from "./i18n";
 import { SK_THEME } from "./constants/storage-keys";
+import { logger } from "./services/Logger";
 
 // ================================================================
 // 1. 模型配置同步 — Settings Store ↔ ModelRegistry / LLMService
@@ -641,7 +642,7 @@ export async function validateAPIKey(
       stream: false,
     });
 
-    console.warn(`[API Key Validation] Request body:`, body);
+    logger.warn(`[API Key Validation] Request body:`, body);
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -671,7 +672,7 @@ export async function validateAPIKey(
     try {
       const errText = await res.text();
       errorDetail = errText.substring(0, 200);
-      console.warn(`[API Key Validation] Error response:`, errorDetail);
+      logger.warn(`[API Key Validation] Error response:`, errorDetail);
     } catch {
       /* ignore */
     }
@@ -680,10 +681,10 @@ export async function validateAPIKey(
   } catch (err: unknown) {
     clearTimeout(timer);
     if (err instanceof Error && err.name === "AbortError") {
-      console.warn(`[API Key Validation] Timeout for ${providerId}`);
+      logger.warn('Timeout for ${providerId}');
       return { valid: false, error: "连接超时" };
     }
-    console.error(`[API Key Validation] Error for ${providerId}:`, err);
+    logger.error(`[API Key Validation] Error for ${providerId}:`, err);
     return { valid: false, error: `网络错误: ${err instanceof Error ? err.message : String(err)}` };
   }
 }

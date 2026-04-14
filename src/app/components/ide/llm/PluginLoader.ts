@@ -34,6 +34,7 @@ import {
   DependencyManager,
   ExtensionPointManager,
 } from './PluginSystemDesign';
+import { logger } from "../services/Logger";
 
 // ================================================================
 // 插件签名验证器
@@ -515,7 +516,7 @@ export class PluginLoader {
         exports: loadedPlugin.exports,
       };
 
-      console.warn(`[PluginLoader] Plugin "${manifest.id}" loaded successfully`);
+      logger.warn('Plugin "${manifest.id}" loaded successfully');
 
       return {
         success: true,

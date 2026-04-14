@@ -309,7 +309,7 @@ const TIMEOUT_SCRIPT = `
 
   window.setInterval = function(fn, delay) {
     if (_intervalCount >= MAX_INTERVALS) {
-      console.warn('[Preview Sandbox] Maximum interval limit reached');
+      logger.warn('Maximum interval limit reached');
       return -1;
     }
     _intervalCount++;
@@ -529,7 +529,7 @@ function buildJsPreview(code: string, gridOverlay: string): string {
       }
 
       if (!output.children.length) {
-        output.innerHTML = '<div style="color:#64748b;font-style:italic;">No console output. Use console.warn() to display results.</div>';
+        logger.warn('Operation completed');
       }
     })();
   </script>

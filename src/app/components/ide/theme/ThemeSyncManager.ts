@@ -25,6 +25,7 @@ import { SystemThemeListener, SystemTheme } from './SystemThemeListener';
 import { UserPreferenceManager, ThemeSyncMode } from './UserPreferenceManager';
 import { ThemeAPI, ThemeType } from './ThemeAPI';
 import { ThemeEventSystem } from './ThemeEventSystem';
+import { logger } from "../services/Logger";
 
 export interface ThemeSyncConfig {
   // 是否启用自动同步
@@ -114,7 +115,7 @@ export class ThemeSyncManager {
 
     // 检查是否支持系统主题
     if (!this.systemListener.isSupported()) {
-      console.warn('[ThemeSyncManager] System theme detection not supported');
+      logger.warn('System theme detection not supported');
     }
 
     // 处理首次访问
@@ -195,7 +196,7 @@ export class ThemeSyncManager {
     // 应用主题
     this.themeAPI.setTheme(resolvedTheme);
 
-    console.warn(`[ThemeSyncManager] System theme changed to ${systemTheme}, applying ${resolvedTheme}`);
+    logger.warn(`[ThemeSyncManager] System theme changed to ${systemTheme}, applying ${resolvedTheme}`);
   }
 
   /**
@@ -209,7 +210,7 @@ export class ThemeSyncManager {
       this.preferenceManager.setManualOverride(theme);
 
       if (this.config.showManualOverrideHint) {
-        console.warn('[ThemeSyncManager] Manual override in auto mode');
+        logger.warn('Manual override in auto mode');
       }
     } else {
       // 手动模式，直接设置
@@ -239,7 +240,7 @@ export class ThemeSyncManager {
       this.themeAPI.setTheme(resolvedTheme);
     }
 
-    console.warn(`[ThemeSyncManager] Sync mode changed to ${mode}`);
+    logger.warn('Sync mode changed to ${mode}');
   }
 
   /**

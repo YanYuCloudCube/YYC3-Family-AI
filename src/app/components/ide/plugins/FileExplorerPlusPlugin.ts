@@ -13,6 +13,7 @@
  */
 
 import type { PluginManifest, PluginContext } from "../types";
+import { logger } from "../services/Logger";
 
 export const FileExplorerPlusPlugin: PluginManifest = {
   id: "yyc3-file-explorer-plus",
@@ -28,7 +29,7 @@ export const FileExplorerPlusPlugin: PluginManifest = {
   icon: "FolderOpen",
 
   activate: (context: PluginContext) => {
-    console.warn("[FileExplorerPlus] 插件已激活");
+    logger.warn('插件已激活');
 
     // 初始化书签
     const _bookmarks = loadBookmarks();
@@ -86,12 +87,12 @@ export const FileExplorerPlusPlugin: PluginManifest = {
 
     return () => {
       unsubscribe();
-      console.warn("[FileExplorerPlus] 插件已停用");
+      logger.warn('插件已停用');
     };
   },
 
   deactivate: () => {
-    console.warn("[FileExplorerPlus] 插件正在停用");
+    logger.warn('插件正在停用');
   },
 };
 

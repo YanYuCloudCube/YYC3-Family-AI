@@ -22,6 +22,7 @@ import type {
   CharSetTestResult,
 } from './TestingTypes';
 import { ConflictType } from './TestingTypes';
+import { logger } from "../services/Logger";
 
 // ================================================================
 // 边界条件测试套件
@@ -49,8 +50,8 @@ export class BoundaryTestSuite {
    * 运行完整边界测试
    */
   async runAllTests(): Promise<BoundaryTestResult> {
-    console.warn('[BoundaryTest] Starting boundary test suite...');
-    console.warn('[BoundaryTest] Config:', this.config);
+    logger.warn('Starting boundary test suite...');
+    logger.warn('[BoundaryTest] Config:', this.config);
 
     const errors: string[] = [];
     const warnings: string[] = [];
@@ -83,8 +84,8 @@ export class BoundaryTestSuite {
         conflictResult,
       );
 
-      console.warn('\n[BoundaryTest] Boundary test completed');
-      console.warn(`[BoundaryTest] Result: ${passed ? 'PASSED' : 'FAILED'}`);
+      logger.warn('\n[BoundaryTest] Boundary test completed');
+      logger.warn(`Result: ${passed ? 'PASSED' : 'FAILED'}`);
 
       return {
         testName: 'Boundary Test Suite',
@@ -116,32 +117,32 @@ export class BoundaryTestSuite {
    * 测试空文件
    */
   private async testEmptyFile(): Promise<EmptyFileTestResult> {
-    console.warn('  [EmptyFileTest] Testing empty file handling...');
+    logger.warn('[EmptyFileTest] Testing empty file handling...');
 
     const startTime = Date.now();
 
     try {
       // 创建空文件
       const emptyContent = '';
-      console.warn('  [EmptyFileTest] Creating empty file...');
+      logger.warn('[EmptyFileTest] Creating empty file...');
       const created = this.handleFileContent(emptyContent);
 
       // 读取空文件
-      console.warn('  [EmptyFileTest] Reading empty file...');
+      logger.warn('[EmptyFileTest] Reading empty file...');
       const read = this.handleFileContent(emptyContent);
 
       // 保存空文件
-      console.warn('  [EmptyFileTest] Saving empty file...');
+      logger.warn('[EmptyFileTest] Saving empty file...');
       const saved = this.handleFileContent(emptyContent);
 
       // 删除空文件
-      console.warn('  [EmptyFileTest] Deleting empty file...');
+      logger.warn('[EmptyFileTest] Deleting empty file...');
       const deleted = true;
 
       const processingTime = Date.now() - startTime;
 
-      console.warn(`  [EmptyFileTest] Processing time: ${processingTime}ms`);
-      console.warn(`  [EmptyFileTest] Result: ${created && read && saved && deleted ? 'PASSED' : 'FAILED'}`);
+      logger.warn(`[EmptyFileTest] Processing time: ${processingTime}ms`);
+      logger.warn(`[EmptyFileTest] Result: ${created && read && saved && deleted ? 'PASSED' : 'FAILED'}`);
 
       return {
         created,
@@ -151,7 +152,7 @@ export class BoundaryTestSuite {
         processingTime,
       };
     } catch (error) {
-      console.error('  [EmptyFileTest] Error:', error);
+      logger.error('  [EmptyFileTest] Error:', error);
       return {
         created: false,
         read: false,
@@ -174,24 +175,24 @@ export class BoundaryTestSuite {
 
     try {
       // 生成超大文件内容
-      console.warn('  [LargeFileTest] Generating large file content...');
+      logger.warn('[LargeFileTest] Generating large file content...');
       const largeContent = this.generateLargeContent(this.config.largeFileSize);
 
       // 加载文件
       const loadStart = Date.now();
-      console.warn('  [LargeFileTest] Loading large file...');
+      logger.warn('[LargeFileTest] Loading large file...');
       const _loaded = this.handleFileContent(largeContent);
       const loadTime = Date.now() - loadStart;
 
       // 解析文件
       const parseStart = Date.now();
-      console.warn('  [LargeFileTest] Parsing large file...');
+      logger.warn('[LargeFileTest] Parsing large file...');
       const _parsed = this.parseContent(largeContent);
       const parseTime = Date.now() - parseStart;
 
       // 渲染文件（模拟）
       const renderStart = Date.now();
-      console.warn('  [LargeFileTest] Rendering large file...');
+      logger.warn('[LargeFileTest] Rendering large file...');
       const _rendered = this.renderContent(largeContent);
       const renderTime = Date.now() - renderStart;
 
@@ -207,14 +208,14 @@ export class BoundaryTestSuite {
         crashed: false,
       };
 
-      console.warn(`  [LargeFileTest] Load time: ${loadTime}ms`);
-      console.warn(`  [LargeFileTest] Parse time: ${parseTime}ms`);
-      console.warn(`  [LargeFileTest] Render time: ${renderTime}ms`);
-      console.warn(`  [LargeFileTest] Memory usage: ${memoryUsage.toFixed(2)}MB`);
+      logger.warn('[LargeFileTest] Load time: ${loadTime}ms');
+      logger.warn('[LargeFileTest] Parse time: ${parseTime}ms');
+      logger.warn('[LargeFileTest] Render time: ${renderTime}ms');
+      logger.warn('[LargeFileTest] Memory usage: ${memoryUsage.toFixed(2)}MB');
 
       return result;
     } catch (error) {
-      console.error('  [LargeFileTest] Error:', error);
+      logger.error('  [LargeFileTest] Error:', error);
       return {
         fileSize: this.config.largeFileSize,
         loadTime: 0,
@@ -231,7 +232,7 @@ export class BoundaryTestSuite {
    * 测试特殊字符
    */
   private async testSpecialChars(): Promise<SpecialCharsTestResult> {
-    console.warn('  [SpecialCharsTest] Testing special characters...');
+    logger.warn('[SpecialCharsTest] Testing special characters...');
 
     const startTime = Date.now();
 
@@ -257,10 +258,10 @@ export class BoundaryTestSuite {
     );
     const processingTime = Date.now() - startTime;
 
-    console.warn(`  [SpecialCharsTest] Total chars: ${totalChars}`);
-    console.warn(`  [SpecialCharsTest] Successful: ${successfulChars}`);
-    console.warn(`  [SpecialCharsTest] Failed: ${failedChars}`);
-    console.warn(`  [SpecialCharsTest] Processing time: ${processingTime}ms`);
+    logger.warn('[SpecialCharsTest] Total chars: ${totalChars}');
+    logger.warn('[SpecialCharsTest] Successful: ${successfulChars}');
+    logger.warn('[SpecialCharsTest] Failed: ${failedChars}');
+    logger.warn('[SpecialCharsTest] Processing time: ${processingTime}ms');
 
     return {
       charSets,
@@ -279,7 +280,7 @@ export class BoundaryTestSuite {
     range: string,
     count: number,
   ): CharSetTestResult {
-    console.warn(`    [CharSet] Testing ${name} (${range})...`);
+    logger.warn('[CharSet] Testing ${name} (${range})...');
 
     const chars: string[] = [];
     const failedChars: string[] = [];
@@ -387,9 +388,9 @@ export class BoundaryTestSuite {
         ? resolutionTimes.reduce((a, b) => a + b, 0) / resolutionTimes.length
         : 0;
 
-    console.warn(`  [ConflictTest] Total conflicts: ${totalConflicts}`);
-    console.warn(`  [ConflictTest] Resolved: ${resolvedConflicts}`);
-    console.warn(`  [ConflictTest] Unresolved: ${unresolvedConflicts}`);
+    logger.warn('[ConflictTest] Total conflicts: ${totalConflicts}');
+    logger.warn('[ConflictTest] Resolved: ${resolvedConflicts}');
+    logger.warn('[ConflictTest] Unresolved: ${unresolvedConflicts}');
     console.warn(
       `  [ConflictTest] Average resolution time: ${averageResolutionTime.toFixed(2)}ms`,
     );
@@ -598,14 +599,14 @@ export class BoundaryTestSuite {
         emptyFileResult.saved &&
         emptyFileResult.deleted;
       if (!allSuccess) {
-        console.warn('[BoundaryTest] Empty file test failed');
+        logger.warn('Empty file test failed');
         return false;
       }
     }
 
     if (largeFileResult) {
       if (largeFileResult.crashed || largeFileResult.timeout) {
-        console.warn('[BoundaryTest] Large file test failed');
+        logger.warn('Large file test failed');
         return false;
       }
     }
@@ -615,7 +616,7 @@ export class BoundaryTestSuite {
         specialCharsResult.successfulChars /
         specialCharsResult.totalChars;
       if (successRate < 0.95) {
-        console.warn('[BoundaryTest] Special chars test failed');
+        logger.warn('Special chars test failed');
         return false;
       }
     }
@@ -625,7 +626,7 @@ export class BoundaryTestSuite {
         conflictResult.resolvedConflicts /
         Math.max(conflictResult.totalConflicts, 1);
       if (resolutionRate < 0.9) {
-        console.warn('[BoundaryTest] Conflict test failed');
+        logger.warn('Conflict test failed');
         return false;
       }
     }

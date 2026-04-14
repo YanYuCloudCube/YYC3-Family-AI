@@ -24,6 +24,7 @@ import { PreviewModeController } from "../PreviewModeController";
 import { SnapshotManager, type Snapshot, type SnapshotComparison } from "../SnapshotManager";
 import { ZoomController } from "../preview/ZoomController";
 import { useFileStoreZustand } from "./useFileStoreZustand";
+import { logger } from "../services/Logger";
 
 // Re-export types for backward compatibility
 export type { PreviewMode, DeviceType, PreviewEngineType, DevicePreset, ConsoleLog, PreviewSnapshot };
@@ -366,14 +367,14 @@ export const usePreviewStore = create<PreviewState>()(
         const controller = new PreviewModeController(onUpdate, state.previewDelay);
         controller.setMode(state.mode);
         set({ modeController: controller });
-        console.warn("[usePreviewStore] PreviewModeController initialized");
+        logger.warn('PreviewModeController initialized');
       },
       notifyFileChange: () => {
         const controller = get().modeController;
         if (controller) {
           controller.handleFileChange();
         } else {
-          console.warn("[usePreviewStore] modeController not initialized, falling back to direct trigger");
+          logger.warn("[usePreviewStore] modeController not initialized, falling back to direct trigger");
           get().triggerRefresh();
         }
       },
@@ -382,7 +383,7 @@ export const usePreviewStore = create<PreviewState>()(
         if (controller) {
           controller.manualTrigger();
         } else {
-          console.warn("[usePreviewStore] modeController not initialized, falling back to direct trigger");
+          logger.warn("[usePreviewStore] modeController not initialized, falling back to direct trigger");
           get().triggerRefresh();
         }
       },
@@ -484,7 +485,7 @@ export const usePreviewStore = create<PreviewState>()(
       createProjectSnapshot: (label, files, metadata) => {
         const manager = get().snapshotManager;
         if (!manager) {
-          console.warn("[usePreviewStore] snapshotManager not initialized");
+          logger.warn('snapshotManager not initialized');
           return null;
         }
         return manager.createSnapshot(label, files, metadata);
@@ -492,7 +493,7 @@ export const usePreviewStore = create<PreviewState>()(
       listProjectSnapshots: () => {
         const manager = get().snapshotManager;
         if (!manager) {
-          console.warn("[usePreviewStore] snapshotManager not initialized");
+          logger.warn('snapshotManager not initialized');
           return [];
         }
         return manager.listSnapshots();
@@ -500,7 +501,7 @@ export const usePreviewStore = create<PreviewState>()(
       getProjectSnapshot: (id) => {
         const manager = get().snapshotManager;
         if (!manager) {
-          console.warn("[usePreviewStore] snapshotManager not initialized");
+          logger.warn('snapshotManager not initialized');
           return null;
         }
         return manager.getSnapshot(id);
@@ -508,20 +509,20 @@ export const usePreviewStore = create<PreviewState>()(
       compareProjectSnapshots: (id1, id2) => {
         const manager = get().snapshotManager;
         if (!manager) {
-          console.warn("[usePreviewStore] snapshotManager not initialized");
+          logger.warn('snapshotManager not initialized');
           return null;
         }
         try {
           return manager.compareSnapshots(id1, id2);
         } catch (error) {
-          console.error("[usePreviewStore] Failed to compare snapshots:", error);
+          logger.error("[usePreviewStore] Failed to compare snapshots:", error);
           return null;
         }
       },
       getSnapshotStorageStats: () => {
         const manager = get().snapshotManager;
         if (!manager) {
-          console.warn("[usePreviewStore] snapshotManager not initialized");
+          logger.warn('snapshotManager not initialized');
           return null;
         }
         return manager.getStorageStats();

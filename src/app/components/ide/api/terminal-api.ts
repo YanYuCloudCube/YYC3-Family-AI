@@ -13,6 +13,7 @@
 import { spawn, type ChildProcess } from 'child_process'
 import type { Plugin, ViteDevServer } from 'vite'
 import { WebSocketServer, WebSocket } from 'ws'
+import { logger } from "../services/Logger";
 
 interface TerminalSession {
   id: string
@@ -116,13 +117,13 @@ export function createTerminalAPI(): Plugin {
           const url = new URL(request.url || '', `http://${request.headers.host}`)
 
           if (url.pathname === '/api/terminal/ws') {
-            console.log(`[Terminal API] 收到 WebSocket 升级请求: ${url.pathname}`)
+            logger.info('收到 WebSocket 升级请求: ${url.pathname}');
             wss!.handleUpgrade(request, socket, head, (ws) => {
               wss!.emit('connection', ws, request)
             })
           }
         } catch (err) {
-          console.error('[Terminal API] WebSocket 升级处理错误:', err)
+          logger.error('[Terminal API] WebSocket 升级处理错误:', err);
         }
       }
 
@@ -131,7 +132,7 @@ export function createTerminalAPI(): Plugin {
         const url = new URL(request.url || '', `http://${request.headers.host}`)
         const sessionId = url.searchParams.get('sid') || generateSessionId()
 
-        console.log(`[Terminal API] WebSocket 连接成功: ${sessionId}`)
+        logger.info('WebSocket 连接成功: ${sessionId}');
 
         // 创建或获取会话
         let session = terminalSessions.get(sessionId)
@@ -159,26 +160,26 @@ export function createTerminalAPI(): Plugin {
             if (message.type === 'exec') {
               handleWebSocketExec(ws, session!, message.command, message.cwd)
             } else if (message.type === 'resize') {
-              console.log(`[Terminal API] 终端尺寸变更: ${message.cols}x${message.rows}`)
+              logger.info('终端尺寸变更: ${message.cols}x${message.rows}');
             } else if (message.type === 'input') {
               if (session?.process && session.process.stdin?.writable) {
                 session.process.stdin.write(message.data)
               }
             }
           } catch (err) {
-            console.error('[Terminal API] WebSocket 消息解析错误:', err)
+            logger.error('[Terminal API] WebSocket 消息解析错误:', err);
           }
         })
 
         ws.on('close', () => {
-          console.log(`[Terminal API] WebSocket 断开: ${sessionId}`)
+          logger.info('WebSocket 断开: ${sessionId}');
           if (session) {
             session.ws = null
           }
         })
 
         ws.on('error', (error) => {
-          console.error(`[Terminal API] WebSocket 错误 [${sessionId}]:`, error.message)
+          logger.error(`[Terminal API] WebSocket 错误 [${sessionId}]:`, error.message);
         })
       })
 
@@ -209,7 +210,7 @@ export function createTerminalAPI(): Plugin {
           cwd: process.cwd(),
         })
 
-        console.log(`[Terminal API] 会话创建: ${sessionId}`)
+        logger.info('会话创建: ${sessionId}');
 
         jsonResponse(res, 200, { sessionId })
       })
@@ -252,7 +253,7 @@ export function createTerminalAPI(): Plugin {
               session.process.kill('SIGTERM')
             }
 
-            console.log(`[Terminal API] 执行命令 [${sessionId}]: ${command}`)
+            logger.info('执行命令 [${sessionId}]: ${command}');
 
             // 解析命令和参数
             const parts = command.trim().split(/\s+/)
@@ -307,7 +308,7 @@ export function createTerminalAPI(): Plugin {
             const timeoutId = setTimeout(() => {
               if (!proc.killed) {
                 proc.kill('SIGKILL')
-                console.log(`[Terminal API] 命令超时终止: ${command}`)
+                logger.info('命令超时终止: ${command}');
               }
             }, COMMAND_TIMEOUT)
 
@@ -327,7 +328,7 @@ export function createTerminalAPI(): Plugin {
 
               const output = stderr ? `${stdout}\n${stderr}` : stdout
 
-              console.log(`[Terminal API] 命令完成 [${sessionId}]: ${command} (exit code: ${code})`)
+              logger.info('命令完成 [${sessionId}]: ${command} (exit code: ${code})');
 
               jsonResponse(res, 200, {
                 output: output || `(无输出)`,
@@ -338,7 +339,7 @@ export function createTerminalAPI(): Plugin {
 
             proc.on('error', (err) => {
               clearTimeout(timeoutId)
-              console.error(`[Terminal API] 命令错误 [${sessionId}]:`, err.message)
+              logger.error(`[Terminal API] 命令错误 [${sessionId}]:`, err.message);
 
               jsonResponse(res, 200, {
                 output: `错误: ${err.message}`,
@@ -348,7 +349,7 @@ export function createTerminalAPI(): Plugin {
             })
 
           } catch (err) {
-            console.error('[Terminal API] 解析请求失败:', err)
+            logger.error('[Terminal API] 解析请求失败:', err);
             jsonResponse(res, 400, { error: '无效的请求格式' })
           }
         })
@@ -376,7 +377,7 @@ export function createTerminalAPI(): Plugin {
 
             terminalSessions.delete(sessionId)
 
-            console.log(`[Terminal API] 会话终止: ${sessionId}`)
+            logger.info('会话终止: ${sessionId}');
 
             jsonResponse(res, 200, { success: true })
           } catch (err) {
@@ -424,7 +425,7 @@ export function createTerminalAPI(): Plugin {
           session.process.kill('SIGTERM')
         }
 
-        console.log(`[Terminal API] WebSocket 执行: ${command}`)
+        logger.info('WebSocket 执行: ${command}');
 
         const parts = command.trim().split(/\s+/)
         const cmd = parts[0]
@@ -504,7 +505,7 @@ export function createTerminalAPI(): Plugin {
         // 在 post hook 中注册 WebSocket 升级处理器
         if (viteServer.httpServer && upgradeHandler) {
           viteServer.httpServer.on('upgrade', upgradeHandler)
-          console.log('[Terminal API] WebSocket 升级处理器已注册')
+          logger.info('WebSocket 升级处理器已注册');
         }
       }
     },
@@ -524,7 +525,7 @@ function cleanupExpiredSessions() {
         session.ws.close(1000, 'Session expired')
       }
       terminalSessions.delete(id)
-      console.log(`[Terminal API] 清理过期会话: ${id}`)
+      logger.info('清理过期会话: ${id}');
     }
   }
 }

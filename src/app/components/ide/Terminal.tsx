@@ -54,6 +54,7 @@ import {
   type CommandContext,
   type CommandOutput,
 } from './ai/CommandRegistry'
+import { logger } from "./services/Logger";
 
 interface TerminalProps {
   height: number
@@ -196,7 +197,7 @@ export default function Terminal({
     },
 
     onConnect: () => {
-      console.log(`[Terminal] xterm 已连接: ${session?.id}`)
+      logger.info('xterm 已连接: ${session?.id}');
       setTerminals(prev => {
         const next = [...prev]
         next[activeTerminal] = {
@@ -224,7 +225,7 @@ export default function Terminal({
     },
 
     onError: (error) => {
-      console.warn('[Terminal] WebSocket 连接失败，切换到模拟模式')
+      logger.warn('WebSocket 连接失败，切换到模拟模式');
       // 立即切换到模拟模式
       setTerminals(prev => {
         const next = [...prev]
@@ -249,7 +250,7 @@ export default function Terminal({
           setTerminals(prev => {
             const current = prev[activeTerminal]
             if (current?.mode === 'xterm-real' && !current.xtermConnected) {
-              console.log('[Terminal] xterm连接超时，切换到模拟模式')
+              logger.info('xterm连接超时，切换到模拟模式');
               const next = [...prev]
               next[activeTerminal] = { ...next[activeTerminal], mode: 'legacy-sim' }
               return next
@@ -277,7 +278,7 @@ export default function Terminal({
 
   const createLegacyRealSession = useCallback(async () => {
     try {
-      console.log('[Terminal] 创建 Legacy 真实终端会话...')
+      logger.info('创建 Legacy 真实终端会话...');
       const response = await fetch('/api/terminal/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -286,7 +287,7 @@ export default function Terminal({
       if (!response.ok) throw new Error('Failed to create session')
 
       const data = await response.json()
-      console.log('[Terminal] Legacy 会话已创建:', data.sessionId)
+      logger.info('[Terminal] Legacy 会话已创建:', data.sessionId);
 
       setTerminals((prev) => {
         const next = [...prev]
@@ -306,7 +307,7 @@ export default function Terminal({
         text: `工作目录: /Volumes/Development/yyc3-77/YYC3-Family-AI`,
       })
     } catch (error) {
-      console.error('[Terminal] 创建 Legacy 会话失败:', error)
+      logger.error('[Terminal] 创建 Legacy 会话失败:', error);
       addOutputEntry({
         type: 'error',
         text: '⚠ 无法连接到真实终端服务，将使用模拟模式',
@@ -356,7 +357,7 @@ export default function Terminal({
       })
 
       try {
-        console.log(`[Terminal] 执行 Legacy 真实命令: ${cmd}`)
+        logger.info('执行 Legacy 真实命令: ${cmd}');
 
         const response = await fetch('/api/terminal/exec', {
           method: 'POST',
@@ -396,7 +397,7 @@ export default function Terminal({
           addOutputEntry({ type: 'error', text: `(退出码: ${result.exitCode})` })
         }
       } catch (error) {
-        console.error('[Terminal] 执行 Legacy 命令失败:', error)
+        logger.error('[Terminal] 执行 Legacy 命令失败:', error);
         addOutputEntry({
           type: 'error',
           text: `执行失败: ${error instanceof Error ? error.message : '未知错误'}`,
@@ -658,7 +659,7 @@ export default function Terminal({
     const currentIndex = modes.indexOf(session.mode || 'xterm-real')
     const nextMode = modes[(currentIndex + 1) % modes.length]
 
-    console.log(`[Terminal] 切换模式: ${session.mode} → ${nextMode}`)
+    logger.info('切换模式: ${session.mode} → ${nextMode}');
 
     setTerminals((prev) => {
       const next = [...prev]

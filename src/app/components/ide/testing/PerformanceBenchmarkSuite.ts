@@ -29,6 +29,7 @@ import {
   PerformanceTrendDataPoint,
   PerformanceTrendAnalysis,
 } from './PerformanceBenchmarkTypes';
+import { logger } from "../services/Logger";
 
 /**
  * 性能基准测试套件
@@ -48,7 +49,7 @@ export class PerformanceBenchmarkSuite {
    * 运行所有性能基准测试
    */
   async runAllBenchmarks(): Promise<PerformanceReport> {
-    console.warn('[性能基准测试] 开始运行所有基准测试...');
+    logger.warn('开始运行所有基准测试...');
 
     // 1. 渲染性能测试
     await this.runRenderBenchmarks();
@@ -71,7 +72,7 @@ export class PerformanceBenchmarkSuite {
     // 生成报告
     const report = this.generateReport();
 
-    console.warn('[性能基准测试] 完成，整体评分:', report.overallScore);
+    logger.warn('[性能基准测试] 完成，整体评分:', report.overallScore);
 
     return report;
   }
@@ -80,7 +81,7 @@ export class PerformanceBenchmarkSuite {
    * 运行渲染性能基准测试
    */
   private async runRenderBenchmarks(): Promise<void> {
-    console.warn('[性能基准测试] 运行渲染性能测试...');
+    logger.warn('运行渲染性能测试...');
 
     // 初始渲染时间测试
     const initialRenderResult = await this.measureInitialRenderTime();
@@ -226,7 +227,7 @@ export class PerformanceBenchmarkSuite {
    * 运行内存性能基准测试
    */
   private async runMemoryBenchmarks(): Promise<void> {
-    console.warn('[性能基准测试] 运行内存性能测试...');
+    logger.warn('运行内存性能测试...');
 
     // 内存使用测试
     const memoryResult = await this.measureMemoryUsage();
@@ -380,7 +381,7 @@ export class PerformanceBenchmarkSuite {
    * 运行 CPU 性能基准测试
    */
   private async runCPUBenchmarks(): Promise<void> {
-    console.warn('[性能基准测试] 运行 CPU 性能测试...');
+    logger.warn('运行 CPU 性能测试...');
 
     // CPU 使用率测试
     const cpuResult = await this.measureCPUUsage();
@@ -515,7 +516,7 @@ export class PerformanceBenchmarkSuite {
    * 运行网络性能基准测试
    */
   private async runNetworkBenchmarks(): Promise<void> {
-    console.warn('[性能基准测试] 运行网络性能测试...');
+    logger.warn('运行网络性能测试...');
 
     // FCP 测试
     const fcpResult = await this.measureFCP();
@@ -637,7 +638,7 @@ export class PerformanceBenchmarkSuite {
    * 运行启动性能基准测试
    */
   private async runStartupBenchmarks(): Promise<void> {
-    console.warn('[性能基准测试] 运行启动性能测试...');
+    logger.warn('运行启动性能测试...');
 
     // 启动时间测试
     const startupResult = await this.measureStartupTime();
@@ -757,7 +758,7 @@ export class PerformanceBenchmarkSuite {
    * 运行运行时性能基准测试
    */
   private async runRuntimeBenchmarks(): Promise<void> {
-    console.warn('[性能基准测试] 运行运行时性能测试...');
+    logger.warn('运行运行时性能测试...');
 
     // 交互延迟测试
     const interactionResult = await this.measureInteractionLatency();

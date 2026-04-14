@@ -25,7 +25,7 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   dialogApi = require("@tauri-apps/api/dialog");
 } catch (e) {
-  console.warn("[HostBridge] Tauri API not available, using IndexedDB fallback");
+  logger.warn("[HostBridge] Tauri API not available, using IndexedDB fallback");
 }
 
 // IndexedDB Adapter
@@ -34,6 +34,7 @@ import {
   readFile as readFileFromIndexedDB,
   deleteFile as deleteFileFromIndexedDB,
 } from "../adapters/IndexedDBAdapter";
+import { logger } from "../services/Logger";
 
 export interface FileMetadata {
   path: string;
@@ -201,7 +202,7 @@ export const HostBridge = {
       }));
     } else {
       // Web 环境：返回空数组 (不支持目录读取)
-      console.warn("[HostBridge] readDir not supported in web environment");
+      logger.warn('readDir not supported in web environment');
       return [];
     }
   },
@@ -211,7 +212,7 @@ export const HostBridge = {
     if (this.isTauri()) {
       await fsApi.createDir(path, { recursive: true });
     } else {
-      console.warn("[HostBridge] createDir not supported in web environment");
+      logger.warn('createDir not supported in web environment');
     }
   },
 
@@ -220,7 +221,7 @@ export const HostBridge = {
     if (this.isTauri()) {
       await fsApi.removeDir(path, { recursive: true });
     } else {
-      console.warn("[HostBridge] removeDir not supported in web environment");
+      logger.warn('removeDir not supported in web environment');
     }
   },
 
@@ -240,7 +241,7 @@ export const HostBridge = {
     if (this.isTauri()) {
       await fsApi.renameFile(oldPath, newPath);
     } else {
-      console.warn("[HostBridge] renameFile not supported in web environment");
+      logger.warn('renameFile not supported in web environment');
     }
   },
 
@@ -282,7 +283,7 @@ export const HostBridge = {
       };
     } else {
       // Web 环境：轮询检查
-      console.warn("[HostBridge] watchFile using polling in web environment");
+      logger.warn('watchFile using polling in web environment');
 
       const interval = setInterval(async () => {
         const exists = await this.fileExists(path);
@@ -312,7 +313,7 @@ export const HostBridge = {
         const content = await this.readFile(path);
         results.set(path, content);
       } catch (error) {
-        console.error(`Failed to read file ${path}:`, error);
+        logger.error(`Failed to read file ${path}:`, error);
       }
     }
 
@@ -325,7 +326,7 @@ export const HostBridge = {
       try {
         await this.writeFile(path, data);
       } catch (error) {
-        console.error(`Failed to write file ${path}:`, error);
+        logger.error(`Failed to write file ${path}:`, error);
       }
     }
   },
@@ -435,7 +436,7 @@ export const DialogBridge = {
 
       return (path as string) || null;
     } else {
-      console.warn("[DialogBridge] selectDirectory not supported in web");
+      logger.warn('selectDirectory not supported in web');
       return null;
     }
   },

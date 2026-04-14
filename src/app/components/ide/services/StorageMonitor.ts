@@ -14,6 +14,7 @@
 
 import { getDB, type StoredFile } from "../adapters/IndexedDBAdapter";
 import { sanitizer } from "./Sanitizer";
+import { logger } from "./Logger";
 
 export interface StorageUsage {
   // localStorage
@@ -92,7 +93,7 @@ class StorageMonitorService {
         }
       }
     } catch (e) {
-      console.error("[StorageMonitor] Error calculating localStorage usage:", e);
+      this.logger.error("[StorageMonitor] Error calculating localStorage usage:", e);
     }
 
     // 获取 IndexedDB 使用
@@ -111,7 +112,7 @@ class StorageMonitorService {
       indexedDBProjectCount = projects.length;
 
     } catch (e) {
-      console.error("[StorageMonitor] Error calculating IndexedDB usage:", e);
+      this.logger.error("[StorageMonitor] Error calculating IndexedDB usage:", e);
     }
 
     // 获取浏览器配额 (如果支持)
@@ -122,7 +123,7 @@ class StorageMonitorService {
           localStorageQuota = estimate.quota;
         }
       } catch (e) {
-        console.error("[StorageMonitor] Error getting storage estimate:", e);
+        logger.error("[StorageMonitor] Error getting storage estimate:", e);
       }
     }
 
@@ -214,7 +215,7 @@ class StorageMonitorService {
         }
       }
     } catch (e) {
-      console.error("[StorageMonitor] Error breaking down localStorage:", e);
+      logger.error("[StorageMonitor] Error breaking down localStorage:", e);
     }
 
     // IndexedDB 分类
@@ -236,7 +237,7 @@ class StorageMonitorService {
       breakdown.snapshots.size = JSON.stringify(snapshots).length * 2;
 
     } catch (e) {
-      console.error("[StorageMonitor] Error breaking down IndexedDB:", e);
+      logger.error("[StorageMonitor] Error breaking down IndexedDB:", e);
     }
 
     return breakdown;
@@ -254,14 +255,14 @@ class StorageMonitorService {
       const usage = await this.getStorageUsage();
 
       if (usage.status === "critical") {
-        console.warn("[StorageMonitor] Critical storage usage:", `${usage.totalPercent.toFixed(2)  }%`);
+        logger.warn("[StorageMonitor] Critical storage usage:", `${usage.totalPercent.toFixed(2)  }%`);
         this.showStorageWarning(usage);
       } else if (usage.status === "warning") {
-        console.warn("[StorageMonitor] Warning storage usage:", `${usage.totalPercent.toFixed(2)  }%`);
+        logger.warn("[StorageMonitor] Warning storage usage:", `${usage.totalPercent.toFixed(2)  }%`);
       }
     }, intervalMs);
 
-    console.warn("[StorageMonitor] Started monitoring with interval:", intervalMs, "ms");
+    logger.warn("[StorageMonitor] Started monitoring with interval:", intervalMs, "ms");
   }
 
   /**
@@ -271,7 +272,7 @@ class StorageMonitorService {
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
       this.checkInterval = null;
-      console.warn("[StorageMonitor] Stopped monitoring");
+      logger.warn('Stopped monitoring');
     }
   }
 
@@ -354,10 +355,10 @@ class StorageMonitorService {
         }
       }
 
-      console.warn(`[StorageMonitor] Cleaned up ${cleanedCount} files older than ${daysOld} days`);
+      logger.warn('Cleaned up ${cleanedCount} files older than ${daysOld} days');
 
     } catch (e) {
-      console.error("[StorageMonitor] Error cleaning up old data:", e);
+      logger.error("[StorageMonitor] Error cleaning up old data:", e);
     }
 
     return cleanedCount;
@@ -395,11 +396,11 @@ class StorageMonitorService {
         // 保存更新后的会话列表
         localStorage.setItem(sessionsKey, JSON.stringify(sessionsToKeep));
 
-        console.warn(`[StorageMonitor] Cleaned up ${cleanedCount} old chat sessions`);
+        logger.warn('Cleaned up ${cleanedCount} old chat sessions');
       }
 
     } catch (e) {
-      console.error("[StorageMonitor] Error cleaning up chat history:", e);
+      logger.error("[StorageMonitor] Error cleaning up chat history:", e);
     }
 
     return cleanedCount;

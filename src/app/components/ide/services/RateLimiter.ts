@@ -32,6 +32,7 @@
 
 // ── Types ──
 
+import { logger } from "./Logger";
 export type LimiterType = 'token-bucket' | 'sliding-window' | 'fixed-window';
 export type CircuitState = 'closed' | 'open' | 'half-open';
 
@@ -270,7 +271,7 @@ export class CircuitBreaker {
       this.halfOpenCalls = 0;
     }
 
-    console.warn(`[CircuitBreaker] State transition: ${oldState} -> ${newState}`);
+    logger.warn('State transition: ${oldState} -> ${newState}');
     this.config.onStateChange?.(newState);
   }
 

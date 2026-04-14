@@ -41,6 +41,7 @@
 // ================================================================
 
 import type { PluginManifest, PluginInstance } from "./types";
+import { logger } from "./services/Logger";
 
 // ── Plugin Market Types ──
 
@@ -86,7 +87,7 @@ class PluginEventBus {
       try {
         h(...args);
       } catch (e) {
-        console.error(`[PluginSystem] Event handler error for "${event}":`, e);
+        logger.error(`[PluginSystem] Event handler error for "${event}":`, e);
       }
     });
   }
@@ -236,7 +237,7 @@ export class PluginManager {
   activate(pluginId: string): boolean {
     const plugin = this.plugins.get(pluginId);
     if (!plugin) {
-      console.error(`[PluginSystem] Plugin "${pluginId}" not found`);
+      logger.error('Plugin "${pluginId}" not found');
       return false;
     }
 
@@ -252,13 +253,13 @@ export class PluginManager {
       this.plugins.set(pluginId, plugin);
 
       this.eventBus.emit("plugin:activated", pluginId);
-      console.warn(`[PluginSystem] Plugin "${pluginId}" activated`);
+      logger.warn('Plugin "${pluginId}" activated');
       return true;
     } catch (e) {
       plugin.status = "error";
       plugin.error = String(e);
       this.plugins.set(pluginId, plugin);
-      console.error(`[PluginSystem] Failed to activate "${pluginId}":`, e);
+      logger.error(`[PluginSystem] Failed to activate "${pluginId}":`, e);
       return false;
     }
   }
@@ -276,10 +277,10 @@ export class PluginManager {
       this.plugins.set(pluginId, plugin);
 
       this.eventBus.emit("plugin:deactivated", pluginId);
-      console.warn(`[PluginSystem] Plugin "${pluginId}" deactivated`);
+      logger.warn('Plugin "${pluginId}" deactivated');
       return true;
     } catch (e) {
-      console.error(`[PluginSystem] Failed to deactivate "${pluginId}":`, e);
+      logger.error(`[PluginSystem] Failed to deactivate "${pluginId}":`, e);
       return false;
     }
   }
@@ -332,7 +333,7 @@ export class PluginManager {
       handler();
       return true;
     } catch (e) {
-      console.error(`[PluginSystem] Command "${commandId}" failed:`, e);
+      logger.error(`[PluginSystem] Command "${commandId}" failed:`, e);
       return false;
     }
   }
@@ -417,12 +418,12 @@ export class PluginManager {
 
   configureMarket(config: PluginMarketConfig): void {
     this.marketConfig = config;
-    console.warn('[PluginMarket] Configured:', config.registryUrl);
+    logger.warn('[PluginMarket] Configured:', config.registryUrl);
   }
 
   async fetchMarketPlugins(forceRefresh = false): Promise<PluginMarketItem[]> {
     if (!this.marketConfig) {
-      console.warn('[PluginMarket] Not configured');
+      logger.warn('Not configured');
       return [];
     }
 
@@ -456,7 +457,7 @@ export class PluginManager {
 
       return plugins;
     } catch (error) {
-      console.error('[PluginMarket] Failed to fetch plugins:', error);
+      logger.error('[PluginMarket] Failed to fetch plugins:', error);
       this.eventBus.emit('market:error', error);
       return Array.from(this.marketCache.values());
     }
@@ -495,7 +496,7 @@ export class PluginManager {
       this.marketCache.set(pluginId, plugin);
       return plugin;
     } catch (error) {
-      console.error('[PluginMarket] Failed to get plugin details:', error);
+      logger.error('[PluginMarket] Failed to get plugin details:', error);
       return null;
     }
   }
@@ -516,7 +517,7 @@ export class PluginManager {
       if (manifest.dependencies) {
         for (const [depId, depVersion] of Object.entries(manifest.dependencies)) {
           if (!this.installedPlugins.has(depId)) {
-            console.warn(`[PluginMarket] Installing dependency: ${depId}@${depVersion}`);
+            logger.warn('Installing dependency: ${depId}@${depVersion}');
             const depResult = await this.installPlugin(depId);
             if (!depResult.success) {
               return { success: false, error: `Failed to install dependency: ${depId}` };
@@ -538,20 +539,20 @@ export class PluginManager {
       const plugin = this.plugins.get(pluginId);
       return { success: true, plugin };
     } catch (error) {
-      console.error('[PluginMarket] Failed to install plugin:', error);
+      logger.error('[PluginMarket] Failed to install plugin:', error);
       return { success: false, error: String(error) };
     }
   }
 
   async uninstallPlugin(pluginId: string): Promise<boolean> {
     if (!this.installedPlugins.has(pluginId)) {
-      console.warn('[PluginMarket] Plugin not installed:', pluginId);
+      logger.warn('[PluginMarket] Plugin not installed:', pluginId);
       return false;
     }
 
     const dependents = this.findDependents(pluginId);
     if (dependents.length > 0) {
-      console.error('[PluginMarket] Cannot uninstall: other plugins depend on it:', dependents);
+      logger.error('[PluginMarket] Cannot uninstall: other plugins depend on it:', dependents);
       return false;
     }
 
@@ -563,7 +564,7 @@ export class PluginManager {
       this.eventBus.emit('plugin:uninstalled', pluginId);
       return true;
     } catch (error) {
-      console.error('[PluginMarket] Failed to uninstall plugin:', error);
+      logger.error('[PluginMarket] Failed to uninstall plugin:', error);
       return false;
     }
   }
@@ -601,7 +602,7 @@ export class PluginManager {
       const plugin = this.plugins.get(pluginId);
       return { success: true, plugin };
     } catch (error) {
-      console.error('[PluginMarket] Failed to update plugin:', error);
+      logger.error('[PluginMarket] Failed to update plugin:', error);
       return { success: false, error: String(error) };
     }
   }
@@ -664,7 +665,7 @@ export class PluginManager {
       const data = Object.fromEntries(this.installedPlugins);
       localStorage.setItem('yyc3-installed-plugins', JSON.stringify(data));
     } catch (error) {
-      console.error('[PluginMarket] Failed to save installed plugins:', error);
+      logger.error('[PluginMarket] Failed to save installed plugins:', error);
     }
   }
 
@@ -678,7 +679,7 @@ export class PluginManager {
         }
       }
     } catch (error) {
-      console.error('[PluginMarket] Failed to load installed plugins:', error);
+      logger.error('[PluginMarket] Failed to load installed plugins:', error);
     }
   }
 

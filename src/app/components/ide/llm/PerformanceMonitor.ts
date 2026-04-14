@@ -23,6 +23,7 @@ import {
   NetworkMetric,
   PerformanceStats,
 } from './PerformanceTypes';
+import { logger } from "../services/Logger";
 
 /**
  * 性能监控器
@@ -54,7 +55,7 @@ export class PerformanceMonitor {
     // 观察性能条目
     this.setupObservers();
 
-    console.warn('[PerformanceMonitor] Started');
+    logger.warn('Started');
   }
 
   /**
@@ -73,7 +74,7 @@ export class PerformanceMonitor {
     this.observers.forEach(observer => observer.disconnect());
     this.observers = [];
 
-    console.warn('[PerformanceMonitor] Stopped');
+    logger.warn('Stopped');
   }
 
   /**
@@ -149,7 +150,7 @@ export class PerformanceMonitor {
    */
   monitorMemory(): MemoryMetric | null {
     if (!(performance as any).memory) {
-      console.warn('[PerformanceMonitor] Memory API not available');
+      logger.warn('Memory API not available');
       return null;
     }
 
@@ -276,7 +277,7 @@ export class PerformanceMonitor {
         longTaskObserver.observe({ entryTypes: ['longtask'] });
         this.observers.push(longTaskObserver);
       } catch (e) {
-        console.warn('[PerformanceMonitor] Long task observer not supported');
+        logger.warn('Long task observer not supported');
       }
 
       // 观察布局偏移
@@ -299,7 +300,7 @@ export class PerformanceMonitor {
         layoutShiftObserver.observe({ entryTypes: ['layout-shift'] });
         this.observers.push(layoutShiftObserver);
       } catch (e) {
-        console.warn('[PerformanceMonitor] Layout shift observer not supported');
+        logger.warn('Layout shift observer not supported');
       }
     }
   }
@@ -329,7 +330,7 @@ export class PerformanceMonitor {
     ];
 
     if (alertLevels.includes(metric.level)) {
-      console.warn(`[PerformanceMonitor] Alert: ${metric.name} = ${metric.value}${metric.unit} (${metric.level})`);
+      logger.warn('Alert: ${metric.name} = ${metric.value}${metric.unit} (${metric.level})');
     }
   }
 

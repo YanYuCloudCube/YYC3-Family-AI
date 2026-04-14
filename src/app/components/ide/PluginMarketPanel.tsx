@@ -14,6 +14,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { pluginManager, type PluginMarketItem, type PluginMarketConfig } from './PluginSystem';
 import type { PluginManifest } from './types';
+import { logger } from "./services/Logger";
 
 type TabType = 'market' | 'installed' | 'updates';
 type SortBy = 'downloads' | 'rating' | 'name' | 'updated';
@@ -87,7 +88,7 @@ const PluginMarketPanel: React.FC = () => {
           ),
         }));
       } else {
-        console.error('Install failed:', result.error);
+        logger.error('Install failed:', result.error);
       }
     } finally {
       setInstalling(prev => {

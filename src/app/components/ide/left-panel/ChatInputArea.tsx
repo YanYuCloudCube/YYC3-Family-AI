@@ -21,6 +21,7 @@ import {
   FileText,
   Loader2,
 } from "lucide-react";
+import { logger } from "../services/Logger";
 
 // ── Types ──
 
@@ -86,7 +87,7 @@ export default function ChatInputArea({
 
           newFiles.push(attachedFile);
         } catch (error) {
-          console.error("[ChatInputArea] Failed to read file:", file.name, error);
+          logger.error("[ChatInputArea] Failed to read file:", file.name, error instanceof Error ? error.message : String(error));
         }
       }
 

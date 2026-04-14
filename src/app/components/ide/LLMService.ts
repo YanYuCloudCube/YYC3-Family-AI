@@ -12,6 +12,7 @@
  * @tags: llm,api,streaming,sse,providers,openai,ollama
  */
 
+import { logger } from "./services/Logger";
 export type ProviderId =
   | "ollama"
   | "openai"
@@ -364,7 +365,7 @@ export function initializeApiKeysFromEnv(): void {
     const envValue = (import.meta as any).env?.[envKey];
     if (envValue && !hasApiKey(providerId)) {
       setApiKey(providerId, envValue);
-      console.log(`[LLMService] Initialized API key for ${providerId} from env ${envKey}`);
+      logger.info('Initialized API key for ${providerId} from env ${envKey}');
     }
   }
 }
@@ -376,7 +377,7 @@ export async function detectOllama(): Promise<{
   models: ProviderModel[];
 }> {
   try {
-    console.warn('[LLMService] Attempting to detect Ollama at http://localhost:11434/api/tags');
+    logger.warn('Attempting to detect Ollama at http://localhost:11434/api/tags');
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
 
@@ -389,15 +390,15 @@ export async function detectOllama(): Promise<{
     });
     clearTimeout(timeoutId);
 
-    console.warn('[LLMService] Ollama response status:', res.status, res.ok);
+    logger.warn('[LLMService] Ollama response status:', res.status, String(res.ok));
 
     if (!res.ok) {
-      console.warn('[LLMService] Ollama response not OK:', res.status, res.statusText);
+      logger.warn('[LLMService] Ollama response not OK:', res.status, res.statusText);
       return { available: false, models: [] };
     }
 
     const data = await res.json();
-    console.warn('[LLMService] Ollama detected models:', data.models?.length || 0);
+    logger.warn('[LLMService] Ollama detected models:', data.models?.length || 0);
 
     const models: ProviderModel[] = (data.models || []).map((m: any) => ({
       id: m.name || m.model,
@@ -415,11 +416,11 @@ export async function detectOllama(): Promise<{
     return { available: true, models };
   } catch (error: any) {
     if (error?.name === 'AbortError') {
-      console.warn('[LLMService] Ollama detection timeout after 3s');
+      logger.warn('Ollama detection timeout after 3s');
     } else if (error?.message?.includes('Failed to fetch')) {
-      console.warn('[LLMService] Ollama not reachable - service may not be running or CORS not configured');
+      logger.warn('Ollama not reachable - service may not be running or CORS not configured');
     } else {
-      console.warn('[LLMService] Ollama detection error:', error?.message || error);
+      logger.warn('[LLMService] Ollama detection error:', error?.message || error);
     }
     return { available: false, models: [] };
   }

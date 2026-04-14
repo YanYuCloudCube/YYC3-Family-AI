@@ -15,6 +15,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { FILE_CONTENTS, type FileNode } from "../fileData";
+import { logger } from "../services/Logger";
 
 // ===== Types =====
 export interface OpenTab {
@@ -270,11 +271,11 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
     moveFile: (sourcePath, targetPath) => {
       const state = get();
       if (!state.fileContents[sourcePath]) {
-        console.warn(`[FileStore] moveFile: source file not found: ${sourcePath}`);
+        logger.warn('moveFile: source file not found: ${sourcePath}');
         return false;
       }
       if (state.fileContents[targetPath]) {
-        console.warn(`[FileStore] moveFile: target already exists: ${targetPath}`);
+        logger.warn('moveFile: target already exists: ${targetPath}');
         return false;
       }
 
@@ -292,18 +293,18 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
         ];
       });
 
-      console.warn(`[FileStore] moveFile: ${sourcePath} -> ${targetPath}`);
+      logger.warn('moveFile: ${sourcePath} -> ${targetPath}');
       return true;
     },
 
     copyFile: (sourcePath, targetPath) => {
       const state = get();
       if (!state.fileContents[sourcePath]) {
-        console.warn(`[FileStore] copyFile: source file not found: ${sourcePath}`);
+        logger.warn('copyFile: source file not found: ${sourcePath}');
         return false;
       }
       if (state.fileContents[targetPath]) {
-        console.warn(`[FileStore] copyFile: target already exists: ${targetPath}`);
+        logger.warn('copyFile: target already exists: ${targetPath}');
         return false;
       }
 
@@ -315,7 +316,7 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
         ];
       });
 
-      console.warn(`[FileStore] copyFile: ${sourcePath} -> ${targetPath}`);
+      logger.warn('copyFile: ${sourcePath} -> ${targetPath}');
       return true;
     },
 
@@ -326,7 +327,7 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
       );
 
       if (filesToMove.length === 0) {
-        console.warn(`[FileStore] moveFolder: folder not found: ${sourcePath}`);
+        logger.warn('moveFolder: folder not found: ${sourcePath}');
         return false;
       }
 
@@ -352,14 +353,14 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
         }
       });
 
-      console.warn(`[FileStore] moveFolder: ${sourcePath} -> ${targetPath} (${filesToMove.length} files)`);
+      logger.warn('moveFolder: ${sourcePath} -> ${targetPath} (${filesToMove.length} files)');
       return true;
     },
 
     duplicateFile: (path) => {
       const state = get();
       if (!state.fileContents[path]) {
-        console.warn(`[FileStore] duplicateFile: file not found: ${path}`);
+        logger.warn('duplicateFile: file not found: ${path}');
         return null;
       }
 
@@ -382,7 +383,7 @@ export const useFileStoreZustand = create<FileStoreState & FileStoreActions>()(
         ];
       });
 
-      console.warn(`[FileStore] duplicateFile: ${path} -> ${newPath}`);
+      logger.warn('duplicateFile: ${path} -> ${newPath}');
       return newPath;
     },
 

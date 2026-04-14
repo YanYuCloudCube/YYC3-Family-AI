@@ -16,6 +16,7 @@ import { spawn, type ChildProcess } from 'child_process'
 import { createServer as createHttpServer } from 'http'
 import { WebSocketServer, WebSocket } from 'ws'
 import type { Plugin, ViteDevServer } from 'vite'
+import { logger } from "../services/Logger";
 
 // 尝试导入 node-pty (可选依赖)
 let pty: any = null
@@ -23,9 +24,9 @@ async function loadPty() {
   try {
     // @ts-expect-error node-pty 是可选依赖
     pty = await import('node-pty')
-    console.log('[Terminal API v2] ✓ node-pty 已加载')
+    logger.info('✓ node-pty 已加载');
   } catch {
-    console.warn('[Terminal API v2] ⚠ node-pty 未安装，将使用兼容模式 (spawn)')
+    logger.warn('⚠ node-pty 未安装，将使用兼容模式 (spawn)');
   }
 }
 loadPty()
@@ -120,13 +121,13 @@ export function createTerminalAPIv2(): Plugin {
       // 创建新会话
       session = createNewSession(sessionId)
       sessions.set(sessionId, session)
-      console.log(`[Terminal API v2] 新 WS 会话: ${sessionId}`)
+      logger.info('新 WS 会话: ${sessionId}');
     }
 
     session.socket = ws
     session.lastActivity = Date.now()
 
-    console.log(`[Terminal API v2] WS 已连接: ${sessionId} (PTY: ${session.usePTY})`)
+    logger.info('WS 已连接: ${sessionId} (PTY: ${session.usePTY})');
 
     // 发送初始化消息
     ws.send(JSON.stringify({
@@ -174,13 +175,13 @@ export function createTerminalAPIv2(): Plugin {
         session!.lastActivity = Date.now()
 
       } catch (error) {
-        console.error('[Terminal API v2] 处理消息错误:', error)
+        logger.error('[Terminal API v2] 处理消息错误:', error);
       }
     })
 
     // WebSocket 关闭
     ws.on('close', () => {
-      console.log(`[Terminal API v2] WS 断开: ${sessionId}`)
+      logger.info('WS 断开: ${sessionId}');
 
       if (session) {
         session.socket = null
@@ -195,7 +196,7 @@ export function createTerminalAPIv2(): Plugin {
     })
 
     ws.on('error', (error: Error) => {
-      console.error('[Terminal API v2] WebSocket 错误:', error.message)
+      logger.error('[Terminal API v2] WebSocket 错误:', error.message);
     })
   })
 
@@ -230,7 +231,7 @@ export function createTerminalAPIv2(): Plugin {
       })
 
       process.onExit(({ exitCode }: { exitCode: number }) => {
-        console.log(`[Terminal API v2] PTY 退出 (${id}): code=${exitCode}`)
+        logger.info('PTY 退出 (${id}): code=${exitCode}');
         if (sessions.get(id)?.socket?.readyState === WebSocket.OPEN) {
           sessions.get(id)?.socket?.send(JSON.stringify({
             type: 'exit',
@@ -271,7 +272,7 @@ export function createTerminalAPIv2(): Plugin {
 
       // 进程退出
       process.on('close', (code: number | null) => {
-        console.log(`[Terminal API v2] 进程退出 (${id}): code=${code}`)
+        logger.info('进程退出 (${id}): code=${code}');
         if (sessions.get(id)?.socket?.readyState === WebSocket.OPEN) {
           sessions.get(id)?.socket?.send(JSON.stringify({
             type: 'exit',
@@ -310,9 +311,9 @@ export function createTerminalAPIv2(): Plugin {
     if (session.usePTY && session.process.resize) {
       try {
         session.process.resize(cols, rows)
-        console.log(`[Terminal API v2] 尺寸调整: ${cols}x${rows}`)
+        logger.info('尺寸调整: ${cols}x${rows}');
       } catch (e) {
-        console.warn('[Terminal API v2] PTY resize 失败:', e)
+        logger.warn('[Terminal API v2] PTY resize 失败:', e);
       }
     }
     // 兼容模式无法动态调整
@@ -323,7 +324,7 @@ export function createTerminalAPIv2(): Plugin {
     const session = sessions.get(id)
     if (!session) return
 
-    console.log(`[Terminal API v2] 清理会话: ${id}`)
+    logger.info('清理会话: ${id}');
 
     try {
       if (session.usePTY) {
@@ -396,7 +397,7 @@ export function createTerminalAPIv2(): Plugin {
         const session = createNewSession(id)
         sessions.set(id, session)
 
-        console.log(`[Terminal API v2] 会话创建: ${id} (PTY: ${session.usePTY})`)
+        logger.info('会话创建: ${id} (PTY: ${session.usePTY})');
 
         json(res, 201, {
           sessionId: id,
@@ -425,7 +426,7 @@ export function createTerminalAPIv2(): Plugin {
               return
             }
 
-            console.log(`[Terminal API v2] 执行命令: ${command}`)
+            logger.info('执行命令: ${command}');
 
             const proc = spawn(command.split(/\s+/)[0], command.split(/\s+/).slice(1), {
               cwd: cwd || process.cwd(),

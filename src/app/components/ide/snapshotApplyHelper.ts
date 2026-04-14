@@ -17,6 +17,7 @@
 
 import { useFileStoreZustand } from "./stores/useFileStoreZustand";
 import { usePreviewStore } from "./stores/usePreviewStore";
+import { logger } from "./services/Logger";
 
 /**
  * 应用快照文件到文件系统
@@ -30,14 +31,14 @@ import { usePreviewStore } from "./stores/usePreviewStore";
  * @example
  * ```typescript
  * const result = await applySnapshotFiles([
- *   { path: "src/index.ts", content: "console.warn('hello')" },
+ logger.warn('hello');
  *   { path: "src/App.tsx", content: "<div>Hello</div>" }
  * ], {
  *   triggerPreview: true,
  *   clearOtherFiles: false
  * });
  *
- * console.warn(`Applied ${result.successCount} files`);
+ logger.warn('Applied ${result.successCount} files');
  * ```
  */
 export async function applySnapshotFiles(
@@ -116,12 +117,12 @@ export async function applySnapshotFiles(
     // 触发预览更新
     if (triggerPreview) {
       previewStore.triggerRefresh();
-      console.warn("[applySnapshotFiles] Triggered preview refresh");
+      logger.warn('Triggered preview refresh');
     }
 
     return result;
   } catch (error) {
-    console.error("[applySnapshotFiles] Failed to apply snapshot:", error);
+    logger.error("[applySnapshotFiles] Failed to apply snapshot:", error);
     throw error;
   }
 }
@@ -172,7 +173,7 @@ export function applySnapshotFilesSync(
 
     return result;
   } catch (error) {
-    console.error("[applySnapshotFilesSync] Failed:", error);
+    logger.error("[applySnapshotFilesSync] Failed:", error);
     throw error;
   }
 }

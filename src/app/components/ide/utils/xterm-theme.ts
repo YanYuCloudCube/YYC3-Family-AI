@@ -13,6 +13,7 @@
  */
 
 import type { ITheme } from '@xterm/xterm'
+import { logger } from "../services/Logger";
 
 // YYC³ IDE 主题配置接口（假设的格式）
 interface YYC3ThemeConfig {
@@ -197,7 +198,7 @@ export function convertIDEToXtermTheme(
 ): ITheme {
 
   if (!themeConfig || !themeConfig.colors) {
-    console.log(`[Xterm Theme] 使用预设主题: ${fallbackTheme}`)
+    logger.info('使用预设主题: ${fallbackTheme}');
     return { ...XTERM_THEMES[fallbackTheme] }
   }
 
@@ -251,7 +252,7 @@ export function convertIDEToXtermTheme(
     brightWhite: colors['terminal.ansiBrightWhite'] || XTERM_THEMES[fallbackTheme].brightWhite,
   }
 
-  console.log(`[Xterm Theme] 已转换 IDE 主题: ${themeConfig.name || 'Custom'}`)
+  logger.info(`已转换 IDE 主题: ${themeConfig.name || 'Custom'}`);
   return xtermTheme
 }
 

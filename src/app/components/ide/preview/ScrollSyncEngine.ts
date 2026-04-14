@@ -14,6 +14,7 @@
 /**
  * 同步模式枚举
  */
+import { logger } from "../services/Logger";
 export enum SyncMode {
   DISABLED = 'disabled',     // 禁用同步
   EDITOR_TO_PREVIEW = 'editor_to_preview',  // 编辑器 → 预览
@@ -296,7 +297,7 @@ export class ScrollSyncEngine {
       try {
         listener(event);
       } catch (e) {
-        console.error('Error in scroll sync listener:', e);
+        logger.error('Error in scroll sync listener:', e);
       }
     });
   }

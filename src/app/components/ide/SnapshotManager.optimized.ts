@@ -13,6 +13,7 @@
  */
 
 import type { DevicePreset } from "./stores/usePreviewStore";
+import { logger } from "./services/Logger";
 
 /**
  * 快照文件数据结构
@@ -92,7 +93,7 @@ export class SnapshotManagerOptimized {
 
   constructor() {
     this.loadFromStorage();
-    console.warn(`[SnapshotManager] Initialized with ${this.snapshots.size} snapshots`);
+    logger.warn('Initialized with ${this.snapshots.size} snapshots');
   }
 
   /**
@@ -161,7 +162,7 @@ export class SnapshotManagerOptimized {
     this.enforceStorageLimit();
     this.saveToStorageOptimized();
 
-    console.warn(`[SnapshotManager] Created snapshot: ${id} (${label})`);
+    logger.warn('Created snapshot: ${id} (${label})');
     return snapshot;
   }
 
@@ -199,7 +200,7 @@ export class SnapshotManagerOptimized {
   ): boolean {
     const snapshot = this.snapshots.get(id);
     if (!snapshot) {
-      console.warn(`[SnapshotManager] Snapshot not found: ${id}`);
+      logger.warn('Snapshot not found: ${id}');
       return false;
     }
 
@@ -215,10 +216,10 @@ export class SnapshotManagerOptimized {
       const count = this.accessCount.get(id) || 0;
       this.accessCount.set(id, count + 1);
 
-      console.warn(`[SnapshotManager] Restored snapshot: ${id} (${snapshot.label})`);
+      logger.warn('Restored snapshot: ${id} (${snapshot.label})');
       return true;
     } catch (error) {
-      console.error(`[SnapshotManager] Failed to restore snapshot: ${id}`, error);
+      logger.error(`[SnapshotManager] Failed to restore snapshot: ${id}`, error);
       return false;
     }
   }
@@ -232,7 +233,7 @@ export class SnapshotManagerOptimized {
 
     if (deleted) {
       this.saveToStorageOptimized();
-      console.warn(`[SnapshotManager] Deleted snapshot: ${id}`);
+      logger.warn('Deleted snapshot: ${id}');
     }
 
     return deleted;
@@ -330,7 +331,7 @@ export class SnapshotManagerOptimized {
 
     toDelete.forEach(id => this.deleteSnapshot(id));
 
-    console.warn(`[SnapshotManager] Smart cleanup: deleted ${toDelete.length} snapshots`);
+    logger.warn('Smart cleanup: deleted ${toDelete.length} snapshots');
     return toDelete.length;
   }
 
@@ -426,14 +427,14 @@ export class SnapshotManagerOptimized {
 
       // 检查存储大小
       if (json.length > this.MAX_STORAGE_SIZE) {
-        console.warn(`[SnapshotManager] Storage size exceeds limit, performing cleanup`);
+        logger.warn(`[SnapshotManager] Storage size exceeds limit, performing cleanup`);
         this.smartCleanup();
         return;
       }
 
       localStorage.setItem(this.STORAGE_KEY, json);
     } catch (error) {
-      console.error("[SnapshotManager] Failed to save snapshots:", error);
+      logger.error("[SnapshotManager] Failed to save snapshots:", error);
 
       // 如果存储失败，尝试清理
       if (error instanceof DOMException && error.name === "QuotaExceededError") {
@@ -457,7 +458,7 @@ export class SnapshotManagerOptimized {
         this.accessCount.set(snapshot.id, 0);
       });
     } catch (error) {
-      console.error("[SnapshotManager] Failed to load snapshots:", error);
+      logger.error("[SnapshotManager] Failed to load snapshots:", error);
     }
   }
 }

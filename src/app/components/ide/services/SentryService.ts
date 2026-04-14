@@ -13,6 +13,7 @@
  */
 
 import * as Sentry from "@sentry/react";
+import { logger } from "./Logger";
 
 export interface SentryConfig {
   dsn: string;
@@ -34,7 +35,7 @@ class SentryService {
    */
   init(config: SentryConfig): void {
     if (this.initialized) {
-      console.warn("[Sentry] Already initialized");
+      this.logger.warn('Already initialized');
       return;
     }
 
@@ -71,7 +72,7 @@ class SentryService {
       beforeSend: (event, _hint) => {
         // 开发环境不上报
         if (config.environment === "development") {
-          console.warn("[Sentry] Development mode, skipping error:", event);
+          this.logger.warn("[Sentry] Development mode, skipping error:", event);
           return null;
         }
 
@@ -115,7 +116,7 @@ class SentryService {
     });
 
     this.initialized = true;
-    console.warn("[Sentry] Initialized successfully");
+    this.logger.warn('Initialized successfully');
   }
 
   /**
@@ -131,7 +132,7 @@ class SentryService {
     };
   }): void {
     if (!this.initialized) {
-      console.error("[Sentry] Not initialized");
+      this.logger.error('Not initialized');
       return;
     }
 
@@ -147,7 +148,7 @@ class SentryService {
    */
   captureMessage(message: string, level?: Sentry.SeverityLevel): void {
     if (!this.initialized) {
-      console.warn("[Sentry] Not initialized");
+      this.logger.warn('Not initialized');
       return;
     }
 

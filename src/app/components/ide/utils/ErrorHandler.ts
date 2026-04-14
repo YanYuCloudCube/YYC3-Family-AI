@@ -14,6 +14,9 @@
 /**
  * 错误类型枚举
  */
+
+import { logger } from '../services/Logger';
+
 export enum ErrorType {
   // 预览相关错误
   PREVIEW_UPDATE_FAILED = "PREVIEW_UPDATE_FAILED",
@@ -182,7 +185,7 @@ export class ErrorHandler {
         lastError = error instanceof Error ? error : new Error(String(error));
 
         if (attempt < maxAttempts) {
-          console.warn(`[ErrorHandler] Retry attempt ${attempt}/${maxAttempts}`);
+          logger.warn('Retry attempt ${attempt}/${maxAttempts}');
           await this.delay(this.config.retryDelayMs * attempt);
         }
       }
@@ -443,7 +446,7 @@ export class ErrorHandler {
   private notifyUser(errorInfo: ErrorInfo): void {
     // 这里可以集成到 UI 通知系统
     // 目前使用 console.warn
-    console.warn(`[用户提示] ${errorInfo.userMessage}`);
+    logger.warn('${errorInfo.userMessage}');
   }
 
   /**

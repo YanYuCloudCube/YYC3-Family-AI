@@ -21,6 +21,7 @@
 // ================================================================
 
 import { ThemeType } from './CSSVariableInjector';
+import { logger } from "../services/Logger";
 
 export type TokenType = 'primitive' | 'semantic' | 'component';
 
@@ -333,7 +334,7 @@ export class DesignTokenSystem {
                 this.primitiveTokens.get(name);
 
     if (!token) {
-      console.warn(`Token not found: ${name}`);
+      logger.warn('Token not found: ${name}');
       return '';
     }
 
@@ -480,7 +481,7 @@ export class DesignTokenSystem {
       try {
         listener(token);
       } catch (error) {
-        console.error('Error in token listener:', error);
+        logger.error('Error in token listener:', error);
       }
     }
   }

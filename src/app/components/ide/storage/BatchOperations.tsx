@@ -22,6 +22,7 @@ import {
   AlertTriangle,
   CheckCircle,
 } from 'lucide-react'
+import { logger } from "../services/Logger";
 
 interface StorageItem {
   key: string
@@ -132,7 +133,7 @@ export function BatchOperations() {
           localStorage.removeItem(key)
           deletedCount++
         } catch (error) {
-          console.error(`Failed to delete ${key}:`, error)
+          logger.error(`Failed to delete ${key}:`, error);
         }
       })
 
@@ -145,7 +146,7 @@ export function BatchOperations() {
           localStorage.setItem(key, editValue)
           editedCount++
         } catch (error) {
-          console.error(`Failed to edit ${key}:`, error)
+          logger.error(`Failed to edit ${key}:`, error);
         }
       })
 

@@ -19,6 +19,7 @@
 import type { DevicePreset, DeviceCategory } from './DevicePresets';
 import { DEVICE_PRESETS, getDeviceById } from './DevicePresets';
 import { DeviceValidator, type ValidationResult } from './DeviceValidator';
+import { logger } from "../services/Logger";
 
 /**
  * 设备方向
@@ -512,7 +513,7 @@ export class DeviceSimulator {
       try {
         listener(state);
       } catch (error) {
-        console.error('设备变更监听器执行错误:', error);
+        logger.error('设备变更监听器执行错误:', error);
       }
     });
   }
@@ -537,7 +538,7 @@ export class DeviceSimulator {
 
       localStorage.setItem(this.config.storageKey, JSON.stringify(stateData));
     } catch (error) {
-      console.warn('保存设备状态失败:', error);
+      logger.warn('保存设备状态失败:', error);
     }
   }
 
@@ -569,7 +570,7 @@ export class DeviceSimulator {
       if (stateData.scale) this.state.scale = stateData.scale;
 
     } catch (error) {
-      console.warn('加载设备状态失败:', error);
+      logger.warn('加载设备状态失败:', error);
     }
   }
 

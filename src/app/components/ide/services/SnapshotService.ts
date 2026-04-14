@@ -13,6 +13,7 @@
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";
+import { logger } from "./Logger";
 
 export interface Snapshot {
   id: string;
@@ -63,7 +64,7 @@ export class SnapshotService {
    * 初始化快照服务
    */
   init(options: SnapshotOptions = {}): void {
-    console.warn("[Snapshot] Initialized with options:", options);
+    logger.warn("[Snapshot] Initialized with options:", options);
   }
 
   /**
@@ -108,7 +109,7 @@ export class SnapshotService {
     // 清理旧快照
     await this.cleanupOldSnapshots(projectId);
 
-    console.warn(`[Snapshot] Created snapshot "${label}" for project ${projectId}`);
+    logger.warn('Created snapshot "${label}" for project ${projectId}');
     return snapshot;
   }
 
@@ -169,7 +170,7 @@ export class SnapshotService {
       `Restored from snapshot created at ${new Date(snapshot.createdAt).toISOString()}`
     );
 
-    console.warn(`[Snapshot] Restored snapshot "${snapshot.label}"`);
+    logger.warn('Restored snapshot "${snapshot.label}"');
     return true;
   }
 
@@ -184,7 +185,7 @@ export class SnapshotService {
     }
 
     await db.delete(this.DB_STORE, snapshotId);
-    console.warn(`[Snapshot] Deleted snapshot ${snapshotId}`);
+    logger.warn('Deleted snapshot ${snapshotId}');
     return true;
   }
 
@@ -266,10 +267,10 @@ export class SnapshotService {
       const db = await getDB();
       await db.put(this.DB_STORE, snapshot);
 
-      console.warn(`[Snapshot] Imported snapshot "${snapshot.label}"`);
+      logger.warn('Imported snapshot "${snapshot.label}"');
       return snapshot;
     } catch (error) {
-      console.error("[Snapshot] Import failed:", error);
+      logger.error("[Snapshot] Import failed:", error);
       throw error;
     }
   }
@@ -293,7 +294,7 @@ export class SnapshotService {
     }, intervalMs);
 
     this.autoSnapshotTimers.set(projectId, timer);
-    console.warn(`[Snapshot] Auto snapshot enabled for project ${projectId}`);
+    logger.warn('Auto snapshot enabled for project ${projectId}');
   }
 
   /**
@@ -304,7 +305,7 @@ export class SnapshotService {
     if (timer) {
       clearInterval(timer);
       this.autoSnapshotTimers.delete(projectId);
-      console.warn(`[Snapshot] Auto snapshot disabled for project ${projectId}`);
+      logger.warn('Auto snapshot disabled for project ${projectId}');
     }
   }
 
@@ -321,7 +322,7 @@ export class SnapshotService {
         await this.deleteSnapshot(snapshot.id);
       }
 
-      console.warn(`[Snapshot] Cleaned up ${toDelete.length} old snapshots for project ${projectId}`);
+      logger.warn('Cleaned up ${toDelete.length} old snapshots for project ${projectId}');
     }
   }
 
@@ -392,7 +393,7 @@ export class SnapshotService {
     const db = await getDB();
     await db.put(this.DB_STORE, snapshot);
 
-    console.warn(`[Snapshot] Updated tags for snapshot ${snapshotId}`);
+    logger.warn('Updated tags for snapshot ${snapshotId}');
     return true;
   }
 }

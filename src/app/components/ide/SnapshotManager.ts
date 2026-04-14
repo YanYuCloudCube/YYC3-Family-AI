@@ -16,6 +16,7 @@
 // ================================================================
 
 import type { DevicePreset } from "./types/previewTypes";
+import { logger } from "./services/Logger";
 
 /**
  * 快照文件数据结构
@@ -94,7 +95,7 @@ export interface SnapshotComparison {
  * // 创建快照
  * const snapshot = manager.createSnapshot(
  *   "版本1",
- *   [{ path: "index.ts", content: "console.warn('hello')" }]
+ logger.warn('hello');
  * );
  *
  * // 列出快照
@@ -102,7 +103,7 @@ export interface SnapshotComparison {
  *
  * // 恢复快照
  * manager.restoreSnapshot(snapshot.id, (files) => {
- *   files.forEach(f => console.warn(f.path, f.content));
+ logger.warn(f.path, f.content));
  * });
  *
  * // 比较快照
@@ -126,7 +127,7 @@ export class SnapshotManager {
    */
   constructor() {
     this.loadFromStorage();
-    console.warn(`[SnapshotManager] Initialized with ${this.snapshots.size} snapshots`);
+    logger.warn('Initialized with ${this.snapshots.size} snapshots');
   }
 
   /**
@@ -183,7 +184,7 @@ export class SnapshotManager {
 
     this.saveToStorage();
 
-    console.warn(`[SnapshotManager] Created snapshot: ${id} (${label})`);
+    logger.warn('Created snapshot: ${id} (${label})');
     return snapshot;
   }
 
@@ -195,7 +196,7 @@ export class SnapshotManager {
    * @example
    * ```typescript
    * const snapshots = manager.listSnapshots();
-   * snapshots.forEach(s => console.warn(s.label, s.timestamp));
+   logger.warn(s.label, s.timestamp));
    * ```
    */
   listSnapshots(): Snapshot[] {
@@ -217,7 +218,7 @@ export class SnapshotManager {
    * ```typescript
    * const snapshot = manager.getSnapshot("snap_1234567890_abc123");
    * if (snapshot) {
-   *   console.warn("Found:", snapshot.label);
+   logger.warn("Found:", snapshot.label);
    * }
    * ```
    */
@@ -247,7 +248,7 @@ export class SnapshotManager {
   ): boolean {
     const snapshot = this.snapshots.get(id);
     if (!snapshot) {
-      console.warn(`[SnapshotManager] Snapshot not found: ${id}`);
+      logger.warn('Snapshot not found: ${id}');
       return false;
     }
 
@@ -261,10 +262,10 @@ export class SnapshotManager {
       // 调用应用函数
       applyFn(files);
 
-      console.warn(`[SnapshotManager] Restored snapshot: ${id} (${snapshot.label})`);
+      logger.warn('Restored snapshot: ${id} (${snapshot.label})');
       return true;
     } catch (error) {
-      console.error(`[SnapshotManager] Failed to restore snapshot: ${id}`, error);
+      logger.error(`[SnapshotManager] Failed to restore snapshot: ${id}`, error);
       return false;
     }
   }
@@ -278,7 +279,7 @@ export class SnapshotManager {
    * @example
    * ```typescript
    * if (manager.deleteSnapshot(snapshot.id)) {
-   *   console.warn("快照已删除");
+   logger.warn('快照已删除');
    * }
    * ```
    */
@@ -287,9 +288,9 @@ export class SnapshotManager {
 
     if (deleted) {
       this.saveToStorage();
-      console.warn(`[SnapshotManager] Deleted snapshot: ${id}`);
+      logger.warn('Deleted snapshot: ${id}');
     } else {
-      console.warn(`[SnapshotManager] Snapshot not found for deletion: ${id}`);
+      logger.warn('Snapshot not found for deletion: ${id}');
     }
 
     return deleted;
@@ -311,7 +312,7 @@ export class SnapshotManager {
 
     if (count > 0) {
       this.saveToStorage();
-      console.warn(`[SnapshotManager] Deleted ${count} snapshots`);
+      logger.warn('Deleted ${count} snapshots');
     }
 
     return count;
@@ -328,9 +329,9 @@ export class SnapshotManager {
    * @example
    * ```typescript
    * const diff = manager.compareSnapshots(oldSnap.id, newSnap.id);
-   * console.warn("Added:", diff.added);
-   * console.warn("Removed:", diff.removed);
-   * console.warn("Modified:", diff.modified);
+   logger.warn("Added:", diff.added);
+   logger.warn("Removed:", diff.removed);
+   logger.warn("Modified:", diff.modified);
    * ```
    */
   compareSnapshots(id1: string, id2: string): SnapshotComparison {
@@ -372,7 +373,7 @@ export class SnapshotManager {
       }
     }
 
-    console.warn(`[SnapshotManager] Compared ${id1} vs ${id2}: +${added.length} -${removed.length} ~${modified.length}`);
+    logger.warn('Compared ${id1} vs ${id2}: +${added.length} -${removed.length} ~${modified.length}');
 
     return { added, removed, modified, unchanged };
   }
@@ -383,7 +384,7 @@ export class SnapshotManager {
   clearAll(): void {
     this.snapshots.clear();
     this.saveToStorage();
-    console.warn("[SnapshotManager] Cleared all snapshots");
+    logger.warn('Cleared all snapshots');
   }
 
   /**
@@ -453,7 +454,7 @@ export class SnapshotManager {
         this.snapshots.delete(snap.id);
       }
 
-      console.warn(`[SnapshotManager] Removed ${toRemove.length} old snapshots (limit: ${this.MAX_SNAPSHOTS})`);
+      logger.warn('Removed ${toRemove.length} old snapshots (limit: ${this.MAX_SNAPSHOTS})');
     }
   }
 
@@ -468,24 +469,24 @@ export class SnapshotManager {
       // 检查存储大小
       const sizeInMB = (json.length * 2) / (1024 * 1024); // UTF-16编码
       if (sizeInMB > 4) {
-        console.warn(`[SnapshotManager] Storage size: ${sizeInMB.toFixed(2)}MB (close to limit)`);
+        logger.warn('Storage size: ${sizeInMB.toFixed(2)}MB (close to limit)');
       }
 
       localStorage.setItem(this.STORAGE_KEY, json);
-      console.warn(`[SnapshotManager] Saved ${data.length} snapshots to localStorage`);
+      logger.warn('Saved ${data.length} snapshots to localStorage');
     } catch (error) {
-      console.error("[SnapshotManager] Failed to save to localStorage:", error);
+      logger.error("[SnapshotManager] Failed to save to localStorage:", error);
 
       // 如果是配额错误，尝试清理旧快照
       if (error instanceof DOMException && error.name === "QuotaExceededError") {
-        console.warn("[SnapshotManager] Storage quota exceeded, removing old snapshots");
+        logger.warn("[SnapshotManager] Storage quota exceeded, removing old snapshots");
         this.removeOldestSnapshots(10);
         // 重试保存
         try {
           const data = Array.from(this.snapshots.values());
           localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
         } catch (retryError) {
-          console.error("[SnapshotManager] Retry failed:", retryError);
+          logger.error("[SnapshotManager] Retry failed:", retryError);
         }
       }
     }
@@ -511,10 +512,10 @@ export class SnapshotManager {
       }
 
       if (validSnapshots.length < snapshots.length) {
-        console.warn(`[SnapshotManager] Loaded ${validSnapshots.length}/${snapshots.length} valid snapshots`);
+        logger.warn('Loaded ${validSnapshots.length}/${snapshots.length} valid snapshots');
       }
     } catch (error) {
-      console.error("[SnapshotManager] Failed to load from localStorage:", error);
+      logger.error("[SnapshotManager] Failed to load from localStorage:", error);
       // 加载失败时清空，避免持续错误
       this.snapshots.clear();
     }
@@ -533,7 +534,7 @@ export class SnapshotManager {
       this.snapshots.delete(snap.id);
     }
 
-    console.warn(`[SnapshotManager] Removed ${toRemove.length} oldest snapshots`);
+    logger.warn('Removed ${toRemove.length} oldest snapshots');
   }
 
   /**

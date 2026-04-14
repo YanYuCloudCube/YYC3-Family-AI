@@ -15,6 +15,7 @@
 /**
  * 验证结果接口
  */
+import { logger } from "./services/Logger";
 export interface ValidationResult {
   valid: boolean;
   warnings: string[];
@@ -202,7 +203,7 @@ export class CodeValidatorOptimized {
   clearCache(): void {
     this.regexCache.clear();
     this.resultCache.clear();
-    console.warn("[CodeValidator] Cache cleared");
+    logger.warn('Cache cleared');
   }
 
   /**

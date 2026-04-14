@@ -30,6 +30,7 @@
 // ================================================================
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { logger } from "../services/Logger";
 
 // ── Types ──
 
@@ -302,7 +303,7 @@ export class AsyncErrorBoundary extends Component<
     if (!error) return;
 
     if (error.retryCount >= maxRetries) {
-      console.warn('[AsyncErrorBoundary] Max retries exceeded');
+      logger.warn('Max retries exceeded');
       return;
     }
 

@@ -25,6 +25,7 @@ import type {
   ResolutionConfig,
   DPIConfig,
 } from './TestingTypes';
+import { logger } from "../services/Logger";
 
 // ================================================================
 // 兼容性测试套件
@@ -68,27 +69,27 @@ export class CompatibilityTestSuite {
    * 运行完整兼容性测试
    */
   async runAllTests(): Promise<CompatibilityTestResult> {
-    console.warn('[CompatibilityTest] Starting compatibility test suite...');
-    console.warn('[CompatibilityTest] Config:', this.config);
+    logger.warn('Starting compatibility test suite...');
+    logger.warn('[CompatibilityTest] Config:', this.config);
 
     const errors: string[] = [];
     const warnings: string[] = [];
 
     try {
       // 1. 浏览器兼容性测试
-      console.warn('\n[CompatibilityTest] Testing browser compatibility...');
+      logger.warn('\n[CompatibilityTest] Testing browser compatibility...');
       const browserResults = await this.testBrowsers();
 
       // 2. 操作系统兼容性测试
-      console.warn('\n[CompatibilityTest] Testing OS compatibility...');
+      logger.warn('\n[CompatibilityTest] Testing OS compatibility...');
       const osResults = await this.testOperatingSystems();
 
       // 3. 分辨率兼容性测试
-      console.warn('\n[CompatibilityTest] Testing resolution compatibility...');
+      logger.warn('\n[CompatibilityTest] Testing resolution compatibility...');
       const resolutionResults = await this.testResolutions();
 
       // 4. DPI兼容性测试
-      console.warn('\n[CompatibilityTest] Testing DPI compatibility...');
+      logger.warn('\n[CompatibilityTest] Testing DPI compatibility...');
       const dpiResults = await this.testDPISettings();
 
       const passed = this.evaluateResults(
@@ -98,8 +99,8 @@ export class CompatibilityTestSuite {
         dpiResults,
       );
 
-      console.warn('\n[CompatibilityTest] Compatibility test completed');
-      console.warn(`[CompatibilityTest] Result: ${passed ? 'PASSED' : 'FAILED'}`);
+      logger.warn('\n[CompatibilityTest] Compatibility test completed');
+      logger.warn(`Result: ${passed ? 'PASSED' : 'FAILED'}`);
 
       return {
         testName: 'Compatibility Test Suite',
@@ -138,7 +139,7 @@ export class CompatibilityTestSuite {
     const results: BrowserTestResult[] = [];
 
     for (const browser of this.config.browsers) {
-      console.warn(`  [BrowserTest] Testing ${browser.name} ${browser.version}...`);
+      logger.warn('[BrowserTest] Testing ${browser.name} ${browser.version}...');
       const result = await this.testBrowser(browser);
       results.push(result);
     }
@@ -205,7 +206,7 @@ export class CompatibilityTestSuite {
     const results: OSTestResult[] = [];
 
     for (const os of this.config.operatingSystems) {
-      console.warn(`  [OSTest] Testing ${os.name} ${os.version} (${os.arch})...`);
+      logger.warn('[OSTest] Testing ${os.name} ${os.version} (${os.arch})...');
       const result = await this.testOS(os);
       results.push(result);
     }
@@ -327,7 +328,7 @@ export class CompatibilityTestSuite {
     const results: DPITestResult[] = [];
 
     for (const dpi of this.config.dpiSettings) {
-      console.warn(`  [DPITest] Testing ${dpi.name} (${dpi.scale}x)...`);
+      logger.warn('[DPITest] Testing ${dpi.name} (${dpi.scale}x)...');
       const result = await this.testDPI(dpi);
       results.push(result);
     }
@@ -534,7 +535,7 @@ export class CompatibilityTestSuite {
       browserResults.filter((r) => r.passed).length /
       Math.max(browserResults.length, 1);
     if (browserPassRate < 0.9) {
-      console.warn('[CompatibilityTest] Browser compatibility too low');
+      logger.warn('Browser compatibility too low');
       return false;
     }
 
@@ -543,7 +544,7 @@ export class CompatibilityTestSuite {
       osResults.filter((r) => r.passed).length /
       Math.max(osResults.length, 1);
     if (osPassRate < 0.9) {
-      console.warn('[CompatibilityTest] OS compatibility too low');
+      logger.warn('OS compatibility too low');
       return false;
     }
 
@@ -552,7 +553,7 @@ export class CompatibilityTestSuite {
       resolutionResults.filter((r) => r.passed).length /
       Math.max(resolutionResults.length, 1);
     if (resolutionPassRate < 0.9) {
-      console.warn('[CompatibilityTest] Resolution compatibility too low');
+      logger.warn('Resolution compatibility too low');
       return false;
     }
 
@@ -561,7 +562,7 @@ export class CompatibilityTestSuite {
       dpiResults.filter((r) => r.passed).length /
       Math.max(dpiResults.length, 1);
     if (dpiPassRate < 0.9) {
-      console.warn('[CompatibilityTest] DPI compatibility too low');
+      logger.warn('DPI compatibility too low');
       return false;
     }
 

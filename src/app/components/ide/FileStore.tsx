@@ -29,6 +29,7 @@ import {
 } from "./adapters/IndexedDBAdapter";
 import { FILE_CONTENTS, type FileNode } from "./fileData";
 import { errorReporting } from "./services/ErrorReportingService";
+import { logger } from "./services/Logger";
 
 // ===== Constants =====
 const DEFAULT_PROJECT_ID = "yyc3-default";
@@ -255,7 +256,7 @@ export function FileStoreProvider({ children }: { children: React.ReactNode }) {
         }
       })
       .catch((err) => {
-        console.warn("[IndexedDB] Failed to load files:", err);
+        logger.warn("[IndexedDB] Failed to load files:", err);
         errorReporting.captureError(err, { category: "file_system" });
       });
   }, []);

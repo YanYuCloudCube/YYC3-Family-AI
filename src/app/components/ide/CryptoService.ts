@@ -43,6 +43,7 @@ import {
 } from "./constants/config";
 
 import type { EncryptedData } from "./types";
+import { logger } from "./services/Logger";
 
 // ── Helpers: ArrayBuffer <-> Base64 ──
 
@@ -202,7 +203,7 @@ export async function secureRetrieve(
     const data: EncryptedData = JSON.parse(raw);
     return await decrypt(data, password);
   } catch (e) {
-    console.error("[CryptoService] Failed to decrypt:", e);
+    logger.error("[CryptoService] Failed to decrypt:", e);
     return null;
   }
 }

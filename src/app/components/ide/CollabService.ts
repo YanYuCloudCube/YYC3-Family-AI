@@ -14,6 +14,7 @@
  */
 
 import * as Y from "yjs";
+import { logger } from "./services/Logger";
 
 // ── WebSocket Message Types ──
 
@@ -234,7 +235,7 @@ export class CollabService {
           const message: WSMessage = JSON.parse(event.data);
           this.handleWSMessage(message);
         } catch (e) {
-          console.error("[CollabService] Failed to parse WS message:", e);
+          logger.error("[CollabService] Failed to parse WS message:", e);
         }
       };
 
@@ -244,7 +245,7 @@ export class CollabService {
       };
 
       this.ws.onerror = (error) => {
-        console.error("[CollabService] WebSocket error:", error);
+        logger.error("[CollabService] WebSocket error:", error);
         this.setConnectionStatus("error");
         this.emitEvent({
           type: "connection-status",
@@ -252,7 +253,7 @@ export class CollabService {
         });
       };
     } catch (error) {
-      console.error("[CollabService] Failed to create WebSocket:", error);
+      logger.error("[CollabService] Failed to create WebSocket:", error);
       this.setConnectionStatus("error");
       setTimeout(() => this.attemptReconnect(), this.options.reconnectInterval);
     }
@@ -625,7 +626,7 @@ export class CollabService {
       try {
         handler(event);
       } catch (e) {
-        console.error("[CollabService] Event handler error:", e);
+        logger.error("[CollabService] Event handler error:", e);
       }
     });
     // Also emit to wildcard listeners

@@ -28,6 +28,8 @@
 //   - 跨浏览器兼容
 // ================================================================
 
+import { logger } from '../services/Logger';
+
 // ── Browser Detection ──
 
 export const isSafari = (): boolean => {
@@ -52,7 +54,7 @@ export function applySafariPolyfills(): void {
 
   // ── ResizeObserver Polyfill ──
   if (!window.ResizeObserver) {
-    console.warn('[SafariCompat] ResizeObserver not supported, using polyfill');
+    logger.warn('[SafariCompat] ResizeObserver not supported, using polyfill');
     (window as any).ResizeObserver = class ResizeObserver {
       private callback: ResizeObserverCallback;
       private elements: Set<Element> = new Set();
@@ -107,7 +109,7 @@ export function applySafariPolyfills(): void {
 
   // ── IntersectionObserver Polyfill for older Safari ──
   if (!window.IntersectionObserver) {
-    console.warn('[SafariCompat] IntersectionObserver not supported, using fallback');
+    logger.warn('[SafariCompat] IntersectionObserver not supported, using fallback');
     (window as any).IntersectionObserver = class IntersectionObserver {
       private callback: IntersectionObserverCallback;
       private elements: Set<Element> = new Set();
@@ -354,7 +356,7 @@ export function createSafariIndexedDB(): Promise<IDBDatabase> {
       // Safari IndexedDB bug workaround
       db.onversionchange = () => {
         db.close();
-        console.warn('[SafariCompat] Database version changed, closing connection');
+        logger.warn('[SafariCompat] Database version changed, closing connection');
       };
 
       resolve(db);
@@ -453,7 +455,7 @@ export function createSafariAudioContext(): AudioContext | null {
   const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
 
   if (!AudioContextClass) {
-    console.warn('[SafariCompat] AudioContext not supported');
+    logger.warn('AudioContext not supported');
     return null;
   }
 
@@ -510,7 +512,7 @@ export function initializeSafariCompatibility(): void {
     return;
   }
 
-  console.log('[SafariCompat] Applying Safari compatibility fixes...');
+  logger.info('Applying Safari compatibility fixes...');
 
   applySafariPolyfills();
   applySafariCSSFixes();
@@ -524,7 +526,7 @@ export function initializeSafariCompatibility(): void {
     (document.body.style as any).webkitOverflowScrolling = 'touch';
   }
 
-  console.log('[SafariCompat] Safari compatibility fixes applied');
+  logger.info('Safari compatibility fixes applied');
 }
 
 // ── Auto-initialize ──

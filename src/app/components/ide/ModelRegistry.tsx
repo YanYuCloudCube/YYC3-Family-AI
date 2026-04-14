@@ -32,6 +32,7 @@ import {
   type ProviderConfig,
   type ProviderModel,
 } from "./LLMService";
+import { logger } from "./services/Logger";
 
 // ===== Types =====
 export type ModelType =
@@ -197,7 +198,7 @@ export function ModelRegistryProvider({
   const ollamaChecked = useRef(false);
 
   useEffect(() => {
-    console.warn('[ModelRegistry] State changed:', { showSettings, showModelSettingsV2 });
+    logger.warn('[ModelRegistry] State changed:', { showSettings, showModelSettingsV2 });
   }, [showSettings, showModelSettingsV2]);
 
   // Global connectivity results — shared across all panels
@@ -387,7 +388,7 @@ export function ModelRegistryProvider({
 
     setOllamaStatus("checking");
     detectOllama().then(({ available, models }) => {
-      console.warn('[ModelRegistry] Initial Ollama detection result:', { available, models });
+      logger.warn('[ModelRegistry] Initial Ollama detection result:', { available, models });
       setOllamaStatus(available ? "available" : "unavailable");
       setProviders((prev) =>
         prev.map((p) =>
@@ -402,17 +403,17 @@ export function ModelRegistryProvider({
       );
       setOllamaDetectedModels(models);
     }).catch((error) => {
-      console.error('[ModelRegistry] Initial Ollama detection error:', error);
+      logger.error('[ModelRegistry] Initial Ollama detection error:', error);
       setOllamaStatus("unavailable");
       setOllamaDetectedModels([]);
     });
   }, []);
 
   const recheckOllama = useCallback(() => {
-    console.warn('[ModelRegistry] Rechecking Ollama...');
+    logger.warn('Rechecking Ollama...');
     setOllamaStatus("checking");
     detectOllama().then(({ available, models }) => {
-      console.warn('[ModelRegistry] Ollama detection result:', { available, models });
+      logger.warn('[ModelRegistry] Ollama detection result:', { available, models });
       setOllamaStatus(available ? "available" : "unavailable");
       setProviders((prev) =>
         prev.map((p) =>
@@ -423,7 +424,7 @@ export function ModelRegistryProvider({
       );
       setOllamaDetectedModels(models);
     }).catch((error) => {
-      console.error('[ModelRegistry] Ollama detection error:', error);
+      logger.error('[ModelRegistry] Ollama detection error:', error);
       setOllamaStatus("unavailable");
       setOllamaDetectedModels([]);
     });

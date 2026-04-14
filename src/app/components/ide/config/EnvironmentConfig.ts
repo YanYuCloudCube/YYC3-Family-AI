@@ -12,6 +12,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { logger } from "../services/Logger";
 
 // ================================================================
 // 类型定义
@@ -374,9 +375,9 @@ export const useEnvironmentStore = create<EnvironmentStore>()(
             },
           }))
 
-          console.log(`[Environment] 宿主机IP同步完成: ${data.ip}`)
+          logger.info('宿主机IP同步完成: ${data.ip}');
         } catch (error) {
-          console.warn('[Environment] 获取宿主机IP失败:', error)
+          logger.warn('[Environment] 获取宿主机IP失败:', error);
         }
       },
 

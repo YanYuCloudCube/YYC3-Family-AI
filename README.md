@@ -22,7 +22,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.x-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Zustand](https://img.shields.io/badge/Zustand-5.x-f5a623?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZjVhNjIzIj48cGF0aCBkPSJNMTIgMkw0IDd2MTBsOCA1IDgtNSA4LTVWN2wtOC01eiIvPjwvc3ZnPg==)](https://zustand-demo.pmnd.rs/)
 
-[![Tests 2697](https://img.shields.io/badge/Tests-2697_passed-22c55e?logo=vitest&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
+[![Tests 2702](https://img.shields.io/badge/Tests-2702_passed-22c55e?logo=vitest&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
 [![Test Files 104](https://img.shields.io/badge/Test_Files-104-8b5cf6)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
 [![Coverage 85%+](https://img.shields.io/badge/Coverage-85%25+-4fcf25?logo=codecov&logoColor=white)](https://codecov.io/gh/YanYuCloudCube/YYC3-Family-AI)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088ff?logo=githubactions&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
@@ -594,8 +594,8 @@ pnpm test:e2e        # E2E 测试
 | 指标 | 数值 |
 |------|------|
 | **测试文件** | 104 个 |
-| **测试用例** | 2,697 个 |
-| **通过** | 2,697 个 |
+| **测试用例** | 2,702 个 |
+| **通过** | 2,702 个 |
 | **跳过** | 4 个 |
 | **通过率** | 100% |
 

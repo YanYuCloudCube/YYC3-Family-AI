@@ -26,6 +26,7 @@ import {
   loadCustomThemes,
 } from "./CustomThemeStore";
 import { SK_THEME } from "./constants/storage-keys";
+import { logger } from "./services/Logger";
 
 export type ThemeId = "navy" | "cyberpunk";
 
@@ -44,7 +45,7 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {
-    console.warn("useTheme must be used within a ThemeProvider, returning default values");
+    logger.warn("useTheme must be used within a ThemeProvider, returning default values");
     return {
       theme: "navy",
       setTheme: () => {},

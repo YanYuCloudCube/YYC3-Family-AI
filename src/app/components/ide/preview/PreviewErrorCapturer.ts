@@ -12,6 +12,7 @@
  */
 
 import { generateId } from '../utils/generateId';
+import { logger } from "../services/Logger";
 
 /**
  * 错误类型枚举
@@ -376,7 +377,7 @@ export class PreviewErrorCapturer {
       try {
         listener(error);
       } catch (e) {
-        console.error('Error in listener:', e);
+        logger.error('Error in listener:', e);
       }
     });
   }

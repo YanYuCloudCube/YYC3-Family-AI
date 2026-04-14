@@ -13,6 +13,7 @@
  */
 
 import type { PluginManifest, PluginContext } from "../types";
+import { logger } from "../services/Logger";
 
 export const QuickFixPlugin: PluginManifest = {
   id: "yyc3-quick-fix",
@@ -28,7 +29,7 @@ export const QuickFixPlugin: PluginManifest = {
   icon: "Wand2",
 
   activate: (context: PluginContext) => {
-    console.warn("[QuickFix] 插件已激活");
+    logger.warn('插件已激活');
 
     // 注册状态栏项
     context.ui.registerStatusBarItem({
@@ -57,12 +58,12 @@ export const QuickFixPlugin: PluginManifest = {
     });
 
     return () => {
-      console.warn("[QuickFix] 插件已停用");
+      logger.warn('插件已停用');
     };
   },
 
   deactivate: () => {
-    console.warn("[QuickFix] 插件正在停用");
+    logger.warn('插件正在停用');
   },
 };
 

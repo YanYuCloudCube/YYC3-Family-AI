@@ -13,6 +13,7 @@
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";
+import { logger } from "./Logger";
 
 // ── API Configuration ──
 
@@ -101,7 +102,7 @@ export class CloudSyncService {
       try {
         handler(event);
       } catch (e) {
-        console.error('[CloudSync] Event handler error:', e);
+        logger.error('[CloudSync] Event handler error:', e);
       }
     });
   }
@@ -178,7 +179,7 @@ export class CloudSyncService {
       const result = await this.apiRequest<{ success: boolean; userId: string }>('/api/auth/verify');
       return result?.success ?? false;
     } catch (error) {
-      console.error('[CloudSync] Authentication failed:', error);
+      logger.error('[CloudSync] Authentication failed:', error);
       return false;
     }
   }
@@ -195,7 +196,7 @@ export class CloudSyncService {
       }
       return false;
     } catch (error) {
-      console.error('[CloudSync] Token refresh failed:', error);
+      logger.error('[CloudSync] Token refresh failed:', error);
       return false;
     }
   }
@@ -215,7 +216,7 @@ export class CloudSyncService {
 
     const authSuccess = await this.authenticate();
     if (!authSuccess) {
-      console.error('[CloudSync] Authentication failed during init');
+      logger.error('Authentication failed during init');
       this.emit({ type: 'sync-error', payload: { error: 'Authentication failed' } });
       return false;
     }
@@ -224,7 +225,7 @@ export class CloudSyncService {
       this.startAutoSync(options.syncInterval || 300000);
     }
 
-    console.warn("[CloudSync] Initialized successfully");
+    logger.warn('Initialized successfully');
     this.emit({ type: 'sync-complete', payload: { initialized: true } });
     return true;
   }
@@ -241,7 +242,7 @@ export class CloudSyncService {
       this.syncToCloud();
     }, intervalMs);
 
-    console.warn("[CloudSync] Auto sync started with interval:", intervalMs, "ms");
+    logger.warn("[CloudSync] Auto sync started with interval:", intervalMs, "ms");
   }
 
   /**
@@ -251,7 +252,7 @@ export class CloudSyncService {
     if (this.syncInterval) {
       clearInterval(this.syncInterval);
       this.syncInterval = null;
-      console.warn("[CloudSync] Auto sync stopped");
+      logger.warn('Auto sync stopped');
     }
   }
 
@@ -271,7 +272,7 @@ export class CloudSyncService {
    */
   async syncToCloud(): Promise<{ success: boolean; synced: number; conflicts: number }> {
     if (this.syncInProgress) {
-      console.warn('[CloudSync] Sync already in progress');
+      logger.warn('Sync already in progress');
       return { success: false, synced: 0, conflicts: 0 };
     }
 
@@ -357,10 +358,10 @@ export class CloudSyncService {
 
       result.success = true;
       this.emit({ type: 'sync-complete', payload: result });
-      console.warn("[CloudSync] Sync completed:", result);
+      logger.warn("[CloudSync] Sync completed:", result);
 
     } catch (error) {
-      console.error("[CloudSync] Sync failed:", error);
+      logger.error("[CloudSync] Sync failed:", error);
       this.emit({ type: 'sync-error', payload: { error } });
       result.success = false;
     } finally {
@@ -389,7 +390,7 @@ export class CloudSyncService {
 
       return await response.json();
     } catch (error) {
-      console.error("[CloudSync] Fetch remote files failed:", error);
+      logger.error("[CloudSync] Fetch remote files failed:", error);
       return [];
     }
   }
@@ -414,7 +415,7 @@ export class CloudSyncService {
         }),
       });
     } catch (error) {
-      console.error("[CloudSync] Upload file failed:", error);
+      logger.error("[CloudSync] Upload file failed:", error);
     }
   }
 

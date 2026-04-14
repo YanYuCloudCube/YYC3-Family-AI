@@ -22,6 +22,7 @@
 
 import { ThemeType } from './CSSVariableInjector';
 import { SystemTheme } from './SystemThemeListener';
+import { logger } from "../services/Logger";
 
 export type ThemeSyncMode = 'manual' | 'auto';
 
@@ -120,7 +121,7 @@ export class UserPreferenceManager {
         }
       }
     } catch (error) {
-      console.error('[UserPreferenceManager] Failed to load preference:', error);
+      logger.error('[UserPreferenceManager] Failed to load preference:', error);
     }
 
     return { ...DEFAULT_PREFERENCE };
@@ -171,7 +172,7 @@ export class UserPreferenceManager {
       this.preference.lastUpdated = Date.now();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.preference));
     } catch (error) {
-      console.error('[UserPreferenceManager] Failed to save preference:', error);
+      logger.error('[UserPreferenceManager] Failed to save preference:', error);
     }
   }
 
@@ -316,7 +317,7 @@ export class UserPreferenceManager {
         return true;
       }
     } catch (error) {
-      console.error('[UserPreferenceManager] Failed to import preference:', error);
+      logger.error('[UserPreferenceManager] Failed to import preference:', error);
     }
     return false;
   }

@@ -24,6 +24,7 @@ import {
   TASK_TYPE_KEYWORDS,
 } from './TaskTypes';
 import { generateId } from '../utils/generateId';
+import { logger } from "../services/Logger";
 
 /**
  * 任务识别器
@@ -204,7 +205,7 @@ export class TaskRecognizer {
               break; // 一行只匹配一个模式
             }
           } catch (error) {
-            console.warn('Task extraction failed for line:', line, error);
+            logger.warn('Task extraction failed for line:', line, error);
           }
         }
       }

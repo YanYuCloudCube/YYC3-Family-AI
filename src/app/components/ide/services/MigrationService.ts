@@ -12,6 +12,7 @@
  */
 
 import { getDB } from '../adapters/IndexedDBAdapter'
+import { logger } from "./Logger";
 
 export type DataSource = 'yyc3' | 'vscode' | 'cursor' | 'generic'
 
@@ -68,7 +69,7 @@ export class MigrationService {
 
       return { type: 'text', version: '1.0', source: 'generic' }
     } catch (e) {
-      console.error('[MigrationService] Failed to detect format:', e)
+      logger.error('[MigrationService] Failed to detect format:', e);
       return null
     }
   }

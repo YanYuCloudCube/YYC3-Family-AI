@@ -13,6 +13,7 @@
  */
 
 import { useRef, useState, useEffect, useCallback } from 'react'
+import { logger } from "../services/Logger";
 
 interface TerminalSocketState {
   connected: boolean
@@ -116,14 +117,14 @@ export function useTerminalSocket({
 
     // 检查 sessionId 是否有效
     if (!opts.sessionId) {
-      console.warn('[useTerminalSocket] sessionId 为空，跳过连接')
+      logger.warn('sessionId 为空，跳过连接');
       return
     }
 
     // 防止重复连接
     if (wsRef.current?.readyState === WebSocket.OPEN ||
         wsRef.current?.readyState === WebSocket.CONNECTING) {
-      console.warn('[useTerminalSocket] 已有活跃连接')
+      logger.warn('已有活跃连接');
       return
     }
 
@@ -131,13 +132,13 @@ export function useTerminalSocket({
 
     try {
       const url = buildWsUrl()
-      console.log(`[useTerminalSocket] 正在连接: ${url}`)
+      logger.info('正在连接: ${url}');
 
       const ws = new WebSocket(url)
       wsRef.current = ws
 
       ws.onopen = () => {
-        console.log(`[useTerminalSocket] 已连接 (Session: ${opts.sessionId})`)
+        logger.info('已连接 (Session: ${opts.sessionId})');
         setState(prev => ({
           ...prev,
           connected: true,
@@ -160,7 +161,7 @@ export function useTerminalSocket({
       }
 
       ws.onerror = (event) => {
-        console.warn('[useTerminalSocket] WebSocket 连接失败 - 后端服务可能未启动')
+        logger.warn('WebSocket 连接失败 - 后端服务可能未启动');
         setState(prev => ({
           ...prev,
           connecting: false,
@@ -173,7 +174,7 @@ export function useTerminalSocket({
       }
 
       ws.onclose = (event) => {
-        console.log(`[useTerminalSocket] 连接关闭 (Code: ${event.code}, Reason: ${event.reason})`)
+        logger.info(`[useTerminalSocket] 连接关闭 (Code: ${event.code}, Reason: ${event.reason})`);
 
         const wasConnected = state.connected
         setState(prev => ({
@@ -195,7 +196,7 @@ export function useTerminalSocket({
       }
 
     } catch (error) {
-      console.error('[useTerminalSocket] 创建连接失败:', error)
+      logger.error('[useTerminalSocket] 创建连接失败:', error);
       setState(prev => ({
         ...prev,
         connecting: false,
@@ -212,7 +213,7 @@ export function useTerminalSocket({
     }
 
     if (wsRef.current) {
-      console.log('[useTerminalSocket] 断开连接')
+      logger.info('断开连接');
       wsRef.current.close(code, reason)
       wsRef.current = null
     }
@@ -228,14 +229,14 @@ export function useTerminalSocket({
   // 发送数据到 PTY
   const write = useCallback((data: string) => {
     if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-      console.warn('[useTerminalSocket] 未连接，无法发送数据')
+      logger.warn('未连接，无法发送数据');
       return
     }
 
     try {
       wsRef.current.send(data)
     } catch (error) {
-      console.error('[useTerminalSocket] 发送数据失败:', error)
+      logger.error('[useTerminalSocket] 发送数据失败:', error);
     }
   }, [])
 
@@ -249,7 +250,7 @@ export function useTerminalSocket({
       const resizeData = JSON.stringify({ type: 'resize', cols, rows })
       wsRef.current.send(resizeData)
     } catch (error) {
-      console.error('[useTerminalSocket] 发送尺寸失败:', error)
+      logger.error('[useTerminalSocket] 发送尺寸失败:', error);
     }
   }, [])
 
@@ -270,7 +271,7 @@ export function useTerminalSocket({
       const nextAttempt = prev.reconnectAttempts + 1
 
       if (nextAttempt > opts.maxReconnectAttempts) {
-        console.error(`[useTerminalSocket] 达到最大重连次数 (${opts.maxReconnectAttempts})`)
+        logger.error('达到最大重连次数 (${opts.maxReconnectAttempts})');
         return {
           ...prev,
           error: `连接失败：已达到最大重连次数 (${opts.maxReconnectAttempts})`,
@@ -278,7 +279,7 @@ export function useTerminalSocket({
       }
 
       const delay = opts.reconnectDelay * Math.pow(1.5, prev.reconnectAttempts) // 指数退避
-      console.log(`[useTerminalSocket] 将在 ${Math.round(delay)}ms 后尝试第 ${nextAttempt} 次重连...`)
+      logger.info('将在 ${Math.round(delay)}ms 后尝试第 ${nextAttempt} 次重连...');
 
       reconnectTimeoutRef.current = setTimeout(() => {
         connect()
@@ -296,7 +297,7 @@ export function useTerminalSocket({
   useEffect(() => {
     // 有 sessionId 时才连接
     if (sessionId && !state.connected && !state.connecting) {
-      console.log(`[useTerminalSocket] sessionId 变化，准备连接: ${sessionId}`)
+      logger.info('sessionId 变化，准备连接: ${sessionId}');
       connect()
     }
 

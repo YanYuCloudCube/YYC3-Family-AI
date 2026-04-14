@@ -13,6 +13,7 @@
  */
 
 import type { PluginManifest, PluginContext } from "../types";
+import { logger } from "../services/Logger";
 
 // 预设主题配置
 const PRESET_THEMES = [
@@ -102,7 +103,7 @@ export const ThemeSwitcherPlugin: PluginManifest = {
   icon: "Palette",
 
   activate: (_context: PluginContext) => {
-    console.warn("[ThemeSwitcher] 插件已激活");
+    logger.warn('插件已激活');
 
     // 注册状态栏项
     context.ui.registerStatusBarItem({
@@ -138,12 +139,12 @@ export const ThemeSwitcherPlugin: PluginManifest = {
     loadSavedTheme(context);
 
     return () => {
-      console.warn("[ThemeSwitcher] 插件已停用");
+      logger.warn('插件已停用');
     };
   },
 
   deactivate: () => {
-    console.warn("[ThemeSwitcher] 插件正在停用");
+    logger.warn('插件正在停用');
   },
 };
 
@@ -250,7 +251,7 @@ function applyTheme(context: PluginContext, themeId: string) {
   // 保存到 localStorage
   localStorage.setItem("yyc3-theme", themeId);
 
-  console.warn("[ThemeSwitcher] 已应用主题:", theme.name);
+  logger.warn("[ThemeSwitcher] 已应用主题:", theme.name);
 }
 
 export default ThemeSwitcherPlugin;

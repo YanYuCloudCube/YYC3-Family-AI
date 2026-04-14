@@ -20,6 +20,8 @@
 //   - 自动资源清理
 // ================================================================
 
+import { logger } from '../services/Logger';
+
 export type SystemTheme = 'dark' | 'light';
 
 export interface SystemThemeChangeEvent {
@@ -71,7 +73,7 @@ export class SystemThemeListener {
   private initialize(): void {
     // 检查浏览器环境
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-      console.warn('[SystemThemeListener] window.matchMedia not available, system theme detection disabled');
+      logger.warn('[SystemThemeListener] window.matchMedia not available, system theme detection disabled');
       this.supported = false;
       return;
     }
@@ -95,7 +97,7 @@ export class SystemThemeListener {
 
       this.initialized = true;
     } catch (error) {
-      console.error('[SystemThemeListener] Failed to initialize:', error);
+      logger.error('[SystemThemeListener] Failed to initialize:', error);
       this.supported = false;
     }
   }
@@ -127,7 +129,7 @@ export class SystemThemeListener {
       try {
         listener(event);
       } catch (error) {
-        console.error('[SystemThemeListener] Listener error:', error);
+        logger.error('[SystemThemeListener] Listener error:', error);
       }
     });
   }

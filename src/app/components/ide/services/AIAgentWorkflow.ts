@@ -11,6 +11,7 @@
  * @tags: ai,agent,workflow,automation,mvp
  */
 
+import { logger } from "./Logger";
 export interface WorkflowStep {
   id: string;
   name: string;
@@ -109,7 +110,7 @@ export class AIAgentWorkflow {
     };
 
     this.executions.set(execution.id, execution);
-    console.warn(`[AIAgent] Created workflow: ${execution.name}`);
+    logger.warn('Created workflow: ${execution.name}');
     return execution;
   }
 
@@ -122,26 +123,26 @@ export class AIAgentWorkflow {
       throw new Error("Workflow not found");
     }
 
-    console.warn(`[AIAgent] Starting workflow: ${execution.name}`);
+    logger.warn('Starting workflow: ${execution.name}');
     execution.status = "running";
 
     // 按顺序执行每个步骤
     for (const step of execution.steps) {
       try {
         step.status = "running";
-        console.warn(`[AIAgent] Executing step: ${step.name}`);
+        logger.warn('Executing step: ${step.name}');
 
         // 模拟 Agent 执行 (实际应调用 AI API)
         const output = await this.executeAgentStep(step);
 
         step.output = output;
         step.status = "completed";
-        console.warn(`[AIAgent] Step completed: ${step.name}`);
+        logger.warn('Step completed: ${step.name}');
       } catch (error) {
         step.status = "failed";
         step.error = (error as Error).message;
         execution.status = "failed";
-        console.error(`[AIAgent] Step failed: ${step.name}`, error);
+        logger.error(`[AIAgent] Step failed: ${step.name}`, error);
         break;
       }
     }
@@ -166,7 +167,7 @@ export class AIAgentWorkflow {
       throw new Error(`Agent not found: ${step.agent}`);
     }
 
-    console.warn(`[AIAgent] ${agent.name} executing: ${step.name}`);
+    logger.warn('${agent.name} executing: ${step.name}');
 
     // 模拟执行延迟 (实际应调用 AI API)
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -222,7 +223,7 @@ export class AIAgentWorkflow {
     const execution = this.executions.get(executionId);
     if (execution && execution.status === "running") {
       execution.status = "failed";
-      console.warn(`[AIAgent] Cancelled workflow: ${execution.name}`);
+      logger.warn('Cancelled workflow: ${execution.name}');
     }
   }
 
@@ -237,7 +238,7 @@ export class AIAgentWorkflow {
         count++;
       }
     }
-    console.warn(`[AIAgent] Cleared ${count} completed executions`);
+    logger.warn('Cleared ${count} completed executions');
     return count;
   }
 
@@ -265,7 +266,7 @@ export class AIAgentWorkflow {
       }
       return count;
     } catch (error) {
-      console.error("[AIAgent] Import failed:", error);
+      logger.error("[AIAgent] Import failed:", error);
       return 0;
     }
   }

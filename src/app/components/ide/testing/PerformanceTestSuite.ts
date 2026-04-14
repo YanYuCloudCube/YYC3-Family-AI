@@ -20,6 +20,7 @@ import type {
   ConsolePerformanceResult,
   ConcurrencyPerformanceResult,
 } from './TestingTypes';
+import { logger } from "../services/Logger";
 
 // ================================================================
 // 性能测试套件
@@ -55,24 +56,24 @@ export class PerformanceTestSuite {
     const errors: string[] = [];
     const warnings: string[] = [];
 
-    console.warn('[PerformanceTest] Starting performance test suite...');
-    console.warn('[PerformanceTest] Config:', this.config);
+    logger.warn('Starting performance test suite...');
+    logger.warn('[PerformanceTest] Config:', this.config);
 
     try {
       // 1. 快照管理性能测试
-      console.warn('\n[PerformanceTest] Running snapshot management test...');
+      logger.warn('\n[PerformanceTest] Running snapshot management test...');
       const snapshotResult = await this.testSnapshotPerformance();
 
       // 2. 控制台日志性能测试
-      console.warn('\n[PerformanceTest] Running console log test...');
+      logger.warn('\n[PerformanceTest] Running console log test...');
       const consoleResult = await this.testConsolePerformance();
 
       // 3. 并发操作性能测试
-      console.warn('\n[PerformanceTest] Running concurrent operations test...');
+      logger.warn('\n[PerformanceTest] Running concurrent operations test...');
       const concurrencyResult = await this.testConcurrentOperations();
 
       // 4. 长时间运行测试（缩短版本，实际运行24小时）
-      console.warn('\n[PerformanceTest] Running long-running test (simulated)...');
+      logger.warn('\n[PerformanceTest] Running long-running test (simulated)...');
       const longRunningResult = await this.testLongRunning();
 
       const endTime = Date.now();
@@ -85,8 +86,8 @@ export class PerformanceTestSuite {
         longRunningResult,
       );
 
-      console.warn('\n[PerformanceTest] Performance test completed');
-      console.warn(`[PerformanceTest] Result: ${passed ? 'PASSED' : 'FAILED'}`);
+      logger.warn('\n[PerformanceTest] Performance test completed');
+      logger.warn(`Result: ${passed ? 'PASSED' : 'FAILED'}`);
 
       return {
         testName: 'Performance Test Suite',
@@ -147,7 +148,7 @@ export class PerformanceTestSuite {
     const creationTime = Date.now() - creationStart;
 
     // 读取快照
-    console.warn(`  [SnapshotTest] Reading ${snapshots.length} snapshots...`);
+    logger.warn('[SnapshotTest] Reading ${snapshots.length} snapshots...');
     const readStart = Date.now();
     for (const snapshot of snapshots) {
       const _ = snapshot.data; // 读取数据
@@ -156,13 +157,13 @@ export class PerformanceTestSuite {
     const readTime = Date.now() - readStart;
 
     // 列出快照
-    console.warn(`  [SnapshotTest] Listing snapshots...`);
+    logger.warn('[SnapshotTest] Listing snapshots...');
     const listStart = Date.now();
     const _snapshotList = snapshots.map((s) => s.id);
     const listTime = Date.now() - listStart;
 
     // 删除快照
-    console.warn(`  [SnapshotTest] Deleting ${snapshots.length} snapshots...`);
+    logger.warn('[SnapshotTest] Deleting ${snapshots.length} snapshots...');
     const deleteStart = Date.now();
     snapshots.length = 0; // 清空数组
     const deleteTime = Date.now() - deleteStart;
@@ -178,10 +179,10 @@ export class PerformanceTestSuite {
       snapshotCount: this.config.snapshotCount,
     };
 
-    console.warn(`  [SnapshotTest] Creation time: ${creationTime}ms`);
-    console.warn(`  [SnapshotTest] Read time: ${readTime}ms`);
-    console.warn(`  [SnapshotTest] List time: ${listTime}ms`);
-    console.warn(`  [SnapshotTest] Delete time: ${deleteTime}ms`);
+    logger.warn('[SnapshotTest] Creation time: ${creationTime}ms');
+    logger.warn('[SnapshotTest] Read time: ${readTime}ms');
+    logger.warn('[SnapshotTest] List time: ${listTime}ms');
+    logger.warn('[SnapshotTest] Delete time: ${deleteTime}ms');
 
     return result;
   }
@@ -220,7 +221,7 @@ export class PerformanceTestSuite {
     const writeTime = Date.now() - writeStart;
 
     // 读取日志
-    console.warn(`  [ConsoleTest] Reading ${logs.length} logs...`);
+    logger.warn('[ConsoleTest] Reading ${logs.length} logs...');
     const readStart = Date.now();
     for (const log of logs) {
       const _ = log.message;
@@ -229,13 +230,13 @@ export class PerformanceTestSuite {
     const readTime = Date.now() - readStart;
 
     // 过滤日志
-    console.warn(`  [ConsoleTest] Filtering logs...`);
+    logger.warn('[ConsoleTest] Filtering logs...');
     const filterStart = Date.now();
     const _errorLogs = logs.filter((l) => l.level === 'error');
     const filterTime = Date.now() - filterStart;
 
     // 清除日志
-    console.warn(`  [ConsoleTest] Clearing ${logs.length} logs...`);
+    logger.warn('[ConsoleTest] Clearing ${logs.length} logs...');
     const clearStart = Date.now();
     logs.length = 0;
     const clearTime = Date.now() - clearStart;
@@ -251,10 +252,10 @@ export class PerformanceTestSuite {
       storageSize,
     };
 
-    console.warn(`  [ConsoleTest] Write time: ${writeTime}ms`);
-    console.warn(`  [ConsoleTest] Read time: ${readTime}ms`);
-    console.warn(`  [ConsoleTest] Filter time: ${filterTime}ms`);
-    console.warn(`  [ConsoleTest] Clear time: ${clearTime}ms`);
+    logger.warn('[ConsoleTest] Write time: ${writeTime}ms');
+    logger.warn('[ConsoleTest] Read time: ${readTime}ms');
+    logger.warn('[ConsoleTest] Filter time: ${filterTime}ms');
+    logger.warn('[ConsoleTest] Clear time: ${clearTime}ms');
 
     return result;
   }
@@ -284,7 +285,7 @@ export class PerformanceTestSuite {
             this.addSample('concurrent_op', responseTime, true);
           },
           (error) => {
-            console.error(`  [ConcurrencyTest] Operation ${i} failed:`, error);
+            logger.error(`  [ConcurrencyTest] Operation ${i} failed:`, error);
             conflictCount++;
             this.addSample('concurrent_op', 0, false);
           },
@@ -314,11 +315,11 @@ export class PerformanceTestSuite {
     console.warn(
       `  [ConcurrencyTest] Average response time: ${averageResponseTime.toFixed(2)}ms`,
     );
-    console.warn(`  [ConcurrencyTest] Max response time: ${maxResponseTime}ms`);
+    logger.warn('[ConcurrencyTest] Max response time: ${maxResponseTime}ms');
     console.warn(
       `  [ConcurrencyTest] Throughput: ${throughput.toFixed(2)} ops/sec`,
     );
-    console.warn(`  [ConcurrencyTest] Success rate: ${successRate.toFixed(2)}%`);
+    logger.warn('[ConcurrencyTest] Success rate: ${successRate.toFixed(2)}%');
 
     return result;
   }
@@ -333,7 +334,7 @@ export class PerformanceTestSuite {
     errorCount: number;
   }> {
     // 模拟长时间运行测试（实际应运行24小时，这里缩短为测试版本）
-    console.warn('  [LongRunningTest] Starting long-running test (simulated 1min)...');
+    logger.warn('[LongRunningTest] Starting long-running test (simulated 1min)...');
 
     const testDuration = 60 * 1000; // 1分钟测试版本
     const startTime = Date.now();
@@ -362,7 +363,7 @@ export class PerformanceTestSuite {
             }
           } catch (error) {
             errorCount++;
-            console.error('  [LongRunningTest] Error:', error);
+            logger.error('  [LongRunningTest] Error:', error);
           }
         }, 1000);
       });
@@ -380,12 +381,12 @@ export class PerformanceTestSuite {
       performanceTrend,
     );
 
-    console.warn(`  [LongRunningTest] Duration: ${duration}ms`);
-    console.warn(`  [LongRunningTest] Memory leaks: ${memoryLeaks}`);
+    logger.warn('[LongRunningTest] Duration: ${duration}ms');
+    logger.warn('[LongRunningTest] Memory leaks: ${memoryLeaks}');
     console.warn(
       `  [LongRunningTest] Performance degradation: ${performanceDegradation}`,
     );
-    console.warn(`  [LongRunningTest] Errors: ${errorCount}`);
+    logger.warn('[LongRunningTest] Errors: ${errorCount}');
 
     return {
       duration,
@@ -619,31 +620,31 @@ export class PerformanceTestSuite {
     // 检查快照性能
     if (snapshotResult.creationTime > 10000) {
       // 10秒
-      console.warn('[PerformanceTest] Snapshot creation time too high');
+      logger.warn('Snapshot creation time too high');
       return false;
     }
 
     // 检查控制台性能
     if (consoleResult.writeTime > 5000) {
       // 5秒
-      console.warn('[PerformanceTest] Console write time too high');
+      logger.warn('Console write time too high');
       return false;
     }
 
     // 检查并发性能
     if (concurrencyResult.successRate < 95) {
-      console.warn('[PerformanceTest] Concurrency success rate too low');
+      logger.warn('Concurrency success rate too low');
       return false;
     }
 
     // 检查长时间运行
     if (longRunningResult.memoryLeaks) {
-      console.warn('[PerformanceTest] Memory leaks detected');
+      logger.warn('Memory leaks detected');
       return false;
     }
 
     if (longRunningResult.performanceDegradation) {
-      console.warn('[PerformanceTest] Performance degradation detected');
+      logger.warn('Performance degradation detected');
       return false;
     }
 

@@ -15,6 +15,7 @@
 
 import { create } from "zustand";
 import type { IPCMessage, IPCMessageType } from "../types/multi-instance";
+import { logger } from "../services/Logger";
 
 const IPC_CHANNEL_NAME = "yyc3-multi-instance";
 
@@ -73,7 +74,7 @@ export const useIPCStore = create<IPCState & IPCActions>()((set, get) => ({
       };
       set({ isConnected: true });
     } catch {
-      console.warn("[IPC] BroadcastChannel not supported");
+      logger.warn('BroadcastChannel not supported');
     }
 
     return () => {

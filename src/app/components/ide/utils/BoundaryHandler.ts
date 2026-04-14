@@ -13,6 +13,7 @@
  */
 
 import { ErrorType, ErrorSeverity, handleError } from "./ErrorHandler";
+import { logger } from "../services/Logger";
 
 /**
  * 边界情况类型
@@ -181,7 +182,7 @@ export class BoundaryHandler {
    * 处理空文件
    */
   handleEmptyFile(filename: string, defaultContent: string = ""): string {
-    console.warn(`[BoundaryHandler] 处理空文件: ${filename}`);
+    logger.warn('处理空文件: ${filename}');
     return defaultContent;
   }
 
@@ -237,7 +238,7 @@ export class BoundaryHandler {
   ): Promise<T> {
     // 检查是否已有相同操作在执行
     if (this.activeOperations.has(operationId)) {
-      console.warn(`[BoundaryHandler] 等待现有操作: ${operationId}`);
+      logger.warn('等待现有操作: ${operationId}');
       return this.activeOperations.get(operationId)!;
     }
 
@@ -266,7 +267,7 @@ export class BoundaryHandler {
       if (this.operationQueue.length > 0) {
         const nextOperation = this.operationQueue.shift()!;
         nextOperation().catch((error) => {
-          console.error("[BoundaryHandler] 队列操作失败:", error);
+          logger.error("[BoundaryHandler] 队列操作失败:", error);
         });
       }
     }

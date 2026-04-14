@@ -13,6 +13,7 @@
 
 import { generateId } from '../utils/generateId';
 import { ErrorLevel } from './PreviewErrorCapturer';
+import { logger } from "../services/Logger";
 
 /**
  * 日志类型枚举
@@ -210,7 +211,7 @@ export class ConsoleManager {
       try {
         listener(log);
       } catch (e) {
-        console.error('Error in listener:', e);
+        logger.error('Error in listener:', e);
       }
     });
   }

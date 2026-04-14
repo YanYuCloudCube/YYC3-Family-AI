@@ -11,6 +11,7 @@ import React, { useState, useCallback } from 'react'
 import { TerminalSquare, Plus, X, ChevronDown, Maximize2 } from 'lucide-react'
 import Terminal from './Terminal'
 import { PanelHeader } from './PanelManager'
+import { logger } from "./services/Logger";
 
 interface TerminalSession {
   id: string
@@ -33,11 +34,11 @@ export default function TerminalPanel({ nodeId }: TerminalPanelProps) {
   const activeSession = sessions.find(s => s.id === activeSessionId) || sessions[0]
 
   const handleAddSession = useCallback(() => {
-    console.log('[TerminalPanel] 添加新终端会话')
+    logger.info('添加新终端会话');
   }, [])
 
   const handleCloseSession = useCallback((sessionId: string) => {
-    console.log('[TerminalPanel] 关闭终端会话:', sessionId)
+    logger.info('[TerminalPanel] 关闭终端会话:', sessionId);
   }, [])
 
   return (

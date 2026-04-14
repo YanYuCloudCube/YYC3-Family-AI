@@ -43,6 +43,7 @@ import {
   SK_OLLAMA_CACHE_PREFIX,
   SK_MODEL_PERF_DATA,
 } from './constants/storage-keys'
+import { logger } from "./services/Logger";
 
 /* ================================================================
    Types (local to ModelSettings)
@@ -1636,7 +1637,7 @@ export function ModelSettings({ mode = 'modal', onClose, initialTab = 'providers
 
   // Ollama scan - 支持代理服务器和 CORS 绕过
   const handleScanOllama = useCallback(() => {
-    console.log('[Ollama] Scan button clicked, host:', ollamaHost)
+    logger.info('[Ollama] Scan button clicked, host:', ollamaHost);
     setOllamaScanning(true)
     setOllamaModels([])
     setOllamaConnected(false)
@@ -1653,7 +1654,7 @@ export function ModelSettings({ mode = 'modal', onClose, initialTab = 'providers
       ? `${proxyConfig.baseUrl}/ollama/api/tags`
       : directUrl
     
-    console.log('[Ollama] Fetching URL:', url, useProxy ? '(via proxy)' : '(direct)')
+    logger.info('[Ollama] Fetching URL:', url, useProxy ? '(via proxy)' : '(direct)');
 
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 8000)
@@ -1674,13 +1675,13 @@ export function ModelSettings({ mode = 'modal', onClose, initialTab = 'providers
       mode: useProxy ? 'cors' : 'cors',
     })
       .then(r => {
-        console.log('[Ollama] Response status:', r.status)
+        logger.info('[Ollama] Response status:', r.status);
         clearTimeout(timeoutId)
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         return r.json()
       })
       .then(data => {
-        console.log('[Ollama] Response data:', data)
+        logger.info('[Ollama] Response data:', data);
         const models: OllamaDetectedModel[] = (data.models || []).map((m: any) => ({
           name: m.name || m.model,
           size: m.size ? `${(m.size / 1e9).toFixed(1)} GB` : 'N/A',
@@ -1688,7 +1689,7 @@ export function ModelSettings({ mode = 'modal', onClose, initialTab = 'providers
           quantization: m.details?.quantization_level || m.details?.family || 'N/A',
         }))
 
-        console.log('[Ollama] Parsed models:', models)
+        logger.info('[Ollama] Parsed models:', models);
 
         if (models.length === 0) {
           setOllamaConnected(true)
@@ -1702,11 +1703,11 @@ export function ModelSettings({ mode = 'modal', onClose, initialTab = 'providers
       })
       .catch((err) => {
         clearTimeout(timeoutId)
-        console.error('[Ollama] Scan failed:', err.message, err.name)
+        logger.error('[Ollama] Scan failed:', err.message, err.name);
         
         // 如果直接连接失败，提供模拟数据供用户手动导入
         if (!useProxy && (err.name === 'TypeError' || err.message.includes('Failed to fetch'))) {
-          console.log('[Ollama] CORS blocked, showing simulated models for manual import')
+          logger.info('[Ollama] CORS blocked, showing simulated models for manual import');
           // 显示模拟数据，让用户可以手动导入
           setOllamaModels(SIMULATED_OLLAMA_MODELS)
           setOllamaConnected(false)

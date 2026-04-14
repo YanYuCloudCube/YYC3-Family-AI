@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { logger } from "../services/Logger";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -61,7 +62,7 @@ export function usePWA() {
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      console.warn('[PWA] beforeinstallprompt event fired');
+      logger.warn('beforeinstallprompt event fired');
 
       setState((prev) => ({
         ...prev,
@@ -86,7 +87,7 @@ export function usePWA() {
   // 监听安装成功
   useEffect(() => {
     const handleAppInstalled = () => {
-      console.warn('[PWA] app installed');
+      logger.warn('app installed');
       setState((prev) => ({
         ...prev,
         isInstalled: true,
@@ -105,7 +106,7 @@ export function usePWA() {
   // 监听网络状态
   useEffect(() => {
     const handleOnline = () => {
-      console.warn('[PWA] online');
+      logger.warn('online');
       setState((prev) => ({
         ...prev,
         isOnline: true,
@@ -114,7 +115,7 @@ export function usePWA() {
     };
 
     const handleOffline = () => {
-      console.warn('[PWA] offline');
+      logger.warn('offline');
       setState((prev) => ({
         ...prev,
         isOnline: false,
@@ -140,7 +141,7 @@ export function usePWA() {
           if (newWorker) {
             newWorker.addEventListener("statechange", () => {
               if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                console.warn('[PWA] new version available');
+                logger.warn('new version available');
                 setState((prev) => ({
                   ...prev,
                   updateAvailable: true,
@@ -180,14 +181,14 @@ export function usePWA() {
   // 安装 PWA
   const install = useCallback(async () => {
     if (!state.promptEvent) {
-      console.warn('[PWA] no install prompt available');
+      logger.warn('no install prompt available');
       return false;
     }
 
     try {
       await state.promptEvent.prompt();
       const { outcome } = await state.promptEvent.userChoice;
-      console.warn('[PWA] install outcome:', outcome);
+      logger.warn('[PWA] install outcome:', outcome);
 
       setState((prev) => ({
         ...prev,
@@ -197,7 +198,7 @@ export function usePWA() {
 
       return outcome === "accepted";
     } catch (err) {
-      console.error('[PWA] install error:', err);
+      logger.error('[PWA] install error:', err);
       return false;
     }
   }, [state.promptEvent]);
@@ -221,10 +222,10 @@ export function usePWA() {
         const registration = await navigator.serviceWorker.register("/sw.js", {
           scope: "/",
         });
-        console.warn('[PWA] Service Worker registered:', registration.scope);
+        logger.warn('[PWA] Service Worker registered:', registration.scope);
         return true;
       } catch (err) {
-        console.error('[PWA] Service Worker registration failed:', err);
+        logger.error('[PWA] Service Worker registration failed:', err);
         return false;
       }
     }
@@ -244,7 +245,7 @@ export function usePWA() {
 
   const registerSync = useCallback(async (tag: string): Promise<boolean> => {
     if (!state.syncSupported) {
-      console.warn('[PWA] Background Sync not supported');
+      logger.warn('Background Sync not supported');
       return false;
     }
 
@@ -258,10 +259,10 @@ export function usePWA() {
         return next;
       });
 
-      console.warn('[PWA] Background sync registered:', tag);
+      logger.warn('[PWA] Background sync registered:', tag);
       return true;
     } catch (err) {
-      console.error('[PWA] Failed to register background sync:', err);
+      logger.error('[PWA] Failed to register background sync:', err);
       return false;
     }
   }, [state.syncSupported]);
@@ -366,7 +367,7 @@ export function usePWA() {
       await registration.showNotification(title, options);
       return true;
     } catch (err) {
-      console.error('[PWA] Failed to show notification:', err);
+      logger.error('[PWA] Failed to show notification:', err);
       return false;
     }
   }, [state.notificationSupported]);

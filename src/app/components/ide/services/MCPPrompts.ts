@@ -13,6 +13,7 @@
  */
 
 import type { MCPClient, MCPPrompt } from "./MCPClient";
+import { logger } from "./Logger";
 
 export interface PromptTemplate {
   name: string;
@@ -134,7 +135,7 @@ export class MCPPromptManager {
       },
     });
 
-    console.warn(`[MCP Prompts] Loaded ${this.templates.size} built-in templates`);
+    logger.warn('Loaded ${this.templates.size} built-in templates');
   }
 
   /**
@@ -171,7 +172,7 @@ export class MCPPromptManager {
    */
   addTemplate(template: PromptTemplate): void {
     this.templates.set(template.name, template);
-    console.warn(`[MCP Prompts] Added template: ${template.name}`);
+    logger.warn('Added template: ${template.name}');
   }
 
   /**
@@ -179,7 +180,7 @@ export class MCPPromptManager {
    */
   removeTemplate(name: string): void {
     this.templates.delete(name);
-    console.warn(`[MCP Prompts] Removed template: ${name}`);
+    logger.warn('Removed template: ${name}');
   }
 
   /**
@@ -231,7 +232,7 @@ export class MCPPromptManager {
       this.templates.set(template.name, template);
       return true;
     } catch (error) {
-      console.error("[MCP Prompts] Import failed:", error);
+      logger.error("[MCP Prompts] Import failed:", error);
       return false;
     }
   }
@@ -259,7 +260,7 @@ export class MCPPromptManager {
       }
       return count;
     } catch (error) {
-      console.error("[MCP Prompts] Batch import failed:", error);
+      logger.error("[MCP Prompts] Batch import failed:", error);
       return 0;
     }
   }
@@ -325,7 +326,7 @@ export class MCPPromptManager {
    */
   clearPromptHistory(): void {
     localStorage.removeItem("mcp_prompt_history");
-    console.warn("[MCP Prompts] Prompt history cleared");
+    logger.warn('Prompt history cleared');
   }
 }
 

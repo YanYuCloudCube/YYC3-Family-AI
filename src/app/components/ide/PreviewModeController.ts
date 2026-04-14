@@ -16,6 +16,7 @@
 // ================================================================
 
 import type { PreviewMode } from "./types/previewTypes";
+import { logger } from "./services/Logger";
 
 /**
  * 预览模式控制器
@@ -28,7 +29,7 @@ import type { PreviewMode } from "./types/previewTypes";
  * @example
  * ```typescript
  * const controller = new PreviewModeController(
- *   () => console.warn("Preview updated"),
+ logger.warn('Preview updated');
  *   500
  * );
  *
@@ -105,7 +106,7 @@ export class PreviewModeController {
       case "manual":
         this.pendingUpdate = true;
         // 可以触发一个事件通知UI显示"有待处理的更新"
-        console.warn("[PreviewModeController] Pending update marked for manual mode");
+        logger.warn('Pending update marked for manual mode');
         break;
 
       case "delayed":
@@ -118,7 +119,7 @@ export class PreviewModeController {
         break;
 
       default:
-        console.warn(`[PreviewModeController] Unknown mode: ${this.mode}`);
+        logger.warn('Unknown mode: ${this.mode}');
         this.triggerImmediateUpdate();
     }
   }
@@ -133,7 +134,7 @@ export class PreviewModeController {
       this.triggerImmediateUpdate();
       this.pendingUpdate = false;
     } else {
-      console.warn("[PreviewModeController] Manual trigger ignored - no pending update");
+      logger.warn('Manual trigger ignored - no pending update');
     }
   }
 
@@ -156,9 +157,9 @@ export class PreviewModeController {
 
     try {
       this.onTriggerUpdate();
-      console.warn("[PreviewModeController] Preview updated immediately");
+      logger.warn('Preview updated immediately');
     } catch (error) {
-      console.error("[PreviewModeController] Error triggering update:", error);
+      logger.error("[PreviewModeController] Error triggering update:", error);
     }
   }
 
@@ -175,7 +176,7 @@ export class PreviewModeController {
       this.triggerImmediateUpdate();
     }, this.delay);
 
-    console.warn(`[PreviewModeController] Scheduled delayed update in ${this.delay}ms`);
+    logger.warn('Scheduled delayed update in ${this.delay}ms');
   }
 
   /**
@@ -187,7 +188,7 @@ export class PreviewModeController {
     if (this.delayTimer) {
       clearTimeout(this.delayTimer);
       this.delayTimer = null;
-      console.warn("[PreviewModeController] Cleared delayed timer");
+      logger.warn('Cleared delayed timer');
     }
     // 注意：不清除 pendingUpdate 标记，它应该由手动触发或模式切换清除
   }
@@ -200,7 +201,7 @@ export class PreviewModeController {
   setDelay(delay: number): void {
     // 限制延迟时间范围：100ms - 5s
     this.delay = Math.max(100, Math.min(5000, delay));
-    console.warn(`[PreviewModeController] Delay set to ${this.delay}ms`);
+    logger.warn('Delay set to ${this.delay}ms');
   }
 
   /**
@@ -220,7 +221,7 @@ export class PreviewModeController {
   destroy(): void {
     this.clearPendingUpdate();
     this.pendingUpdate = false;
-    console.warn("[PreviewModeController] Controller destroyed");
+    logger.warn('Controller destroyed');
   }
 
   /**
@@ -231,7 +232,7 @@ export class PreviewModeController {
   reset(): void {
     this.clearPendingUpdate();
     this.pendingUpdate = false;
-    console.warn("[PreviewModeController] Controller reset");
+    logger.warn('Controller reset');
   }
 
   /**

@@ -32,6 +32,7 @@ import backupService, {
   type BackupConfig,
   type BackupData,
 } from '../services/BackupService'
+import { logger } from "../services/Logger";
 
 type TabId = 'backups' | 'settings' | 'stats'
 
@@ -81,7 +82,7 @@ export function BackupManager() {
       setConfig(currentConfig)
       setStats(backupStats as unknown as typeof stats)
     } catch (e) {
-      console.error('[BackupManager] Failed to load data:', e)
+      logger.error('[BackupManager] Failed to load data:', e);
     } finally {
       setIsLoading(false)
     }

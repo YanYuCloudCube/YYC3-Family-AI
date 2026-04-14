@@ -11,6 +11,7 @@
  * @tags: encryption,crypto,security,privacy
  */
 
+import { logger } from "./Logger";
 export type EncryptionStrength = 'standard' | 'high' | 'maximum'
 
 export interface EncryptionConfig {
@@ -67,7 +68,7 @@ export class EncryptionService {
         return { ...DEFAULT_CONFIG, ...JSON.parse(stored) }
       }
     } catch (e) {
-      console.warn('[EncryptionService] Failed to load config:', e)
+      logger.warn('[EncryptionService] Failed to load config:', e);
     }
     return DEFAULT_CONFIG
   }
@@ -76,7 +77,7 @@ export class EncryptionService {
     try {
       localStorage.setItem(ENCRYPTION_CONFIG_KEY, JSON.stringify(this.config))
     } catch (e) {
-      console.error('[EncryptionService] Failed to save config:', e)
+      logger.error('[EncryptionService] Failed to save config:', e);
     }
   }
 
@@ -130,7 +131,7 @@ export class EncryptionService {
       localStorage.removeItem(keyId)
       return true
     } catch (e) {
-      console.error('[EncryptionService] Failed to delete key:', e)
+      logger.error('[EncryptionService] Failed to delete key:', e);
       return false
     }
   }

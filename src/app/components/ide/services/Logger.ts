@@ -30,25 +30,25 @@ class Logger {
   debug(message: string, data?: unknown, source?: string): void {
     if (this.isDevelopment) {
       const formatted = this.formatMessage('debug', message, source)
-      console.debug(formatted, data)
+      console.debug(formatted, data);
     }
   }
 
   info(message: string, data?: unknown, source?: string): void {
     if (this.isDevelopment) {
       const formatted = this.formatMessage('info', message, source)
-      console.info(formatted, data)
+      console.info(formatted, data);
     }
   }
 
   warn(message: string, data?: unknown, source?: string): void {
     const formatted = this.formatMessage('warn', message, source)
-    console.warn(formatted, data)
+    console.warn(formatted, data);
   }
 
   error(message: string, error?: Error | unknown, source?: string): void {
     const formatted = this.formatMessage('error', message, source)
-    console.error(formatted, error)
+    console.error(formatted, error);
     
     if (import.meta.env?.PROD) {
       // 生产环境可选：发送到Sentry或其他错误追踪服务

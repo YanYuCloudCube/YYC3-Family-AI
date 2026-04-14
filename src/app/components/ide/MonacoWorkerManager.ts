@@ -14,6 +14,7 @@
 /**
  * 语言Worker类型定义
  */
+import { logger } from "./services/Logger";
 type WorkerLabel = 'json' | 'css' | 'scss' | 'less' | 'html' | 'handlebars' | 'razor' | 'typescript' | 'javascript' | 'default';
 
 /**
@@ -121,12 +122,12 @@ export async function getWorker(label: string): Promise<Worker> {
   // 加载对应的Worker
   const loader = workerLoaders[workerLabel];
   if (loader) {
-    console.warn(`[MonacoWorker] Loading worker for: ${label}`);
+    logger.warn('Loading worker for: ${label}');
     return await loader();
   }
 
   // 返回默认Worker
-  console.warn(`[MonacoWorker] Using default worker for: ${label}`);
+  logger.warn('Using default worker for: ${label}');
   return getDefaultWorker();
 }
 
@@ -158,7 +159,7 @@ function mapToWorkerLabel(label: string): WorkerLabel {
 export async function preloadCommonWorkers(): Promise<void> {
   // 预加载TypeScript/JavaScript Worker（最常用）
   await getWorker('typescript');
-  console.warn('[MonacoWorker] Preloaded TypeScript/JavaScript worker');
+  logger.warn('Preloaded TypeScript/JavaScript worker');
 }
 
 /**
@@ -184,7 +185,7 @@ export function cleanupWorkers(): void {
     defaultWorker.terminate();
     defaultWorker = null;
   }
-  console.warn('[MonacoWorker] All workers cleaned up');
+  logger.warn('All workers cleaned up');
 }
 
 /**
@@ -197,6 +198,6 @@ export function configureMonacoEnvironment(): void {
         return await getWorker(label);
       },
     };
-    console.warn('[MonacoWorker] Environment configured for lazy loading');
+    logger.warn('Environment configured for lazy loading');
   }
 }

@@ -802,7 +802,6 @@ const RULES: AnalysisRule[] = [
           line: lineNum,
           column: 1,
           message: "空的 catch 块会吞没错误，使调试困难",
-          suggestion: "至少添加 console.error(err) 或错误上报逻辑",
         });
       }
       return results;

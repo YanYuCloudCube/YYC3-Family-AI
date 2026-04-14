@@ -13,6 +13,7 @@
  */
 
 import type { PluginManifest, PluginContext } from "../types";
+import { logger } from "../services/Logger";
 
 export const CodeStatsPlugin: PluginManifest = {
   id: "yyc3-code-stats",
@@ -28,7 +29,7 @@ export const CodeStatsPlugin: PluginManifest = {
   icon: "BarChart3",
 
   activate: (context: PluginContext) => {
-    console.warn("[CodeStats] 插件已激活");
+    logger.warn('插件已激活');
 
     // 注册状态栏项
     context.ui.registerStatusBarItem({
@@ -47,19 +48,19 @@ export const CodeStatsPlugin: PluginManifest = {
 
     // 监听文件切换
     const unsubscribe = context.events.on("file-change", (path: string) => {
-      console.warn("[CodeStats] 文件变更:", path);
+      logger.warn("[CodeStats] 文件变更:", path);
       updateStats(context, path);
     });
 
     // 返回清理函数
     return () => {
       unsubscribe();
-      console.warn("[CodeStats] 插件已停用");
+      logger.warn('插件已停用');
     };
   },
 
   deactivate: () => {
-    console.warn("[CodeStats] 插件正在停用");
+    logger.warn('插件正在停用');
   },
 };
 
@@ -98,7 +99,7 @@ function updateStats(context: PluginContext, path: string) {
   if (!content) return;
 
   const stats = calculateStats(content, path);
-  console.warn("[CodeStats] 统计更新:", stats);
+  logger.warn("[CodeStats] 统计更新:", stats);
 }
 
 /**

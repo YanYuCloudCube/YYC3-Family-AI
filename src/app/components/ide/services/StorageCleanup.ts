@@ -13,6 +13,7 @@
  */
 
 import { getDB } from "../adapters/IndexedDBAdapter";
+import { logger } from "./Logger";
 
 export interface CleanupResult {
   success: boolean;
@@ -77,7 +78,7 @@ export class StorageCleanup {
       dryRun = false,
     } = options;
 
-    console.warn("[StorageCleanup] Starting cleanup with options:", options);
+    logger.warn("[StorageCleanup] Starting cleanup with options:", options);
 
     // 清理旧文件
     if (cleanupFilesOlderThan || keepMostRecentFiles) {
@@ -108,7 +109,7 @@ export class StorageCleanup {
       await this.cleanupEmptyProjects(dryRun, result);
     }
 
-    console.warn("[StorageCleanup] Cleanup completed:", result);
+    logger.warn("[StorageCleanup] Cleanup completed:", result);
 
     return result;
   }
@@ -164,7 +165,7 @@ export class StorageCleanup {
         result.cleanedFiles = filesToDelete.length;
       }
 
-      console.warn(`[StorageCleanup] Would clean ${filesToDelete.length} files, freeing ${(spaceFreed / 1024 / 1024).toFixed(2)} MB`);
+      logger.warn(`[StorageCleanup] Would clean ${filesToDelete.length} files, freeing ${(spaceFreed / 1024 / 1024).toFixed(2)} MB`);
 
     } catch (e) {
       result.errors.push(`File cleanup error: ${(e as Error).message}`);
@@ -221,7 +222,7 @@ export class StorageCleanup {
         result.cleanedLocalStorage = sessionsToRemove.length;
       }
 
-      console.warn(`[StorageCleanup] Would clean ${sessionsToRemove.length} chat sessions`);
+      logger.warn('Would clean ${sessionsToRemove.length} chat sessions');
 
     } catch (e) {
       result.errors.push(`Chat history cleanup error: ${(e as Error).message}`);
@@ -264,7 +265,7 @@ export class StorageCleanup {
         result.cleanedSnapshots = snapshotsToDelete.length;
       }
 
-      console.warn(`[StorageCleanup] Would clean ${snapshotsToDelete.length} snapshots`);
+      logger.warn('Would clean ${snapshotsToDelete.length} snapshots');
 
     } catch (e) {
       result.errors.push(`Snapshot cleanup error: ${(e as Error).message}`);
@@ -345,7 +346,7 @@ export class StorageCleanup {
         result.cleanedProjects = emptyProjects.length;
       }
 
-      console.warn(`[StorageCleanup] Would clean ${emptyProjects.length} empty projects`);
+      logger.warn('Would clean ${emptyProjects.length} empty projects');
 
     } catch (e) {
       result.errors.push(`Empty project cleanup error: ${(e as Error).message}`);
@@ -411,7 +412,7 @@ export class StorageCleanup {
       suggestions.totalFreedSpace = suggestions.oldFilesSize + suggestions.oldSessionsSize + suggestions.oldSnapshotsSize;
 
     } catch (e) {
-      console.error("[StorageCleanup] Error getting suggestions:", e);
+      logger.error("[StorageCleanup] Error getting suggestions:", e);
     }
 
     return suggestions;

@@ -29,6 +29,7 @@ import type {
   AIProviderInfo,
   LogLevel,
 } from './PluginTypes';
+import { logger } from "../services/Logger";
 
 // ================================================================
 // 事件总线
@@ -94,7 +95,7 @@ export class EventBus {
       try {
         handler(...args);
       } catch (error) {
-        console.error(`[EventBus] Error in event handler for "${event}":`, error);
+        logger.error(`[EventBus] Error in event handler for "${event}":`, error);
       }
     }
   }
@@ -132,7 +133,7 @@ export class CommandRegistry {
     options?: { title?: string; shortcut?: string },
   ): Disposable {
     if (this.commands.has(id)) {
-      console.warn(`[Commands] Command "${id}" already registered`);
+      logger.warn('Command "${id}" already registered');
     }
 
     this.commands.set(id, { handler, options });
@@ -274,7 +275,7 @@ export class AIProviderManager {
       this.defaultProvider = id;
     }
 
-    console.warn(`[AIProviders] Registered: ${id}`);
+    logger.warn('Registered: ${id}');
   }
 
   /**
@@ -870,31 +871,31 @@ export class PluginAPIFactory {
     return {
       log: (...args: unknown[]) => {
         if (currentLevel <= 2) {
-          console.log(`[${pluginId}]`, ...args);
+          logger.info(`[${pluginId}]`, ...args);
         }
       },
 
       info: (...args: unknown[]) => {
         if (currentLevel <= 2) {
-          console.info(`[${pluginId}]`, ...args);
+          logger.info(`[${pluginId}]`, ...args);
         }
       },
 
       warn: (...args: unknown[]) => {
         if (currentLevel <= 3) {
-          console.warn(`[${pluginId}]`, ...args);
+          logger.warn(`[${pluginId}]`, ...args);
         }
       },
 
       error: (...args: unknown[]) => {
         if (currentLevel <= 4) {
-          console.error(`[${pluginId}]`, ...args);
+          logger.error(`[${pluginId}]`, ...args);
         }
       },
 
       debug: (...args: unknown[]) => {
         if (currentLevel <= 1) {
-          console.debug(`[${pluginId}]`, ...args);
+          logger.debug(`[${pluginId}]`, ...args);
         }
       },
 

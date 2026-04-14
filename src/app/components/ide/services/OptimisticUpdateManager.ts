@@ -231,7 +231,7 @@ export class OptimisticUpdateManager {
       this.removeFromQueue(updateId);
       return true;
     } catch (error) {
-      console.error('[OptimisticUpdate] Rollback failed:', error);
+      logger.error('[OptimisticUpdate] Rollback failed:', error);
       return false;
     }
   }
@@ -429,6 +429,7 @@ export class OptimisticUpdateManager {
 // ── React Hook for Optimistic Updates ──
 
 import { useCallback, useRef } from 'react';
+import { logger } from "./Logger";
 
 export function useOptimisticUpdate<T>(
   getState: StateGetter,
