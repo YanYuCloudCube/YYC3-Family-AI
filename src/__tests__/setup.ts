@@ -50,11 +50,14 @@ if (!AbortSignal.timeout) {
 const setupWebCrypto = async () => {
   try {
     const { webcrypto } = await import('node:crypto');
-    if (typeof globalThis.crypto === 'undefined' || !(globalThis as any).crypto?.subtle) {
-      (globalThis as any).crypto = webcrypto;
-    }
-  } catch {
-    console.warn('Web Crypto API not available in test environment');
+    Object.defineProperty(globalThis, 'crypto', {
+      value: webcrypto,
+      writable: false,
+      configurable: true,
+      enumerable: true
+    });
+  } catch (error) {
+    console.warn('Web Crypto API not available in test environment:', error);
   }
 };
 await setupWebCrypto();
