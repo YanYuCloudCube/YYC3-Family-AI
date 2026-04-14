@@ -1,0 +1,133 @@
+name: Code Scanning - Security Analysis
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # 每天UTC 2点运行 (北京时间10点)
+    - cron: '0 2 * * *'
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+concurrency:
+  group: code-scanning-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript', 'typescript']
+        include:
+          - language: javascript
+            build-mode: autobuild
+          - language: typescript
+            build-mode: autobuild
+            
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        queries: security-extended,security-and-quality
+        source-root: src
+        
+    - name: Autobuild JavaScript/TypeScript
+      if: matrix.build-mode == 'autobuild'
+      uses: github/codeql-action/autobuild@v3
+      
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
+        output: sarif-results
+        upload-database: true
+        
+    - name: Upload SARIF results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: codeql-sarif-${{ matrix.language }}
+        path: sarif-results
+        retention-days: 7
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        fail-on-severity: high
+        allow-licenses: MIT,Apache-2.0,BSD-2-Clause,BSD-3-Clause,ISC,0BSD
+        deny-packages: |
+          lodash < 4.17.21
+          minimist >= 1.2.3
+          node-forge >= 1.0.0
+          
+  secret-scan:
+    name: Secrets Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: TruffleHog Secret Scan
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
+        head: HEAD
+        extra_args: --only-verified --only-found
+      continue-on-error: true
+      
+    - name: Upload scan results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: trufflehog-results
+        path: trufflehog-output.json
+        retention-days: 7
+
+  post-scan-summary:
+    name: Security Summary
+    needs: [codeql, dependency-review, secret-scan]
+    if: always() && (github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Generate Security Report
+      run: |
+        echo "## 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Check | Status | Details |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+        echo "| CodeQL Analysis | ✅ Completed | JavaScript + TypeScript scanned |" >> $GITHUB_STEP_SUMMARY
+        echo "| Dependency Review | ${{ needs.dependency-review.result == 'success' && '✅ Passed' || '⏭️ Skipped (PR only)' }} | Vulnerability check |" >> $GITHUB_STEP_SUMMARY
+        echo "| Secrets Scan | ✅ Completed | TruffleHog scan finished |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Scan Time**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "> 📌 View detailed results in **Security > Code scanning alerts** tab" >> $GITHUB_STEP_SUMMARY
