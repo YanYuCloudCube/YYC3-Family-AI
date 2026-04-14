@@ -39,8 +39,7 @@ jobs:
       - name: Install Vercel CLI
         run: |
           pnpm setup
-          export PNPM_HOME="$HOME/.local/share/pnpm"
-          export PATH="$PNPM_HOME:$PATH"
+          echo "$HOME/.local/share/pnpm" >> $GITHUB_PATH
           pnpm add -g vercel
 
       - name: Pull Vercel Environment Information

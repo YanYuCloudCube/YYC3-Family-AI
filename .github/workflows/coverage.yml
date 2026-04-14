@@ -7,7 +7,7 @@ on:
     branches: [main, develop]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -120,8 +120,9 @@ jobs:
 
       - name: 🚀 Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coverage/lcov-report
           destination_dir: coverage
+          force_orphan: false
