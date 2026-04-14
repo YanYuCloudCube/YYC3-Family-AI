@@ -344,10 +344,10 @@ export default function SettingsPage() {
 
   return (
     <ModelRegistryProvider>
-      <div className={`size-full min-h-screen ${t.page.pageBg}`}>
+      <div className={`size-full min-h-screen ${t.page.pageBg} flex flex-col overflow-hidden`}>
         {/* Top bar */}
         <div
-          className={`sticky top-0 z-30 border-b backdrop-blur-md ${t.page.barBg} ${t.page.barBorder}`}
+          className={`sticky top-0 z-30 border-b backdrop-blur-md ${t.page.barBg} ${t.page.barBorder} flex-shrink-0`}
         >
           <div className="max-w-6xl mx-auto px-6 h-14 flex items-center gap-4">
             <button
@@ -457,7 +457,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Body */}
-        <div className="max-w-6xl mx-auto px-6 py-6">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex-1 min-h-0 overflow-y-auto">
           <div className="flex gap-8">
             {/* Sidebar nav */}
             <nav className="w-56 flex-shrink-0 space-y-0.5">
@@ -479,7 +479,7 @@ export default function SettingsPage() {
             </nav>
 
             {/* Content */}
-            <div className="flex-1 min-w-0 overflow-y-auto pr-2">
+            <div className="flex-1 min-w-0">
               <motion.div
                 key={activeSection}
                 initial={{ opacity: 0, x: 10 }}
