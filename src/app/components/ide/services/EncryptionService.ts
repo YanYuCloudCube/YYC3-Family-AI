@@ -48,9 +48,18 @@ export class EncryptionService {
   /**
    * 将 Uint8Array 转换为纯 ArrayBuffer（兼容 Web Crypto API）
    */
-  private static toArrayBuffer(uint8Array: Uint8Array): ArrayBuffer {
-    const buffer = new ArrayBuffer(uint8Array.byteLength)
-    new Uint8Array(buffer).set(uint8Array)
+  private static toArrayBuffer(data: Uint8Array | ArrayBuffer | Buffer): ArrayBuffer {
+    if (data instanceof ArrayBuffer) {
+      return data
+    }
+    if (ArrayBuffer.isView(data)) {
+      const buffer = new ArrayBuffer(data.byteLength)
+      new Uint8Array(buffer).set(new Uint8Array(data.buffer, data.byteOffset, data.byteLength))
+      return buffer
+    }
+    const uint8Data = data as Uint8Array
+    const buffer = new ArrayBuffer(uint8Data.byteLength)
+    new Uint8Array(buffer).set(uint8Data)
     return buffer
   }
 
