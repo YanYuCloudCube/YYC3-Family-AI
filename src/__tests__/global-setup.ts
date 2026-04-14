@@ -15,8 +15,18 @@ export default async function setup() {
   try {
     const { webcrypto } = await import('node:crypto');
     
-    // Force set crypto on globalThis before any environment loads
-    (globalThis as any).crypto = webcrypto;
+    // Try to set crypto, handling read-only property case in Node.js 20+
+    try {
+      (globalThis as any).crypto = webcrypto;
+    } catch {
+      // Property is read-only, use defineProperty to override
+      Object.defineProperty(globalThis, 'crypto', {
+        value: webcrypto,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+    }
     
     console.log('[GlobalSetup] Web Crypto API initialized successfully');
   } catch (error) {
