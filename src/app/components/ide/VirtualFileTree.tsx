@@ -211,13 +211,12 @@ export default function VirtualFileTree({
 
   return (
     <List
-      // @ts-expect-error react-window v2.x rowComponent type compatibility
-      height={height}
-      itemCount={flatNodes.length}
-      itemSize={itemHeight}
-      width="100%"
+      style={{ height, width: '100%' }}
+      rowCount={flatNodes.length}
+      rowHeight={itemHeight}
       overscanCount={5}
-      rowComponent={Node as unknown as (props: { index: number; style: React.CSSProperties; ariaAttributes?: Record<string, unknown> } & Record<string, unknown>) => React.ReactElement | null}
+      rowComponent={Node as any}
+      rowProps={{}}
     />
   );
 }

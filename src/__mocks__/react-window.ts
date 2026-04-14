@@ -2,35 +2,68 @@
  * @file: react-window.ts
  * @description: Mock for react-window to fix test compatibility issues with v2.x API
  * @author: YanYuCloudCube Team <admin@0379.email>
- * @version: v1.0.0
+ * @version: v2.0.0
  */
 
 import React from 'react';
 
 const List = React.forwardRef((props: any, ref: any) => {
-  const { height, itemCount, itemSize, width, rowComponent, children } = props;
-  const items = Array.from({ length: Math.min(itemCount, 20) }, (_, i) => i);
-  
+  const {
+    style,
+    rowCount,
+    rowHeight,
+    overscanCount = 5,
+    rowComponent: RowComponent,
+    rowProps = {},
+    onRowsRendered,
+    children,
+  } = props;
+
+  const items = Array.from({ length: Math.min(rowCount, 20) }, (_, i) => i);
+
   React.useImperativeHandle(ref, () => ({
     scrollToRow: () => {},
     element: null,
   }));
 
-  return React.createElement('div', { style: { height, width, overflow: 'auto' } },
+  if (onRowsRendered && items.length > 0) {
+    React.useEffect(() => {
+      onRowsRendered({
+        startIndex: 0,
+        stopIndex: Math.min(items.length - 1, 19),
+      });
+    }, [items.length]);
+  }
+
+  return React.createElement('div', { style: { ...style, overflow: 'auto' } },
     items.map((index: number) => {
-      const style = {
-        position: 'relative',
-        height: typeof itemSize === 'number' ? itemSize : itemSize(index),
+      const itemStyle = {
+        position: 'relative' as const,
+        height: typeof rowHeight === 'function' ? rowHeight(index) : rowHeight,
         top: 0,
         left: 0,
+        width: '100%',
       };
-      
-      if (rowComponent) {
-        return React.createElement('div', { key: index }, rowComponent({ index, style }));
+
+      if (RowComponent) {
+        return React.createElement('div', { key: index },
+          React.createElement(RowComponent, {
+            index,
+            style: itemStyle,
+            ariaAttributes: {
+              'aria-posinset': index + 1,
+              'aria-setsize': rowCount,
+              role: 'listitem',
+            },
+            ...rowProps,
+          })
+        );
       }
+
       if (children) {
-        return React.createElement('div', { key: index }, children({ index, style }));
+        return React.createElement('div', { key: index }, children({ index, style: itemStyle }));
       }
+
       return null;
     })
   );

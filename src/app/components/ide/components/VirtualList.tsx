@@ -148,7 +148,6 @@ export const VirtualList = forwardRef(
       },
       getScrollPosition: () => internalScrollTop,
       resetAfterIndex: (_index: number) => {
-        // react-window v2.x doesn't support resetAfterIndex, using scrollToRow as fallback
         listRef.current?.scrollToRow({ index: 0, align: 'start' });
       },
       recomputeRowHeights: () => {
@@ -229,34 +228,34 @@ export const VirtualList = forwardRef(
     );
 
     const Row = useCallback(
-      ({ index, style }: CellProps) => {
-        if (isLoading && index === items.length) {
-          return (
-            <div style={style}>
-              {loadingComponent || <DefaultLoadingComponent />}
-            </div>
-          );
-        }
-
-        const item = items[index];
-        if (!item) return null;
-
-        const itemId = keyExtractor(item, index);
-        const isSelected = selectedIds.has(itemId);
-
+    ({ index, style }: CellProps) => {
+      if (isLoading && index === items.length) {
         return (
-          <div
-            style={style}
-            onClick={(e) => handleItemClick(item, index, e)}
-            role="option"
-            aria-selected={isSelected}
-          >
-            {renderItem(item, index, isSelected)}
+          <div style={style}>
+            {loadingComponent || <DefaultLoadingComponent />}
           </div>
         );
-      },
-      [items, isLoading, loadingComponent, keyExtractor, selectedIds, renderItem, handleItemClick]
-    );
+      }
+
+      const item = items[index];
+      if (!item) return null;
+
+      const itemId = keyExtractor(item, index);
+      const isSelected = selectedIds.has(itemId);
+
+      return (
+        <div
+          style={style}
+          onClick={(e) => handleItemClick(item, index, e)}
+          role="option"
+          aria-selected={isSelected}
+        >
+          {renderItem(item, index, isSelected)}
+        </div>
+      );
+    },
+    [items, isLoading, loadingComponent, keyExtractor, selectedIds, renderItem]
+  );
 
     const itemKey = useCallback(
       (index: number) => {
@@ -309,19 +308,14 @@ export const VirtualList = forwardRef(
           />
         )}
         <List
-          // @ts-expect-error react-window v2.x rowComponent type compatibility
-          ref={listRef}
-          height={listHeight - (searchable ? 48 : 0) - (sortable ? 40 : 0)}
-          width={typeof width === 'number' ? width : '100%'}
-          itemCount={itemCount}
-          itemSize={getItemHeight}
+          listRef={listRef as any}
+          style={{ height: listHeight - (searchable ? 48 : 0) - (sortable ? 40 : 0), width: typeof width === 'number' ? width : '100%' }}
+          rowCount={itemCount}
+          rowHeight={getItemHeight}
           overscanCount={overscan}
-          onItemsRendered={handleItemsRendered}
-          onScroll={handleScroll}
-          itemKey={itemKey}
-          innerElementType={innerElementType}
-          initialScrollOffset={scrollToIndex ? scrollToIndex * (typeof itemHeight === 'number' ? itemHeight : 40) : 0}
-          rowComponent={Row as unknown as (props: { index: number; style: React.CSSProperties; ariaAttributes?: Record<string, unknown> } & Record<string, unknown>) => React.ReactElement | null}
+          onRowsRendered={({ startIndex, stopIndex }) => handleItemsRendered({ visibleStartIndex: startIndex, visibleStopIndex: stopIndex })}
+          rowComponent={Row as any}
+          rowProps={{}}
         />
       </div>
     );
