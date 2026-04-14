@@ -36,24 +36,34 @@ class SanitizerService {
 
   sanitize(dirty: string | null | undefined, options?: Partial<SanitizeOptions>): string {
     if (!dirty) return ''
-    
+
     const mergedConfig = { ...this.config, ...options }
-    
-    return DOMPurify.sanitize(dirty, {
-      ALLOWED_TAGS: mergedConfig.ALLOWED_TAGS,
-      ALLOWED_ATTR: mergedConfig.ALLOWED_ATTR,
-      ADD_ATTR: ['target'],
-      FORCE_BODY: true,
-    })
+
+    try {
+      return DOMPurify.sanitize(dirty, {
+        ALLOWED_TAGS: mergedConfig.ALLOWED_TAGS,
+        ALLOWED_ATTR: mergedConfig.ALLOWED_ATTR,
+        ADD_ATTR: ['target'],
+        FORCE_BODY: true,
+      })
+    } catch (error) {
+      console.warn('[Sanitizer] DOMPurify sanitize failed:', error)
+      return this.escapeHtml(dirty)
+    }
   }
 
   sanitizeStrict(dirty: string): string {
     if (!dirty) return ''
-    
-    return DOMPurify.sanitize(dirty, {
-      ALLOWED_TAGS: ['#text'],
-      ALLOWED_ATTR: [],
-    })
+
+    try {
+      return DOMPurify.sanitize(dirty, {
+        ALLOWED_TAGS: ['#text'],
+        ALLOWED_ATTR: [],
+      })
+    } catch (error) {
+      console.warn('[Sanitizer] DOMPurify sanitizeStrict failed:', error)
+      return this.escapeHtml(dirty)
+    }
   }
 
   escapeHtml(text: string): string {
@@ -65,7 +75,7 @@ class SanitizerService {
       "'": '&#039;',
       '/': '&#x2F;',
     }
-    
+
     return text.replace(/[&<>"'\/]/g, (char) => map[char])
   }
 
@@ -73,15 +83,15 @@ class SanitizerService {
     try {
       const parsed = new URL(url)
       const allowedProtocols = ['http:', 'https:', 'mailto:', 'tel:']
-      
+
       if (!allowedProtocols.includes(parsed.protocol)) {
         return false
       }
-      
+
       if (parsed.protocol === 'javascript:') {
         return false
       }
-      
+
       return true
     } catch {
       return false
