@@ -11,6 +11,8 @@
  * @tags: test,encryption,unit
  */
 
+// @vitest-environment node
+
 import { describe, it, expect, beforeEach } from 'vitest'
 import { EncryptionService } from '../EncryptionService'
 

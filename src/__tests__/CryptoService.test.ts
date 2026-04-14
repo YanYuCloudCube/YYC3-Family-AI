@@ -12,6 +12,8 @@
  * @tags: test,vitest,crypto,encryption,security
  */
 
+// @vitest-environment node
+
 import { describe, it, expect } from "vitest";
 import {
   generateRandomBytes,

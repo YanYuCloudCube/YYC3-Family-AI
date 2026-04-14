@@ -5,6 +5,8 @@
  * @version: v1.0.0
  */
 
+// @vitest-environment node
+
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ChunkedFileHandler, getChunkedFileHandler } from '../services/ChunkedFileHandler';
 
