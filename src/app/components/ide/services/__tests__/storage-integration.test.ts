@@ -17,6 +17,18 @@ import { EncryptionService } from '../EncryptionService'
 import { MigrationService } from '../MigrationService'
 import { PerformanceMonitor } from '../PerformanceMonitor'
 
+// Ensure Web Crypto API is available for encryption tests
+beforeEach(async () => {
+  try {
+    const { webcrypto } = await import('node:crypto')
+    if (typeof globalThis.crypto === 'undefined' || !(globalThis as any).crypto?.subtle) {
+      (globalThis as any).crypto = webcrypto
+    }
+  } catch (error) {
+    console.warn('Failed to setup crypto:', error)
+  }
+})
+
 vi.mock('idb', () => ({
   openDB: vi.fn().mockResolvedValue({
     getAll: vi.fn().mockResolvedValue([]),
