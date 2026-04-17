@@ -45,11 +45,12 @@ import {
 } from 'lucide-react'
 import {
   useEnvironmentStore,
-  type GatewayConfig,
   type AuthMethod,
   getActiveGateway,
-  buildAuthHeaders,
 } from './EnvironmentConfig'
+import { toastSuccess, toastError, toastWarning } from '../stores/useToastStore'
+import { confirmDialog } from '../stores/useConfirmStore'
+import { usePromptStore } from '../stores/usePromptStore'
 
 type TabId = 'gateway' | 'terminal' | 'heartbeat' | 'proxy' | 'features' | 'env-vars'
 
@@ -150,9 +151,9 @@ export default function EnvironmentConfigPanel() {
       if (!file) return
       const text = await file.text()
       if (store.importConfig(text)) {
-        alert('配置导入成功！')
+        toastSuccess('配置导入成功！')
       } else {
-        alert('导入失败，请检查文件格式')
+        toastError('导入失败，请检查文件格式')
       }
     }
     input.click()
@@ -166,7 +167,7 @@ export default function EnvironmentConfigPanel() {
   }, [store.heartbeat.enabled])
 
   return (
-    <div className="h-full flex flex-col bg-[var(--ide-bg)] text-[var(--ide-text-primary)]">
+    <div className="flex flex-col bg-[var(--ide-bg)] text-[var(--ide-text-primary)]">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--ide-border)] bg-[var(--ide-bg-elevated)]">
         <div className="flex items-center gap-2">
@@ -191,8 +192,8 @@ export default function EnvironmentConfigPanel() {
             <Upload className="w-4 h-4 text-[var(--ide-text-muted)]" />
           </button>
           <button
-            onClick={() => {
-              if (confirm('确定要重置所有配置到默认值吗？')) {
+            onClick={async () => {
+              if (await confirmDialog('确定要重置所有配置到默认值吗？')) {
                 store.resetToDefaults()
               }
             }}
@@ -222,8 +223,8 @@ export default function EnvironmentConfigPanel() {
         ))}
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+      {/* Content — 外层 SettingsPage Body 已处理滚动，此处无需嵌套 overflow */}
+      <div className="p-4 space-y-6">
         {/* ════════════ 网关与认证 ════════════ */}
         {activeTab === 'gateway' && (
           <section className="space-y-4">
@@ -634,8 +635,12 @@ export default function EnvironmentConfigPanel() {
                 ))}
 
                 <button
-                  onClick={() => {
-                    const key = prompt('变量名:')
+                  onClick={async () => {
+                    const key = await usePromptStore.getState().openPrompt({
+                      title: '添加环境变量',
+                      message: '请输入变量名',
+                      placeholder: '变量名',
+                    })
                     if (key) store.setTerminalEnvVar(key, '')
                   }}
                   className="flex items-center gap-1 w-full px-2 py-1.5 rounded border border-dashed border-[var(--ide-border)] text-xs text-[var(--ide-text-muted)] hover:border-[var(--ide-accent)] hover:text-[var(--ide-accent)] transition-colors"
@@ -855,12 +860,16 @@ export default function EnvironmentConfigPanel() {
               )}
 
               <button
-                onClick={() => {
-                  const key = prompt('变量名 (大写):')
-                  if (key?.match(/^[A-Z_][A-Z0-9_]*$/)) {
+                onClick={async () => {
+                  const key = await usePromptStore.getState().openPrompt({
+                    title: '添加自定义变量',
+                    message: '变量名需使用大写字母和下划线',
+                    placeholder: 'VARIABLE_NAME',
+                    pattern: /^[A-Z_][A-Z0-9_]*$/,
+                    patternError: '变量名格式无效，请使用大写字母和下划线',
+                  })
+                  if (key) {
                     store.setCustomEnvVar(key.toUpperCase(), '')
-                  } else if (key) {
-                    alert('变量名格式无效，请使用大写字母和下划线')
                   }
                 }}
                 className="flex items-center justify-center gap-1 w-full p-2 rounded border border-dashed border-[var(--ide-border)] text-sm text-[var(--ide-text-muted)] hover:border-[var(--ide-accent)] hover:text-[var(--ide-accent)] transition-colors"

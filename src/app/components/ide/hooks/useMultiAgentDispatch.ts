@@ -14,7 +14,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import {
-  PROVIDER_CONFIGS,
+  getProviderConfigs,
   chatCompletion,
   chatCompletionStream,
   getApiKey,
@@ -116,7 +116,7 @@ function resolveProvider(): { provider: ProviderConfig; modelId: string } | null
   ]
 
   for (const { providerId, defaultModel } of priority) {
-    const provider = PROVIDER_CONFIGS.find(p => p.id === providerId)
+    const provider = getProviderConfigs().find(p => p.id === providerId)
     if (!provider) continue
 
     // Ollama doesn't need API key

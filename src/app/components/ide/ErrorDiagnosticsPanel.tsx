@@ -43,6 +43,7 @@ import {
 } from "lucide-react";
 import { PanelHeader } from "./PanelManager";
 import { useFileStore } from "./FileStore";
+import { useEditorRegistry } from "./stores/useEditorRegistry";
 import { useErrorDiagnostics } from "./hooks/useErrorDiagnostics";
 import {
   type Diagnostic,
@@ -113,6 +114,7 @@ export default function ErrorDiagnosticsPanel({
   onRequestAIFix,
 }: ErrorDiagnosticsPanelProps) {
   const { setActiveFile, fileContents } = useFileStore();
+  const revealLine = useEditorRegistry((s) => s.revealLine);
   const requestFix = useAIFixStore((s) => s.requestFix);
   const {
     analysis,
@@ -150,9 +152,11 @@ export default function ErrorDiagnosticsPanel({
   const goToDiagnostic = useCallback(
     (d: Diagnostic) => {
       setActiveFile(d.filepath);
-      // TODO: integrate with Monaco to scroll to line
+      setTimeout(() => {
+        revealLine(d.filepath, d.line, d.column);
+      }, 100);
     },
-    [setActiveFile],
+    [setActiveFile, revealLine],
   );
 
   // AI Fix handler

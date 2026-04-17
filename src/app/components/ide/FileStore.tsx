@@ -79,6 +79,9 @@ interface FileStoreContextType {
 
   // Format
   formatCurrentFile: () => void;
+
+  // Template
+  loadTemplate: (templateId: string, templateName: string, templateCode: { react?: string; html?: string; css?: string; dependencies?: Record<string, string> }) => void;
 }
 
 export interface GitLogEntry {
@@ -216,7 +219,7 @@ const INITIAL_GIT_LOG: GitLogEntry[] = [
 ];
 
 // ===== Provider =====
-export function FileStoreProvider({ children }: { children: React.ReactNode }) {
+export function FileStoreProvider({ children, skipIdbLoad }: { children: React.ReactNode; skipIdbLoad?: boolean }) {
   const [fileContents, setFileContents] =
     useState<Record<string, string>>(FILE_CONTENTS);
   const [openTabs, setOpenTabs] = useState<OpenTab[]>([
@@ -242,7 +245,7 @@ export function FileStoreProvider({ children }: { children: React.ReactNode }) {
 
   // -- IndexedDB: Load persisted files on mount --
   useEffect(() => {
-    if (idbLoadedRef.current) return;
+    if (idbLoadedRef.current || skipIdbLoad) return;
     idbLoadedRef.current = true;
 
     loadAllFiles(DEFAULT_PROJECT_ID)
@@ -250,9 +253,7 @@ export function FileStoreProvider({ children }: { children: React.ReactNode }) {
         if (persisted && Object.keys(persisted).length > 0) {
           // Merge: persisted files take priority, fall back to defaults
           setFileContents((prev) => ({ ...prev, ...persisted }));
-          console.warn(
-            `[IndexedDB] Loaded ${Object.keys(persisted).length} persisted files`,
-          );
+          logger.info(`Loaded ${Object.keys(persisted).length} persisted files`, undefined, "IndexedDB");
         }
       })
       .catch((err) => {
@@ -443,6 +444,64 @@ export function FileStoreProvider({ children }: { children: React.ReactNode }) {
     });
   }, [activeFile]);
 
+  const loadTemplate = useCallback(
+    (templateId: string, templateName: string, templateCode: { react?: string; html?: string; css?: string; dependencies?: Record<string, string> }) => {
+      const newFiles: Record<string, string> = {};
+      const newTabs: OpenTab[] = [];
+      let primaryFile = "src/app/App.tsx";
+
+      if (templateCode.react) {
+        newFiles["src/app/App.tsx"] = templateCode.react;
+        primaryFile = "src/app/App.tsx";
+      }
+
+      if (templateCode.html) {
+        newFiles["index.html"] = templateCode.html;
+        if (!templateCode.react) primaryFile = "index.html";
+      }
+
+      if (templateCode.css) {
+        newFiles["src/styles.css"] = templateCode.css;
+      }
+
+      if (templateCode.dependencies && Object.keys(templateCode.dependencies).length > 0) {
+        newFiles["package.json"] = JSON.stringify(
+          {
+            name: templateId,
+            version: "1.0.0",
+            dependencies: templateCode.dependencies,
+          },
+          null,
+          2,
+        );
+      }
+
+      newFiles["README.md"] = `# ${templateName}\n\n基于 YYC³ 模板创建的项目。\n`;
+
+      for (const path of Object.keys(newFiles)) {
+        newTabs.push({ path, modified: false });
+      }
+
+      setFileContents((prev) => {
+        const merged = { ...prev, ...newFiles };
+        immediateSaveFiles(DEFAULT_PROJECT_ID, merged);
+        return merged;
+      });
+      setOpenTabs(newTabs);
+      setActiveFileState(primaryFile);
+      setGitChanges(
+        Object.keys(newFiles).map((path) => ({
+          path,
+          status: "added" as const,
+          staged: false,
+        })),
+      );
+
+      logger.info(`Template loaded: ${templateName} (${templateId})`, undefined, "FileStore");
+    },
+    [],
+  );
+
   // -- Update project metadata periodically --
   useEffect(() => {
     const totalSize = Object.values(fileContents).reduce(
@@ -486,6 +545,7 @@ export function FileStoreProvider({ children }: { children: React.ReactNode }) {
       commitChanges,
       gitLog,
       formatCurrentFile,
+      loadTemplate,
     }),
     [
       fileContents,
@@ -511,6 +571,7 @@ export function FileStoreProvider({ children }: { children: React.ReactNode }) {
       commitChanges,
       gitLog,
       formatCurrentFile,
+      loadTemplate,
     ],
   );
 

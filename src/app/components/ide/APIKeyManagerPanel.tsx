@@ -22,6 +22,7 @@ import {
   Settings,
 } from 'lucide-react';
 import { apiKeyVault, PROVIDERS, type APIKeyConfig, type ProviderId, type ProviderInfo } from './services/APIKeyVault';
+import { confirmDialog } from './stores/useConfirmStore';
 
 interface APIKeyManagerPanelProps {
   onClose?: () => void;
@@ -72,7 +73,7 @@ export function APIKeyManagerPanel({ onClose, onProviderChange }: APIKeyManagerP
   };
 
   const handleDeleteKey = async (id: string) => {
-    if (!confirm('确定要删除此 API Key 吗？')) return;
+    if (!(await confirmDialog('确定要删除此 API Key 吗？'))) return;
     await apiKeyVault.deleteKey(id);
     await loadKeys();
   };

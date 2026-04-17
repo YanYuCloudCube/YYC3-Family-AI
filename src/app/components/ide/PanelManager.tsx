@@ -236,6 +236,8 @@ const PANEL_TITLES: Record<PanelId, string> = {
   taskboard: "任务看板",
   "multi-instance": "应用多开",
   "multi-agent": "多智能体",
+  "web-search": "智能搜索",
+  chart: "数据分析",
 };
 
 export function PanelHeader({

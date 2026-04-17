@@ -14,6 +14,8 @@
 // ZoomController - View zoom level control and management
 // ================================================================
 
+import { logger } from "../services/Logger";
+
 /**
  * 缩放级别类型
  */
@@ -261,8 +263,10 @@ export class ZoomController {
       this.config.onZoomLimit(zoom, isMax);
     }
 
-    console.warn(
-      `[ZoomController] Zoom ${zoom}% is at ${isMax ? "maximum" : "minimum"} limit`
+    logger.warn(
+      `Zoom ${zoom}% is at ${isMax ? "maximum" : "minimum"} limit`,
+      undefined,
+      "ZoomController"
     );
   }
 

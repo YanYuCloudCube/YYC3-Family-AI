@@ -38,7 +38,7 @@ const CATEGORIES = [
   { id: "widget", label: "小组件", count: 1 },
 ];
 
-const TEMPLATES: TemplateWithPreview[] = [
+export const TEMPLATES: TemplateWithPreview[] = [
   {
     id: "t1",
     name: "企业管理仪表板",
@@ -546,7 +546,7 @@ const TEMPLATES: TemplateWithPreview[] = [
   },
 ];
 
-const ALL_TEMPLATES: TemplateWithPreview[] = [...TEMPLATES, ...APP_TEMPLATES];
+export const ALL_TEMPLATES: TemplateWithPreview[] = [...TEMPLATES, ...APP_TEMPLATES];
 
 export default function TemplatesPage() {
   const navigate = useNavigate();

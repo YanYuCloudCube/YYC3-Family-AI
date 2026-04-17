@@ -43,6 +43,8 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useThemeStore } from "./ide/stores/useThemeStore";
+import { toastSuccess, toastError } from "./ide/stores/useToastStore";
+import { confirmDialog } from "./ide/stores/useConfirmStore";
 import { useThemeTokens, type ThemeTokens } from "./ide/hooks/useThemeTokens";
 import { ModelRegistryProvider } from "./ide/ModelRegistry";
 import {
@@ -456,11 +458,11 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        {/* Body */}
-        <div className="max-w-6xl mx-auto px-6 py-6 flex-1 min-h-0 overflow-y-auto">
-          <div className="flex gap-8">
-            {/* Sidebar nav */}
-            <nav className="w-56 flex-shrink-0 space-y-0.5">
+        {/* Body — 左右分栏布局：导航栏与内容区完全隔离 */}
+        <div className="flex-1 min-h-0 flex overflow-hidden">
+          {/* ═══ 左侧导航栏 ═══ 固定宽度、独立滚动、不受内容区任何影响 */}
+          <aside className="w-56 flex-shrink-0 border-r ${t.page.barBorder} bg-[var(--ide-bg)]/50 backdrop-blur-sm overflow-y-auto">
+            <div className="p-4 space-y-0.5">
               {SECTIONS.map((s) => {
                 const isActive = activeSection === s.id;
                 return (
@@ -476,22 +478,23 @@ export default function SettingsPage() {
                   </button>
                 );
               })}
-            </nav>
+            </div>
+          </aside>
 
-            {/* Content */}
-            <div className="flex-1 min-w-0">
+          {/* ═══ 右侧内容区 ═══ 独立滚动容器，面板在此渲染 */}
+          <div className="flex-1 min-w-0 overflow-y-auto">
+            <div className="max-w-5xl mx-auto px-8 py-6">
               <motion.div
                 key={activeSection}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.15 }}
-                className="pb-8"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
               >
                 <div className="mb-6">
-                  <h2 className={`text-[1.1rem] mb-1 ${t.text.heading}`}>
+                  <h2 className={`text-[1.15rem] font-semibold mb-1.5 ${t.text.heading}`}>
                     {currentSection.label}
                   </h2>
-                  <p className={`text-[0.78rem] ${t.text.muted}`}>
+                  <p className={`text-[0.8rem] ${t.text.muted}`}>
                     {currentSection.description}
                   </p>
                 </div>
@@ -858,9 +861,9 @@ function ImportExportSection({ t }: { t: ThemeTokens }) {
         try {
           const data = JSON.parse(ev.target?.result as string);
           importConfig(data);
-          alert("配置导入成功！");
+          toastSuccess("配置导入成功！");
         } catch {
-          alert("配置文件格式错误");
+          toastError("配置文件格式错误");
         }
       };
       reader.readAsText(file);
@@ -868,19 +871,19 @@ function ImportExportSection({ t }: { t: ThemeTokens }) {
     input.click();
   };
 
-  const handleReset = () => {
-    if (confirm("确定要重置所有设置为默认值吗？此操作不可撤销。")) {
+  const handleReset = async () => {
+    if (await confirmDialog("确定要重置所有设置为默认值吗？此操作不可撤销。")) {
       resetSettings();
-      alert("设置已重置");
+      toastSuccess("设置已重置");
     }
   };
 
   const handleClearCache = () => {
     try {
       const cleared = clearAllYYC3Storage();
-      alert(`已清除 ${cleared} 项缓存数据`);
+      toastSuccess(`已清除 ${cleared} 项缓存数据`);
     } catch {
-      alert("清除缓存失败");
+      toastError("清除缓存失败");
     }
   };
 

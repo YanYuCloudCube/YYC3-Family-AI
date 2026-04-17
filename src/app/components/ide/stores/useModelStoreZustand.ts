@@ -165,7 +165,7 @@ export const useModelStoreZustand = create<
             id: `custom::${name}-${Date.now()}`,
             name,
             provider,
-            providerId: "custom",
+            providerId: "custom" as ProviderId,
             type: "llm",
             status: "active",
             endpoint,

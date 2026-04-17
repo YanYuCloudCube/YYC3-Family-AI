@@ -14,7 +14,7 @@
 
 ---
 
-[![YYC³ Version](https://img.shields.io/badge/YYC³-v1.0.0-6366f1?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiI+PHBvbHlnb24gcG9pbnRzPSIxMiAyIDIyIDguNSAyMiAxNS41IDEyIDIyIDIgMTUuNSAyIDguNSAxMiAyIi8+PC9zdmc+)](https://github.com/YanYuCloudCube/YYC3-Family-AI/releases)
+[![YYC³ Version](https://img.shields.io/badge/YYC³-v1.0.1-6366f1?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiI+PHBvbHlnb24gcG9pbnRzPSIxMiAyIDIyIDguNSAyMiAxNS41IDEyIDIyIDIgMTUuNSAyIDguNSAxMiAyIi8+PC9zdmc+)](https://github.com/YanYuCloudCube/YYC3-Family-AI/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3b82f6)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.x-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3.1-61dafb?logo=react&logoColor=black)](https://react.dev/)
@@ -22,8 +22,10 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.x-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Zustand](https://img.shields.io/badge/Zustand-5.x-f5a623?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZjVhNjIzIj48cGF0aCBkPSJNMTIgMkw0IDd2MTBsOCA1IDgtNSA4LTVWN2wtOC01eiIvPjwvc3ZnPg==)](https://zustand-demo.pmnd.rs/)
 
-[![Tests 2702](https://img.shields.io/badge/Tests-2702_passed-22c55e?logo=vitest&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
-[![Test Files 104](https://img.shields.io/badge/Test_Files-104-8b5cf6)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
+[![Tests 3246](https://img.shields.io/badge/Tests-3246_passed-22c55e?logo=vitest&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
+[![Test Files 141](https://img.shields.io/badge/Test_Files-141-8b5cf6)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
+[![Services 21](https://img.shields.io/badge/Services-21_Modules-933317?logo=service&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/blob/main/docs/08-YYC3-项目整合-实施阶段/项目总结报告/YYC3-阶段性集成总结-v1.0.1.md)
+[![MCP Servers 8](https://img.shields.io/badge/MCP_Servers-8-7c3aed?logo=protocol&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/blob/main/src/mcp/servers)
 [![Coverage 85%+](https://img.shields.io/badge/Coverage-85%25+-4fcf25?logo=codecov&logoColor=white)](https://codecov.io/gh/YanYuCloudCube/YYC3-Family-AI)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088ff?logo=githubactions&logoColor=white)](https://github.com/YanYuCloudCube/YYC3-Family-AI/actions)
 [![GitHub Stars](https://img.shields.io/github/stars/YanYuCloudCube/YYC3-Family-AI?style=social)](https://github.com/YanYuCloudCube/YYC3-Family-AI/stargazers)
@@ -283,6 +285,47 @@ src/app/
 └── ide/                          # IDE 相关类型定义
     └── fileData.ts               # 文件数据类型
 ```
+
+## 业务服务层（v1.0.1 新增）
+
+YYC³ 在 v1.0.1 中新增了 **21 个业务服务模块** 和 **8 个 MCP Server**，构成完整的服务层架构：
+
+```
+src/services/                      # 21 个业务服务模块 (13,995 行)
+├── AIAgentOrchestrator.ts         # ⭐ 智能体编排引擎（核心）
+├── FinanceAnalysisService.ts      # 金融数据分析（MACD/RSI/DCF/组合管理）
+├── EducationService.ts            # 教育作业批改（AI评分/试题生成）
+├── OfficeAutomationService.ts     # 办公自动化（文档模板/邮件/日程）
+├── KnowledgeBaseService.ts        # 向量知识库与混合搜索
+├── WebScraperService.ts           # 网页内容抓取与结构化提取
+├── DataVisualizationService.ts    # 数据可视化（已集成 ChartPanel）
+├── DataAnalysisService.ts         # 统计分析与数据清洗
+├── GraphRAGService.ts             # 知识图谱 RAG 检索增强
+├── TranslationService.ts          # 多语言翻译引擎
+├── NewsGenerator.ts               # 新闻内容聚合与摘要
+├── PodcastGenerator.ts            # 播客脚本与内容生成
+├── ImageGenerationService.ts      # AI 图像生成与编辑
+├── VideoGenerationService.ts      # 视频内容生成
+├── InterviewAgent.ts              # 模拟面试智能体
+├── SecurityScannerEnhanced.ts     # 增强型安全扫描器
+├── DocumentParserService.ts       # 多格式文档解析
+├── CodeInterpreterService.ts      # 代码沙箱解释执行
+├── ASRService.ts                  # 自动语音识别
+├── TTSService.ts                  # 文本转语音合成
+└── WebSearchService.ts            # 网络搜索（已集成 SearchPanel）
+
+src/mcp/servers/                   # 8 个 MCP 协议服务模块
+├── DockerGatewayServer.ts         # Docker 网关管理
+├── DockerServer.ts                # Docker 容器操作
+├── PostgreSQLServer.ts            # PostgreSQL 数据库
+├── GitHubServer.ts                # Git/GitHub 操作
+├── FilesystemServer.ts            # 文件系统操作
+├── BraveSearchServer.ts           # Brave Search API
+├── ClaudePromptsServer.ts         # Claude 提示词管理
+└── YYC3CNAssistantServer.ts       # 中文助手增强
+```
+
+> 📖 完整功能说明请参阅 [阶段性集成总结报告](docs/08-YYC3-项目整合-实施阶段/项目总结报告/YYC3-阶段性集成总结-v1.0.1.md)
 
 ## 存储架构设计
 
@@ -593,11 +636,13 @@ pnpm test:e2e        # E2E 测试
 
 | 指标 | 数值 |
 |------|------|
-| **测试文件** | 104 个 |
-| **测试用例** | 2,702 个 |
-| **通过** | 2,702 个 |
+| **测试文件** | 141 个 |
+| **测试用例** | 3,246 个 |
+| **通过** | 3,246 个 |
 | **跳过** | 0 个 |
 | **通过率** | 100% |
+| **服务模块** | 21 个 (13,995 行) |
+| **MCP Server** | 8 个 |
 
 ### 测试类型分布
 
@@ -756,8 +801,8 @@ pnpm preview
 
 ---
 
-**项目版本**: v1.0.0  
-**最后更新**: 2026-04-01  
+**项目版本**: v1.0.1
+**最后更新**: 2026-04-15
 **维护团队**: YanYuCloudCube Team  
 **文档状态**: ✅ 已完善  
 **在线地址**: [https://family-ai.yyccube.com](https://family-ai.yyccube.com)

@@ -41,20 +41,22 @@ import { logger } from "./services/Logger";
  * ```
  */
 export class PreviewModeController {
-  /** 当前预览模式 */
   private mode: PreviewMode = "realtime";
 
-  /** 延迟定时器 */
   private delayTimer: ReturnType<typeof setTimeout> | null = null;
 
-  /** 是否有待处理的更新（手动模式使用） */
   private pendingUpdate: boolean = false;
 
-  /** 默认延迟时间（毫秒） */
   private readonly DEFAULT_DELAY = 500;
 
-  /** 当前延迟时间 */
   private delay: number;
+
+  private changeTimestamps: number[] = [];
+
+  private readonly SMART_WINDOW = 5000;
+  private readonly SMART_MIN_DELAY = 300;
+  private readonly SMART_MAX_DELAY = 2000;
+  private readonly SMART_RAPID_THRESHOLD = 4;
 
   /**
    * 构造函数
@@ -114,8 +116,7 @@ export class PreviewModeController {
         break;
 
       case "smart":
-        // 智能模式暂未实现，默认使用延迟模式
-        this.scheduleDelayedUpdate();
+        this.scheduleSmartUpdate();
         break;
 
       default:
@@ -177,6 +178,39 @@ export class PreviewModeController {
     }, this.delay);
 
     logger.warn('Scheduled delayed update in ${this.delay}ms');
+  }
+
+  private scheduleSmartUpdate(): void {
+    const now = Date.now();
+    this.changeTimestamps.push(now);
+    this.changeTimestamps = this.changeTimestamps.filter(
+      (t) => now - t < this.SMART_WINDOW
+    );
+
+    const recentCount = this.changeTimestamps.length;
+    let adaptiveDelay: number;
+
+    if (recentCount >= this.SMART_RAPID_THRESHOLD) {
+      const ratio = Math.min(
+        (recentCount - this.SMART_RAPID_THRESHOLD) / this.SMART_RAPID_THRESHOLD,
+        1,
+      );
+      adaptiveDelay =
+        this.SMART_MIN_DELAY +
+        ratio * (this.SMART_MAX_DELAY - this.SMART_MIN_DELAY);
+    } else {
+      adaptiveDelay = this.SMART_MIN_DELAY;
+    }
+
+    this.clearPendingUpdate();
+
+    this.delayTimer = setTimeout(() => {
+      this.delayTimer = null;
+      this.triggerImmediateUpdate();
+      this.changeTimestamps = [];
+    }, adaptiveDelay);
+
+    logger.warn('Smart mode: ${recentCount} changes in ${this.SMART_WINDOW}ms, delay=${adaptiveDelay.toFixed(0)}ms');
   }
 
   /**

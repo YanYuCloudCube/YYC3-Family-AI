@@ -12,7 +12,7 @@
  * @tags: ui,snapshot,manager,panel
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Camera,
   _Clock,
@@ -25,11 +25,14 @@ import {
   FileText,
   Calendar,
   Info,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import { usePreviewStore } from "./stores/usePreviewStore";
 import { useFileStore } from "./FileStore";
 import type { Snapshot, SnapshotComparison } from "./SnapshotManager";
 import SnapshotDiffModal from "./SnapshotDiffModal";
+import { confirmDialog } from "./stores/useConfirmStore";
 
 // ================================================================
 // SnapshotManagerPanel — 快照管理面板组件
@@ -62,6 +65,11 @@ export function SnapshotManagerPanel({
   const [comparison, setComparison] = useState<SnapshotComparison | null>(null);
   const [newSnapshotLabel, setNewSnapshotLabel] = useState("");
   const [showCreateInput, setShowCreateInput] = useState(false);
+  const [restoringId, setRestoringId] = useState<string | null>(null);
+  const [restoreResult, setRestoreResult] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   const {
     initSnapshotManager,
@@ -70,6 +78,7 @@ export function SnapshotManagerPanel({
     deleteProjectSnapshot,
     compareProjectSnapshots,
     getSnapshotStorageStats,
+    restoreProjectSnapshot,
   } = usePreviewStore();
 
   const { files } = useFileStore();
@@ -102,9 +111,38 @@ export function SnapshotManagerPanel({
     }
   };
 
-  // 删除快照
-  const handleDeleteSnapshot = (id: string) => {
-    if (confirm("确定要删除这个快照吗？")) {
+  const handleRestoreSnapshot = useCallback(
+    async (id: string, label: string) => {
+      setRestoringId(id);
+      setRestoreResult(null);
+      try {
+        const result = await restoreProjectSnapshot(id);
+        if (result.success) {
+          setRestoreResult({
+            success: true,
+            message: `已恢复快照「${label}」(${result.restoredFiles.length} 个文件)`,
+          });
+        } else {
+          setRestoreResult({
+            success: false,
+            message: `恢复失败：${result.error || "快照不存在"}`,
+          });
+        }
+      } catch (err) {
+        setRestoreResult({
+          success: false,
+          message: `恢复异常：${err instanceof Error ? err.message : "未知错误"}`,
+        });
+      } finally {
+        setRestoringId(null);
+        setTimeout(() => setRestoreResult(null), 4000);
+      }
+    },
+    [restoreProjectSnapshot],
+  );
+
+  const handleDeleteSnapshot = async (id: string) => {
+    if (await confirmDialog("确定要删除这个快照吗？")) {
       deleteProjectSnapshot(id);
       refreshSnapshots();
       setSelectedSnapshots(selectedSnapshots.filter((sid) => sid !== id));
@@ -114,7 +152,11 @@ export function SnapshotManagerPanel({
   // 比较快照
   const handleCompareSnapshots = () => {
     if (selectedSnapshots.length !== 2) {
-      alert("请选择两个快照进行比较");
+      setRestoreResult({
+        success: false,
+        message: "请选择两个快照进行比较",
+      });
+      setTimeout(() => setRestoreResult(null), 3000);
       return;
     }
 
@@ -290,13 +332,17 @@ export function SnapshotManagerPanel({
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          // TODO: 实现快照恢复功能
-                          alert("快照恢复功能即将上线");
+                          handleRestoreSnapshot(snapshot.id, snapshot.label);
                         }}
-                        className="p-1 rounded hover:bg-slate-700 transition-colors"
+                        disabled={restoringId === snapshot.id}
+                        className="p-1 rounded hover:bg-slate-700 transition-colors disabled:opacity-40"
                         title="恢复快照"
                       >
-                        <RotateCcw className="w-4 h-4 text-slate-400 hover:text-blue-400" />
+                        {restoringId === snapshot.id ? (
+                          <RotateCcw className="w-4 h-4 text-blue-400 animate-spin" />
+                        ) : (
+                          <RotateCcw className="w-4 h-4 text-slate-400 hover:text-blue-400" />
+                        )}
                       </button>
                       <button
                         onClick={(e) => {
@@ -331,6 +377,23 @@ export function SnapshotManagerPanel({
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {restoreResult && (
+        <div
+          className={`mx-3 mb-2 flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-opacity ${
+            restoreResult.success
+              ? "bg-emerald-500/15 text-emerald-400"
+              : "bg-red-500/15 text-red-400"
+          }`}
+        >
+          {restoreResult.success ? (
+            <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+          ) : (
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          )}
+          <span>{restoreResult.message}</span>
         </div>
       )}
 

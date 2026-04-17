@@ -58,6 +58,7 @@ import {
 } from "lucide-react";
 import { PanelHeader } from "./PanelManager";
 import { sanitizer } from "./services/Sanitizer";
+import { usePromptStore } from "./stores/usePromptStore";
 
 // ── Types ──
 
@@ -192,28 +193,32 @@ export default function DocumentEditor({
 
   // ── Link insertion ──
 
-  const handleInsertLink = useCallback(() => {
+  const handleInsertLink = useCallback(async () => {
     if (!editor) return;
-    const url = window.prompt("输入链接 URL:");
+    const url = await usePromptStore.getState().openPrompt({
+      title: "插入链接",
+      message: "请输入链接 URL",
+      placeholder: "https://example.com",
+    });
     if (!url) return;
 
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-    } else {
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: url })
-        .run();
-    }
+    editor
+      .chain()
+      .focus()
+      .extendMarkRange("link")
+      .setLink({ href: url })
+      .run();
   }, [editor]);
 
   // ── Image insertion ──
 
-  const handleInsertImage = useCallback(() => {
+  const handleInsertImage = useCallback(async () => {
     if (!editor) return;
-    const url = window.prompt("输入图片 URL:");
+    const url = await usePromptStore.getState().openPrompt({
+      title: "插入图片",
+      message: "请输入图片 URL",
+      placeholder: "https://example.com/image.png",
+    });
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
     }

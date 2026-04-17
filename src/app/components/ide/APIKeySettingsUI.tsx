@@ -56,6 +56,8 @@ import {
   type ConnectivityTestResult,
 } from "./LLMService";
 import { logger } from "./services/Logger";
+import { useI18n } from "./i18n";
+import { translate } from "./i18n";
 
 interface OllamaDetectedModel {
   name: string;
@@ -134,12 +136,12 @@ function writeOC(h: string, m: OllamaDetectedModel[]) {
     );
   } catch { /* empty */ }
 }
-function fmtAge(t: number) {
-  const s = Math.floor((Date.now() - t) / 1000);
-  if (s < 60) return "刚刚";
+function fmtAge(ts: number) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return translate('model.justNow');
   const m = Math.floor(s / 60);
-  if (m < 60) return `${m  } 分钟前`;
-  return `${Math.floor(m / 60)  } 小时前`;
+  if (m < 60) return `${m} ${translate('common.minutesAgo')}`;
+  return `${Math.floor(m / 60)} ${translate('common.hoursAgo')}`;
 }
 const PK = "yyc3_model_perf_data",
   UK = "yyc3_model_usage_data";
@@ -197,6 +199,7 @@ export default function APIKeySettings() {
     setProviderApiKey,
   } = useModelRegistry();
 
+  const { t } = useI18n();
   logger.warn('[APIKeySettingsUI] Component render, showSettings:', showSettings);
   const [tab, setTab] = useState<"models" | "ollama" | "perf" | "usage">(
     "models",
@@ -328,7 +331,7 @@ export default function APIKeySettings() {
     if (testId) return;
     setTestId(model.id);
     let tp: import("./LLMService").ProviderConfig | undefined;
-    if (model.providerId === "custom" && model.endpoint) {
+    if ((model.providerId as string) === "custom" && model.endpoint) {
       const ep = model.endpoint,
         isOl =
           /\/api\/(chat|generate)\/?$/i.test(ep) || /localhost:11434/i.test(ep);
@@ -337,7 +340,7 @@ export default function APIKeySettings() {
         .replace(/\/chat\/completions\/?$/i, "")
         .replace(/\/v1\/?$/, "");
       tp = {
-        id: isOl ? "ollama" : "custom",
+        id: (isOl ? "ollama" : "custom") as import("./LLMService").ProviderId,
         name: model.provider || "Custom",
         nameEn: "Custom",
         baseUrl: base,
@@ -500,6 +503,7 @@ export default function APIKeySettings() {
           <button
             onClick={() => setShowSettings(false)}
             className="p-2 rounded-lg text-white/20 hover:text-white/60 hover:bg-white/[0.06]"
+            aria-label={t('common.close')}
           >
             <X className="w-4 h-4" />
           </button>
@@ -507,10 +511,10 @@ export default function APIKeySettings() {
         {/* Tabs */}
         <div className="flex gap-1 px-5 pt-3 pb-0">
           {[
-            { k: "models" as const, l: "模型列表", i: Bot },
+            { k: "models" as const, l: t('model.modelList'), i: Bot },
             { k: "ollama" as const, l: "Ollama", i: Server },
-            { k: "perf" as const, l: "性能对比", i: Activity },
-            { k: "usage" as const, l: "使用统计", i: BarChart3 },
+            { k: "perf" as const, l: t('model.perfCompare'), i: Activity },
+            { k: "usage" as const, l: t('model.usageStats'), i: BarChart3 },
           ].map(({ k, l, i: Ic }) => (
             <button
               key={k}
@@ -622,8 +626,9 @@ export default function APIKeySettings() {
           <button
             onClick={() => setShowSettings(false)}
             className="px-4 py-1.5 rounded-lg bg-white/[0.06] text-white/50 text-[11px] hover:bg-white/[0.1]"
+            aria-label={t('common.finish')}
           >
-            完成
+            {t('common.finish')}
           </button>
         </div>
       </div>
@@ -656,6 +661,7 @@ function ModelsTab({
   removeModel,
   getProviderApiKey,
 }: any) {
+  const { t } = useI18n();
   return (
     <div className="space-y-3">
       {activeModelId && (
@@ -846,7 +852,7 @@ function ModelsTab({
           <input
             value={nm.name}
             onChange={(e: any) => setNm({ ...nm, name: e.target.value })}
-            placeholder="模型名"
+            placeholder={t('model.modelName')}
             className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-[12px] text-white/80 placeholder:text-white/15 focus:outline-none"
           />
           <input
@@ -897,6 +903,7 @@ function OllamaTab({
   cache,
   cacheTs,
 }: any) {
+  const { t } = useI18n();
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 space-y-3">
@@ -906,7 +913,7 @@ function OllamaTab({
           <div
             className={`ml-auto text-[10px] ${olConn ? "text-emerald-400" : "text-white/25"}`}
           >
-            {olConn ? "已连接" : "未连接"}
+            {olConn ? t('model.connected') : t('model.disconnected')}
           </div>
         </div>
         <div className="flex gap-2">
@@ -919,17 +926,18 @@ function OllamaTab({
             onClick={() => doScan()}
             disabled={olScan}
             className="px-4 py-2 rounded-lg bg-orange-500/15 text-orange-400 text-[11px] disabled:opacity-50 border border-orange-500/20"
+            aria-label={t('model.detect')}
           >
             <RefreshCw
               className={`w-3.5 h-3.5 inline mr-1 ${olScan ? "animate-spin" : ""}`}
             />
-            {olScan ? "扫描中" : "检测"}
+            {olScan ? t('model.scanning') : t('model.detect')}
           </button>
         </div>
       </div>
       {olModels.length > 0 && (
         <div className="space-y-2">
-          {olModels.map((m: any) => {
+          {olModels.filter((m: any) => m && m.name).map((m: any) => {
             const imp = models.some(
               (x: any) => x.name === m.name && x.providerId === "ollama",
             );
@@ -943,7 +951,7 @@ function OllamaTab({
                 />
                 <div className="flex-1">
                   <div className="text-[12px] text-white/70">{m.name}</div>
-                  <div className="text-[10px] text-white/25">{m.size}</div>
+                  <div className="text-[10px] text-white/25">{m.size || ""}</div>
                 </div>
                 {imp ? (
                   <span className="text-[10px] text-white/20">
@@ -999,6 +1007,7 @@ function PerfTab({
   activeModelId,
   setActiveModelId,
 }: any) {
+  const { t } = useI18n();
   // 构建趋势折线图数据: 按时间排序, 每个时间点一行, 各模型延迟为列
   const chartData = useMemo(() => {
     const successRecords = (perf as PR[]).filter(
@@ -1107,25 +1116,25 @@ function PerfTab({
       <div className="grid grid-cols-4 gap-3">
         {[
           {
-            l: "总测试",
+            l: t('model.totalTests'),
             v: String(perf.length),
             i: Activity,
             c: "text-cyan-400",
           },
           {
-            l: "成功",
+            l: t('model.success'),
             v: String(perf.filter((r: PR) => r.success).length),
             i: CheckCircle2,
             c: "text-emerald-400",
           },
           {
-            l: "失败",
+            l: t('model.failed'),
             v: String(perf.filter((r: PR) => !r.success).length),
             i: XCircle,
             c: "text-red-400",
           },
           {
-            l: "平均延迟",
+            l: t('model.avgLatency'),
             v: (() => {
               const s = perf.filter((r: PR) => r.success);
               return s.length
@@ -1337,6 +1346,7 @@ function PerfTab({
 }
 
 function UsageTab({ usage }: any) {
+  const { t } = useI18n();
   const td = Object.values(usage) as UR[],
     tm = td.reduce((s, u) => s + u.messageCount, 0),
     tt = td.reduce((s, u) => s + u.estimatedTokens, 0);
@@ -1344,7 +1354,7 @@ function UsageTab({ usage }: any) {
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-3">
         {[
-          { l: "总消息", v: String(tm), i: BarChart3, c: "text-indigo-400" },
+          { l: t('model.totalMessages'), v: String(tm), i: BarChart3, c: "text-indigo-400" },
           {
             l: "Tokens",
             v: tt > 1000 ? `${(tt / 1000).toFixed(1)  }K` : String(tt),
@@ -1352,7 +1362,7 @@ function UsageTab({ usage }: any) {
             c: "text-amber-400",
           },
           {
-            l: "模型数",
+            l: t('model.modelCount'),
             v: String(Object.keys(usage).length),
             i: Bot,
             c: "text-cyan-400",

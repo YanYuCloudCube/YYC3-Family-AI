@@ -2,14 +2,15 @@
  * @file: left-panel/ModelSelector.tsx
  * @description: 模型选择器子组件 — 按 Provider 分组展示可用 AI 模型，
  *              支持快速切换、API Key 配置入口、连通状态指示
- * @author: YanYuCloudCube Team <admin@0379.email>
- * @version: v1.0.0
+ *              数据源统一来自 providers.ts（全局唯一真相源）
+ * @author: YanYuCloudCube Team <admin@039.email>
+ * @version: v2.0.0
  * @created: 2026-03-18
- * @updated: 2026-03-18
- * @status: stable
+ * @updated: 2026-04-16
+ * @status: production
  * @license: MIT
  * @copyright: Copyright (c) 2026 YanYuCloudCube Team
- * @tags: left-panel,model-selector,provider,ai
+ * @tags: left-panel,model-selector,provider,ai,unified
  */
 
 import { useState, useMemo } from "react";
@@ -20,20 +21,16 @@ import {
   Settings2,
 } from "lucide-react";
 import type { ProviderId } from "../LLMService";
+import { BUILTIN_PROVIDERS } from "../constants/providers";
 
-// ── Provider visual config ──
+// ── Provider visual config：从 providers.ts 动态生成 ──
 
 export const PROVIDER_ICONS: Record<
   ProviderId,
   { icon: typeof Server; color: string }
 > = {
   ollama: { icon: Server, color: "text-emerald-400" },
-  zhipu: { icon: Cloud, color: "text-blue-400" },
-  "zai-coding": { icon: Cloud, color: "text-indigo-400" },
-  dashscope: { icon: Cloud, color: "text-orange-400" },
-  openai: { icon: Cloud, color: "text-slate-300" },
-  deepseek: { icon: Cloud, color: "text-sky-400" },
-  custom: { icon: Cloud, color: "text-violet-400" },
+  "zai-plan": { icon: Cloud, color: "text-indigo-400" },
 };
 
 // ── Types ──
@@ -94,27 +91,6 @@ export default function ModelSelector({
       }))
       .filter((g) => g.models.length > 0);
 
-    const customModels = models.filter((m) => m.providerId === "custom");
-    if (
-      customModels.length > 0 &&
-      !grouped.some((g) => g.provider.id === "custom")
-    ) {
-      grouped.push({
-        provider: {
-          id: "custom" as const,
-          name: "自定义模型",
-          nameEn: "Custom",
-          baseUrl: "",
-          authType: "none",
-          models: [],
-          isLocal: false,
-          detected: false,
-          description: "",
-          docsUrl: "",
-        },
-        models: customModels,
-      });
-    }
     return grouped;
   }, [models, providers]);
 

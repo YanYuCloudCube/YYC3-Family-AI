@@ -19,8 +19,10 @@ import { getLanguageFromPath } from "./fileData";
 import { useThemeStore } from "./stores/useThemeStore";
 import { useScrollSyncStore } from "./stores/useScrollSyncStore";
 import { usePreviewStore } from "./stores/usePreviewStore";
+import { useEditorRegistry } from "./stores/useEditorRegistry";
 import { errorReporting } from "./services/ErrorReportingService";
 import { configureMonacoEnvironment } from "./MonacoWorkerManager";
+import { registerAIInlineCompletionProvider } from "./services/AICompletionService";
 
 // Configure Monaco to use local resources instead of CDN
 loader.config({ monaco });
@@ -203,8 +205,12 @@ export default function MonacoWrapper({
   const monacoRef = useRef<any>(null);
   const scrollDisposableRef = useRef<any>(null);
   const cursorDisposableRef = useRef<any>(null);
+  const aiCompletionDisposableRef = useRef<any>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { isCyber } = useThemeStore();
+
+  const registerEditor = useEditorRegistry((s) => s.registerEditor);
+  const unregisterEditor = useEditorRegistry((s) => s.unregisterEditor);
 
   // Scroll sync stores
   const scrollSyncEnabled = usePreviewStore((s) => s.scrollSyncEnabled);
@@ -223,6 +229,20 @@ export default function MonacoWrapper({
         defineNavyTheme(monaco);
         defineCyberpunkTheme(monaco);
         monaco.editor.setTheme(isCyber ? CYBER_THEME_NAME : NAVY_THEME_NAME);
+
+        registerEditor(filePath, {
+          revealLine: (line, column) => {
+            editor.revealLineInCenter(line);
+            if (column) {
+              editor.setPosition({ lineNumber: line, column });
+            }
+          },
+          getPosition: () => {
+            const pos = editor.getPosition();
+            return pos ? { line: pos.lineNumber, column: pos.column } : null;
+          },
+          focus: () => editor.focus(),
+        });
 
         // Additional editor configurations
         editor.updateOptions({
@@ -261,6 +281,10 @@ export default function MonacoWrapper({
             }, 2000);
           },
         );
+
+        // ── AI Inline Completion Provider ──
+        aiCompletionDisposableRef.current?.dispose();
+        aiCompletionDisposableRef.current = registerAIInlineCompletionProvider(monaco);
       } catch (error) {
         errorReporting.captureError(error, {
           category: "editor",
@@ -274,6 +298,15 @@ export default function MonacoWrapper({
     },
     [isCyber, filePath],
   );
+
+  // ── Editor Registry: cleanup on unmount ──
+  useEffect(() => {
+    return () => {
+      unregisterEditor(filePath);
+      aiCompletionDisposableRef.current?.dispose();
+      aiCompletionDisposableRef.current = null;
+    };
+  }, [filePath, unregisterEditor]);
 
   // ── Scroll Sync: Editor → Preview ──
   // Attach/detach scroll listener based on scrollSyncEnabled

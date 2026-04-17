@@ -54,9 +54,10 @@ import {
   Send,
 } from "lucide-react"
 import { PanelHeader } from "./PanelManager"
-import { type ProviderId, PROVIDER_CONFIGS } from "./LLMService"
+import { type ProviderId, getProviderConfigs } from "./LLMService"
 import { useMemoryStore } from "./stores/useMemoryStore"
 import { useMultiAgentDispatch, type PipelineStage, type AgentRole as PipelineAgentRole, type AgentResult } from "./hooks/useMultiAgentDispatch"
+import { useI18n } from "./i18n"
 
 // ── Types ──
 
@@ -107,22 +108,22 @@ interface ScheduledTask {
 // ── Constants ──
 
 const ROLE_CONFIG: Record<AgentRole, { label: string; color: string; bgColor: string; borderColor: string; icon: typeof Brain }> = {
-  planner: { label: "规划智能体", color: "text-blue-400", bgColor: "bg-blue-500/15", borderColor: "border-blue-500/25", icon: Brain },
-  coder: { label: "编码智能体", color: "text-emerald-400", bgColor: "bg-emerald-500/15", borderColor: "border-emerald-500/25", icon: Code2 },
-  tester: { label: "测试智能体", color: "text-amber-400", bgColor: "bg-amber-500/15", borderColor: "border-amber-500/25", icon: TestTube2 },
-  reviewer: { label: "评审智能体", color: "text-violet-400", bgColor: "bg-violet-500/15", borderColor: "border-violet-500/25", icon: Eye },
+  planner: { label: "agent.planner", color: "text-blue-400", bgColor: "bg-blue-500/15", borderColor: "border-blue-500/25", icon: Brain },
+  coder: { label: "agent.coder", color: "text-emerald-400", bgColor: "bg-emerald-500/15", borderColor: "border-emerald-500/25", icon: Code2 },
+  tester: { label: "agent.tester", color: "text-amber-400", bgColor: "bg-amber-500/15", borderColor: "border-amber-500/25", icon: TestTube2 },
+  reviewer: { label: "agent.reviewer", color: "text-violet-400", bgColor: "bg-violet-500/15", borderColor: "border-violet-500/25", icon: Eye },
 }
 
 const STATUS_CONFIG: Record<AgentStatus, { label: string; color: string; bgColor: string }> = {
-  idle: { label: "空闲", color: "text-slate-500", bgColor: "bg-slate-500/20" },
-  running: { label: "运行中", color: "text-blue-400", bgColor: "bg-blue-500/20" },
-  waiting: { label: "等待中", color: "text-amber-400", bgColor: "bg-amber-500/20" },
-  completed: { label: "已完成", color: "text-emerald-400", bgColor: "bg-emerald-500/20" },
-  error: { label: "错误", color: "text-red-400", bgColor: "bg-red-500/20" },
+  idle: { label: "agent.idle", color: "text-slate-500", bgColor: "bg-slate-500/20" },
+  running: { label: "agent.running", color: "text-blue-400", bgColor: "bg-blue-500/20" },
+  waiting: { label: "agent.waiting", color: "text-amber-400", bgColor: "bg-amber-500/20" },
+  completed: { label: "agent.completed", color: "text-emerald-400", bgColor: "bg-emerald-500/20" },
+  error: { label: "agent.errorStatus", color: "text-red-400", bgColor: "bg-red-500/20" },
 }
 
 const STAGE_LABELS: Record<TaskStage, string> = {
-  analysis: "分析", planning: "规划", coding: "编码", testing: "测试", review: "评审", complete: "完成",
+  analysis: "agent.analysis", planning: "agent.planning", coding: "agent.coding", testing: "agent.testing", review: "agent.review", complete: "agent.complete",
 }
 
 // ── Mock Data ──
@@ -147,6 +148,7 @@ const MOCK_MESSAGES: AgentMessage[] = [
 type TabId = "status" | "flow" | "graph" | "queue" | "memory" | "preview"
 
 function AgentCard({ agent, selected, onClick }: { agent: Agent; selected: boolean; onClick: () => void }) {
+  const { t } = useI18n()
   const cfg = ROLE_CONFIG[agent.role]
   const st = STATUS_CONFIG[agent.status]
   const Icon = cfg.icon
@@ -166,9 +168,9 @@ function AgentCard({ agent, selected, onClick }: { agent: Agent; selected: boole
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="text-[0.68rem] text-white/80 truncate">{cfg.label}</span>
+            <span className="text-[0.68rem] text-white/80 truncate">{t(cfg.label)}</span>
             <span className={`text-[0.5rem] px-1 py-0.5 rounded ${st.bgColor} ${st.color}`}>
-              {st.label}
+              {t(st.label)}
             </span>
           </div>
           <p className="text-[0.58rem] text-white/30 truncate mt-0.5">{agent.currentTask}</p>
@@ -203,6 +205,7 @@ function AgentCard({ agent, selected, onClick }: { agent: Agent; selected: boole
 }
 
 function AgentDetail({ agent }: { agent: Agent }) {
+  const { t } = useI18n()
   const cfg = ROLE_CONFIG[agent.role]
 
   return (
@@ -225,7 +228,7 @@ function AgentDetail({ agent }: { agent: Agent }) {
         <div className="rounded-lg bg-white/[0.03] border border-white/[0.06] p-2">
           <div className="text-[0.5rem] text-white/25 mb-0.5">当前状态</div>
           <div className={`text-[0.82rem] ${STATUS_CONFIG[agent.status].color}`}>
-            {STATUS_CONFIG[agent.status].label}
+            {t(STATUS_CONFIG[agent.status].label)}
           </div>
         </div>
       </div>
@@ -234,13 +237,13 @@ function AgentDetail({ agent }: { agent: Agent }) {
       <div className="flex items-center gap-1">
         <button className={`flex items-center gap-1 px-2 py-1 rounded text-[0.58rem] ${cfg.bgColor} ${cfg.color} border ${cfg.borderColor} hover:brightness-110 transition-all`}>
           {agent.status === "running" ? <Pause className="w-2.5 h-2.5" /> : <Play className="w-2.5 h-2.5" />}
-          {agent.status === "running" ? "暂停" : "启动"}
+          {agent.status === "running" ? t('agent.pause') : t('agent.start')}
         </button>
         <button className="flex items-center gap-1 px-2 py-1 rounded text-[0.58rem] text-white/30 hover:text-white/50 hover:bg-white/[0.04] transition-all">
-          <RotateCcw className="w-2.5 h-2.5" /> 重启
+          <RotateCcw className="w-2.5 h-2.5" /> {t('common.restart')}
         </button>
         <button className="flex items-center gap-1 px-2 py-1 rounded text-[0.58rem] text-white/30 hover:text-white/50 hover:bg-white/[0.04] transition-all">
-          <MessageSquare className="w-2.5 h-2.5" /> 消息
+          <MessageSquare className="w-2.5 h-2.5" /> {t('common.messages')}
         </button>
       </div>
     </div>
@@ -248,6 +251,7 @@ function AgentDetail({ agent }: { agent: Agent }) {
 }
 
 function TaskFlowView({ flow }: { flow: TaskFlowNode[] }) {
+  const { t } = useI18n()
   return (
     <div className="px-3 py-3">
       {/* Overall progress */}
@@ -294,11 +298,11 @@ function TaskFlowView({ flow }: { flow: TaskFlowNode[] }) {
                   isCompleted ? "text-emerald-400" :
                   isError ? "text-red-400" : "text-white/25"
                 }`}>
-                  {STAGE_LABELS[node.stage]}
+                  {t(STAGE_LABELS[node.stage])}
                 </span>
                 {agentCfg && (
                   <span className={`text-[0.45rem] px-1 py-0.5 rounded ${agentCfg.bgColor} ${agentCfg.color}`}>
-                    {agentCfg.label.replace("智能体", "")}
+                    {t(agentCfg.label).replace(t('agent.planner').replace('Agent', ''), '')}
                   </span>
                 )}
                 {node.duration && (
@@ -324,6 +328,7 @@ function TaskFlowView({ flow }: { flow: TaskFlowNode[] }) {
 }
 
 function CollaborationGraph({ agents, messages }: { agents: Agent[]; messages: AgentMessage[] }) {
+  const { t } = useI18n()
   const canvasRef = useRef<HTMLDivElement>(null)
 
   // Simple circular layout for 4 agents + orchestrator
@@ -417,7 +422,7 @@ function CollaborationGraph({ agents, messages }: { agents: Agent[]; messages: A
           return (
             <div key={msg.id} className="flex items-center gap-1.5 px-2 py-1 rounded bg-white/[0.02]">
               <span className={`text-[0.48rem] px-1 py-0.5 rounded ${fromCfg.bgColor} ${fromCfg.color}`}>
-                {fromCfg.label.replace("智能体", "")}
+                {t(fromCfg.label).replace(/Agent$/i, '').trim()}
               </span>
               <ArrowRight className="w-2.5 h-2.5 text-white/15 flex-shrink-0" />
               <span className="text-[0.52rem] text-white/30 truncate flex-1">{msg.content}</span>
@@ -433,6 +438,7 @@ function CollaborationGraph({ agents, messages }: { agents: Agent[]; messages: A
 }
 
 function TaskQueue({ tasks }: { tasks: ScheduledTask[] }) {
+  const { t } = useI18n()
   const priorityColors: Record<string, string> = {
     high: "bg-red-500/20 text-red-400 border-red-500/20",
     medium: "bg-amber-500/20 text-amber-400 border-amber-500/20",
@@ -475,7 +481,7 @@ function TaskQueue({ tasks }: { tasks: ScheduledTask[] }) {
         </div>
         <div className="flex items-center gap-2 mt-1.5">
           <span className={`text-[0.48rem] px-1 py-0.5 rounded ${agentCfg.bgColor} ${agentCfg.color}`}>
-            {agentCfg.label.replace("智能体", "")}
+            {t(agentCfg.label).replace(/Agent$/i, '').trim()}
           </span>
           <div className="flex-1 h-0.5 bg-white/[0.06] rounded-full overflow-hidden">
             <div
@@ -530,6 +536,7 @@ function TaskQueue({ tasks }: { tasks: ScheduledTask[] }) {
 // ── Main Component ──
 
 export default function MultiAgentPanel({ nodeId }: { nodeId: string }) {
+  const { t } = useI18n()
   const [activeTab, setActiveTab] = useState<TabId>("status")
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
   const [tasks] = useState(INITIAL_TASKS)
@@ -542,10 +549,10 @@ export default function MultiAgentPanel({ nodeId }: { nodeId: string }) {
   // ── Derive Agent States from Pipeline ──
   const agents = useMemo<Agent[]>(() => {
     const baseAgents: Agent[] = [
-      { id: "a1", role: "planner", name: "Planner Agent", status: "idle", currentTask: "待分配", progress: 0, tasksCompleted: 12, avgTime: "2.3s", successRate: 95, messages: [] },
-      { id: "a2", role: "coder", name: "Coder Agent", status: "idle", currentTask: "待分配", progress: 0, tasksCompleted: 28, avgTime: "8.5s", successRate: 91, messages: [] },
-      { id: "a3", role: "tester", name: "Tester Agent", status: "idle", currentTask: "待分配", progress: 0, tasksCompleted: 15, avgTime: "4.1s", successRate: 88, messages: [] },
-      { id: "a4", role: "reviewer", name: "Reviewer Agent", status: "idle", currentTask: "待分配", progress: 0, tasksCompleted: 9, avgTime: "3.7s", successRate: 97, messages: [] },
+      { id: "a1", role: "planner", name: "Planner Agent", status: "idle", currentTask: t('agent.pendingAssignment'), progress: 0, tasksCompleted: 12, avgTime: "2.3s", successRate: 95, messages: [] },
+      { id: "a2", role: "coder", name: "Coder Agent", status: "idle", currentTask: t('agent.pendingAssignment'), progress: 0, tasksCompleted: 28, avgTime: "8.5s", successRate: 91, messages: [] },
+      { id: "a3", role: "tester", name: "Tester Agent", status: "idle", currentTask: t('agent.pendingAssignment'), progress: 0, tasksCompleted: 15, avgTime: "4.1s", successRate: 88, messages: [] },
+      { id: "a4", role: "reviewer", name: "Reviewer Agent", status: "idle", currentTask: t('agent.pendingAssignment'), progress: 0, tasksCompleted: 9, avgTime: "3.7s", successRate: 97, messages: [] },
     ]
 
     const stageAgentMap: Record<PipelineStage, { role: AgentRole; idx: number }> = {
@@ -566,17 +573,17 @@ export default function MultiAgentPanel({ nodeId }: { nodeId: string }) {
       if (result?.success) {
         agent.status = "completed"
         agent.progress = 100
-        agent.currentTask = "任务完成"
+        agent.currentTask = t('agent.taskComplete')
       } else if (idx === currentIdx) {
         agent.status = pipelineState.isStreaming ? "running" : "waiting"
         agent.progress = pipelineState.isStreaming ? 50 : 25
         agent.currentTask = pipelineState.isStreaming
-          ? `正在${stage === 'planning' ? '规划' : stage === 'coding' ? '编码' : stage === 'testing' ? '测试' : '评审'}...`
-          : "等待执行"
+          ? `${t(STAGE_LABELS[stage === 'planning' ? 'planning' : stage === 'coding' ? 'coding' : stage === 'testing' ? 'testing' : 'review'])}...`
+          : t('agent.waitingExecution')
       } else if (idx > currentIdx && stage !== 'idle' && stage !== 'completed' && stage !== 'error') {
         agent.status = "waiting"
         agent.progress = 0
-        agent.currentTask = "等待上游完成"
+        agent.currentTask = t('agent.waitingUpstream')
       }
     })
 
@@ -586,7 +593,7 @@ export default function MultiAgentPanel({ nodeId }: { nodeId: string }) {
         const idx = baseAgents.findIndex(a => a.role === failedResult.role)
         if (idx >= 0) {
           baseAgents[idx].status = "error"
-          baseAgents[idx].currentTask = pipelineState.error || "执行失败"
+          baseAgents[idx].currentTask = pipelineState.error || t('agent.executionFailed')
         }
       }
     }
@@ -641,12 +648,12 @@ export default function MultiAgentPanel({ nodeId }: { nodeId: string }) {
 
   const selected = agents.find(a => a.id === selectedAgent)
   const tabs: { id: TabId; label: string; icon: typeof Users }[] = [
-    { id: "status", label: "状态", icon: Users },
-    { id: "flow", label: "流程", icon: GitBranch },
-    { id: "graph", label: "协作", icon: Activity },
-    { id: "queue", label: "队列", icon: BarChart3 },
-    { id: "memory", label: "记忆", icon: Database },
-    { id: "preview", label: "预览", icon: FileCode2 },
+    { id: "status", label: t('agent.status'), icon: Users },
+    { id: "flow", label: t('agent.flow'), icon: GitBranch },
+    { id: "graph", label: t('agent.collaboration'), icon: Activity },
+    { id: "queue", label: t('agent.queue'), icon: BarChart3 },
+    { id: "memory", label: t('agent.memory'), icon: Database },
+    { id: "preview", label: t('agent.preview'), icon: FileCode2 },
   ]
 
   const handleToggleRun = useCallback(() => {
@@ -667,14 +674,14 @@ export default function MultiAgentPanel({ nodeId }: { nodeId: string }) {
           <button
             onClick={handleToggleRun}
             className="w-5 h-5 rounded flex items-center justify-center hover:bg-white/5"
-            title={isRunning ? "暂停" : "运行"}
+            title={isRunning ? t('agent.pause') : t('agent.start')}
           >
             {isRunning ? <Pause className="w-3 h-3 text-amber-400" /> : <Play className="w-3 h-3 text-emerald-400" />}
           </button>
           <button
             onClick={resetPipeline}
             className="w-5 h-5 rounded flex items-center justify-center hover:bg-white/5"
-            title="重置"
+            title={t('common.reset')}
           >
             <RotateCcw className="w-3 h-3 text-slate-600" />
           </button>
@@ -877,6 +884,7 @@ const CATEGORY_LABELS: Record<string, { label: string; color: string }> = {
 }
 
 function PersistentMemoryView() {
+  const { t } = useI18n()
   const {
     memories, initialized, loading, initialize,
     search, semanticSearch, togglePin, removeMemory, addMemory,
@@ -1058,7 +1066,7 @@ function PersistentMemoryView() {
               </div>
               <p className="text-[0.52rem] text-white/30 line-clamp-2 mb-1.5">{mem.summary}</p>
               <div className="flex items-center gap-2 text-[0.45rem] text-white/15">
-                <span className={`px-1 py-0.5 rounded ${agentCfg.bgColor} ${agentCfg.color}`}>{agentCfg.label.replace("智能体", "")}</span>
+                <span className={`px-1 py-0.5 rounded ${agentCfg.bgColor} ${agentCfg.color}`}>{t(agentCfg.label).replace(/Agent$/i, '').trim()}</span>
                 <span>相关度 {mem.relevance}%</span>
                 <span>引用 {mem.usageCount} 次</span>
                 {mem.tags && mem.tags.length > 0 && (
@@ -1121,6 +1129,7 @@ const MOCK_CHANGES: CodeChange[] = [
 ]
 
 function CodePreviewView() {
+  const { t } = useI18n()
   const [changes, setChanges] = useState(MOCK_CHANGES)
   const [selectedId, setSelectedId] = useState<string | null>("ch1")
 
@@ -1171,7 +1180,7 @@ function CodePreviewView() {
                   {change.status === "rejected" && <XCircle className="w-3 h-3 text-red-400 flex-shrink-0" />}
                 </div>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <span className={`text-[0.42rem] px-1 py-0.5 rounded ${agentCfg.bgColor} ${agentCfg.color}`}>{agentCfg.label.replace("智能体", "")}</span>
+                  <span className={`text-[0.42rem] px-1 py-0.5 rounded ${agentCfg.bgColor} ${agentCfg.color}`}>{t(agentCfg.label).replace(/Agent$/i, '').trim()}</span>
                   <span className="text-[0.42rem] text-white/15">{change.language}</span>
                   <span className="text-[0.42rem] text-white/15">置信度 {change.confidence}%</span>
                 </div>

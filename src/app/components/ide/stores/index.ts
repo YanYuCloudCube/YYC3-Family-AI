@@ -176,3 +176,17 @@ export { useIPCStore } from "./useIPCStore";
 export { useThemeStore } from "./useThemeStore";
 
 export type { ThemeId, ThemeColors, ThemeState } from "./useThemeStore";
+
+export { useEditorRegistry } from "./useEditorRegistry";
+
+export type { EditorHandle } from "./useEditorRegistry";
+
+export { useToastStore, toast, toastSuccess, toastError, toastWarning, toastInfo } from "./useToastStore";
+
+export type { ToastType, Toast } from "./useToastStore";
+
+export { useConfirmStore, confirmDialog, confirmDanger, confirmWarning } from "./useConfirmStore";
+
+export type { ConfirmDialog } from "./useConfirmStore";
+
+export { usePromptStore } from "./usePromptStore";

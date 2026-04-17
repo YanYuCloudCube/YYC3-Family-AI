@@ -8,6 +8,7 @@
  */
 
 import DOMPurify from 'dompurify'
+import { logger } from './Logger'
 
 interface SanitizeOptions {
   ALLOWED_TAGS?: string[]
@@ -47,7 +48,7 @@ class SanitizerService {
         FORCE_BODY: true,
       })
     } catch (error) {
-      console.warn('[Sanitizer] DOMPurify sanitize failed:', error)
+      logger.warn('DOMPurify sanitize failed:', error, 'Sanitizer')
       return this.escapeHtml(dirty)
     }
   }
@@ -61,7 +62,7 @@ class SanitizerService {
         ALLOWED_ATTR: [],
       })
     } catch (error) {
-      console.warn('[Sanitizer] DOMPurify sanitizeStrict failed:', error)
+      logger.warn('DOMPurify sanitizeStrict failed:', error, 'Sanitizer')
       return this.escapeHtml(dirty)
     }
   }

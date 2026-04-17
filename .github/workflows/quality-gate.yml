@@ -1,0 +1,354 @@
+name: 🚦 YYC³ Quality Gate - CI/CD门禁系统
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+concurrency:
+  group: quality-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+  # YYC³ 质量门禁阈值配置
+  COVERAGE_LINES_THRESHOLD: 65
+  COVERAGE_FUNCTIONS_THRESHOLD: 60
+  COVERAGE_BRANCHES_THRESHOLD: 55
+  COVERAGE_STATEMENTS_THRESHOLD: 62
+  TEST_PASS_RATE_THRESHOLD: 95
+  MAX_BUILD_TIME_MINUTES: 10
+
+jobs:
+  quality-gate:
+    name: 🚦 Quality Gate Check
+    runs-on: ubuntu-latest
+    outputs:
+      coverage_passed: ${{ steps.coverage_check.outputs.passed }}
+      test_passed: ${{ steps.test_check.outputs.passed }}
+      lint_passed: ${{ steps.lint_check.outputs.passed }}
+      security_passed: ${{ steps.security_check.outputs.passed }}
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: 🔧 Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📦 Install Dependencies
+        id: install
+        run: |
+          START_TIME=$(date +%s)
+          pnpm install --frozen-lockfile
+          END_TIME=$(date +%s)
+          INSTALL_TIME=$(( (END_TIME - START_TIME) / 60 ))
+          echo "install_time=${INSTALL_TIME}" >> $GITHUB_OUTPUT
+          echo "✅ Dependencies installed in ${INSTALL_TIME} minute(s)"
+
+      - name: 🔍 Lint Check (ESLint + Prettier)
+        id: lint_check
+        continue-on-error: false
+        run: |
+          echo "🔍 Running ESLint..."
+          pnpm lint --format=json > eslint-report.json 2>&1 || true
+          
+          if [ -f eslint-report.json ]; then
+            ERRORS=$(cat eslint-report.json | jq '.[].errorCount // 0' | awk '{s+=$1} END {print s}')
+            WARNINGS=$(cat eslint-report.json | jq '.[].warningCount // 0' | awk '{s+=$1} END {print s}')
+            echo "lint_errors=${ERRORS}" >> $GITHUB_OUTPUT
+            echo "lint_warnings=${WARNINGS}" >> $GITHUB_OUTPUT
+            
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "passed=false" >> $GITHUB_OUTPUT
+              echo "❌ Lint failed with ${ERRORS} error(s)"
+              exit 1
+            else
+              echo "passed=true" >> $GITHUB_OUTPUT
+              echo "✅ Lint passed (${WARNINGS} warning(s))"
+            fi
+          else
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "lint_errors=0" >> $GITHUB_OUTPUT
+            echo "lint_warnings=0" >> $GITHUB_OUTPUT
+            echo "✅ Lint passed"
+          fi
+
+      - name: 🔤 TypeScript Type Check
+        id: typecheck
+        continue-on-error: false
+        run: |
+          echo "🔤 Running TypeScript type check..."
+          pnpm typecheck --noEmit 2>&1 | tee typecheck-output.txt
+          
+          if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            echo "typecheck_passed=true" >> $GITHUB_OUTPUT
+            echo "✅ Type check passed"
+          else
+            echo "typecheck_passed=false" >> $GITHUB_OUTPUT
+            echo "❌ Type check failed"
+            exit 1
+          fi
+
+      - name: 🧪 Unit Tests Execution
+        id: test_check
+        continue-on-error: false
+        run: |
+          echo "🧪 Running unit tests..."
+          pnpm vitest run --ci --reporter=verbose --reporter=json --outputFile=test-results.json 2>&1 | tee test-output.txt
+          
+          if [ -f test-results.json ]; then
+            TOTAL=$(cat test-results.json | jq '.numTotalTests')
+            PASSED=$(cat test-results.json | jq '.numPassedTests')
+            FAILED=$(cat test-results.json | jq '.numFailedTests')
+            
+            if [ "$TOTAL" -gt 0 ] && [ -n "$PASSED" ]; then
+              PASS_RATE=$(( (PASSED * 100) / TOTAL ))
+              echo "total_tests=${TOTAL}" >> $GITHUB_OUTPUT
+              echo "passed_tests=${PASSED}" >> $GITHUB_OUTPUT
+              echo "failed_tests=${FAILED}" >> $GITHUB_OUTPUT
+              echo "pass_rate=${PASS_RATE}" >> $GITHUB_OUTPUT
+              
+              if [ "$PASS_RATE" -ge "${{ env.TEST_PASS_RATE_THRESHOLD }}" ]; then
+                echo "passed=true" >> $GITHUB_OUTPUT
+                echo "✅ Tests passed: ${PASSED}/${TOTAL} (${PASS_RATE}%)"
+              else
+                echo "passed=false" >> $GITHUB_OUTPUT
+                echo "❌ Test pass rate ${PASS_RATE}% is below threshold ${{ env.TEST_PASS_RATE_THRESHOLD }}%"
+                exit 1
+              fi
+            else
+              echo "⚠️ Could not parse test results"
+              echo "passed=false" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ Test execution failed or no results"
+            exit 1
+          fi
+
+      - name: 📊 Coverage Analysis & Gate Check
+        id: coverage_check
+        continue-on-error: false
+        run: |
+          echo "📊 Running coverage analysis..."
+          pnpm vitest run --coverage --coverage.reporter=json-summary --coverage.reporter=lcov 2>&1 | tee coverage-output.txt
+          
+          if [ -f coverage/coverage-summary.json ]; then
+            cat coverage/coverage-summary.json | jq '.' > coverage-summary-readable.json
+            
+            LINES_PCT=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+            FUNCTIONS_PCT=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')
+            BRANCHES_PCT=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')
+            STATEMENTS_PCT=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')
+            
+            echo "lines_coverage=${LINES_PCT}" >> $GITHUB_OUTPUT
+            echo "functions_coverage=${FUNCTIONS_PCT}" >> $GITHUB_OUTPUT
+            echo "branches_coverage=${BRANCHES_PCT}" >> $GITHUB_OUTPUT
+            echo "statements_coverage=${STATEMENTS_PCT}" >> $GITHUB_OUTPUT
+            
+            GATE_PASSED="true"
+            
+            echo ""
+            echo "📈 Coverage Report:"
+            echo "| Metric | Actual | Threshold | Status |"
+            echo "|--------|---------|-----------|--------|"
+            
+            if (( $(echo "$LINES_PCT < ${{ env.COVERAGE_LINES_THRESHOLD }}" | bc -l) )); then
+              echo "| Lines | ${LINES_PCT}% | ≥${{ env.COVERAGE_LINES_THRESHOLD }}% | ❌ FAIL |"
+              GATE_PASSED="false"
+            else
+              echo "| Lines | ${LINES_PCT}% | ≥${{ env.COVERAGE_LINES_THRESHOLD }}% | ✅ PASS |"
+            fi
+            
+            if (( $(echo "$FUNCTIONS_PCT < ${{ env.COVERAGE_FUNCTIONS_THRESHOLD }}" | bc -l) )); then
+              echo "| Functions | ${FUNCTIONS_PCT}% | ≥${{ env.COVERAGE_FUNCTIONS_THRESHOLD }}% | ❌ FAIL |"
+              GATE_PASSED="false"
+            else
+              echo "| Functions | ${FUNCTIONS_PCT}% | ≥${{ env.COVERAGE_FUNCTIONS_THRESHOLD }}% | ✅ PASS |"
+            fi
+            
+            if (( $(echo "$BRANCHES_PCT < ${{ env.COVERAGE_BRANCHES_THRESHOLD }}" | bc -l) )); then
+              echo "| Branches | ${BRANCHES_PCT}% | ≥${{ env.COVERAGE_BRANCHES_THRESHOLD }}% | ❌ FAIL |"
+              GATE_PASSED="false"
+            else
+              echo "| Branches | ${BRANCHES_PCT}% | ≥${{ env.COVERAGE_BRANCHES_THRESHOLD }}% | ✅ PASS |"
+            fi
+            
+            if (( $(echo "$STATEMENTS_PCT < ${{ env.COVERAGE_STATEMENTS_THRESHOLD }}" | bc -l) )); then
+              echo "| Statements | ${STATEMENTS_PCT}% | ≥${{ env.COVERAGE_STATEMENTS_THRESHOLD }}% | ❌ FAIL |"
+              GATE_PASSED="false"
+            else
+              echo "| Statements | ${STATEMENTS_PCT}% | ≥${{ env.COVERAGE_STATEMENTS_THRESHOLD }}% | ✅ PASS |"
+            fi
+            
+            echo "passed=${GATE_PASSED}" >> $GITHUB_OUTPUT
+            
+            if [ "$GATE_PASSED" = "true" ]; then
+              echo ""
+              echo "✅ Quality gate passed!"
+            else
+              echo ""
+              echo "❌ Quality gate failed! Coverage below threshold."
+              exit 1
+            fi
+          else
+            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "❌ Coverage report not generated"
+            exit 1
+          fi
+
+      - name: 🔒 Security Audit
+        id: security_check
+        continue-on-error: true
+        run: |
+          echo "🔒 Running security audit..."
+          pnpm audit --audit-level=moderate --json > security-audit.json 2>&1 || true
+          
+          if [ -f security-audit.json ]; then
+            VULNERABILITIES=$(cat security-audit.json | jq '.metadata.vulnerabilities.total // 0')
+            echo "vulnerabilities=${VULNERABILITIES}" >> $GITHUB_OUTPUT
+            
+            if [ "$VULNERABILITIES" -eq 0 ]; then
+              echo "passed=true" >> $GITHUB_OUTPUT
+              echo "✅ Security audit passed - no vulnerabilities found"
+            elif [ "$VULNERABILITIES" -le 5 ]; then
+              echo "passed=true" >> $GITHUB_OUTPUT
+              echo "⚠️ Security audit passed with ${VULNERABILITIES} low-severity issue(s)"
+            else
+              echo "passed=false" >> $GITHUB_OUTPUT
+              echo "❌ Security audit failed - ${VULNERABILITIES} vulnerabilities found"
+            fi
+          else
+            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "✅ Security audit completed"
+          fi
+
+      - name: 📝 Generate Quality Gate Report
+        if: always()
+        run: |
+          mkdir -p reports
+          
+          cat > reports/quality-gate-report.md << EOF
+          # 🚦 YYC³ Family AI - Quality Gate Report
+          
+          ## Build Information
+          - **Repository**: ${{ github.repository }}
+          - **Branch**: \`${{ github.ref_name }}\`
+          - **Commit**: \`${{ github.sha }}\`
+          - **Triggered by**: @${{ github.actor }}
+          - **Run ID**: ${{ github.run_id }}
+          - **Date**: $(date '+%Y-%m-%d %H:%M:%S UTC')
+          
+          ## Quality Gate Results
+          
+          | Check | Status | Details |
+          |-------|--------|---------|
+          | **Lint** | ${{ steps.lint_check.outputs.passed == 'true' && '✅ PASS' || '❌ FAIL' }} | ${{ steps.lint_check.outputs.lint_errors || 0 }} errors, ${{ steps.lint_check.outputs.lint_warnings || 0 }} warnings |
+          | **TypeScript** | ✅ PASS | Type checking completed |
+          | **Unit Tests** | ${{ steps.test_check.outputs.passed == 'true' && '✅ PASS' || '❌ FAIL' }} | ${{ steps.test_check.outputs.passed_tests || 0 }}/${{ steps.test_check.outputs.total_tests || 0 }} (${{ steps.test_check.outputs.pass_rate || 0 }}%) |
+          | **Coverage** | ${{ steps.coverage_check.outputs.passed == 'true' && '✅ PASS' || '❌ FAIL' }} | Lines: ${{ steps.coverage_check.outputs.lines_coverage || 'N/A' }}% |
+          | **Security** | ${{ steps.security_check.outputs.passed == 'true' && '✅ PASS' || '⚠️ WARNING' }} | ${{ steps.security_check.outputs.vulnerabilities || 0 }} vulnerability(ies) |
+          
+          ## Coverage Details
+          
+          | Metric | Coverage | Threshold | Status |
+          |--------|----------|-----------|--------|
+          | **Lines** | ${{ steps.coverage_check.outputs.lines_coverage || 'N/A' }}% | ≥${{ env.COVERAGE_LINES_THRESHOLD }}% | ${{ steps.coverage_check.outputs.lines_coverage >= env.COVERAGE_LINES_THRESHOLD && '✅' || '❌' }} |
+          | **Functions** | ${{ steps.coverage_check.outputs.functions_coverage || 'N/A' }}% | ≥${{ env.COVERAGE_FUNCTIONS_THRESHOLD }}% | ${{ steps.coverage_check.outputs.functions_coverage >= env.COVERAGE_FUNCTIONS_THRESHOLD && '✅' || '❌' }} |
+          | **Branches** | ${{ steps.coverage_check.outputs.branches_coverage || 'N/A' }}% | ≥${{ env.COVERAGE_BRANCHES_THRESHOLD }}% | ${{ steps.coverage_check.outputs.branches_coverage >= env.COVERAGE_BRANCHES_THRESHOLD && '✅' || '❌' }} |
+          | **Statements** | ${{ steps.coverage_check.outputs.statements_coverage || 'N/A' }}% | ≥${{ env.COVERAGE_STATEMENTS_THRESHOLD }}% | ${{ steps.coverage_check.outputs.statements_coverage >= env.COVERAGE_STATEMENTS_THRESHOLD && '✅' || '❌' }} |
+          
+          ## Overall Status
+          
+          ${{ steps.coverage_check.outputs.passed == 'true' && steps.test_check.outputs.passed == 'true' && '### ✅ All Quality Gates Passed!' || '### ❌ Some Quality Gates Failed!' }}
+          
+          ---
+          *Generated by YYC³ Quality Gate System*
+          EOF
+          
+          echo "✅ Quality gate report generated"
+
+      - name: 📤 Upload Reports as Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-gate-reports
+          path: |
+            reports/
+            coverage/
+            test-results.json
+            eslint-report.json
+          retention-days: 30
+
+  pr-quality-comment:
+    name: 💬 PR Quality Comment
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Download reports
+        uses: actions/download-artifact@v4
+        with:
+          name: quality-gate-reports
+          path: reports/
+
+      - name: Comment on PR
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          path: reports/quality-gate-report.md
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notification:
+    name: 🔔 Quality Notification
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    if: always() && (needs.quality-gate.result == 'failure' || needs.quality-gate.result == 'success')
+    
+    steps:
+      - name: Determine status
+        id: status
+        run: |
+          if [ "${{ needs.quality-gate.result }}" = "success" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "emoji=✅" >> $GITHUB_OUTPUT
+            echo "message=Quality gates passed!" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "emoji=❌" >> $GITHUB_OUTPUT
+            echo "message=Quality gates failed!" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Summary
+        run: |
+          echo "## ${{ steps.status.outputs.emoji }} YYC³ Quality Gate Result" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ${{ steps.status.outputs.message }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by**: @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Quality Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.quality-gate.outputs.lint_passed == 'true' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests | ${{ needs.quality-gate.outputs.test_passed == 'true' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Coverage | ${{ needs.quality-gate.outputs.coverage_passed == 'true' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security | ${{ needs.quality-gate.outputs.security_passed == 'true' && '✅ Pass' || '⚠️ Warning' }} |" >> $GITHUB_STEP_SUMMARY

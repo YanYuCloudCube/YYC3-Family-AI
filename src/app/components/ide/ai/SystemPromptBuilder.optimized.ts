@@ -14,6 +14,7 @@
  */
 
 import { type ProjectContext } from "./ContextCollector";
+import { logger } from "../services/Logger";
 
 // ── 意图类型 ──
 
@@ -379,7 +380,7 @@ export function clearAllCaches(): void {
   intentCache.clear();
   promptCache.clear();
   tokenEstimator.clearCache();
-  console.warn("[SystemPromptBuilder] All caches cleared");
+  logger.info("All caches cleared", undefined, "SystemPromptBuilder");
 }
 
 /**

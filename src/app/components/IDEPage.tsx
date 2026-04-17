@@ -13,7 +13,7 @@
  * @tags: ide,layout,panels,routing,dnd,preview,command-palette,minimap,floating,tab-groups,wave3
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useNavigate, useParams, useLocation } from "react-router";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -62,13 +62,36 @@ import TabGroupBar from "./ide/TabGroupBar";
 import { useSettingsSync } from "./ide/hooks/useSettingsSync";
 import QuickActionsBar from "./ide/QuickActionsBar";
 import { useQuickActionsStore } from "./ide/stores/useQuickActionsStore";
+import { ToastContainer } from "./ide/ToastContainer";
+import { ConfirmDialogContainer } from "./ide/ConfirmDialogContainer";
+import { PromptDialogContainer } from "./ide/PromptDialogContainer";
 import TaskBoardPanel from "./ide/TaskBoardPanel";
 import MultiInstancePanel from "./ide/MultiInstancePanel";
 import { useMultiInstanceSync } from "./ide/hooks/useMultiInstanceSync";
+import { useFileStore } from "./ide/FileStore";
+import { ALL_TEMPLATES } from "./TemplatesPage";
 
 // ── Multi-Instance Sync Bridge (must be inside FileStoreProvider) ──
 function MultiInstanceSyncBridge() {
   useMultiInstanceSync();
+  return null;
+}
+
+// ── Template Load Bridge (must be inside FileStoreProvider) ──
+function TemplateLoadBridge({ templateId, templateName }: { templateId?: string; templateName?: string }) {
+  const { loadTemplate } = useFileStore();
+  const loadedRef = useRef(false);
+
+  useEffect(() => {
+    if (!templateId || loadedRef.current) return;
+    loadedRef.current = true;
+
+    const tpl = ALL_TEMPLATES.find((t: { id: string }) => t.id === templateId);
+    if (tpl?.previewCode) {
+      loadTemplate(templateId, templateName || tpl.name, tpl.previewCode);
+    }
+  }, [templateId, templateName, loadTemplate]);
+
   return null;
 }
 
@@ -178,10 +201,23 @@ export default function IDEPage() {
               ? "数据可视化平台"
               : "我的项目";
 
+  const templateState = useMemo(() => {
+    const state = location.state as { template?: string; templateName?: string; mode?: string } | null;
+    return {
+      templateId: state?.template,
+      templateName: state?.templateName,
+      mode: state?.mode,
+    };
+  }, []);
+
+  const effectiveProjectName = useMemo(() => {
+    if (templateState.templateName) return templateState.templateName;
+    return projectName;
+  }, [projectName, templateState.templateName]);
+
   // Determine initial layout based on navigation mode from HomePage
   const initialLayout = useMemo(() => {
-    const state = location.state as { mode?: string } | null;
-    const mode = state?.mode || "designer";
+    const mode = templateState.mode || "designer";
     return LAYOUT_PRESETS[mode] || LAYOUT_PRESETS.default;
   }, []); // Only compute once on mount, ignore location changes
 
@@ -245,7 +281,7 @@ export default function IDEPage() {
   return (
     <DndProvider backend={HTML5Backend}>
       <WorkflowEventBusProvider>
-        <FileStoreProvider>
+        <FileStoreProvider skipIdbLoad={!!templateState.templateId}>
           <ModelRegistryProvider>
             <PanelManagerProvider
               renderPanel={renderPanel}
@@ -253,8 +289,9 @@ export default function IDEPage() {
             >
               <div className="ide-root size-full flex flex-col bg-[var(--ide-bg-deep)] overflow-hidden">
                 <MultiInstanceSyncBridge />
+                <TemplateLoadBridge templateId={templateState.templateId} templateName={templateState.templateName} />
                 <ConnectedTopBar
-                  projectName={projectName}
+                  projectName={effectiveProjectName}
                   onBack={handleBack}
                 />
                 <ViewSwitcher
@@ -304,6 +341,9 @@ export default function IDEPage() {
               {/* Floating panels rendered on top */}
               <FloatingPanelContainer renderPanel={renderPanel} />
               <QuickActionsBar />
+              <ToastContainer />
+              <ConfirmDialogContainer />
+              <PromptDialogContainer />
             </PanelManagerProvider>
           </ModelRegistryProvider>
         </FileStoreProvider>

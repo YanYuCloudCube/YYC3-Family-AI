@@ -25,7 +25,7 @@ import {
   testModelConnectivity,
   chatCompletion,
   extractCodeBlock,
-  PROVIDER_CONFIGS,
+  getProviderConfigs,
   type ProviderConfig,
   type ProviderId,
 } from "../app/components/ide/LLMService";
@@ -89,47 +89,110 @@ describe("API Key 管理", () => {
 });
 
 // ================================================================
-// 2. PROVIDER_CONFIGS 静态配置验证
+// 2. getProviderConfigs 静态配置验证
 // ================================================================
 
-describe("PROVIDER_CONFIGS 验证", () => {
-  it("包含所有 7 个 Provider", () => {
-    const ids = PROVIDER_CONFIGS.map((p) => p.id);
+describe("getProviderConfigs 验证", () => {
+  it("包含 2 个 Provider (zai-plan + ollama)", () => {
+    const configs = getProviderConfigs();
+    const ids = configs.map((p) => p.id);
+    expect(ids).toContain("zai-plan");
     expect(ids).toContain("ollama");
-    expect(ids).toContain("openai");
-    expect(ids).toContain("zhipu");
-    expect(ids).toContain("dashscope");
-    expect(ids).toContain("deepseek");
-    expect(ids).toContain("custom");
-    expect(PROVIDER_CONFIGS).toHaveLength(7);
+    expect(configs).toHaveLength(2);
   });
 
-  it("Ollama 为本地 provider、无需 auth", () => {
-    const ollama = PROVIDER_CONFIGS.find((p) => p.id === "ollama")!;
+  it("Ollama 为本地 provider、无需 auth、无预设模型", () => {
+    const configs = getProviderConfigs();
+    const ollama = configs.find((p) => p.id === "ollama")!;
     expect(ollama.isLocal).toBe(true);
     expect(ollama.authType).toBe("none");
-    expect(ollama.models).toHaveLength(0); // 动态获取
+    expect(ollama.models).toHaveLength(0); // 动态获取，无预设
   });
 
-  it("OpenAI 需要 bearer auth", () => {
-    const openai = PROVIDER_CONFIGS.find((p) => p.id === "openai")!;
-    expect(openai.authType).toBe("bearer");
-    expect(openai.isLocal).toBe(false);
-    expect(openai.models.length).toBeGreaterThan(0);
+  it("Zai-Plan 需要 bearer auth 且有 3 个模型", () => {
+    const configs = getProviderConfigs();
+    const zaiPlan = configs.find((p) => p.id === "zai-plan")!;
+    expect(zaiPlan.authType).toBe("bearer");
+    expect(zaiPlan.isLocal).toBe(false);
+    expect(zaiPlan.models.length).toBeGreaterThan(0);
+    expect(zaiPlan.models).toHaveLength(3); // GLM-5, GLM-5.1, GLM-4.7
   });
 
-  it("每个 cloud provider 的模型都有有效字段", () => {
-    const cloudProviders = PROVIDER_CONFIGS.filter(
-      (p) => !p.isLocal && p.id !== "custom",
-    );
-    for (const provider of cloudProviders) {
-      for (const model of provider.models) {
-        expect(model.id).toBeTruthy();
-        expect(model.name).toBeTruthy();
-        expect(["llm", "code", "vision", "embedding"]).toContain(model.type);
-        expect(model.maxTokens).toBeGreaterThan(0);
+  it("Zai-Plan 模型字段有效", () => {
+    const configs = getProviderConfigs();
+    const zaiPlan = configs.find((p) => p.id === "zai-plan")!;
+    for (const model of zaiPlan.models) {
+      expect(model.id).toBeTruthy();
+      expect(model.name).toBeTruthy();
+      expect(["llm"]).toContain(model.type);
+      expect(model.maxTokens).toBeGreaterThan(0);
+    }
+  });
+
+  it("每次调用返回新实例，互不影响", () => {
+    const a = getProviderConfigs();
+    const b = getProviderConfigs();
+    expect(a).not.toBe(b);
+    a[0].name = "MUTATED";
+    expect(b[0].name).not.toBe("MUTATED");
+  });
+
+  it("Zai-Plan 包含 GLM-5 / GLM-5.1 / GLM-4.7 三个模型 ID", () => {
+    const zaiPlan = getProviderConfigs().find((p) => p.id === "zai-plan")!;
+    const ids = zaiPlan.models.map((m) => m.id);
+    expect(ids).toEqual(expect.arrayContaining(["glm-5", "glm-5.1", "glm-4.7"]));
+  });
+
+  it("Ollama detected 标记为 true，表示需要运行时检测", () => {
+    const ollama = getProviderConfigs().find((p) => p.id === "ollama")!;
+    expect(ollama.detected).toBe(true);
+  });
+
+  it("Zai-Plan detected 标记为 false，无需运行时检测", () => {
+    const zaiPlan = getProviderConfigs().find((p) => p.id === "zai-plan")!;
+    expect(zaiPlan.detected).toBe(false);
+  });
+
+  it("所有 Provider 的 contextWindow 为有效正整数", () => {
+    const configs = getProviderConfigs();
+    for (const p of configs) {
+      for (const m of p.models) {
+        if (m.contextWindow !== undefined) {
+          expect(m.contextWindow).toBeGreaterThan(0);
+          expect(Number.isInteger(m.contextWindow)).toBe(true);
+        }
       }
     }
+  });
+
+  it("Zai-Plan 的 baseUrl 包含 bigmodel.cn 域名", () => {
+    const zaiPlan = getProviderConfigs().find((p) => p.id === "zai-plan")!;
+    expect(zaiPlan.baseUrl).toContain("bigmodel.cn");
+  });
+
+  it("Ollama 的 baseUrl 指向 localhost", () => {
+    const ollama = getProviderConfigs().find((p) => p.id === "ollama")!;
+    expect(ollama.baseUrl).toContain("localhost");
+  });
+});
+
+// ================================================================
+// 2b. getProviderConfig 单项查询边界测试
+// ================================================================
+
+describe("getProviderConfig 单项查询", () => {
+  it("查询 zai-plan 返回有效配置", async () => {
+    const { getProviderConfig } = await import("../app/components/ide/LLMService");
+    const config = getProviderConfig("zai-plan");
+    expect(config).toBeDefined();
+    expect(config!.id).toBe("zai-plan");
+  });
+
+  it("查询 ollama 返回有效配置", async () => {
+    const { getProviderConfig } = await import("../app/components/ide/LLMService");
+    const config = getProviderConfig("ollama");
+    expect(config).toBeDefined();
+    expect(config!.id).toBe("ollama");
   });
 });
 
@@ -194,25 +257,25 @@ describe("detectOllama", () => {
 // ================================================================
 
 describe("testModelConnectivity", () => {
-  const openaiConfig = PROVIDER_CONFIGS.find((p) => p.id === "openai")!;
+  const zaiPlanConfig = getProviderConfigs().find((p) => p.id === "zai-plan")!;
 
   it("无 API Key — 立即返回 NO_API_KEY 错误", async () => {
-    const result = await testModelConnectivity(openaiConfig, "gpt-4o");
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-5");
     expect(result.success).toBe(false);
     expect(result.errorCode).toBe("NO_API_KEY");
-    expect(result.providerId).toBe("openai");
-    expect(result.modelId).toBe("gpt-4o");
+    expect(result.providerId).toBe("zai-plan");
+    expect(result.modelId).toBe("glm-5");
   });
 
   it("有 API Key 且连通成功", async () => {
-    setApiKey("openai", "sk-test-key");
+    setApiKey("zai-plan", "test-key");
 
     const mockResponse = {
       choices: [{ message: { content: "Hello!" } }],
     };
     vi.mocked(fetch).mockResolvedValueOnce(mockFetchResponse(mockResponse));
 
-    const result = await testModelConnectivity(openaiConfig, "gpt-4o");
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-5");
     expect(result.success).toBe(true);
     expect(result.latencyMs).toBeGreaterThanOrEqual(0);
     expect(result.reply).toBe("Hello!");
@@ -220,69 +283,69 @@ describe("testModelConnectivity", () => {
   });
 
   it("HTTP 401 — 认证失败", async () => {
-    setApiKey("openai", "sk-bad-key");
+    setApiKey("zai-plan", "bad-key");
 
     vi.mocked(fetch).mockResolvedValueOnce(
       mockFetchResponse({ error: { message: "Invalid API key" } }, 401),
     );
 
-    const result = await testModelConnectivity(openaiConfig, "gpt-4o");
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-5");
     expect(result.success).toBe(false);
     expect(result.errorCode).toBe("HTTP_401");
     expect(result.error).toContain("认证失败");
   });
 
   it("HTTP 404 — 模型不存在", async () => {
-    setApiKey("openai", "sk-test");
+    setApiKey("zai-plan", "test");
 
     vi.mocked(fetch).mockResolvedValueOnce(mockFetchResponse({}, 404));
 
-    const result = await testModelConnectivity(openaiConfig, "gpt-nonexist");
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-nonexist");
     expect(result.success).toBe(false);
     expect(result.errorCode).toBe("HTTP_404");
-    expect(result.error).toContain("gpt-nonexist");
+    expect(result.error).toContain("glm-nonexist");
   });
 
   it("HTTP 429 — 频率超限", async () => {
-    setApiKey("openai", "sk-test");
+    setApiKey("zai-plan", "test");
 
     vi.mocked(fetch).mockResolvedValueOnce(mockFetchResponse({}, 429));
 
-    const result = await testModelConnectivity(openaiConfig, "gpt-4o");
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-5");
     expect(result.success).toBe(false);
     expect(result.errorCode).toBe("HTTP_429");
     expect(result.error).toContain("频率超限");
   });
 
   it("HTTP 500 — 服务端错误", async () => {
-    setApiKey("openai", "sk-test");
+    setApiKey("zai-plan", "test");
 
     vi.mocked(fetch).mockResolvedValueOnce(mockFetchResponse({}, 500));
 
-    const result = await testModelConnectivity(openaiConfig, "gpt-4o");
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-5");
     expect(result.success).toBe(false);
     expect(result.errorCode).toBe("HTTP_500");
     expect(result.error).toContain("服务端错误");
   });
 
   it("网络错误 — NETWORK 错误码", async () => {
-    setApiKey("openai", "sk-test");
+    setApiKey("zai-plan", "test");
 
     vi.mocked(fetch).mockRejectedValueOnce(new Error("Failed to fetch"));
 
-    const result = await testModelConnectivity(openaiConfig, "gpt-4o");
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-5");
     expect(result.success).toBe(false);
     expect(result.errorCode).toBe("NETWORK");
     expect(result.error).toContain("网络连接失败");
   });
 
   it("超时 — TIMEOUT 错误码", async () => {
-    setApiKey("openai", "sk-test");
+    setApiKey("zai-plan", "test");
 
     const abortError = new DOMException("Aborted", "AbortError");
     vi.mocked(fetch).mockRejectedValueOnce(abortError);
 
-    const result = await testModelConnectivity(openaiConfig, "gpt-4o", {
+    const result = await testModelConnectivity(zaiPlanConfig, "glm-5", {
       timeoutMs: 1000,
     });
     expect(result.success).toBe(false);
@@ -290,7 +353,7 @@ describe("testModelConnectivity", () => {
   });
 
   it("Ollama provider — 无需 API Key", async () => {
-    const ollamaConfig = PROVIDER_CONFIGS.find((p) => p.id === "ollama")!;
+    const ollamaConfig = getProviderConfigs().find((p) => p.id === "ollama")!;
 
     vi.mocked(fetch).mockResolvedValueOnce(
       mockFetchResponse({ message: { content: "Hi there!" } }),
@@ -302,7 +365,7 @@ describe("testModelConnectivity", () => {
   });
 
   it("结果包含 timestamp", async () => {
-    const ollamaConfig = PROVIDER_CONFIGS.find((p) => p.id === "ollama")!;
+    const ollamaConfig = getProviderConfigs().find((p) => p.id === "ollama")!;
     vi.mocked(fetch).mockResolvedValueOnce(
       mockFetchResponse({ message: { content: "" } }),
     );
@@ -318,9 +381,9 @@ describe("testModelConnectivity", () => {
 // ================================================================
 
 describe("chatCompletion", () => {
-  it("OpenAI 格式 — 正确解析 choices 响应", async () => {
-    setApiKey("openai", "sk-test");
-    const config = PROVIDER_CONFIGS.find((p) => p.id === "openai")!;
+  it("OpenAI 格式 — 正确解析 choices 响应 (Zai-Plan)", async () => {
+    setApiKey("zai-plan", "test-key");
+    const config = getProviderConfigs().find((p) => p.id === "zai-plan")!;
 
     vi.mocked(fetch).mockResolvedValueOnce(
       mockFetchResponse({
@@ -328,14 +391,14 @@ describe("chatCompletion", () => {
       }),
     );
 
-    const result = await chatCompletion(config, "gpt-4o", [
+    const result = await chatCompletion(config, "glm-5", [
       { role: "user", content: "Write hello world" },
     ]);
     expect(result).toBe("Generated code here");
   });
 
-  it("Ollama 格式 �� 正确解析 message.content 响应", async () => {
-    const config = PROVIDER_CONFIGS.find((p) => p.id === "ollama")!;
+  it("Ollama 格式 — 正确解析 message.content 响应", async () => {
+    const config = getProviderConfigs().find((p) => p.id === "ollama")!;
 
     vi.mocked(fetch).mockResolvedValueOnce(
       mockFetchResponse({ message: { content: "Ollama reply" } }),
@@ -347,24 +410,24 @@ describe("chatCompletion", () => {
     expect(result).toBe("Ollama reply");
   });
 
-  it("API 错误 — 抛出带 provider 名称的 Error", async () => {
-    setApiKey("deepseek", "ds-key");
-    const config = PROVIDER_CONFIGS.find((p) => p.id === "deepseek")!;
+  it("API 错误 — 抛出带 provider 名称的 Error (Zai-Plan)", async () => {
+    setApiKey("zai-plan", "test-key");
+    const config = getProviderConfigs().find((p) => p.id === "zai-plan")!;
 
     vi.mocked(fetch).mockResolvedValueOnce(
       mockFetchResponse("Rate limit exceeded", 429),
     );
 
     await expect(
-      chatCompletion(config, "deepseek-chat", [
+      chatCompletion(config, "glm-5", [
         { role: "user", content: "test" },
       ]),
-    ).rejects.toThrow(/DeepSeek/);
+    ).rejects.toThrow(/Z.ai/);
   });
 
   it("支持自定义 temperature 和 maxTokens", async () => {
-    setApiKey("openai", "sk-test");
-    const config = PROVIDER_CONFIGS.find((p) => p.id === "openai")!;
+    setApiKey("zai-plan", "test-key");
+    const config = getProviderConfigs().find((p) => p.id === "zai-plan")!;
 
     vi.mocked(fetch).mockResolvedValueOnce(
       mockFetchResponse({ choices: [{ message: { content: "ok" } }] }),
@@ -372,7 +435,7 @@ describe("chatCompletion", () => {
 
     await chatCompletion(
       config,
-      "gpt-4o",
+      "glm-5",
       [{ role: "user", content: "test" }],
       {
         temperature: 0.2,

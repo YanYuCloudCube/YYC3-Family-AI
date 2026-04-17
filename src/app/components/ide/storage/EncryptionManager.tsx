@@ -33,6 +33,8 @@ import EncryptionService, {
   type EncryptionStrength,
   type EncryptionConfig,
 } from '../services/EncryptionService'
+import { toastSuccess, toastError, toastWarning } from '../stores/useToastStore'
+import { confirmWarning, confirmDanger } from '../stores/useConfirmStore'
 import { logger } from "../services/Logger";
 
 type TabId = 'overview' | 'keys' | 'settings'
@@ -91,20 +93,20 @@ export function EncryptionManager() {
     setIsLoading(true)
     try {
       if (config.enabled) {
-        if (!confirm('确定要禁用加密吗？\n\n禁用后，新数据将不再加密，但已加密的数据仍需要密钥才能解密。')) {
+        if (!(await confirmWarning('禁用后，新数据将不再加密，但已加密的数据仍需要密钥才能解密。', '确定要禁用加密吗？'))) {
           return
         }
         await encryptionService.setEnabled(false)
       } else {
         if (!config.keyId) {
-          alert('请先创建或选择一个加密密钥')
+          toastWarning('请先创建或选择一个加密密钥')
           return
         }
         await encryptionService.setEnabled(true)
       }
       await loadData()
     } catch (e) {
-      alert(`操作失败: ${(e as Error).message}`)
+      toastError(`操作失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
@@ -112,7 +114,7 @@ export function EncryptionManager() {
 
   const handleCreateKey = async () => {
     if (!newKeyName.trim()) {
-      alert('请输入密钥名称')
+      toastWarning('请输入密钥名称')
       return
     }
 
@@ -122,16 +124,16 @@ export function EncryptionManager() {
       await loadData()
       setShowNewKeyDialog(false)
       setNewKeyName('')
-      alert(`密钥创建成功！\n\n密钥ID: ${keyId}\n\n请妥善保管此密钥，丢失将无法恢复加密数据。`)
+      toastSuccess(`密钥创建成功！密钥ID: ${keyId}，请妥善保管此密钥，丢失将无法恢复加密数据。`)
     } catch (e) {
-      alert(`创建密钥失败: ${(e as Error).message}`)
+      toastError(`创建密钥失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
   }
 
   const handleDeleteKey = async (keyId: string) => {
-    if (!confirm('⚠️ 警告：删除密钥后，使用该密钥加密的数据将无法解密！\n\n确定要删除此密钥吗？')) {
+    if (!(await confirmDanger('删除密钥后，使用该密钥加密的数据将无法解密！', '删除密钥'))) {
       return
     }
 
@@ -140,7 +142,7 @@ export function EncryptionManager() {
       await encryptionService.deleteKey(keyId)
       await loadData()
     } catch (e) {
-      alert(`删除密钥失败: ${(e as Error).message}`)
+      toastError(`删除密钥失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
@@ -151,9 +153,9 @@ export function EncryptionManager() {
     try {
       await encryptionService.setActiveKey(keyId)
       await loadData()
-      alert('已切换到选定的密钥')
+      toastSuccess('已切换到选定的密钥')
     } catch (e) {
-      alert(`切换密钥失败: ${(e as Error).message}`)
+      toastError(`切换密钥失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
@@ -164,7 +166,7 @@ export function EncryptionManager() {
     try {
       await encryptionService.exportKey(keyId)
     } catch (e) {
-      alert(`导出密钥失败: ${(e as Error).message}`)
+      toastError(`导出密钥失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
@@ -182,9 +184,9 @@ export function EncryptionManager() {
       try {
         const keyId = await encryptionService.importKey(file)
         await loadData()
-        alert(`密钥导入成功！\n\n密钥ID: ${keyId}`)
+        toastSuccess(`密钥导入成功！密钥ID: ${keyId}`)
       } catch (e) {
-        alert(`导入密钥失败: ${(e as Error).message}`)
+        toastError(`导入密钥失败: ${(e as Error).message}`)
       } finally {
         setIsLoading(false)
       }
@@ -198,7 +200,7 @@ export function EncryptionManager() {
       await encryptionService.setStrength(strength)
       await loadData()
     } catch (e) {
-      alert(`设置加密强度失败: ${(e as Error).message}`)
+      toastError(`设置加密强度失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }

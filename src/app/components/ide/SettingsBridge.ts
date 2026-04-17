@@ -14,7 +14,7 @@
  */
 
 import { useSettingsStore } from "./stores/useSettingsStore";
-import { setApiKey, type ProviderId, PROVIDER_CONFIGS } from "./LLMService";
+import { setApiKey, type ProviderId, getProviderConfigs } from "./LLMService";
 import {
   saveJSON,
   SK_MCP_SERVERS,
@@ -65,7 +65,7 @@ export function syncLLMServiceToSettings(): void {
   const existingModels = store.settings.models;
 
   // 扫描所有已知 Provider 的 API Key
-  for (const providerCfg of PROVIDER_CONFIGS) {
+  for (const providerCfg of getProviderConfigs()) {
     if (providerCfg.authType === "none") continue;
 
     let storedKey = "";
@@ -102,18 +102,13 @@ export function syncLLMServiceToSettings(): void {
  */
 function mapProviderNameToId(name: string): ProviderId | null {
   const map: Record<string, ProviderId> = {
-    OpenAI: "openai",
-    openai: "openai",
-    Anthropic: "custom",
-    Google: "custom",
-    Zhipu: "zhipu",
-    "智谱 BigModel": "zhipu",
-    Baidu: "dashscope",
-    Alibaba: "dashscope",
-    通义千问: "dashscope",
-    DeepSeek: "deepseek",
+    "Z.ai Coding Plan": "zai-plan",
+    Zhipu: "zai-plan",
+    "智谱 BigModel": "zai-plan",
+    "智谱": "zai-plan",
     Ollama: "ollama",
-    Custom: "custom",
+    Local: "ollama",
+    Custom: "custom" as ProviderId,
   };
   return map[name] || null;
 }
@@ -581,7 +576,7 @@ export async function validateAPIKey(
   options?: { timeoutMs?: number },
 ): Promise<APIKeyValidationResult> {
   const timeoutMs = options?.timeoutMs ?? 10000;
-  const provider = PROVIDER_CONFIGS.find((p) => p.id === providerId);
+  const provider = getProviderConfigs().find((p) => p.id === providerId);
   if (!provider) return { valid: false, error: "未知的 Provider" };
   if (provider.authType === "none") return { valid: true };
   if (!apiKey) return { valid: false, error: "API Key 不能为空" };
@@ -594,14 +589,8 @@ export async function validateAPIKey(
   let endpoint = `${baseUrl}/chat/completions`;
   if (providerId === "ollama") {
     endpoint = `${baseUrl}/api/tags`;
-  } else if (providerId === "zhipu") {
+  } else if (providerId === "zai-plan") {
     endpoint = `/api/zhipu/chat/completions`;
-  } else if (providerId === "deepseek") {
-    endpoint = `/api/deepseek/chat/completions`;
-  } else if (providerId === "dashscope") {
-    endpoint = `/api/dashscope/chat/completions`;
-  } else if (providerId === "openai") {
-    endpoint = `/api/openai/chat/completions`;
   }
 
   const headers: Record<string, string> = {
@@ -616,11 +605,11 @@ export async function validateAPIKey(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   const start = Date.now();
 
-  console.warn(`[API Key Validation] Testing ${providerId}:`, {
+  logger.debug(`Testing ${providerId}:`, {
     endpoint,
     hasApiKey: !!apiKey,
     apiKeyLength: apiKey.length,
-  });
+  }, "APIKeyValidation");
 
   try {
     if (providerId === "ollama") {
@@ -653,11 +642,11 @@ export async function validateAPIKey(
     clearTimeout(timer);
     const latencyMs = Date.now() - start;
 
-    console.warn(`[API Key Validation] Response:`, {
+    logger.debug("Response:", {
       status: res.status,
       ok: res.ok,
       latencyMs,
-    });
+    }, "APIKeyValidation");
 
     if (res.ok) return { valid: true, latencyMs };
     if (res.status === 401 || res.status === 403)

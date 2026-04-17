@@ -32,6 +32,9 @@ import backupService, {
   type BackupConfig,
   type BackupData,
 } from '../services/BackupService'
+import { toastSuccess, toastError } from '../stores/useToastStore'
+import { confirmDialog, confirmWarning } from '../stores/useConfirmStore'
+import { usePromptStore } from '../stores/usePromptStore'
 import { logger } from "../services/Logger";
 
 type TabId = 'backups' | 'settings' | 'stats'
@@ -93,42 +96,47 @@ export function BackupManager() {
   }, [loadData])
 
   const handleCreateBackup = async () => {
-    if (!confirm('确定要创建新备份吗？')) return
+    if (!(await confirmDialog('确定要创建新备份吗？'))) return
 
     setIsLoading(true)
     try {
-      const description = prompt('请输入备份描述（可选）:')
+      const description = await usePromptStore.getState().openPrompt({
+        title: '创建备份',
+        message: '请输入备份描述（可选）',
+        placeholder: '备份描述...',
+        confirmLabel: '创建',
+      })
       await backupService.createBackup('manual', description || undefined)
       await loadData()
-      alert('备份创建成功！')
+      toastSuccess('备份创建成功！')
     } catch (e) {
-      alert(`创建备份失败: ${(e as Error).message}`)
+      toastError(`创建备份失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
   }
 
   const handleRestoreBackup = async (id: string) => {
-    if (!confirm('⚠️ 警告：恢复备份将覆盖当前所有数据！\n\n确定要继续吗？')) return
+    if (!(await confirmWarning('恢复备份将覆盖当前所有数据！\n\n确定要继续吗？'))) return
 
     setIsLoading(true)
     try {
       const result = await backupService.restoreBackup(id)
       if (result.success) {
-        alert(`${result.message}\n\n建议刷新页面以加载恢复的数据。`)
+        toastSuccess(`${result.message}，建议刷新页面以加载恢复的数据。`)
         window.location.reload()
       } else {
-        alert(result.message)
+        toastError(result.message)
       }
     } catch (e) {
-      alert(`恢复失败: ${(e as Error).message}`)
+      toastError(`恢复失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
   }
 
   const handleDeleteBackup = async (id: string) => {
-    if (!confirm('确定要删除此备份吗？')) return
+    if (!(await confirmDialog('确定要删除此备份吗？'))) return
 
     setIsLoading(true)
     try {
@@ -139,7 +147,7 @@ export function BackupManager() {
         setBackupDetail(null)
       }
     } catch (e) {
-      alert(`删除失败: ${(e as Error).message}`)
+      toastError(`删除失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
@@ -150,7 +158,7 @@ export function BackupManager() {
     try {
       await backupService.exportBackup(id)
     } catch (e) {
-      alert(`导出失败: ${(e as Error).message}`)
+      toastError(`导出失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }
@@ -168,9 +176,9 @@ export function BackupManager() {
       try {
         const id = await backupService.importBackup(file)
         await loadData()
-        alert(`备份导入成功！ID: ${id}`)
+        toastSuccess(`备份导入成功！ID: ${id}`)
       } catch (e) {
-        alert(`导入失败: ${(e as Error).message}`)
+        toastError(`导入失败: ${(e as Error).message}`)
       } finally {
         setIsLoading(false)
       }
@@ -185,7 +193,7 @@ export function BackupManager() {
       setBackupDetail(detail)
       setSelectedBackup(id)
     } catch (e) {
-      alert(`获取备份详情失败: ${(e as Error).message}`)
+      toastError(`获取备份详情失败: ${(e as Error).message}`)
     } finally {
       setIsLoading(false)
     }

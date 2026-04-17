@@ -50,6 +50,7 @@ import {
   Share2,
   Home,
   FileText,
+  Globe,
   KanbanSquare,
   Layers,
 } from "lucide-react";
@@ -95,6 +96,8 @@ const PANEL_ICONS: Record<
   taskboard: KanbanSquare,
   "multi-instance": Layers,
   "multi-agent": Users,
+  "web-search": Globe,
+  chart: BarChart3,
 };
 
 const PANEL_LABELS: Record<PanelId, string> = {
@@ -120,6 +123,8 @@ const PANEL_LABELS: Record<PanelId, string> = {
   taskboard: "任务看板",
   "multi-instance": "多实例",
   "multi-agent": "多智能体",
+  "web-search": "智能搜索",
+  chart: "数据分析",
 };
 
 const CATEGORY_LABELS: Record<string, string> = {

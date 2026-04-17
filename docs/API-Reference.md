@@ -4,7 +4,7 @@ description: YYC³ IDE API参考文档 - 新增功能模块
 author: YanYuCloudCube Team <admin@0379.email>
 version: v1.0.0
 created: 2026-04-05
-updated: 2026-04-09
+updated: 2026-04-15
 status: stable
 tags: api,reference,documentation
 category: api
@@ -730,9 +730,102 @@ class DataService {
 
 ---
 
+## 11. 业务服务层 API（v1.0.1 新增）
+
+> 完整服务层包含 **21 个业务模块** + **8 个 MCP Server**，详见 [阶段性集成总结报告](08-YYC3-项目整合-实施阶段/项目总结报告/YYC3-阶段性集成总结-v1.0.1.md)
+
+### 11.1 AIAgentOrchestrator — 智能体编排引擎
+
+**模块位置**: `src/services/AIAgentOrchestrator.ts`
+
+```typescript
+import { AIAgentOrchestrator } from '@/services/AIAgentOrchestrator'
+
+const orchestrator = new AIAgentOrchestrator({
+  maxConcurrentTasks: 5,
+  enableCaching: true,
+  cacheTTL: 300000,
+})
+
+// 注册 Agent
+orchestrator.registerAgent({
+  id: 'finance-analyst',
+  name: '金融分析师',
+  capabilities: ['stock-analysis', 'portfolio-review'],
+})
+
+// 提交任务（4 种模式）
+await orchestrator.submitTask({
+  type: 'single-agent' | 'multi-agent' | 'pipeline' | 'parallel',
+  title: '任务标题',
+  input: [{ role: 'user', content: '...' }],
+  agentIds: ['agent-id'],
+})
+```
+
+### 11.2 FinanceAnalysisService — 金融数据分析
+
+**模块位置**: `src/services/FinanceAnalysisService.ts`
+
+```typescript
+import { FinanceAnalysisService } from '@/services/FinanceAnalysisService'
+
+const finance = new FinanceAnalysisService({ defaultCurrency: 'CNY' })
+
+const stock = await finance.getStockQuote('AAPL')
+const macd = finance.calculateMACD(historicalPrices, 12, 26, 9)
+const valuation = await finance.calculateDCF('AAPL', { growthRate: 0.1 })
+const portfolio = await finance.analyzePortfolio(assets)
+```
+
+### 11.3 EducationService — 教育作业批改
+
+**模块位置**: `src/services/EducationService.ts`
+
+```typescript
+import { EducationService } from '@/services/EducationService'
+
+const edu = new EducationService({ subjects: ['数学', '物理'] })
+
+const submission = await edu.submitHomework({ content: '...', subject: '数学' })
+const result = await edu.gradeHomework(submission.id, { strictness: 'normal' })
+const exam = await edu.generateExam({ subject: '数学', difficulty: 'medium', questionCount: 20 })
+const plan = await edu.createLearningPlan({ studentLevel: 'intermediate', goals: ['...'] })
+```
+
+### 11.4 OfficeAutomationService — 办公自动化
+
+**模块位置**: `src/services/OfficeAutomationService.ts`
+
+```typescript
+import { OfficeAutomationService } from '@/services/OfficeAutomationService'
+
+const office = new OfficeAutomationService({ defaultLanguage: 'zh-CN' })
+
+const doc = await office.generateDocument('meeting-minutes', { meetingTitle: '...', date: '...' })
+const email = await office.draftEmail({ to: '...', purpose: 'project-update', keyPoints: [...] })
+const task = await office.createTask({ title: '...', priority: 'high', dueDate: '...' })
+```
+
+### 11.5 其他服务快速引用
+
+| 服务 | 导入路径 | 核心用途 |
+|------|----------|----------|
+| KnowledgeBaseService | `@/services/KnowledgeBaseService` | 向量知识库、混合搜索 |
+| WebScraperService | `@/services/WebScraperService` | 网页抓取、结构化提取 |
+| DataVisualizationService | `@/services/DataVisualizationService` | 图表生成、统计分析 |
+| DataAnalysisService | `@/services/DataAnalysisService` | 数据清洗、统计建模 |
+| GraphRAGService | `@/services/GraphRAGService` | 知识图谱 RAG |
+| TranslationService | `@/services/TranslationService` | 多语言翻译 |
+| NewsGenerator | `@/services/NewsGenerator` | 新闻聚合摘要 |
+| InterviewAgent | `@/services/InterviewAgent` | 模拟面试 |
+| ASRService / TTSService | `@/services/ASRService` / `TTSService` | 语音识别/合成 |
+
+---
+
 ## 版本信息
 
-- **版本**: v1.0.0
-- **更新日期**: 2026-04-05
+- **版本**: v1.0.1
+- **更新日期**: 2026-04-15
 - **维护团队**: YanYuCloudCube Team
 - **联系方式**: admin@0379.email

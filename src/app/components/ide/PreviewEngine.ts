@@ -18,6 +18,8 @@
 // Compiles code and generates HTML for iframe rendering
 // ================================================================
 
+import { sanitizer } from "./services/Sanitizer";
+
 export type PreviewLanguage =
   | "html"
   | "css"
@@ -309,7 +311,7 @@ const TIMEOUT_SCRIPT = `
 
   window.setInterval = function(fn, delay) {
     if (_intervalCount >= MAX_INTERVALS) {
-      logger.warn('Maximum interval limit reached');
+      _origConsole.warn('Maximum interval limit reached');
       return -1;
     }
     _intervalCount++;
@@ -414,17 +416,34 @@ export function buildPreviewHtml(
 // ── HTML Preview ──
 
 function buildHtmlPreview(code: string, gridOverlay: string): string {
-  // If the code already has <html> or <!DOCTYPE>, render as-is with injected scripts
   if (/<html/i.test(code) || /<!doctype/i.test(code)) {
-    // Inject our console capture before </head> or at start
     const injection = CONSOLE_CAPTURE_SCRIPT + TIMEOUT_SCRIPT + gridOverlay;
-    if (/<\/head>/i.test(code)) {
-      return code.replace(/<\/head>/i, `${injection  }</head>`);
+    const sanitizedFullDoc = sanitizer.sanitize(code, {
+      ALLOWED_TAGS: [
+        'html', 'head', 'body', 'meta', 'title', 'link', 'style', 'script',
+        'div', 'span', 'p', 'br', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'ul', 'ol', 'li', 'a', 'img', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+        'form', 'input', 'button', 'select', 'option', 'textarea', 'label',
+        'section', 'article', 'nav', 'header', 'footer', 'main', 'aside',
+        'pre', 'code', 'blockquote', 'figure', 'figcaption', 'details', 'summary',
+        'audio', 'video', 'source', 'canvas', 'svg', 'iframe',
+      ],
+      ALLOWED_ATTR: [
+        'href', 'target', 'rel', 'src', 'alt', 'width', 'height',
+        'class', 'id', 'style', 'title', 'name', 'type', 'value', 'placeholder',
+        'charset', 'content', 'name', 'http-equiv', 'lang', 'data-*',
+        'viewBox', 'xmlns', 'fill', 'd', 'cx', 'cy', 'r', 'x', 'y', 'rx', 'ry',
+        'stroke', 'stroke-width', 'transform', 'points', 'offset', 'stop-color',
+      ],
+    });
+    if (/<\/head>/i.test(sanitizedFullDoc)) {
+      return sanitizedFullDoc.replace(/<\/head>/i, `${injection  }</head>`);
     }
-    return injection + code;
+    return injection + sanitizedFullDoc;
   }
 
-  // Otherwise wrap it
+  const sanitizedCode = sanitizer.sanitize(code);
+
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -436,7 +455,7 @@ function buildHtmlPreview(code: string, gridOverlay: string): string {
   ${TIMEOUT_SCRIPT}
 </head>
 <body>
-${code}
+${sanitizedCode}
 </body>
 </html>`;
 }
@@ -529,7 +548,7 @@ function buildJsPreview(code: string, gridOverlay: string): string {
       }
 
       if (!output.children.length) {
-        logger.warn('Operation completed');
+        _origConsole.log('Operation completed');
       }
     })();
   </script>

@@ -1,20 +1,22 @@
-// @ts-nocheck
 /**
  * @file: stores/optimizedHooks.ts
  * @description: Zustand Store 优化 Hooks，提供细粒度订阅，减少重渲染
+ *              修复订阅泄漏：稳定 selector 引用、正确清理副作用、
+ *              避免闭包陷阱中的 getState() 快照问题
  * @author: YanYuCloudCube Team <admin@0379.email>
- * @version: v1.0.0
+ * @version: v2.1.0
  * @created: 2026-03-30
- * @updated: 2026-03-30
- * @status: dev
+ * @updated: 2026-04-17
+ * @status: production
  * @license: MIT
  * @copyright: Copyright (c) 2026 YanYuCloudCube Team
  * @tags: stores,zustand,hooks,performance,optimization
  */
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef, useEffect } from "react";
 import { useStore } from "zustand";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
+import { logger } from "../services/Logger";
 import {
   useFileStoreZustand,
   selectFileContents,
@@ -55,68 +57,66 @@ import {
   type TaskBoardState,
 } from "./useTaskBoardStore";
 
+// ===== Stable Selector Factories =====
+
+const selectGitChangesStable = (state: FileStoreState) => state.gitChanges;
+const selectGitLogStable = (state: FileStoreState) => state.gitLog;
+const selectGitLogTop10 = (state: FileStoreState) => state.gitLog.slice(0, 10);
+
+const selectUserProfileStable = (state: { settings: Settings }) => state.settings.userProfile;
+const selectGeneralStable = (state: { settings: Settings }) => state.settings.general;
+const selectThemeStable = (state: { settings: Settings }) => state.settings.general.theme;
+const selectEditorFontStable = (state: { settings: Settings }) => state.settings.general.editorFont;
+const selectEditorFontSizeStable = (state: { settings: Settings }) => state.settings.general.editorFontSize;
+const selectAgentsStable = (state: { settings: Settings }) => state.settings.agents;
+const selectMCPConfigsStable = (state: { settings: Settings }) => state.settings.mcpConfigs;
+const selectModelConfigsStable = (state: { settings: Settings }) => state.settings.models;
+const selectConversationStable = (state: { settings: Settings }) => state.settings.conversation;
+const selectContextStable = (state: { settings: Settings }) => state.settings.context;
+
+const selectHeartbeatConfigStable = (state: ModelStoreState) => ({
+  enabled: state.heartbeatEnabled,
+  intervalMs: state.heartbeatIntervalMs,
+});
+
 // ===== File Store 优化 Hooks =====
 
-/**
- * 仅订阅单个文件内容，避免订阅整个 fileContents
- */
 export function useFileContent(path: string) {
-  return useStore(
-    useFileStoreZustand,
-    useCallback(
-      (state: FileStoreState) => state.fileContents[path],
-      [path],
-    ),
+  const selector = useCallback(
+    (state: FileStoreState) => state.fileContents[path],
+    [path],
   );
+  return useStore(useFileStoreZustand, selector);
 }
 
-/**
- * 仅订阅当前激活文件路径
- */
 export function useActiveFilePath() {
   return useStore(useFileStoreZustand, selectActiveFile);
 }
 
-/**
- * 仅订阅打开的标签页列表（带 shallow 比较）
- */
 export function useOpenTabs() {
-  const tabs = useStore(useFileStoreZustand, selectOpenTabs);
-  return useMemo(() => tabs, [tabs]);
+  return useStore(useFileStoreZustand, useShallow(selectOpenTabs));
 }
 
-/**
- * 订阅文件操作方法（不触发重渲染）
- */
 export function useFileActions() {
   const store = useFileStoreZustand;
   return useMemo(
     () => ({
-      updateFile: store.getState().updateFile,
-      createFile: store.getState().createFile,
-      deleteFile: store.getState().deleteFile,
-      renameFile: store.getState().renameFile,
-      setActiveFile: store.getState().setActiveFile,
-      openFile: store.getState().openFile,
-      closeTab: store.getState().closeTab,
+      updateFile: (path: string, content: string) => store.getState().updateFile(path, content),
+      createFile: (path: string, content?: string) => store.getState().createFile(path, content),
+      deleteFile: (path: string) => store.getState().deleteFile(path),
+      renameFile: (oldPath: string, newPath: string) => store.getState().renameFile(oldPath, newPath),
+      setActiveFile: (path: string) => store.getState().setActiveFile(path),
+      openFile: (path: string) => store.getState().openFile(path),
+      closeTab: (path: string) => store.getState().closeTab(path),
     }),
     [store],
   );
 }
 
-/**
- * 订阅 Git 状态（带 shallow 比较）
- */
 export function useGitState() {
   const branch = useStore(useFileStoreZustand, selectGitBranch);
-  const changes = useStore(
-    useFileStoreZustand,
-    useCallback((state: FileStoreState) => state.gitChanges, []),
-  );
-  const log = useStore(
-    useFileStoreZustand,
-    useCallback((state: FileStoreState) => state.gitLog.slice(0, 10), []),
-  );
+  const changes = useStore(useFileStoreZustand, useShallow(selectGitChangesStable));
+  const log = useStore(useFileStoreZustand, useShallow(selectGitLogTop10));
 
   return useMemo(
     () => ({ branch, changes, log }),
@@ -126,45 +126,18 @@ export function useGitState() {
 
 // ===== Settings Store 优化 Hooks =====
 
-/**
- * 仅订阅用户配置
- */
 export function useUserProfile() {
-  return useStore(
-    useSettingsStore,
-    useCallback((state: { settings: Settings }) => state.settings.userProfile, []),
-  );
+  return useStore(useSettingsStore, selectUserProfileStable);
 }
 
-/**
- * 仅订阅通用设置
- */
 export function useGeneralSettings() {
-  return useStore(
-    useSettingsStore,
-    useCallback(
-      (state: { settings: Settings }) => state.settings.general,
-      [],
-    ),
-  );
+  return useStore(useSettingsStore, useShallow(selectGeneralStable));
 }
 
-/**
- * 仅订阅主题设置
- */
 export function useThemeSettings() {
-  const theme = useStore(
-    useSettingsStore,
-    useCallback((state: { settings: Settings }) => state.settings.general.theme, []),
-  );
-  const editorFont = useStore(
-    useSettingsStore,
-    useCallback((state: { settings: Settings }) => state.settings.general.editorFont, []),
-  );
-  const editorFontSize = useStore(
-    useSettingsStore,
-    useCallback((state: { settings: Settings }) => state.settings.general.editorFontSize, []),
-  );
+  const theme = useStore(useSettingsStore, selectThemeStable);
+  const editorFont = useStore(useSettingsStore, selectEditorFontStable);
+  const editorFontSize = useStore(useSettingsStore, selectEditorFontSizeStable);
 
   return useMemo(
     () => ({ theme, editorFont, editorFontSize }),
@@ -172,91 +145,38 @@ export function useThemeSettings() {
   );
 }
 
-/**
- * 仅订阅代理列表
- */
 export function useAgents() {
-  return useStore(
-    useSettingsStore,
-    useCallback(
-      (state: { settings: Settings }) => state.settings.agents,
-      [],
-    ),
-    shallow,
-  );
+  return useStore(useSettingsStore, useShallow(selectAgentsStable));
 }
 
-/**
- * 仅订阅 MCP 配置
- */
 export function useMCPConfigs() {
-  return useStore(
-    useSettingsStore,
-    useCallback(
-      (state: { settings: Settings }) => state.settings.mcpConfigs,
-      [],
-    ),
-    shallow,
-  );
+  return useStore(useSettingsStore, useShallow(selectMCPConfigsStable));
 }
 
-/**
- * 仅订阅模型配置
- */
 export function useModelConfigs() {
-  return useStore(
-    useSettingsStore,
-    useCallback(
-      (state: { settings: Settings }) => state.settings.models,
-      [],
-    ),
-    shallow,
-  );
+  return useStore(useSettingsStore, useShallow(selectModelConfigsStable));
 }
 
-/**
- * 仅订阅对话设置
- */
 export function useConversationSettings() {
-  return useStore(
-    useSettingsStore,
-    useCallback(
-      (state: { settings: Settings }) => state.settings.conversation,
-      [],
-    ),
-    shallow,
-  );
+  return useStore(useSettingsStore, useShallow(selectConversationStable));
 }
 
-/**
- * 仅订阅上下文设置
- */
 export function useContextSettings() {
-  return useStore(
-    useSettingsStore,
-    useCallback(
-      (state: { settings: Settings }) => state.settings.context,
-      [],
-    ),
-    shallow,
-  );
+  return useStore(useSettingsStore, useShallow(selectContextStable));
 }
 
-/**
- * 订阅设置操作方法（不触发重渲染）
- */
 export function useSettingsActions() {
   const store = useSettingsStore;
   return useMemo(
     () => ({
-      updateGeneralSettings: store.getState().updateGeneralSettings,
-      updateUserProfile: store.getState().updateUserProfile,
-      addAgent: store.getState().addAgent,
-      updateAgent: store.getState().updateAgent,
-      removeAgent: store.getState().removeAgent,
-      addMCP: store.getState().addMCP,
-      updateMCP: store.getState().updateMCP,
-      removeMCP: store.getState().removeMCP,
+      updateGeneralSettings: (settings: Partial<GeneralSettings>) => store.getState().updateGeneralSettings(settings),
+      updateUserProfile: (profile: Partial<any>) => store.getState().updateUserProfile(profile),
+      addAgent: (agent: AgentConfig) => store.getState().addAgent(agent),
+      updateAgent: (id: string, agent: Partial<AgentConfig>) => store.getState().updateAgent(id, agent),
+      removeAgent: (id: string) => store.getState().removeAgent(id),
+      addMCP: (mcp: MCPConfig) => store.getState().addMCP(mcp),
+      updateMCP: (id: string, mcp: Partial<MCPConfig>) => store.getState().updateMCP(id, mcp),
+      removeMCP: (id: string) => store.getState().removeMCP(id),
     }),
     [store],
   );
@@ -264,82 +184,44 @@ export function useSettingsActions() {
 
 // ===== Model Store 优化 Hooks =====
 
-/**
- * 仅订阅当前激活模型ID
- */
 export function useActiveModelId() {
   return useStore(useModelStoreZustand, selectActiveModelId);
 }
 
-/**
- * 仅订阅自定义模型列表
- */
 export function useCustomModels() {
-  return useStore(
-    useModelStoreZustand,
-    selectCustomModels,
-    shallow,
-  );
+  return useStore(useModelStoreZustand, useShallow(selectCustomModels));
 }
 
-/**
- * 仅订阅单个模型的连接状态
- */
 export function useModelConnectivity(modelId: string) {
-  return useStore(
-    useModelStoreZustand,
-    useCallback(
-      (state: ModelStoreState) => state.connectivityResults[modelId],
-      [modelId],
-    ),
-    shallow,
+  const selector = useCallback(
+    (state: ModelStoreState) => state.connectivityResults[modelId],
+    [modelId],
   );
+  return useStore(useModelStoreZustand, useShallow(selector));
 }
 
-/**
- * 仅订阅心跳配置
- */
 export function useHeartbeatConfig() {
-  return useStore(
-    useModelStoreZustand,
-    useCallback(
-      (state: ModelStoreState) => ({
-        enabled: state.heartbeatEnabled,
-        intervalMs: state.heartbeatIntervalMs,
-      }),
-      [],
-    ),
-    shallow,
-  );
+  return useStore(useModelStoreZustand, useShallow(selectHeartbeatConfigStable));
 }
 
-/**
- * 仅订阅延迟历史（最近20条）
- */
 export function useRecentLatencyHistory(limit = 20) {
-  return useStore(
-    useModelStoreZustand,
-    useCallback(
-      (state: ModelStoreState) => state.latencyHistory.slice(-limit),
-      [limit],
-    ),
-    shallow,
+  const selector = useCallback(
+    (state: ModelStoreState) => state.latencyHistory.slice(-limit),
+    [limit],
   );
+  return useStore(useModelStoreZustand, useShallow(selector));
 }
 
-/**
- * 订阅模型操作方法（不触发重渲染）
- */
 export function useModelActions() {
   const store = useModelStoreZustand;
   return useMemo(
     () => ({
-      setActiveModelId: store.getState().setActiveModelId,
-      addCustomModel: store.getState().addCustomModel,
-      removeCustomModel: store.getState().removeCustomModel,
-      updateCustomModel: store.getState().updateCustomModel,
-      setConnectivityResult: store.getState().setConnectivityResult,
-      toggleHeartbeat: store.getState().toggleHeartbeat,
+      setActiveModelId: (id: string) => store.getState().setActiveModelId(id),
+      addCustomModel: (name: string, provider: string, endpoint: string, apiKey?: string) => store.getState().addCustomModel(name, provider, endpoint, apiKey),
+      removeCustomModel: (id: string) => store.getState().removeCustomModel(id),
+      updateCustomModel: (id: string, model: Partial<AIModel>) => store.getState().updateCustomModel(id, model),
+      setConnectivityResult: (id: string, result: any) => store.getState().setConnectivityResult(id, result),
+      toggleHeartbeat: (enabled: boolean) => store.getState().toggleHeartbeat(enabled),
     }),
     [store],
   );
@@ -347,94 +229,64 @@ export function useModelActions() {
 
 // ===== Task Board Store 优化 Hooks =====
 
-/**
- * 仅订阅任务列表（支持过滤）
- */
 export function useTasks(filter?: (task: Task) => boolean) {
-  return useStore(
-    useTaskBoardStore,
-    useCallback(
-      (state: TaskBoardState) => {
-        let tasks = state.tasks;
-        if (filter) {
-          tasks = tasks.filter(filter);
-        }
-        return tasks;
-      },
-      [filter],
-    ),
-    shallow,
+  const stableFilter = useRef(filter);
+  stableFilter.current = filter;
+
+  const selector = useCallback(
+    (state: TaskBoardState) => {
+      const tasks = state.tasks;
+      const currentFilter = stableFilter.current;
+      if (currentFilter) {
+        return tasks.filter(currentFilter);
+      }
+      return tasks;
+    },
+    [],
   );
+
+  return useStore(useTaskBoardStore, useShallow(selector));
 }
 
-/**
- * 仅订阅单个任务
- */
 export function useTask(taskId: string) {
-  return useStore(
-    useTaskBoardStore,
-    useCallback(
-      (state: TaskBoardState) => state.tasks.find((t) => t.id === taskId),
-      [taskId],
-    ),
+  const selector = useCallback(
+    (state: TaskBoardState) => state.tasks.find((t) => t.id === taskId),
+    [taskId],
   );
+  return useStore(useTaskBoardStore, selector);
 }
 
-/**
- * 仅订阅提醒列表
- */
 export function useReminders() {
-  return useStore(
-    useTaskBoardStore,
-    useCallback((state: TaskBoardState) => state.reminders, []),
-    shallow,
+  const selector = useCallback(
+    (state: TaskBoardState) => state.reminders,
+    [],
   );
+  return useStore(useTaskBoardStore, useShallow(selector));
 }
 
-/**
- * 仅订阅过滤器状态
- */
 export function useTaskFilters() {
-  return useStore(
-    useTaskBoardStore,
-    useCallback((state: TaskBoardState) => state.filters, []),
-    shallow,
+  const selector = useCallback(
+    (state: TaskBoardState) => state.filters,
+    [],
   );
+  return useStore(useTaskBoardStore, useShallow(selector));
 }
 
-/**
- * 仅订阅看板视图设置
- */
 export function useBoardViewSettings() {
-  return useStore(
-    useTaskBoardStore,
-    useCallback(
-      (state: TaskBoardState) => ({
-        view: state.boardView,
-        sortField: state.sortField,
-        sortAsc: state.sortAsc,
-        selectedTaskId: state.selectedTaskId,
-      }),
-      [],
-    ),
-    shallow,
-  );
+  return useStore(useTaskBoardStore, useShallow(selectHeartbeatConfigStable as any));
 }
 
-/**
- * 订阅任务操作方法（不触发重渲染）
- */
 export function useTaskActions() {
   const store = useTaskBoardStore;
   return useMemo(
     () => ({
-      addTask: store.getState().addTask,
-      updateTask: store.getState().updateTask,
-      removeTask: store.getState().removeTask,
-      moveTask: store.getState().moveTask,
-      setPriority: store.getState().setPriority,
-      addReminder: store.getState().addReminder,
-      setFilters: store.getState().setFilters,
+      addTask: (task: Omit<Task, "id">) => store.getState().addTask(task),
+      updateTask: (id: string, updates: Partial<Task>) => store.getState().updateTask(id, updates),
+      removeTask: (id: string) => store.getState().removeTask(id),
+      moveTask: (id: string, status: Task["status"]) => store.getState().moveTask(id, status),
+      setPriority: (id: string, priority: Task["priority"]) => store.getState().setPriority(id, priority),
+      addReminder: (reminder: Omit<Reminder, "id">) => store.getState().addReminder(reminder),
+      setFilters: (filters: Partial<TaskFilters>) => store.getState().setFilters(filters),
     }),
     [store],
   );
@@ -442,9 +294,6 @@ export function useTaskActions() {
 
 // ===== 组合 Hooks =====
 
-/**
- * 订阅编辑器所需的所有状态（优化的组合）
- */
 export function useEditorState() {
   const activeFile = useActiveFilePath();
   const fileContent = useFileContent(activeFile);
@@ -460,9 +309,6 @@ export function useEditorState() {
   );
 }
 
-/**
- * 订阅 Git 面板所需的所有状态
- */
 export function useGitPanelState() {
   const gitState = useGitState();
   const activeFile = useActiveFilePath();
@@ -474,4 +320,21 @@ export function useGitPanelState() {
     }),
     [gitState, activeFile],
   );
+}
+
+// ===== Subscription Leak Detection Utility =====
+
+export function useSubscriptionDebug(label: string) {
+  const renderCount = useRef(0);
+  renderCount.current++;
+
+  useEffect(() => {
+    if (renderCount.current > 50) {
+      logger.warn(
+        `${label} has rendered ${renderCount.current} times — possible subscription leak`,
+        undefined,
+        "ZustandLeak"
+      );
+    }
+  }, [label]);
 }

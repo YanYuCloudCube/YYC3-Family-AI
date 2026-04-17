@@ -15,6 +15,7 @@
 
 import * as Y from "yjs";
 import { logger } from "./services/Logger";
+import { performMerge } from "./services/ThreeWayMerge";
 
 // ── WebSocket Message Types ──
 
@@ -403,31 +404,50 @@ export class CollabService {
   }
 
   private autoMerge(local: string, remote: string): string {
-    const localLines = local.split('\n');
-    const remoteLines = remote.split('\n');
-    const merged: string[] = [];
-    const maxLen = Math.max(localLines.length, remoteLines.length);
+    const baseSnapshot = this.createSnapshot();
+    const baseContent = this.getFileContentFromSnapshot(baseSnapshot.state);
 
-    for (let i = 0; i < maxLen; i++) {
-      const localLine = localLines[i] || '';
-      const remoteLine = remoteLines[i] || '';
+    const result = performMerge(baseContent, local, remote, "auto-merge");
 
-      if (localLine === remoteLine) {
-        merged.push(localLine);
-      } else if (localLine && !remoteLine) {
-        merged.push(localLine);
-      } else if (!localLine && remoteLine) {
-        merged.push(remoteLine);
-      } else {
-        merged.push(`<<<<<<< LOCAL`);
-        merged.push(localLine);
-        merged.push(`=======`);
-        merged.push(remoteLine);
-        merged.push(`>>>>>>> REMOTE`);
+    if (result.hasConflicts) {
+      for (const conflict of result.conflicts) {
+        this.conflicts.set(conflict.id, {
+          id: conflict.id,
+          filePath: conflict.filePath,
+          localVersion: conflict.localContent,
+          remoteVersion: conflict.remoteContent,
+          localUserId: this.localUser.id,
+          remoteUserId: "remote",
+          timestamp: Date.now(),
+          resolved: false,
+        });
       }
+
+      this.emitEvent({
+        type: "conflict-detected",
+        payload: { conflictCount: result.conflicts.length },
+      });
     }
 
-    return merged.join('\n');
+    return result.content;
+  }
+
+  private getFileContentFromSnapshot(state: Uint8Array): string {
+    try {
+      const tempDoc = new Y.Doc();
+      Y.applyUpdate(tempDoc, state);
+      const filesMap = tempDoc.getMap("files");
+      const contents: string[] = [];
+      filesMap.forEach((value, key) => {
+        if (value instanceof Y.Text) {
+          contents.push(value.toString());
+        }
+      });
+      tempDoc.destroy();
+      return contents.join('\n');
+    } catch {
+      return "";
+    }
   }
 
   getConflicts(): ConflictInfo[] {

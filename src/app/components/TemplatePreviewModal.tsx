@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, useMemo, lazy, Suspense, useRef } from "react";
 import {
   X,
   Eye,
@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useThemeTokens } from "./ide/hooks/useThemeTokens";
+import { buildPreviewHtml, detectLanguage } from "./ide/PreviewEngine";
 
 const SandpackPreviewPanel = lazy(() => import("./ide/SandpackPreview"));
 
@@ -411,7 +412,28 @@ export default function TemplatePreviewModal({
 }
 
 function SandpackTemplatePreview({ template, isFullscreen }: { template: TemplateWithPreview; isFullscreen: boolean }) {
+  const needsReact = !!template.previewCode?.react;
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [SandpackComponents, setSandpackComponents] = useState<Record<string, React.ComponentType<any>> | null>(null);
+
+  const iframePreviewHtml = useMemo(() => {
+    if (needsReact) return null;
+
+    if (template.previewCode?.html) {
+      return buildPreviewHtml(template.previewCode.html, "html", { darkMode: true });
+    }
+    if (template.previewCode?.css) {
+      const code = `<style>${template.previewCode.css}</style><div class="preview-container"><h1>CSS Preview</h1><p>Styles applied to this document.</p><div class="box" style="width:100px;height:100px;background:#38bdf8;border-radius:8px;margin:16px 0;"></div></div>`;
+      return buildPreviewHtml(code, "html", { darkMode: true });
+    }
+    return null;
+  }, [template.previewCode, needsReact]);
+
+  useEffect(() => {
+    if (iframeRef.current && iframePreviewHtml) {
+      iframeRef.current.srcdoc = iframePreviewHtml.html;
+    }
+  }, [iframePreviewHtml]);
 
   useEffect(() => {
     import("@codesandbox/sandpack-react").then((mods) => {
@@ -433,6 +455,29 @@ function SandpackTemplatePreview({ template, isFullscreen }: { template: Templat
     }
     return result;
   }, [template.previewCode]);
+
+  if (!needsReact) {
+    if (!iframePreviewHtml) {
+      return (
+        <div className="h-[420px] flex items-center justify-center bg-[#0b1729]">
+          <div className="text-center">
+            <Package className="w-8 h-8 mx-auto mb-2 text-slate-500" />
+            <p className="text-sm text-slate-400">暂无可预览内容</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <iframe
+        ref={iframeRef}
+        className="w-full border-0"
+        style={{ height: isFullscreen ? "calc(100vh - 120px)" : "420px", background: "#0b1729" }}
+        sandbox="allow-scripts allow-same-origin"
+        title="Template Preview"
+      />
+    );
+  }
 
   if (!SandpackComponents) {
     return (

@@ -841,7 +841,7 @@ export default function HomePage() {
             setChatInput(prev => prev + text);
           }
         }).catch(() => {
-          console.log("无法读取剪贴板");
+          // Clipboard access denied or failed
         });
         setShowActions(false);
         break;

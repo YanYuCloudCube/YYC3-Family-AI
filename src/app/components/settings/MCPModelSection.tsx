@@ -1614,9 +1614,7 @@ export function ModelSection() {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('[MCPModelSection] 重新检测按钮点击, 当前状态:', ollamaStatus);
                 if (ollamaStatus !== "checking") {
-                  console.log('[MCPModelSection] 调用 recheckOllama');
                   recheckOllama();
                 }
               }}

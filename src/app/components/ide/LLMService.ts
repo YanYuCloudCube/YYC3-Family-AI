@@ -1,26 +1,23 @@
 /**
  * @file: LLMService.ts
- * @description: 真实 LLM API 调用层，统一支持 Ollama / OpenAI / 智谱 GLM / 通义千问 / DeepSeek / 自定义，
+ * @description: 真实 LLM API 调用层 — 统一数据源来自 providers.ts
+ *              仅支持 Zai-Plan (智谱) + Ollama (本地运行时检测)
  *              采用 OpenAI-compatible chat/completions 接口 + Ollama 原生接口，支持 SSE 流式响应
- * @author: YanYuCloudCube Team <admin@0379.email>
- * @version: v1.5.0
+ * @author: YanYuCloudCube Team <admin@039.email>
+ * @version: v2.0.0
  * @created: 2026-03-06
- * @updated: 2026-03-14
- * @status: dev
+ * @updated: 2026-04-16
+ * @status: production
  * @license: MIT
  * @copyright: Copyright (c) 2026 YanYuCloudCube Team
- * @tags: llm,api,streaming,sse,providers,openai,ollama
+ * @tags: llm,api,streaming,sse,providers,zhipu,ollama
  */
 
 import { logger } from "./services/Logger";
-export type ProviderId =
-  | "ollama"
-  | "openai"
-  | "zhipu"
-  | "zai-coding"
-  | "dashscope"
-  | "deepseek"
-  | "custom";
+import { BUILTIN_PROVIDERS, type ProviderDef } from "./constants/providers";
+import { getAIDegradationService, type DegradationLevel } from "./services/AIDegradationService";
+
+export type ProviderId = "zai-plan" | "ollama";
 
 export interface ProviderConfig {
   id: ProviderId;
@@ -31,7 +28,7 @@ export interface ProviderConfig {
   apiKey?: string;
   models: ProviderModel[];
   isLocal: boolean;
-  detected: boolean; // 是否已探测到（Ollama）
+  detected: boolean;
   description: string;
   docsUrl: string;
 }
@@ -56,280 +53,54 @@ export interface StreamCallbacks {
   onError: (error: string) => void;
 }
 
-// ── Provider 定义 ──
+// ── Provider 定义：从 providers.ts 统一数据源转换 ──
 
-export const PROVIDER_CONFIGS: ProviderConfig[] = [
-  {
-    id: "ollama",
-    name: "Ollama 本地",
-    nameEn: "Ollama Local",
-    baseUrl: "http://localhost:11434",
-    authType: "none",
-    isLocal: true,
-    detected: false,
-    description: "本地部署的 Ollama 推理服务，自动探测",
-    docsUrl: "https://ollama.com",
-    models: [], // 动态从 Ollama API 获取
-  },
-  {
-    id: "zhipu",
-    name: "智谱 BigModel",
-    nameEn: "ZhipuAI GLM",
-    baseUrl: "https://open.bigmodel.cn/api/paas/v4",
-    authType: "bearer",
-    isLocal: false,
-    detected: false,
-    description: "智谱AI开放平台 — GLM 系列大模型",
-    docsUrl: "https://open.bigmodel.cn",
-    models: [
-      {
-        id: "glm-5",
-        name: "GLM-5",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 128000,
-        description: "最新旗舰推理模型",
-      },
-      {
-        id: "glm-5.1",
-        name: "GLM-5.1",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 128000,
-        description: "增强版旗舰模型",
-      },
-      {
-        id: "glm-5-turbo",
-        name: "GLM-5-Turbo",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 128000,
-        description: "高速推理模型",
-      },
-      {
-        id: "glm-4-plus",
-        name: "GLM-4.7 (Plus)",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 128000,
-        description: "最强推理能力",
-      },
-      {
-        id: "glm-4-0520",
-        name: "GLM-4.6 (0520)",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 128000,
-        description: "均衡性能",
-      },
-      {
-        id: "glm-4-flash",
-        name: "GLM-4.5 Flash",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 128000,
-        description: "高速低价",
-      },
-      {
-        id: "glm-4-long",
-        name: "GLM-4 Long",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 1000000,
-        description: "超长上下文",
-      },
-      {
-        id: "codegeex-4",
-        name: "CodeGeeX-4",
-        type: "code",
-        maxTokens: 8192,
-        contextWindow: 128000,
-        description: "代码生成专用",
-      },
-    ],
-  },
-  {
-    id: "zai-coding",
-    name: "Z.ai Coding Plan",
-    nameEn: "Z.ai Coding",
-    baseUrl: "https://open.bigmodel.cn/api/paas/v4",
-    authType: "bearer",
-    isLocal: false,
-    detected: false,
-    description: "Z.ai 编程专精版 — GLM-5 系列",
-    docsUrl: "https://open.bigmodel.cn",
-    models: [
-      {
-        id: "glm-5",
-        name: "GLM-5",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 128000,
-        description: "最新旗舰推理模型",
-      },
-      {
-        id: "glm-5.1",
-        name: "GLM-5.1",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 128000,
-        description: "增强版旗舰模型",
-      },
-      {
-        id: "glm-5-turbo",
-        name: "GLM-5-Turbo",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 128000,
-        description: "高速推理模型",
-      },
-      {
-        id: "glm-4-plus",
-        name: "GLM-4.7",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 128000,
-        description: "高性能通用模型",
-      },
-    ],
-  },
-  {
-    id: "dashscope",
-    name: "通义千问",
-    nameEn: "Tongyi Qwen",
-    baseUrl: "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    authType: "bearer",
-    isLocal: false,
-    detected: false,
-    description: "阿里云百炼 DashScope — Qwen 系列，OpenAI 兼容接口",
-    docsUrl: "https://dashscope.console.aliyun.com",
-    models: [
-      {
-        id: "qwen-max",
-        name: "Qwen3-Max",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 32768,
-        description: "最强旗舰模型",
-      },
-      {
-        id: "qwen-plus",
-        name: "Qwen3.5-Plus",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 131072,
-        description: "均衡高性价比",
-      },
-      {
-        id: "qwen-vl-max",
-        name: "Qwen3-VL",
-        type: "vision",
-        maxTokens: 4096,
-        contextWindow: 32768,
-        description: "多模态视觉理解",
-      },
-      {
-        id: "qwen-coder-plus",
-        name: "Qwen-Coder-Plus",
-        type: "code",
-        maxTokens: 16384,
-        contextWindow: 131072,
-        description: "代码专用增强",
-      },
-    ],
-  },
-  {
-    id: "openai",
-    name: "OpenAI",
-    nameEn: "OpenAI",
-    baseUrl: "https://api.openai.com/v1",
-    authType: "bearer",
-    isLocal: false,
-    detected: false,
-    description: "OpenAI GPT 系列模型",
-    docsUrl: "https://platform.openai.com",
-    models: [
-      {
-        id: "gpt-4o",
-        name: "GPT-4o",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 128000,
-        description: "多模态旗舰",
-      },
-      {
-        id: "gpt-4o-mini",
-        name: "GPT-4o Mini",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 128000,
-        description: "高效低价",
-      },
-      {
-        id: "gpt-4-turbo",
-        name: "GPT-4 Turbo",
-        type: "llm",
-        maxTokens: 4096,
-        contextWindow: 128000,
-        description: "高性能推理",
-      },
-    ],
-  },
-  {
-    id: "deepseek",
-    name: "DeepSeek",
-    nameEn: "DeepSeek",
-    baseUrl: "https://api.deepseek.com",
-    authType: "bearer",
-    isLocal: false,
-    detected: false,
-    description: "DeepSeek 开源大模型 API 服务",
-    docsUrl: "https://platform.deepseek.com",
-    models: [
-      {
-        id: "deepseek-chat",
-        name: "DeepSeek V3.2",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 65536,
-        description: "最新旗舰对话模型",
-      },
-      {
-        id: "deepseek-coder",
-        name: "DeepSeek-Coder",
-        type: "code",
-        maxTokens: 16384,
-        contextWindow: 65536,
-        description: "代码生成专用",
-      },
-      {
-        id: "deepseek-reasoner",
-        name: "DeepSeek-R1",
-        type: "llm",
-        maxTokens: 8192,
-        contextWindow: 65536,
-        description: "深度推理",
-      },
-    ],
-  },
-  {
-    id: "custom",
-    name: "自定义",
-    nameEn: "Custom",
-    baseUrl: "",
-    authType: "bearer",
-    isLocal: false,
-    detected: true,
-    description: "自定义 OpenAI 兼容接口 / 本地模型服务",
-    docsUrl: "",
-    models: [],
-  },
-];
+/**
+ * 将 providers.ts 的 ProviderDef 转换为 LLMService 需要的 ProviderConfig 格式
+ * 这是唯一的数据源转换点，确保全局一致性
+ */
+export function convertToProviderConfig(def: ProviderDef): ProviderConfig {
+  return {
+    id: def.id as ProviderId,
+    name: def.name,
+    nameEn: def.shortName,
+    baseUrl: def.baseURL,
+    authType: def.apiKeyPlaceholder ? "bearer" : "none",
+    isLocal: def.id === "ollama",
+    detected: def.id === "ollama", // Ollama 标记为需要检测
+    description: def.description,
+    docsUrl: def.docsUrl,
+    models: def.models.map((m) => ({
+      id: m.id,
+      name: m.name,
+      type: "llm" as const,
+      maxTokens: 8192,
+      contextWindow: m.contextWindow ? parseInt(m.contextWindow.replace("K", "")) * 1000 : 128000,
+      description: m.description,
+    })),
+  };
+}
+
+/**
+ * 获取供应商配置列表 — 唯一入口，从 providers.ts 转换
+ */
+export function getProviderConfigs(): ProviderConfig[] {
+  return BUILTIN_PROVIDERS.map(convertToProviderConfig);
+}
+
+/**
+ * 根据 ID 获取单个供应商配置
+ */
+export function getProviderConfig(providerId: ProviderId): ProviderConfig | undefined {
+  const def = BUILTIN_PROVIDERS.find((p) => p.id === providerId);
+  return def ? convertToProviderConfig(def) : undefined;
+}
 
 // ── API Key 存储 (localStorage) ──
 
 const KEY_PREFIX = "yyc3_llm_key_";
 
+/** 获取指定供应商的 API Key，未设置时返回空字符串 */
 export function getApiKey(providerId: ProviderId): string {
   try {
     return localStorage.getItem(`${KEY_PREFIX}${providerId}`) || "";
@@ -338,6 +109,7 @@ export function getApiKey(providerId: ProviderId): string {
   }
 }
 
+/** 设置指定供应商的 API Key，key 为空时移除 */
 export function setApiKey(providerId: ProviderId, key: string): void {
   try {
     if (key) {
@@ -348,30 +120,29 @@ export function setApiKey(providerId: ProviderId, key: string): void {
   } catch { /* empty */ }
 }
 
+/** 检查指定供应商是否已配置 API Key */
 export function hasApiKey(providerId: ProviderId): boolean {
   return !!getApiKey(providerId);
 }
 
+/** 从环境变量初始化 API Key（仅当 localStorage 中未配置时） */
 export function initializeApiKeysFromEnv(): void {
   const envMappings: Array<{ providerId: ProviderId; envKey: string }> = [
-    { providerId: "zhipu", envKey: "VITE_ZHIPU_API_KEY" },
-    { providerId: "zai-coding", envKey: "VITE_ZHIPU_API_KEY" },
-    { providerId: "deepseek", envKey: "VITE_DEEPSEEK_API_KEY" },
-    { providerId: "openai", envKey: "VITE_OPENAI_API_KEY" },
-    { providerId: "dashscope", envKey: "VITE_DASHSCOPE_API_KEY" },
+    { providerId: "zai-plan", envKey: "VITE_ZHIPU_API_KEY" },
   ];
 
   for (const { providerId, envKey } of envMappings) {
     const envValue = (import.meta as any).env?.[envKey];
     if (envValue && !hasApiKey(providerId)) {
       setApiKey(providerId, envValue);
-      logger.info('Initialized API key for ${providerId} from env ${envKey}');
+      logger.info(`Initialized API key for ${providerId} from env ${envKey}`);
     }
   }
 }
 
 // ── Ollama 本地探测 ──
 
+/** 探测本地 Ollama 服务，返回可用状态和模型列表 */
 export async function detectOllama(): Promise<{
   available: boolean;
   models: ProviderModel[];
@@ -578,38 +349,21 @@ export async function testModelConnectivity(
 
 // ── 获取聊天完成的 endpoint ──
 
-function getChatEndpoint(provider: ProviderConfig): string {
+export function getChatEndpoint(provider: ProviderConfig): string {
   if (provider.id === "ollama") {
     return `${provider.baseUrl}/api/chat`;
   }
-  // 使用代理 URL 避免跨域问题
-  if (provider.id === "zhipu" || provider.id === "zai-coding") {
+  // Zai-Plan 使用代理 URL 避免跨域
+  if (provider.id === "zai-plan") {
     return `/api/zhipu/chat/completions`;
   }
-  if (provider.id === "deepseek") {
-    return `/api/deepseek/chat/completions`;
-  }
-  if (provider.id === "dashscope") {
-    return `/api/dashscope/chat/completions`;
-  }
-  if (provider.id === "openai") {
-    return `/api/openai/chat/completions`;
-  }
-  // For custom providers, check if baseUrl already includes the path
-  if (provider.id === "custom") {
-    const base = provider.baseUrl;
-    if (/\/chat\/completions\/?$/i.test(base)) return base;
-    if (/\/api\/chat\/?$/i.test(base)) return base;
-    if (/\/v1\/?$/i.test(base)) return `${base}/chat/completions`;
-    return `${base}/v1/chat/completions`;
-  }
-  // OpenAI-compatible: openai, dashscope, deepseek
+  // 默认 OpenAI-compatible 格式
   return `${provider.baseUrl}/chat/completions`;
 }
 
 // ── 构建请求 headers ──
 
-function buildHeaders(provider: ProviderConfig): Record<string, string> {
+export function buildHeaders(provider: ProviderConfig): Record<string, string> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
@@ -809,6 +563,7 @@ export async function chatCompletionStream(
 
 // ── 辅助: 从完成文本中提取代码块 ──
 
+/** 从完成文本中提取第一个代码块，返回语言标识和代码内容 */
 export function extractCodeBlock(
   text: string,
 ): { lang: string; code: string } | null {
@@ -820,6 +575,75 @@ export function extractCodeBlock(
     };
   }
   return null;
+}
+
+// ── 降级封装：自动切换 provider ──
+
+export interface ResilientChatOptions {
+  temperature?: number;
+  maxTokens?: number;
+  signal?: AbortSignal;
+  onDegradation?: (from: ProviderId, to: ProviderId, level: DegradationLevel) => void;
+  onRecovery?: (providerId: ProviderId) => void;
+}
+
+export async function resilientChatCompletion(
+  messages: ChatMessage[],
+  options?: ResilientChatOptions,
+): Promise<string> {
+  const service = getAIDegradationService();
+
+  if (options?.onDegradation) {
+    const origOnDegradation = service.getState;
+    const unsub = service.subscribe((state) => {
+      if (state.switchCount > 0 && state.lastSwitchAt) {
+        options.onDegradation?.(
+          state.providers.find(p => p.level === "unavailable")?.providerId || "zai-plan" as ProviderId,
+          state.currentProviderId || "ollama" as ProviderId,
+          state.currentLevel,
+        );
+      }
+    });
+    try {
+      const result = await service.chatCompletion(messages, {
+        temperature: options?.temperature,
+        maxTokens: options?.maxTokens,
+      });
+      return result;
+    } finally {
+      unsub();
+    }
+  }
+
+  return service.chatCompletion(messages, {
+    temperature: options?.temperature,
+    maxTokens: options?.maxTokens,
+  });
+}
+
+export async function resilientChatCompletionStream(
+  messages: ChatMessage[],
+  callbacks: StreamCallbacks,
+  options?: ResilientChatOptions,
+): Promise<void> {
+  const service = getAIDegradationService();
+  return service.chatCompletionStream(messages, callbacks, {
+    temperature: options?.temperature,
+    maxTokens: options?.maxTokens,
+    signal: options?.signal,
+  });
+}
+
+export function getDegradationState() {
+  return getAIDegradationService().getState();
+}
+
+export function startDegradationHealthChecks() {
+  getAIDegradationService().startHealthChecks();
+}
+
+export function stopDegradationHealthChecks() {
+  getAIDegradationService().stopHealthChecks();
 }
 
 // ── AI 语义意图分类 ──
@@ -931,18 +755,11 @@ export async function analyzeIntentAI(
  * Find the first available provider that has a configured API key (or is Ollama).
  * Reads from localStorage — usable outside of React context.
  */
-function findAvailableProvider(): {
+export function findAvailableProvider(): {
   config: ProviderConfig;
   modelId: string;
 } | null {
-  // Preferred order: deepseek (cheap+fast) → zhipu → dashscope → openai → ollama
-  const preferredOrder: ProviderId[] = [
-    "deepseek",
-    "zhipu",
-    "dashscope",
-    "openai",
-    "ollama",
-  ];
+  const configs = getProviderConfigs();
 
   // Read active model from localStorage
   const activeModelRaw = localStorage.getItem("yyc3_active_model");
@@ -950,7 +767,7 @@ function findAvailableProvider(): {
     try {
       const parsed = JSON.parse(activeModelRaw);
       if (parsed.providerId && parsed.modelId) {
-        const cfg = PROVIDER_CONFIGS.find((p) => p.id === parsed.providerId);
+        const cfg = configs.find((p) => p.id === parsed.providerId);
         if (cfg) {
           const hasKey = cfg.authType === "none" || !!getApiKey(cfg.id);
           if (hasKey)
@@ -963,28 +780,24 @@ function findAvailableProvider(): {
     } catch { /* empty */ }
   }
 
-  // Fallback: scan providers in preferred order
+  // Fallback: scan providers in preferred order (zai-plan → ollama)
+  const preferredOrder: ProviderId[] = ["zai-plan", "ollama"];
+
   for (const pid of preferredOrder) {
-    const cfg = PROVIDER_CONFIGS.find((p) => p.id === pid);
+    const cfg = configs.find((p) => p.id === pid);
     if (!cfg) continue;
     const hasKey = cfg.authType === "none" || !!getApiKey(pid);
     if (!hasKey) continue;
 
     // Pick first model or a default
     const defaultModelId =
-      pid === "deepseek"
-        ? "deepseek-chat"
-        : pid === "zhipu"
-          ? "glm-4-flash"
-          : pid === "dashscope"
-            ? "qwen-turbo"
-            : pid === "openai"
-              ? "gpt-4o-mini"
-              : pid === "ollama"
-                ? "llama3.1:8b"
-                : "";
+      pid === "zai-plan"
+        ? "glm-5"
+        : pid === "ollama"
+          ? "" // Ollama will detect models dynamically
+          : "";
 
-    if (defaultModelId) {
+    if (defaultModelId || pid === "ollama") {
       return {
         config: { ...cfg, apiKey: getApiKey(pid) },
         modelId: defaultModelId,

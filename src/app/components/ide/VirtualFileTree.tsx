@@ -12,7 +12,7 @@
  */
 
 import React, { useMemo, useCallback, useState } from "react";
-import { List } from "react-window";
+import { List, type RowComponentProps } from "react-window";
 import {
   ChevronRight,
   ChevronDown,
@@ -145,67 +145,14 @@ export default function VirtualFileTree({
     });
   }, []);
 
-  // 渲染单个节点
-  const Node = useCallback(
-    ({ index, style }: { index: number; style: React.CSSProperties }) => {
-      const item = flatNodes[index];
-      if (!item) return null;
-
-      const { node, depth, isExpanded, hasChildren } = item;
-      const isActive = node.path === activeFile;
-
-      const handleClick = (e: React.MouseEvent) => {
-        if (node.type === "folder") {
-          handleToggle(node.path);
-        } else {
-          onFileSelect(node.path);
-        }
-      };
-
-      const handleContextMenuEvent = (e: React.MouseEvent) => {
-        e.preventDefault();
-        onContextMenu?.(e, node);
-      };
-
-      if (node.type === "folder") {
-        return (
-          <div
-            style={{ ...style, paddingLeft: depth * 12 + 8 }}
-            className="w-full flex items-center gap-1.5 py-1 px-2 hover:bg-white/3 transition-colors cursor-pointer"
-            onClick={handleClick}
-            onContextMenu={handleContextMenuEvent}
-          >
-            {isExpanded ? (
-              <ChevronDown className="w-3 h-3 text-slate-600 flex-shrink-0" />
-            ) : (
-              <ChevronRight className="w-3 h-3 text-slate-600 flex-shrink-0" />
-            )}
-            {isExpanded ? (
-              <FolderOpen className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
-            ) : (
-              <Folder className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-            )}
-            <span className="text-[0.72rem] text-slate-400 truncate">{node.name}</span>
-          </div>
-        );
-      }
-
-      return (
-        <div
-          style={{ ...style, paddingLeft: depth * 12 + 24 }}
-          className={`w-full flex items-center gap-1.5 py-1 px-2 rounded-sm transition-colors cursor-pointer ${
-            isActive
-              ? "bg-sky-900/30 text-sky-300"
-              : "hover:bg-white/3 text-slate-400"
-          }`}
-          onClick={handleClick}
-          onContextMenu={handleContextMenuEvent}
-        >
-          {getFileIcon(node.name)}
-          <span className="text-[0.72rem] truncate">{node.name}</span>
-        </div>
-      );
-    },
+  const rowProps = useMemo(
+    () => ({
+      flatNodes,
+      activeFile,
+      onFileSelect,
+      handleToggle,
+      onContextMenu,
+    }),
     [flatNodes, activeFile, onFileSelect, handleToggle, onContextMenu],
   );
 
@@ -215,9 +162,88 @@ export default function VirtualFileTree({
       rowCount={flatNodes.length}
       rowHeight={itemHeight}
       overscanCount={5}
-      rowComponent={Node as any}
-      rowProps={{}}
+      rowComponent={TreeNodeRow}
+      rowProps={rowProps}
     />
+  );
+}
+
+interface TreeNodeRowData {
+  flatNodes: FlatTreeNode[];
+  activeFile: string;
+  onFileSelect: (path: string) => void;
+  handleToggle: (path: string) => void;
+  onContextMenu?: (e: React.MouseEvent, node: FileNode) => void;
+}
+
+function TreeNodeRow({
+  index,
+  style,
+  ariaAttributes,
+  flatNodes,
+  activeFile,
+  onFileSelect,
+  handleToggle,
+  onContextMenu,
+}: RowComponentProps<TreeNodeRowData>) {
+  const item = flatNodes[index];
+  if (!item) return null;
+
+  const { node, depth, isExpanded } = item;
+  const isActive = node.path === activeFile;
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (node.type === "folder") {
+      handleToggle(node.path);
+    } else {
+      onFileSelect(node.path);
+    }
+  };
+
+  const handleContextMenuEvent = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onContextMenu?.(e, node);
+  };
+
+  if (node.type === "folder") {
+    return (
+      <div
+        style={{ ...style, paddingLeft: depth * 12 + 8 }}
+        className="w-full flex items-center gap-1.5 py-1 px-2 hover:bg-white/3 transition-colors cursor-pointer"
+        onClick={handleClick}
+        onContextMenu={handleContextMenuEvent}
+        {...ariaAttributes}
+      >
+        {isExpanded ? (
+          <ChevronDown className="w-3 h-3 text-slate-600 flex-shrink-0" />
+        ) : (
+          <ChevronRight className="w-3 h-3 text-slate-600 flex-shrink-0" />
+        )}
+        {isExpanded ? (
+          <FolderOpen className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+        ) : (
+          <Folder className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+        )}
+        <span className="text-[0.72rem] text-slate-400 truncate">{node.name}</span>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{ ...style, paddingLeft: depth * 12 + 24 }}
+      className={`w-full flex items-center gap-1.5 py-1 px-2 rounded-sm transition-colors cursor-pointer ${
+        isActive
+          ? "bg-sky-900/30 text-sky-300"
+          : "hover:bg-white/3 text-slate-400"
+      }`}
+      onClick={handleClick}
+      onContextMenu={handleContextMenuEvent}
+      {...ariaAttributes}
+    >
+      {getFileIcon(node.name)}
+      <span className="text-[0.72rem] truncate">{node.name}</span>
+    </div>
   );
 }
 

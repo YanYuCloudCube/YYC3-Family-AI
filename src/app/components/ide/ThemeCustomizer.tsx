@@ -64,6 +64,7 @@ import {
   type WCAGLevel,
 } from "./CustomThemeStore";
 import { useThemeTokens } from "./hooks/useThemeTokens";
+import { toastSuccess, toastError } from "./stores/useToastStore";
 
 // ===== Props =====
 interface ThemeCustomizerProps {
@@ -1513,13 +1514,13 @@ function ManageTab({
       const imported = importTheme(exampleJson);
       if (imported) {
         onImport(imported);
-        alert(`成功导入主题：${imported.name}`);
+        toastSuccess(`成功导入主题：${imported.name}`);
         setExampleJson(JSON.stringify(imported, null, 2));
       } else {
-        alert("导入失败：JSON 格式不正确或缺少必要字段");
+        toastError("导入失败：JSON 格式不正确或缺少必要字段");
       }
     } catch (error) {
-      alert("导入失败：JSON 格式错误");
+      toastError("导入失败：JSON 格式错误");
     }
   }, [exampleJson, onImport]);
 

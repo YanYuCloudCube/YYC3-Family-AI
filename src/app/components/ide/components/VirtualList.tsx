@@ -38,19 +38,9 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from 'react';
-import { List, useListRef } from 'react-window';
+import { List, useListRef, type RowComponentProps } from 'react-window';
 
 // ── Types ─
-interface CellProps {
-  index: number;
-  style: React.CSSProperties;
-  ariaAttributes?: {
-    'aria-posinset'?: number;
-    'aria-setsize'?: number;
-    role?: string;
-  };
-}
-
 export interface VirtualListItem {
   id: string;
   [key: string]: unknown;
@@ -227,35 +217,18 @@ export const VirtualList = forwardRef(
       [selectedIds, onSelectionChange, multiSelect, keyExtractor, items]
     );
 
-    const Row = useCallback(
-    ({ index, style }: CellProps) => {
-      if (isLoading && index === items.length) {
-        return (
-          <div style={style}>
-            {loadingComponent || <DefaultLoadingComponent />}
-          </div>
-        );
-      }
-
-      const item = items[index];
-      if (!item) return null;
-
-      const itemId = keyExtractor(item, index);
-      const isSelected = selectedIds.has(itemId);
-
-      return (
-        <div
-          style={style}
-          onClick={(e) => handleItemClick(item, index, e)}
-          role="option"
-          aria-selected={isSelected}
-        >
-          {renderItem(item, index, isSelected)}
-        </div>
-      );
-    },
-    [items, isLoading, loadingComponent, keyExtractor, selectedIds, renderItem]
-  );
+    const rowProps = useMemo(
+      () => ({
+        items,
+        isLoading,
+        loadingComponent,
+        keyExtractor,
+        selectedIds,
+        renderItem,
+        handleItemClick,
+      }),
+      [items, isLoading, loadingComponent, keyExtractor, selectedIds, renderItem, handleItemClick],
+    );
 
     const itemKey = useCallback(
       (index: number) => {
@@ -314,8 +287,8 @@ export const VirtualList = forwardRef(
           rowHeight={getItemHeight}
           overscanCount={overscan}
           onRowsRendered={({ startIndex, stopIndex }) => handleItemsRendered({ visibleStartIndex: startIndex, visibleStopIndex: stopIndex })}
-          rowComponent={Row as any}
-          rowProps={{}}
+          rowComponent={VirtualListRow as any}
+          rowProps={rowProps}
         />
       </div>
     );
@@ -323,6 +296,56 @@ export const VirtualList = forwardRef(
 );
 
 VirtualList.displayName = 'VirtualList';
+
+// ── Row Component (extracted for react-window v2 rowProps pattern) ──
+
+interface VirtualListRowData<T extends VirtualListItem> {
+  items: T[];
+  isLoading: boolean;
+  loadingComponent?: React.ReactNode;
+  keyExtractor: (item: T, index: number) => string;
+  selectedIds: Set<string>;
+  renderItem: (item: T, index: number, isSelected: boolean) => React.ReactNode;
+  handleItemClick: (item: T, index: number, event: React.MouseEvent) => void;
+}
+
+function VirtualListRow<T extends VirtualListItem>({
+  index,
+  style,
+  ariaAttributes,
+  items,
+  isLoading,
+  loadingComponent,
+  keyExtractor,
+  selectedIds,
+  renderItem,
+  handleItemClick,
+}: RowComponentProps<VirtualListRowData<T>>) {
+  if (isLoading && index === items.length) {
+    return (
+      <div style={style} {...ariaAttributes}>
+        {loadingComponent || <DefaultLoadingComponent />}
+      </div>
+    );
+  }
+
+  const item = items[index];
+  if (!item) return null;
+
+  const itemId = keyExtractor(item, index);
+  const isSelected = selectedIds.has(itemId);
+
+  return (
+    <div
+      style={style}
+      onClick={(e) => handleItemClick(item, index, e)}
+      aria-selected={isSelected}
+      {...ariaAttributes}
+    >
+      {renderItem(item, index, isSelected)}
+    </div>
+  );
+}
 
 // ── Helper Components ──
 

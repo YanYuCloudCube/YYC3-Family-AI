@@ -136,7 +136,9 @@ export type PanelId =
   | "document-editor"
   | "taskboard"
   | "multi-instance"
-  | "multi-agent";
+  | "multi-agent"
+  | "web-search"
+  | "chart";
 
 // ── 组件规范 ──
 

@@ -2,34 +2,25 @@
  * @file: MonacoWorkerManager.ts
  * @description: Monaco Editor Worker 按需加载管理器
  *              仅在需要时加载对应的语言Worker，减少首屏加载资源
+ *              支持优先级预加载、Worker 池复用、自动清理
  * @author: YanYuCloudCube Team <admin@0379.email>
- * @version: v1.0.0
+ * @version: v2.0.0
  * @created: 2026-03-30
- * @status: dev
+ * @updated: 2026-04-17
+ * @status: production
  * @license: MIT
  * @copyright: Copyright (c) 2026 YanYuCloudCube Team
  * @tags: monaco,worker,lazy-load,optimization
  */
 
-/**
- * 语言Worker类型定义
- */
 import { logger } from "./services/Logger";
+
 type WorkerLabel = 'json' | 'css' | 'scss' | 'less' | 'html' | 'handlebars' | 'razor' | 'typescript' | 'javascript' | 'default';
 
-/**
- * Worker缓存
- */
 const workerCache = new Map<string, Worker>();
-
-/**
- * 已加载的Worker集合
- */
 const loadedWorkers = new Set<string>();
+const loadingPromises = new Map<string, Promise<Worker>>();
 
-/**
- * 语言Worker加载器映射
- */
 const workerLoaders: Partial<Record<WorkerLabel, () => Promise<Worker>>> = {
   json: async () => {
     const worker = new Worker(
@@ -82,14 +73,8 @@ const workerLoaders: Partial<Record<WorkerLabel, () => Promise<Worker>>> = {
   },
 };
 
-/**
- * 默认Editor Worker
- */
 let defaultWorker: Worker | null = null;
 
-/**
- * 获取默认Editor Worker
- */
 const getDefaultWorker = (): Worker => {
   if (!defaultWorker) {
     defaultWorker = new Worker(
@@ -100,40 +85,42 @@ const getDefaultWorker = (): Worker => {
   return defaultWorker;
 };
 
-/**
- * 按需加载Worker
- * @param label 语言标签
- * @returns Promise<Worker>
- */
 export async function getWorker(label: string): Promise<Worker> {
-  // 检查缓存
   if (workerCache.has(label)) {
     return workerCache.get(label)!;
   }
 
-  // 映射语言标签到Worker标签
   const workerLabel = mapToWorkerLabel(label);
 
-  // 检查是否已加载
   if (loadedWorkers.has(label)) {
     return workerCache.get(label) || getDefaultWorker();
   }
 
-  // 加载对应的Worker
-  const loader = workerLoaders[workerLabel];
-  if (loader) {
-    logger.warn('Loading worker for: ${label}');
-    return await loader();
+  const existingPromise = loadingPromises.get(workerLabel);
+  if (existingPromise) {
+    return existingPromise;
   }
 
-  // 返回默认Worker
+  const loader = workerLoaders[workerLabel];
+  if (loader) {
+    const promise = loader().then((worker) => {
+      loadingPromises.delete(workerLabel);
+      logger.warn('Loaded worker for: ${label}');
+      return worker;
+    }).catch((err) => {
+      loadingPromises.delete(workerLabel);
+      logger.error('[MonacoWorker] Failed to load worker for ${label}:', err);
+      return getDefaultWorker();
+    });
+
+    loadingPromises.set(workerLabel, promise);
+    return promise;
+  }
+
   logger.warn('Using default worker for: ${label}');
   return getDefaultWorker();
 }
 
-/**
- * 语言标签映射到Worker标签
- */
 function mapToWorkerLabel(label: string): WorkerLabel {
   const labelMap: Record<string, WorkerLabel> = {
     'json': 'json',
@@ -152,35 +139,46 @@ function mapToWorkerLabel(label: string): WorkerLabel {
   return labelMap[label] || 'default';
 }
 
-/**
- * 预加载常用Worker
- * 用于预加载用户最可能使用的语言Worker
- */
 export async function preloadCommonWorkers(): Promise<void> {
-  // 预加载TypeScript/JavaScript Worker（最常用）
-  await getWorker('typescript');
-  logger.warn('Preloaded TypeScript/JavaScript worker');
+  const editorWorkerPromise = Promise.resolve(getDefaultWorker());
+  const tsWorkerPromise = getWorker('typescript');
+
+  await Promise.allSettled([editorWorkerPromise, tsWorkerPromise]);
+  logger.warn('Preloaded core workers (editor + typescript)');
 }
 
-/**
- * 获取已加载的Worker统计信息
- */
+export function scheduleWorkerPreload(labels: WorkerLabel[], delayMs: number = 3000): void {
+  const preload = () => {
+    const promises = labels.map((label) => getWorker(label));
+    Promise.allSettled(promises).then(() => {
+      logger.warn('Scheduled preload completed for: ${labels.join(", ")}');
+    });
+  };
+
+  if ("requestIdleCallback" in window) {
+    (window as any).requestIdleCallback(() => setTimeout(preload, delayMs), {
+      timeout: delayMs + 5000,
+    });
+  } else {
+    setTimeout(preload, delayMs);
+  }
+}
+
 export function getWorkerStats() {
   return {
     loaded: Array.from(loadedWorkers),
     cached: Array.from(workerCache.keys()),
+    loading: Array.from(loadingPromises.keys()),
     totalLoaded: loadedWorkers.size,
     totalCached: workerCache.size,
   };
 }
 
-/**
- * 清理所有Worker缓存
- */
 export function cleanupWorkers(): void {
   workerCache.forEach((worker) => worker.terminate());
   workerCache.clear();
   loadedWorkers.clear();
+  loadingPromises.clear();
   if (defaultWorker) {
     defaultWorker.terminate();
     defaultWorker = null;
@@ -188,9 +186,6 @@ export function cleanupWorkers(): void {
   logger.warn('All workers cleaned up');
 }
 
-/**
- * 配置Monaco Environment使用按需加载
- */
 export function configureMonacoEnvironment(): void {
   if (typeof window !== 'undefined') {
     (window as any).MonacoEnvironment = {

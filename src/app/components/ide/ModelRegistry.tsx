@@ -22,7 +22,7 @@ import React, {
   useRef,
 } from "react";
 import {
-  PROVIDER_CONFIGS,
+  getProviderConfigs,
   detectOllama,
   getApiKey,
   setApiKey as storeApiKey,
@@ -33,6 +33,7 @@ import {
   type ProviderModel,
 } from "./LLMService";
 import { logger } from "./services/Logger";
+import { translate } from "./i18n";
 
 // ===== Types =====
 export type ModelType =
@@ -181,7 +182,7 @@ export function ModelRegistryProvider({
   children: React.ReactNode;
 }) {
   const [providers, setProviders] = useState<ProviderConfig[]>(() =>
-    PROVIDER_CONFIGS.map((p) => ({ ...p })),
+    getProviderConfigs().map((p) => ({ ...p })),
   );
   const [ollamaStatus, setOllamaStatus] = useState<
     "checking" | "available" | "unavailable"
@@ -339,7 +340,7 @@ export function ModelRegistryProvider({
         [modelKey]: {
           status: "fail",
           latencyMs: null,
-          error: err.message || "心跳异常",
+          error: err.message || translate('model.heartbeatError'),
           timestamp: Date.now(),
         },
       }));
@@ -589,7 +590,7 @@ export function ModelRegistryProvider({
     const prov = providers.find((p) => p.id === activeModel.providerId);
 
     // For custom models, build a virtual ProviderConfig from the model's endpoint
-    if (!prov && activeModel.providerId === "custom" && activeModel.endpoint) {
+    if (!prov && (activeModel.providerId as string) === "custom" && activeModel.endpoint) {
       const ep = activeModel.endpoint;
       const isOllamaEndpoint =
         /\/api\/(chat|generate)\/?$/i.test(ep) || /localhost:11434/i.test(ep);
@@ -600,7 +601,7 @@ export function ModelRegistryProvider({
 
       return {
         id: (isOllamaEndpoint ? "ollama" : "custom") as ProviderId,
-        name: activeModel.provider || "自定义",
+        name: activeModel.provider || translate('model.custom'),
         nameEn: "Custom",
         baseUrl: base,
         authType: (activeModel.apiKey
@@ -617,7 +618,7 @@ export function ModelRegistryProvider({
     }
 
     // For custom models that found the "custom" provider config, override baseUrl
-    if (prov && activeModel.providerId === "custom" && activeModel.endpoint) {
+    if (prov && (activeModel.providerId as string) === "custom" && activeModel.endpoint) {
       const ep = activeModel.endpoint;
       const isOllamaEndpoint =
         /\/api\/(chat|generate)\/?$/i.test(ep) || /localhost:11434/i.test(ep);
@@ -679,7 +680,7 @@ export function ModelRegistryProvider({
         id: `custom::${name}-${Date.now()}`,
         name,
         provider,
-        providerId: "custom",
+        providerId: "custom" as ProviderId,
         type: "llm",
         status: "active",
         endpoint,
@@ -691,7 +692,7 @@ export function ModelRegistryProvider({
       };
       setCustomModels((prev) => [...prev, newModel]);
       if (apiKey) {
-        storeApiKey("custom", apiKey);
+        storeApiKey("custom" as ProviderId, apiKey);
       }
     },
     [],

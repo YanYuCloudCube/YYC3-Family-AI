@@ -46,6 +46,8 @@ import {
 import { StorageManager, type StorageQuota, type StorageInfo } from '../services/StorageManager'
 import { DataExporter, type ExportData } from '../services/DataExporter'
 import { DataImporter } from '../services/DataImporter'
+import { toastSuccess, toastError } from '../stores/useToastStore'
+import { confirmDialog, confirmDanger } from '../stores/useConfirmStore'
 import { BackupManager } from './BackupManager'
 import { EncryptionManager } from './EncryptionManager'
 import { MigrationManager } from './MigrationManager'
@@ -201,8 +203,8 @@ export default function UnifiedStoragePanel() {
     setTimeout(() => setCopiedKey(null), 2000)
   }, [])
 
-  const handleDeleteLS = useCallback((key: string) => {
-    if (confirm(`确定要删除 "${key}" 吗？`)) {
+  const handleDeleteLS = useCallback(async (key: string) => {
+    if (await confirmDialog(`确定要删除 "${key}" 吗？`)) {
       localStorage.removeItem(key)
       refreshAll()
     }
@@ -263,13 +265,13 @@ export default function UnifiedStoragePanel() {
         const result = await DataImporter.importData(data)
         setImportProgress(100)
         if (result.success) {
-          alert(`导入完成！\n- LocalStorage: ${result.localStorageCount} 条\n- IndexedDB: ${result.filesCount} 文件, ${result.projectsCount} 项目, ${result.snapshotsCount} 快照`)
+          toastSuccess(`导入完成！LocalStorage: ${result.localStorageCount} 条，IndexedDB: ${result.filesCount} 文件, ${result.projectsCount} 项目, ${result.snapshotsCount} 快照`)
         } else {
-          alert(`导入部分失败：\n${result.errors.join('\n')}`)
+          toastError(`导入部分失败：${result.errors.join('; ')}`)
         }
         refreshAll()
       } catch (err) {
-        alert('导入失败：' + (err instanceof Error ? err.message : '未知错误'))
+        toastError('导入失败：' + (err instanceof Error ? err.message : '未知错误'))
       } finally {
         setIsLoading(false)
         setTimeout(() => setImportProgress(0), 2000)
@@ -278,10 +280,10 @@ export default function UnifiedStoragePanel() {
     input.click()
   }, [refreshAll])
 
-  const handleClearAll = useCallback(() => {
-    if (confirm('⚠️ 警告：这将清除所有 YYC³ 数据！\n\n此操作不可恢复，确定继续吗？')) {
+  const handleClearAll = useCallback(async () => {
+    if (await confirmDanger('这将清除所有 YYC³ 数据！此操作不可恢复，确定继续吗？', '清除所有数据')) {
       const cleared = clearAllYYC3Storage()
-      alert(`已清除 ${cleared} 条数据`)
+      toastSuccess(`已清除 ${cleared} 条数据`)
       refreshAll()
     }
   }, [refreshAll])
@@ -295,7 +297,7 @@ export default function UnifiedStoragePanel() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-[var(--ide-bg)] text-[var(--ide-text-primary)]">
+    <div className="flex flex-col bg-[var(--ide-bg)] text-[var(--ide-text-primary)]">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--ide-border)] bg-[var(--ide-bg-elevated)]">
         <div className="flex items-center gap-2">
@@ -336,8 +338,8 @@ export default function UnifiedStoragePanel() {
         ))}
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      {/* Content — 外层 SettingsPage Body 已处理滚动，此处无需嵌套 overflow */}
+      <div className="p-4">
         {/* ════════════ 存储概览 ════════════ */}
         {activeTab === 'overview' && (
           <section className="space-y-6">

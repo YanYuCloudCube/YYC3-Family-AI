@@ -41,6 +41,8 @@ const PANEL_COLORS: Record<PanelId, string> = {
   taskboard: "#8b5cf6", // blue-500
   "multi-instance": "#d946ef", // violet
   "multi-agent": "#ec4899", // pink-500
+  "web-search": "#60a5fa", // blue
+  chart: "#10b981", // emerald
 };
 
 const PANEL_SHORT_LABELS: Record<PanelId, string> = {
@@ -66,6 +68,8 @@ const PANEL_SHORT_LABELS: Record<PanelId, string> = {
   taskboard: "任务",
   "multi-instance": "实例",
   "multi-agent": "智能体",
+  "web-search": "搜索",
+  chart: "图表",
 };
 
 // ── Recursive minimap renderer ──
