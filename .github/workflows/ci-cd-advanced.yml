@@ -54,7 +54,7 @@ jobs:
         continue-on-error: true
 
       - name: Run tests
-        run: pnpm test -- --ci --reporters=jest-junit
+        run: pnpm test -- --reporters=jest-junit
         continue-on-error: true
 
       - name: Annotate test results

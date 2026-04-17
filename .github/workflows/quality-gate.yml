@@ -110,7 +110,7 @@ jobs:
         continue-on-error: false
         run: |
           echo "🧪 Running unit tests..."
-          pnpm vitest run --ci --reporter=verbose --reporter=json --outputFile=test-results.json 2>&1 | tee test-output.txt
+          pnpm vitest run --reporter=verbose --reporter=json --outputFile=test-results.json 2>&1 | tee test-output.txt
           
           if [ -f test-results.json ]; then
             TOTAL=$(cat test-results.json | jq '.numTotalTests')

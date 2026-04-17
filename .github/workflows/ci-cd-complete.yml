@@ -107,7 +107,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run unit tests
-        run: pnpm test -- --ci --coverage --reporters=default --reporters=jest-junit
+        run: pnpm test -- --coverage --reporters=default --reporters=jest-junit
         env:
           JEST_JUNIT_OUTPUT_DIR: ./reports
           JEST_JUNIT_OUTPUT_NAME: junit.xml
@@ -148,7 +148,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run integration tests
-        run: pnpm test -- --ci --testPathPattern="integration" --reporters=default --reporters=jest-junit
+        run: pnpm test -- --testPathPattern="integration" --reporters=default --reporters=jest-junit
         env:
           JEST_JUNIT_OUTPUT_DIR: ./reports
           JEST_JUNIT_OUTPUT_NAME: integration-junit.xml
@@ -184,7 +184,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run performance tests
-        run: pnpm test -- --ci --testPathPattern="performance" --reporters=default
+        run: pnpm test -- --testPathPattern="performance" --reporters=default
         continue-on-error: true
 
       - name: Generate performance report

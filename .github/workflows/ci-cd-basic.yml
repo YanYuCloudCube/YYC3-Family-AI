@@ -42,7 +42,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Run tests
-        run: pnpm test -- --ci --reporters=jest-junit
+        run: pnpm test -- --reporters=jest-junit
 
       - name: Build project
         run: pnpm build

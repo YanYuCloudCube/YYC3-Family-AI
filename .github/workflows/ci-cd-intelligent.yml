@@ -43,7 +43,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Run tests
-        run: pnpm test -- --ci --reporters=jest-junit
+        run: pnpm test -- --reporters=jest-junit
 
       - name: Security Audit
         run: pnpm audit --audit-level=moderate
