@@ -367,7 +367,7 @@ export class EncryptionService {
     for (let i = 0; i < binary.length; i++) {
       bytes[i] = binary.charCodeAt(i)
     }
-    return bytes
+    return new Uint8Array(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength))
   }
 
   async exportKey(keyId: string): Promise<void> {
