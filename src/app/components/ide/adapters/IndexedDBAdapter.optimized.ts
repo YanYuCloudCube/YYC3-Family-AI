@@ -1,3 +1,4 @@
+import { logger } from "../services/Logger";
 /**
  * @file: adapters/IndexedDBAdapter.optimized.ts
  * @description: IndexedDB 性能优化版本 - 添加缓存层、批量优化、性能监控
@@ -283,7 +284,7 @@ export async function saveFile(
     const duration = performance.now() - startTime;
     performanceMonitor.recordQuery(duration, false);
   } catch (error) {
-    console.error("Failed to save file:", error);
+    logger.error("Failed to save file:", error);
     throw error;
   }
 }
@@ -331,7 +332,7 @@ export async function saveFiles(
     const duration = performance.now() - startTime;
     performanceMonitor.recordQuery(duration, false);
   } catch (error) {
-    console.error("Failed to save files:", error);
+    logger.error("Failed to save files:", error);
     throw error;
   }
 }
@@ -372,7 +373,7 @@ export async function loadFile(
 
     return null;
   } catch (error) {
-    console.error("Failed to load file:", error);
+    logger.error("Failed to load file:", error);
     throw error;
   }
 }
@@ -433,7 +434,7 @@ export async function loadFiles(
 
     return result;
   } catch (error) {
-    console.error("Failed to load files:", error);
+    logger.error("Failed to load files:", error);
     throw error;
   }
 }
@@ -482,7 +483,7 @@ export async function loadAllFiles(
 
     return result;
   } catch (error) {
-    console.error("Failed to load all files:", error);
+    logger.error("Failed to load all files:", error);
     throw error;
   }
 }
@@ -511,7 +512,7 @@ export async function deleteFile(
     const duration = performance.now() - startTime;
     performanceMonitor.recordQuery(duration, false);
   } catch (error) {
-    console.error("Failed to delete file:", error);
+    logger.error("Failed to delete file:", error);
     throw error;
   }
 }
@@ -544,7 +545,7 @@ export async function deleteAllFiles(projectId: string): Promise<void> {
     const duration = performance.now() - startTime;
     performanceMonitor.recordQuery(duration, false);
   } catch (error) {
-    console.error("Failed to delete all files:", error);
+    logger.error("Failed to delete all files:", error);
     throw error;
   }
 }
@@ -803,9 +804,9 @@ export async function clearAllData(): Promise<void> {
     // 清空缓存
     queryCache.clear();
 
-    console.warn("All IndexedDB data cleared successfully");
+    logger.warn("All IndexedDB data cleared successfully");
   } catch (error) {
-    console.error("Failed to clear all data:", error);
+    logger.error("Failed to clear all data:", error);
     throw error;
   }
 }
