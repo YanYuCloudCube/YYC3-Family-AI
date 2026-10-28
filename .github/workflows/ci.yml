@@ -1,4 +1,4 @@
-name: YYC3 Family AI - CI/CD Deploy to GitHub Pages
+name: YYC3 Family AI - CI
 
 on:
   push:
@@ -13,8 +13,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "ci-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   build-and-test:
@@ -29,7 +29,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -42,17 +42,19 @@ jobs:
         run: pnpm typecheck
 
       - name: Run tests
-        run: pnpm test -- --reporters=jest-junit
+        run: pnpm test
 
       - name: Build project
         run: pnpm build
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
   deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: build-and-test
     environment:
       name: github-pages
